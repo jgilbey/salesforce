@@ -1,0 +1,15 @@
+<template>
+  <h1 role="heading" class="header-text">{sectionTitle}</h1>
+  <div class="slds-p-around_medium">
+    <p > {labels.submission.supportDocLabel}</p>
+    <div class="slds-p-top_medium">
+      <c-document-uploader
+      record-id={progressForm.id}
+      name="Support" accepted-formats={acceptedFormats}
+      uploaded-files={supportingFiles}
+      is-blocked={isBlocked}
+      table-columns={fileColumns}>
+      </c-document-uploader>
+    </div>
+  </div>
+</template>

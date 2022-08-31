@@ -1,0 +1,17 @@
+<template>
+    <!-- <div class="slds-region_small" style="width:650px"> -->
+                <!-- <div class="slds-grid slds-path__scroller-container">
+                    <div class="slds-path__scroller">
+                        <div class="slds-path__scroller_inner"> -->
+                            <lightning-progress-indicator current-step={currentStep} type="path" has-error="true"
+                                variant="base">
+                                <template for:each={allSteps} for:item="step_i">
+                                    <lightning-progress-step style="width: 30px !important;" label={step_i.label} value={step_i.value}
+                                        key={step_i.label} onstepfocus={handleStepBlur}></lightning-progress-step>
+                                </template>
+                            </lightning-progress-indicator>
+                        <!-- </div>
+                    </div>
+                </div> -->
+    <!-- </div> -->
+</template>

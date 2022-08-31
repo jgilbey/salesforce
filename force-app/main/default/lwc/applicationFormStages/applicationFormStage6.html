@@ -1,0 +1,237 @@
+<template>
+  <div class="slds-theme_default">
+    <div class="slds-p-around_medium lgc-bg">
+      <div>
+        <h1 role="heading" data-first-element>{labels.Stage_6_title}</h1>
+        <br />
+        <p>
+          {labels.Intro_section_6}
+        </p>
+      </div>
+
+      <div class="slds-p-around_medium lgc-bg">
+        <div>
+          <p><b class="question-numb">6a</b> {labels.AF_6a_section}</p>
+          <div class="slds-p-top_medium">
+            <table class="slds-table project-costs-table slds-table_bordered table-5-col">
+              <thead>
+                <tr class="slds-text-title_caps">
+                  <template for:each={costsColumns} for:item="column">
+                    <th key={column.apiName}>
+                      <div class="slds-truncate">{column.label}</div>
+                    </th>
+                  </template>
+                </tr>
+              </thead>
+              <tbody>
+                <template for:each={costsObjectData} for:item="row" for:index="index">
+                  <tr class="inputRows" key={row.uuid}>
+                    <td>
+                      <lightning-combobox name="Cost_heading__c" value={row.data.Cost_heading__c} id={row.uuid}
+                        placeholder={labels.Select_Type} options={costsHeadingList} onchange={handleCostsChange}
+                        disabled={applicationFormObject.isBlocked} dropdown-alignment="auto" required="true">
+                      </lightning-combobox>
+                    </td>
+                    <td>
+                      <!-- <lightning-input
+                        name="Project_Cost_Description__c"
+                        value={row.data.Project_Cost_Description__c}
+                        onchange={handleCostsChange}
+                        disabled={applicationFormObject.isBlocked}
+                        id={row.uuid}
+                      >
+                      </lightning-input> -->
+                      <c-multiline-input id={row.uuid} name="Project_Cost_Description__c"
+                        value={row.data.Project_Cost_Description__c} is-disabled={applicationFormObject.isBlocked}
+                        ondatachange={handleCostsChange} is-required="true"></c-multiline-input>
+                    </td>
+
+                    <td>
+                      <lightning-input type="number" name="Costs__c" value={row.data.Costs__c} id={row.uuid}
+                        onchange={handleCostsChange} disabled={applicationFormObject.isBlocked} formatter="currency"
+                        step="1" required="true">
+                      </lightning-input>
+                    </td>
+                    <td>
+                      <lightning-input type="number" name="Vat__c" value={row.data.Vat__c} id={row.uuid}
+                        onchange={handleCostsChange} disabled={applicationFormObject.isBlocked} formatter="currency"
+                        step="1" >
+                      </lightning-input>
+                    </td>
+                    <td>
+                      <lightning-input type="number" name="Total_Cost__c" value={row.data.Total_Cost__c} id={row.uuid}
+                        disabled="true" formatter="currency" step="0.01" >
+                      </lightning-input>
+                    </td>
+                    <td>
+                      <lightning-button-icon icon-name="utility:delete" alternative-text="Delete"
+                        class="slds-m-left_xx-small" title="Delete" value={index} variant="brand" label="Delete"
+                        onclick={removeRow} disabled={applicationFormObject.isBlocked} >
+                      </lightning-button-icon>
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+
+              <tfoot>
+                <tr>
+                  <td>Total</td>
+                  <td></td>
+                  <td>
+                    <lightning-input type="number" value={fullCostsValue} formatter="currency" step="0.01"
+                      disabled="true" ></lightning-input>
+                  </td>
+                  <td>
+                    <lightning-input type="number" value={fullVatValue} formatter="currency" step="0.01" disabled="true"
+                      ></lightning-input>
+                  </td>
+                  <td>
+                    <lightning-input type="number" value={totalCostsValue} formatter="currency" step="0.01"
+                      disabled="true" ></lightning-input>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <lightning-button variant="brand" label="Add" disabled={applicationFormObject.isBlocked}
+                      onclick={addRow}>
+                    </lightning-button>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+
+        <div class="slds-p-top_medium">
+          <p><b class="question-numb">6b</b> {labels.AF_6b_section}</p>
+          <div class="slds-p-top_medium">
+            <table class="slds-table partnership-funding-table slds-table_bordered table-4-col">
+              <thead>
+                <tr class="slds-text-title_caps">
+                  <template for:each={incomesColumns} for:item="column">
+                    <th key={column.apiName}>
+                      <div class="slds-truncate">{column.label}</div>
+                    </th>
+                  </template>
+                </tr>
+              </thead>
+              <tbody>
+                <template for:each={incomesObjectData} for:item="row" for:index="index">
+                  <tr class="inputRows" key={row.uuid}>
+                    <td>
+                      <lightning-combobox name="Source_Of_Funding__c" value={row.data.Source_Of_Funding__c}
+                        id={row.uuid} placeholder={labels.Select_Type} options={sourceOfFundingList}
+                        onchange={handleIncomesChange} disabled={applicationFormObject.isBlocked}
+                        dropdown-alignment="auto" required="true">
+                      </lightning-combobox>
+                    </td>
+                    <td>
+                      <c-multiline-input id={row.uuid} name="Description_for_cash_contributions__c"
+                        value={row.data.Description_for_cash_contributions__c}
+                        is-disabled={applicationFormObject.isBlocked} ondatachange={handleIncomesChange}
+                        is-required="true"></c-multiline-input>
+                    </td>
+
+                    <td>
+                      <lightning-input type="checkbox" name="Secured__c" onchange={handleIncomesChange} id={row.uuid}
+                        checked={row.data.Secured__c} disabled={applicationFormObject.isBlocked} >
+                      </lightning-input>
+                    </td>
+                    <td>
+                      <lightning-input class="IncomeValue" type="number" name="Value__c" value={row.data.Value__c}
+                        id={row.uuid} onchange={handleIncomesChange} formatter="currency" step="1"
+                        disabled={applicationFormObject.isBlocked} required="true">
+                      </lightning-input>
+                    </td>
+                    <td>
+                      <lightning-button-icon icon-name="utility:delete" alternative-text="Delete"
+                        class="slds-m-left_xx-small" label="Delete" disabled={applicationFormObject.isBlocked}
+                        title="Delete" value={index} variant="brand" onclick={removeIncomesRow}>
+                      </lightning-button-icon>
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+
+              <tfoot>
+                <tr>
+                  <td>{labels.NHMF_grant_request}</td>
+                  <td></td>
+                  <td></td>
+                  <td>
+                    <lightning-input type="number" value={grantRequestValue} formatter="currency" min="0" step="0.01"
+                      disabled="true" ></lightning-input>
+                  </td>
+                </tr>
+                <tr>
+                  <td>{labels.Total}</td>
+                  <td></td>
+                  <td></td>
+                  <td>
+                    <lightning-input type="number" value={totalCostsValue} formatter="currency" step="0.01"
+                      disabled="true"></lightning-input>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <lightning-button variant="brand" disabled={applicationFormObject.isBlocked} label="Add"
+                      onclick={addIncomesRow}>
+                    </lightning-button>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <div class="slds-p-top_medium">
+            <p><b>{labels.Financial_Summary}</b></p>
+          </div>
+          <div>
+            <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-m-bottom_large">
+              <tbody>
+                <tr>
+                  <td>{labels.Total_costs}</td>
+                  <td>
+                    <lightning-input type="number" value={totalCostsValue} formatter="currency" step="0.01"
+                      disabled="true"></lightning-input>
+                  </td>
+                </tr>
+                <tr>
+                  <td>{labels.Total_partnership_funding}</td>
+                  <td>
+                    <lightning-input type="number" value={totalIncomesValue} formatter="currency" step="0.01"
+                      disabled="true"></lightning-input>
+                  </td>
+                </tr>
+                <tr>
+                  <td>{labels.NHMF_grant_request}</td>
+                  <td>
+                    <lightning-input type="number" value={grantRequestValue} formatter="currency" step="0.01" min="0"
+                      disabled="true"></lightning-input>
+                  </td>
+                </tr>
+                <tr>
+                  <td>{labels.NHMF_grant_ratio}</td>
+                  <td>
+                    <lightning-input type="text" value={grantRatio} disabled="true"></lightning-input>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="slds-p-top_medium">
+          <p>
+            <b class="question-numb">6c</b> {labels.AF_6c_section}
+          </p>
+          <lightning-textarea name="How_will_you_secure_cash_contributions__c" value={cashContributionSecure}
+            onchange={handleIncomesChange} disabled={applicationFormObject.isBlocked} max-length="5000"
+            class="slds-p-top_medium"
+            onkeypress={handleValidation} data-maxlength="5000">
+          </lightning-textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

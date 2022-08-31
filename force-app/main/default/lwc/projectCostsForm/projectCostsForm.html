@@ -1,0 +1,57 @@
+<template>
+    
+  <!--<c-button
+      label="Add Project Cost"
+      variant="Neutral"
+      onclick={handleAddProjectCost}>
+  </c-button>-->
+  <!--
+        <template if:true={projectCosts}>
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                      
+                    <template for:each={columns} for:item="col">
+                      
+                    
+                      <th class="" scope="col" key={col.index}>
+                        {col.label}
+                      </th>
+                    
+                    </template>
+                 </tr>
+                </thead>
+                <tbody>
+                        <template for:each={projectCosts} for:item="cost">
+                          <tr key={cost.index}>
+                            <div key={cost.index}>
+                            <c-project-cost-item cost={cost} onchange={handleChange} allowremoving={cost.allowRemoving}>
+                            </c-project-cost-item>
+                            </div>
+                          </tr>
+                        </template>
+
+                </tbody>
+            </table>
+
+          </template>-->
+          <template if:true={cashContributions}>
+            <table>
+              <thead></thead>
+              <tbody><template for:each={cashContributions} for:item="income">
+                  <c-project-income-item key={income.index} income={income} onchange={handleChange}>
+                  </c-project-income-item>
+              </template></tbody>
+            </table>
+    </template>
+
+      <!--<c-button
+      label="Save"
+      variant="Neutral"
+      onclick={handelSaveProjectCosts}> 
+  </c-button>-->
+  <c-button
+      label="Cancel"
+      variant="Neutral">
+  </c-button>
+    </template>

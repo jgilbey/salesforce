@@ -1,0 +1,94 @@
+<!--
+  @description       : Third step of project enquiry form
+  @author            : Methods
+  @group             : 
+  @last modified on  : 01-14-2021
+  @last modified by  : Methods
+  Modifications Log 
+  Ver   Date         Author   Modification
+  1.0   01-14-2021   Methods   Initial Version
+-->
+<template>
+  <div class="slds-p-around_medium">
+    <div>
+      <h1 role="heading">{labels.section_3_project_costs}</h1>
+    </div>
+    <div class="slds-p-around_medium">
+      <div class="slds-m-top_medium lgc-bg question__container">
+        <div>
+          <div class="question-numb"><span>3a</span></div>
+          <span>{labels.costs_and_whether}</span>
+        </div>
+        <div class="slds-m-top_medium">
+          <lightning-textarea
+            name="How_much_project_will_likely_cost__c"
+            data-name="How_much_project_will_likely_cost__c"
+            label={labels.How_much_is_your_project_likely_to_cost_What_will_the_major_costs_be_If_you_ar}
+            placeholder={labels.Limit_200_words}
+            value={projectEnquiryForm.projectEnquiry.How_much_project_will_likely_cost__c}
+            onchange={handleChange}
+            disabled={projectEnquiryForm.isBlocked}
+            required="true"
+            max-length="10000"
+            data-maxlength="10000" onkeypress={handleValidation}
+          >
+          </lightning-textarea>
+        </div>
+      </div>
+      <div class="slds-m-top_medium lgc-bg question__container">
+        <div class="question-numb"><span>3b</span></div>
+
+        <lightning-input
+          type="number"
+          class="label-margin"
+          name="Likely_Requested_Amount__c"
+          data-name="Likely_Requested_Amount__c"
+          label={labels.How_much_are_you_likely_to_ask_for_from_us}
+          value={projectEnquiryForm.projectEnquiry.Likely_Requested_Amount__c}
+          formatter="currency"
+          step="0.01"
+          required="true"
+          disabled={projectEnquiryForm.isBlocked}
+          max="9999999999"
+          onchange={handleChange}
+          placeholder={labels.Currency_field}
+        >
+        </lightning-input>
+      </div>
+      <div class="slds-m-top_medium lgc-bg question__container">
+        <div class="question-numb"><span>3c</span></div>
+
+        <lightning-textarea
+          name="How_will_you_provide_care_for_Heritage__c"
+          data-name="How_will_you_provide_care_for_Heritage__c"
+          label={labels.How_will_your_project_last_over_the_long_term_and_how_will_you_provide_appropria}
+          placeholder={labels.Limit_150_words}
+          value={projectEnquiryForm.projectEnquiry.How_will_you_provide_care_for_Heritage__c}
+          onchange={handleChange}
+          disabled={projectEnquiryForm.isBlocked}
+          required="true"
+          max-length="10000"
+          data-maxlength="10000" onkeypress={handleValidation}
+        >
+        </lightning-textarea>
+      </div>
+      <div class="slds-m-top_medium lgc-bg question__container">
+        <div class="question-numb"><span>3d</span></div>
+
+        <lightning-textarea
+          name="Financial_need__c"
+          data-name="Financial_need__c"
+          label={labels.Financial_need_we_are_a_funder_of_last_resort_please_give_details_of_any_partn}
+          placeholder={labels.Limit_150_words}
+          value={projectEnquiryForm.projectEnquiry.Financial_need__c}
+          onchange={handleChange}
+          disabled={projectEnquiryForm.isBlocked}
+          required="true"
+          max-length="10000"
+          data-maxlength="10000" onkeypress={handleValidation}
+        >
+        </lightning-textarea>
+      </div>
+    </div>
+  </div>
+</template>

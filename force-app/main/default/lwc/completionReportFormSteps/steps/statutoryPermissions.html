@@ -1,0 +1,20 @@
+<template>
+    <h1 role="heading" class="header-text">{sectionTitle}</h1>
+    <div class="slds-p-around_medium">
+        <p>{labels.statutoryPermissions.Have_you_received_any_new_permissions_during_the_period_covered_by_this_report}</p>
+        <div class="checkbox-wrap slds-m-top_small">
+            <lightning-input type="checkbox" checked={completionForm.hasStaturyPermissions}
+                onchange={handleCheckbox} name="hasStaturyPermissions" disabled={completionForm.isBlocked}
+                label="Confirm?">
+            </lightning-input>
+        </div>
+        <div class="slds-m-top_medium" if:true={completionForm.hasStaturyPermissions}>
+            <lightning-textarea name="staturyPermissionInfo"
+                label={labels.statutoryPermissions.Please_provide_further_information}
+                value={completionForm.staturyPermissionInfo} onchange={handleTextChange}
+                disabled={completionForm.isBlocked} required="true" max-length="5000"
+                onkeypress={handleValidation} data-maxlength="5000">
+            </lightning-textarea>
+        </div>
+    </div>
+</template>

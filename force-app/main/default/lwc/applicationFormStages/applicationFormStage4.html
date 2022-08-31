@@ -1,0 +1,73 @@
+<template>
+  <div class="slds-theme_default">
+    <div class="slds-p-around_medium lgc-bg">
+      <div>
+        <h1 role="heading" data-first-element>{labels.Stage_4_title}</h1>
+      </div>
+
+      <div class="slds-p-around_medium lgc-bg">
+        <div>
+          <p>
+            <b class="question-numb">4a</b>
+            <span>{labels.AF_4a_section}</span>
+          </p>
+          <lightning-textarea name="People_responsible_for_work_NHMF__c" data-name="People_responsible_for_work_NHMF__c"
+            value={applicationFormObject.projectCase.People_responsible_for_work_NHMF__c} onchange={handleChange}
+            class="slds-p-top_medium" disabled={applicationFormObject.isBlocked} max-length="5000"
+            onkeypress={handleValidation} data-maxlength="5000">
+          </lightning-textarea>
+        </div>
+
+        <div class="slds-p-top_medium">
+          <p>
+            <b class="question-numb">4b</b>
+            <span>{labels.AF_4b_section}</span>
+          </p>
+
+          <div class="slds-p-top_medium">
+
+            <c-risks-table risks-data={currentRisksObjectData} likelihood-list={riskLikelihoodList}
+              impact-list={riskImpactList} app-form={applicationFormObject} onaddrow={addCurrentRiskRow}
+              onremoverow={removeCurrentRiskRow} onchangerisk={handleCurrentRiskChange}></c-risks-table>
+          </div>
+        </div>
+
+        <div class="slds-p-top_medium">
+          <p>
+            <b class="question-numb">4c</b> {labels.AF_4c_section}
+          </p>
+          <lightning-input type="date" name="Project_Start_Date__c" data-name="Project_Start_Date__c"
+            label="Project start date" value={applicationFormObject.projectCase.Project_Start_Date__c}
+            onchange={handleChange} class="slds-p-top_medium" disabled={applicationFormObject.isBlocked}>
+          </lightning-input>
+
+          <lightning-input type="date" name="Project_End_Date__c" data-name="Project_End_Date__c"
+            label="Project end date" value={applicationFormObject.projectCase.Project_End_Date__c}
+            onchange={handleChange} class="slds-p-top_medium" disabled={applicationFormObject.isBlocked}>
+          </lightning-input>
+        </div>
+
+        <div class="slds-p-top_medium">
+          <p class="checkbox-input">
+            <b class="question-numb">4d</b><span>{labels.AF_4d_section}</span>
+            <lightning-input type="checkbox" name="Fixed_milestone_for_project_timetable__c"
+              data-name="Fixed_milestone_for_project_timetable__c" onchange={handleChange}
+              checked={applicationFormObject.projectCase.Fixed_milestone_for_project_timetable__c}
+              disabled={applicationFormObject.isBlocked}></lightning-input>
+          </p>
+        </div>
+
+        <template if:true={applicationFormObject.projectCase.Fixed_milestone_for_project_timetable__c}>
+          <div class="slds-p-top_medium lgc-bg">
+            <lightning-textarea name="Details_for_fixed_key_milestones__c"
+              data-name="Details_for_fixed_key_milestones__c" label={labels.Please_provide_details}
+              value={applicationFormObject.projectCase.Details_for_fixed_key_milestones__c} onchange={handleChange}
+              disabled={applicationFormObject.isBlocked} max-length="5000"
+              onkeypress={handleValidation} data-maxlength="5000">
+            </lightning-textarea>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</template>

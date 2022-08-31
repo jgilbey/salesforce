@@ -1,0 +1,102 @@
+<template>
+  <h1 role="heading" class="header-text">{sectionTitle}</h1>
+  <div class="slds-p-around_medium">
+    <p>{labels.funding.Have_you_raised_any_more_partnership_funding_since_the_last_report}</p>
+    <div class="checkbox-wrap slds-m-top_small">
+      <lightning-input type="checkbox" checked={completionForm.hasProjectIncomes} onchange={handleCheckbox}
+        name="hasProjectIncomes" disabled={completionForm.isBlocked}
+        label="Confirm?">
+      </lightning-input>
+    </div>
+    <template if:true={completionForm.hasProjectIncomes}>
+      <div class="document-table slds-m-top_medium slds-box">
+        <!-- <c-custom-data-table data={completionForm.projectIncomes} hide-checkbox-column
+                  columns={projectIncomesColumList} key-field="id">
+              </c-custom-data-table> -->
+        <template if:true={projectIncomes}>
+          <c-custom-data-table data={projectIncomes} hide-checkbox-column columns={viewColumns} key-field="index">
+          </c-custom-data-table>
+        </template>
+        <!-- <c-custom-data-table data={completionForm.projectIncomes} hide-checkbox-column
+                  columns={obtainProjectComesColumns} key-field="id">
+              </c-custom-data-table> -->
+      </div>
+    </template>
+  </div>
+
+
+  <template if:true={showModal}>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+      aria-describedby="modal-content" class="slds-modal slds-fade-in-open">
+      <div class="slds-modal__container">
+        <header class="slds-modal__header">
+          <lightning-button-icon onclick={abortAdding} variant="bare" class="slds-modal__close slds-button_icon-inverse"
+            icon-name="utility:close" alternative-text="Close" title="Close">
+          </lightning-button-icon>
+          <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{labels.funding.Add_Project_Incomes} </h2>
+        </header>
+
+        <div class="slds-modal__content slds-p-around_medium" id="modal-content">
+          <div class="slds-grid slds-wrap">
+            <template for:each={currentItem} for:item="item">
+              <div class="slds-size--1-of-2 slds-p-around--small" key={item.id}>
+                <template if:true={item.text}>
+                  <div class="slds-form-element">
+                    <label class="slds-form-element__label" for="text-input-id-1">{item.label}</label>
+                    <div class="slds-form-element__control">
+                      <lightning-formatted-text value={item.value}></lightning-formatted-text>
+                    </div>
+                  </div>
+                </template>
+                <template if:true={item.currency}>
+                  <div class="slds-form-element">
+                    <label class="slds-form-element__label" for="text-input-id-1">{item.label}</label>
+                    <div class="slds-form-element__control">
+                      <lightning-formatted-number value={item.value} format-style="currency">
+                      </lightning-formatted-number>
+                    </div>
+                  </div>
+                </template>
+                <template if:true={item.comboboxType}>
+                  <lightning-combobox key={item.id} name={item.fieldName} placeholder="Select an Option"
+                    required={item.typeAttributes.isRequired} disabled={item.typeAttributes.isDisabled}
+                    label={item.label} value={item.value} options={item.typeAttributes.options} onchange={handleChange}>
+                  </lightning-combobox>
+                </template>
+                <template if:true={item.textInputType}>
+                  <lightning-input type="text" key={item.id} name={item.fieldName}
+                    required={item.typeAttributes.isRequired} disabled={item.typeAttributes.isDisabled}
+                    label={item.label} value={item.value} onchange={handleChange} max-length={item.typeAttributes.maxLength}
+                    onkeypress={handleValidation} data-maxlength={item.typeAttributes.maxLength}></lightning-input>
+                </template>
+                <template if:true={item.dateInputType}>
+                  <lightning-input type="date" key={item.id} name={item.fieldName}
+                    required={item.typeAttributes.isRequired} disabled={item.typeAttributes.isDisabled}
+                    label={item.label} value={item.value} onchange={handleChange}></lightning-input>
+                </template>
+                <template if:true={item.numberInputType}>
+                  <lightning-input type="number" key={item.id} name={item.fieldName} label={item.label}
+                    required={item.typeAttributes.isRequired} disabled={item.typeAttributes.isDisabled}
+                    formatter={item.typeAttributes.formatter} value={item.value} onchange={handleChange} max={item.typeAttributes.maxLength}>
+                  </lightning-input>
+                </template>
+                <template if:true={item.checkboxInputType}>
+                  <lightning-input type="checkbox" key={item.id} name={item.fieldName} label={item.label}
+                    required={item.typeAttributes.isRequired} disabled={item.typeAttributes.isDisabled}
+                    formatter={item.typeAttributes.formatter} value={item.value} checked={item.value}
+                    onchange={handleChange}></lightning-input>
+                </template>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <footer class="slds-modal__footer">
+          <button class="slds-button slds-button_neutral" onclick={abortAdding}>Cancel</button>
+          <button class="slds-button slds-button_brand" onclick={addProjectIncomes}>Save</button>
+        </footer>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+  </template>
+</template>

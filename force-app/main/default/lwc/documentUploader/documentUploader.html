@@ -1,0 +1,32 @@
+<template>
+  <template if:true={isRequired}>
+    <abbr title="required" class="slds-required">*</abbr>
+  </template>
+  <template if:false={isBlocked}>
+    <lightning-file-upload
+      name={name}
+      accept={acceptedFormats}
+      required={isRequired}
+      record-id={recordId}
+      onuploadfinished={handleUploadFinished}
+      disabled={isBlocked}
+    >
+    </lightning-file-upload>
+  </template>
+  <div
+    class="document-table slds-m-top_medium slds-box slds-p-around--none"
+    if:true={isFilesUploaded}
+  >
+    <lightning-datatable
+      name={name}
+      data={uploadedFiles}
+      columns={columns}
+      key-field="id"
+      hide-checkbox-column
+      resize-column-disabled
+      max-column-width="1200"
+      onrowaction={handleRowAction}
+    >
+    </lightning-datatable>
+  </div>
+</template>

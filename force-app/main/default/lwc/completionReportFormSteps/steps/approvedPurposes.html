@@ -1,0 +1,11 @@
+<template>
+    <h1 role="heading" class="header-text">{sectionTitle}</h1>
+    <div class="slds-p-around_medium">
+        <p>{labels.approvedPurpose.Listed_below_are_your_approved_purposes_Please_provide_a_summary_of_your_projec}</p>
+        <div class="document-table slds-m-top_medium slds-box">
+            <c-custom-data-table data={completionForm.approvedPurposes} hide-checkbox-column
+                columns={approvedPuprosesColumList} key-field="id">
+            </c-custom-data-table>
+        </div>
+    </div>
+</template>

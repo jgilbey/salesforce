@@ -1,0 +1,36 @@
+<template>
+    <template if:true={isLoading}>
+        <div>
+            <lightning-spinner alternative-text="Loading..." variant="brand" size="large">
+            </lightning-spinner>
+        </div>
+    </template>
+    <div class="slds-theme_default">
+
+        <template if:false={isFirst}>
+            <div class="slds-p-top_medium slds-p-horizontal_small">
+                <c-form-progress-step current-step={selectedStepString} all-steps={steps}
+                    onchangestep={handleChangeStep}></c-form-progress-step>
+            </div>
+        </template>
+        <div class="slds-p-around_medium">
+            <c-payment-request-form-steps selected-step-index={selectedStepIndex} payment-form={paymentForm}
+            spending-costs={spendingCosts} spending-cost-picklist-values={spendingCostsOptions}
+            onspendingcostchanges={handleSpendingCostChanges} 
+            grand-paid={grandPaid} onuploadfinished={fileUploadingHandler} 
+            uploaded-files={uploadedFiles}
+            onrowaction={handleRowAction} onformchanging={formDataChangeHandler}
+            is-blocked={isBlocked} already-payed={alreadyPayed}
+            >
+            </c-payment-request-form-steps>
+            <div class="slds-m-vertical_medium">
+                <c-form-footer is-first-stage={isFirst} is-last-stage={isLast} onnext={handleNext} onback={handlePrev}
+                    onsubmit={handleFinish} onsave={handleSave} disable-save-button={isBlocked} submit-button-name={submitButtonName}>
+                </c-form-footer>
+            </div>
+        </div>
+    </div>
+    <c-confirmation-dialog title={labels.Modal_Title} message={labels.Modal_message} confirm-label={labels.Modal_Yes} cancel-label={labels.Modal_No}
+        visible={isDialogVisible} name="confirmModal" onclick={handleDialogClick}>
+    </c-confirmation-dialog>
+</template>

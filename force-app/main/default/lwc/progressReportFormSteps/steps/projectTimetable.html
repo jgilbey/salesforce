@@ -1,0 +1,38 @@
+<template>
+    <h1 role="heading" class="header-text">{sectionTitle}</h1>
+    <div class="slds-p-around_medium ">
+            <lightning-input
+            type="date"
+            label={labels.intro.Grant_expiry_date}
+            value={progressForm.grantExpiryDate}
+            disabled
+            >
+            </lightning-input>
+        <div class="slds-m-top_medium">
+            <lightning-input
+            type="date"
+            label="Likely overall completion date"
+            name="overallCompletionDate"
+            data-name="overallCompletionDate"
+            value={progressForm.overallCompletionDate}
+            onchange={handleChange}
+            disabled={isBlocked}
+            >
+            ></lightning-input>
+        </div>
+        <div class="slds-m-top_medium">
+            <lightning-textarea
+                name="projectTimetable"
+                data-name="projectTimetable"
+                label={labels.projectTimetable.projectTimetableUpdates}
+                value={progressForm.projectTimetable}
+                required="true"
+                onchange={handleChange}
+                max-length="5000"
+                disabled={isBlocked}
+                onkeypress={handleValidation} data-maxlength="5000"
+                >
+                </lightning-textarea>
+        </div>
+    </div>
+</template>

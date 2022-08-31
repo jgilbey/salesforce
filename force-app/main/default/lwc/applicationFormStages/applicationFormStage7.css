@@ -1,0 +1,12 @@
+ul:not(.browser-default) li {
+  list-style-type: disc;
+}
+
+.confirm_text {
+  text-align: center;
+}
+
+td.delete__button{
+  width: 1%;
+  white-space: nowrap;
+}

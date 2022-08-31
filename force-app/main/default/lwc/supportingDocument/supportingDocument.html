@@ -1,0 +1,40 @@
+<template>
+  <lightning-combobox
+    name={name}
+    value={comboboxValue}
+    placeholder={labels.Select_Type}
+    options={documentProvisionTypes}
+    onchange={handleProvisionTypeChange}
+    required={comboboxRequired}
+    disabled={appForm.isBlocked}
+    class="required-without-label"
+    dropdown-alignment="auto"
+  >
+  </lightning-combobox>
+  <template if:true={isElectronic}>
+    <div class="slds-p-top_medium">
+      <lightning-file-upload
+        name={name}
+        accept={acceptedFormats}
+        record-id={recordId}
+        onuploadfinished={handleUploadFinished}
+        disabled={appForm.isBlocked}
+      >
+      </lightning-file-upload>
+    </div>
+    <div
+      class="document-table slds-m-top_medium slds-box"
+      if:true={isFilesUploaded}
+    >
+      <lightning-datatable
+        name={name}
+        data={documentFiles}
+        columns={columns}
+        key-field="id"
+        hide-checkbox-column
+        onrowaction={handleRowAction}
+      >
+      </lightning-datatable>
+    </div>
+  </template>
+</template>

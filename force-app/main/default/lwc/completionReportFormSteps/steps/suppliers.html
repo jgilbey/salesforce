@@ -1,0 +1,36 @@
+<template>
+    <h1 role="heading" class="header-text">{sectionTitle}</h1>
+    <div class="slds-p-around_medium">
+        <lightning-input type="checkbox" checked={completionForm.haveYouPurchasedGoods}
+            onchange={handleCheckbox} name="haveYouPurchasedGoods" disabled={completionForm.isBlocked}
+            label={labels.suppliers.Have_you_purchased_goods_work_or_services_worth_more_than_10_000_in_the_period}>
+        </lightning-input>
+        <div class="slds-m-vertical_medium">
+            <lightning-textarea if:true={completionForm.haveYouPurchasedGoods} name="purchasedGoods"
+                label={labels.suppliers.Give_details_of_any_goods_work_or_services_you_have_purchased_so_far_worth_mor}
+                value={completionForm.purchasedGoods} onchange={handleTextChange}
+                disabled={completionForm.isBlocked} required="true" max-length="5000"
+                onkeypress={handleValidation} data-maxlength="5000">
+            </lightning-textarea>
+        </div>  
+        <lightning-textarea name="reasonNotAwardToTender"
+            label={labels.suppliers.If_you_did_not_award_to_the_lowest_tender_please_give_details_of_why}
+            value={completionForm.reasonNotAwardToTender} onchange={handleTextChange}
+            disabled={completionForm.isBlocked} max-length="5000"
+            onkeypress={handleValidation} data-maxlength="5000">
+        </lightning-textarea>
+        
+        <div class="slds-m-vertical_medium">
+            <lightning-input type="checkbox" checked={completionForm.isVendorLinked} onchange={handleCheckbox}
+                label={labels.suppliers.Were_any_of_the_contractors_suppliers_or_consultants_linked_i_e_close_friend}
+                name="isVendorLinked" disabled={completionForm.isBlocked}>
+            </lightning-input>
+        </div>
+        <lightning-textarea if:true={completionForm.isVendorLinked} name="explainWhyVendorAppointed"
+            label={labels.suppliers.Please_explain_why_the_contractor_supplier_or_consultant_was_appointed}
+            value={completionForm.explainWhyVendorAppointed} onchange={handleTextChange}
+            disabled={completionForm.isBlocked} required="true" max-length="5000"
+            onkeypress={handleValidation} data-maxlength="5000">
+        </lightning-textarea>
+    </div>
+</template>

@@ -1,0 +1,34 @@
+<template>
+
+    <template if:true={isLoading}>
+        <div class="spinner__container">
+          <lightning-spinner
+            alternative-text="Loading..."
+            variant="brand"
+            size="large">
+        </lightning-spinner>
+        </div>
+    </template>
+
+    <div class="slds-theme_default">
+        <div class="slds-p-around_medium">
+            <template if:false={isFirst}>
+                <c-form-progress-step current-step={selectedStepString} all-steps={steps}
+                    onchangestep={handleChangestep}></c-form-progress-step>
+            </template>
+            <c-application-form-stages selected-step-string={selectedStepString}
+            case-rt-id={caseRtId} cost-rt-id={costRtId} income-rt-id={incomeRtId} 
+                application-form-object={applicationFormObject}></c-application-form-stages>
+            <c-form-footer is-first-stage={isFirst} is-last-stage={isLast} onnext={handleNext} onback={handlePrev}
+                onsubmit={handleFinish} onsave={handleSave} submit-button-name={submitButtonName}
+                disable-save-button={applicationFormObject.isBlocked}>
+            </c-form-footer>
+
+        </div>
+    </div>
+
+    <c-confirmation-dialog title={labels.Confirmation_Title} message={labels.Do_you_want_to_submit}
+        confirm-label={labels.Yes} cancel-label={labels.No} visible={isDialogVisible} original-message="test"
+        name="confirmModal" onclick={handleDialogClick}>
+    </c-confirmation-dialog>
+</template>

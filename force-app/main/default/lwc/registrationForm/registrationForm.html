@@ -1,0 +1,42 @@
+<template>
+    <lightning-card>
+        <div class="contact-section">
+            <lightning-input label="FirstName" data-field="FirstName" required></lightning-input>
+            <lightning-input label="LastName" data-field="LastName" required></lightning-input>
+            <lightning-input label="Position" data-field="LastName" required></lightning-input>
+            <div class='contact-address'>
+                <lightning-textarea label="Street Address" data-field="BillingStreet" onchange={accountMasterRecordHandler}  disabled={blockMasterAccountChanging}  ></lightning-textarea>
+                <lightning-input label="Town/City" data-field="BillingCity" ></lightning-input>
+                <lightning-input label="Country" data-field="BillingCountry" ></lightning-input>
+                <lightning-input label="Postcode" data-field="BillingPostalCode" ></lightning-input>
+            </div>
+            <lightning-input label="Phone" type='tel' pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" data-field="Phone" min-length={phoneMinSize} max-length={phoneMaxSize} ></lightning-input>
+            <lightning-input label="Phone" type='tel' pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" data-field="OtherPhone" min-length={phoneMinSize} max-length={phoneMaxSize} ></lightning-input>
+                                    
+            <lightning-input label="Email" type="email" data-field="Email" ></lightning-input>
+                                
+            <lightning-input label="Date of Birth" type="date" date-style="short" data-field="Birthdate"></lightning-input>
+                                    
+        </div>
+        <div class="organisation-section">
+            <lightning-input data-name="Name" required></lightning-input>
+            <div class='organisation-address'>
+
+                <lightning-textarea label="Street Address" data-field="BillingStreet" onchange={accountMasterRecordHandler}  disabled={blockMasterAccountChanging} required ></lightning-textarea>
+                <lightning-input label="Town/City" data-field="BillingCity" required></lightning-input>
+                <lightning-input label="Country" data-field="BillingCountry" required></lightning-input>
+                <lightning-input label="Postcode" data-field="BillingPostalCode" required></lightning-input>
+            </div>
+            <lightning-input data-field="Name" required></lightning-input>
+            <!-- <lightning-combobox
+                label="Channel Name"
+                value={channelValue}
+                placeholder="Choose the channel you would like to apply for"
+                options={channelOptions}
+                onchange={channelChangeHandler}
+                data-variable="Channel__c"
+                disabled={blockChannel}
+            ></lightning-combobox> -->
+        </div>
+    </lightning-card>
+</template>

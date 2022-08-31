@@ -1,0 +1,36 @@
+<template>
+  <div class="slds-theme_default">
+    <div>
+      <div class="lgc-bg">
+        <lightning-input type="text" label={labels.intro.Project_title} value={completionForm.projectTitle} disabled>
+        </lightning-input>
+      </div>
+
+      <div class="slds-p-top_medium lgc-bg">
+        <lightning-input type="text" label={labels.intro.Project_Number} value={completionForm.projectRef} disabled>
+        </lightning-input>
+      </div>
+
+      <div class="slds-p-top_medium lgc-bg" if:false={isCapital}>
+        <lightning-input type="number" formatter="currency" label={labels.intro.total_project_costs}
+          value={completionForm.totalCosts} disabled>
+        </lightning-input>
+      </div>
+      <div class="slds-p-top_medium lgc-bg" if:false={isCapital}>
+        <lightning-input type="number" formatter="currency" label={labels.intro.grant_award}
+          value={completionForm.totalGrantAwarded} disabled>
+        </lightning-input>
+      </div>
+      <div class="slds-p-top_medium lgc-bg">
+        <lightning-input type="date" label={labels.intro.Grant_expiry_date} value={completionForm.grantExpiryDate}
+          disabled>
+        </lightning-input>
+      </div>
+      <div class="slds-p-top_medium lgc-bg" if:false={isCapital}>
+        <lightning-input type="number" formatter="percent-fixed" label={labels.intro.grant_percentage}
+          value={completionForm.paymentPercentage} disabled step="0.01">
+        </lightning-input>
+      </div>
+    </div>
+  </div>
+</template>

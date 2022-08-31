@@ -1,0 +1,13 @@
+:host{
+    display: table-row;
+}
+
+.buttons-column-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.delete-button{
+    margin-left: auto;
+}

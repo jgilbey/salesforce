@@ -1,0 +1,67 @@
+<!--
+  @description       : Init step of filling project enquiry
+  @author            : Methods
+  @group             : 
+  @last modified on  : 01-14-2021
+  @last modified by  : Methods
+  Modifications Log 
+  Ver   Date         Author   Modification
+  1.0   01-14-2021   Methods   Initial Version
+-->
+<template>
+    <div class="slds-p-around_medium">
+        <div>
+            <lightning-formatted-rich-text value={labels.Intro_PE_form}></lightning-formatted-rich-text>
+        </div>
+    
+    
+        <div class="slds-p-top_medium lgc-bg">
+            <lightning-input type="text" name="Project_Title__c" data-name="Project_Title__c" label={labels.Project_title}
+                value={projectEnquiryForm.projectEnquiry.Project_Title__c} onchange={handleChange}
+                disabled={projectEnquiryForm.isBlocked} required="true" max-length="100"
+                placeholder={labels.Limit_15_words} onkeypress={handleValidation} data-maxlength="100">
+            </lightning-input>
+        </div>
+        <div class="slds-p-top_medium lgc-bg">
+            <lightning-input type="text" name="Project_Reference_Number__c" data-name="Project_Reference_Number__c"
+                label={labels.Reference_number} value={projectEnquiryForm.projectEnquiry.Project_Reference_Number__c}
+                disabled="true"></lightning-input>
+        </div>
+        <div class="slds-p-top_medium lgc-bg checkbox-input">
+            <p>
+                <span>{labels.Are_you_a_not_for_profit_organisation}</span>
+                <lightning-input type="checkbox" name="Non_Profit__c"
+                onchange={handleChange} checked={projectEnquiryForm.projectEnquiry.Non_Profit__c}
+                disabled={projectEnquiryForm.isBlocked}>
+            </lightning-input>
+            </p>
+        </div>
+        <template if:false={projectEnquiryForm.projectEnquiry.Non_Profit__c}>
+            <div class="slds-p-top_medium lgc-bg">
+    
+                <lightning-input type="text" name="Type_of_profit_organization__c"
+                    data-name="Type_of_profit_organization__c"
+                    label={labels.If_you_are_not_a_not_for_profit_organisation_please_tell_us_the_type_of_organis}
+                    placeholder={labels.type_here} value={projectEnquiryForm.projectEnquiry.Type_of_profit_organization__c}
+                    onchange={handleChange} disabled={projectEnquiryForm.isBlocked} required="true" max-length="150" onkeypress={handleValidation} data-maxlength="150">
+                </lightning-input>
+            </div>
+        </template>
+        <div class="slds-p-top_medium lgc-bg">
+            <lightning-combobox name="Where_did_you_hear_about_us__c" data-name="Where_did_you_hear_about_us__c"
+                label={labels.Where_did_you_hear_about_the_National_Heritage_Memorial_Fund}
+                value={projectEnquiryForm.projectEnquiry.Where_did_you_hear_about_us__c} placeholder={labels.Select_Type}
+                options={whereHearList} onchange={handleChange} disabled={projectEnquiryForm.isBlocked} required="true"
+                dropdown-alignment="auto">
+            </lightning-combobox>
+        </div>
+        <template if:true={isOther}>
+            <div class="slds-p-top_medium lgc-bg">
+                <lightning-input type="text" name="Other_hear_from_us__c" data-name="Other_hear_from_us__c"
+                    label={labels.Please_specify} placeholder={labels.type_here}
+                    value={projectEnquiryForm.projectEnquiry.Other_hear_from_us__c} onchange={handleChange}
+                    disabled={projectEnquiryForm.isBlocked} required="true" max-length="180" onkeypress={handleValidation} data-maxlength="180"></lightning-input>
+            </div>
+        </template>
+    </div>
+</template>

@@ -1,0 +1,67 @@
+<template>
+  <h1 role="heading" class="header-text" data-first-element>{sectionTitle}</h1>
+  <div class="slds-p-around_medium">
+    <div class="check-box__container">
+      <p>{labels.bankDetails.Tick_this_box_to_confirm}</p>
+    <div class="checkbox-wrap slds-m-top_small">
+        <lightning-input label="Confirm?" type="checkbox" name="isAttachedBankAccountDetails" checked={permissionForm.isAttachedBankAccountDetails}
+        onchange={handleCheckbox}
+        disabled={permissionForm.isBlocked}></lightning-input>
+      </div>
+  </div>
+    <div class="slds-m-top_medium">
+      <lightning-input label={labels.bankDetails.Account_name} value={permissionForm.accountName}
+        onchange={handleTextChange} name="accountName" required="true" disabled={permissionForm.isBlocked}
+        max-length="255" onkeypress={handleValidation} data-maxlength="255">
+      </lightning-input>
+    </div>
+    <div class="slds-m-top_medium">
+      <lightning-input type="text" max-length="8" pattern="[0-9]{8}" required="true" onkeydown={handleCheckNumber} onchange={handleTextChange}
+        label={labels.bankDetails.Account_number} name="accountNumber" value={permissionForm.accountNumber}
+        disabled={permissionForm.isBlocked} onkeypress={handleValidation} data-maxlength="8">
+      </lightning-input>
+    </div>
+    <div class="slds-m-top_medium">
+      <lightning-input label={labels.bankDetails.Sort_code} pattern="[0-9]{2}-[0-9]{2}-[0-9]{2}"
+        onfocus={handleFocusSortCode} name="sortCode" onblur={handleBlurSortCode} onchange={handleChangeSortCode}
+        max-length="8" required="true" value={sortCode} disabled={permissionForm.isBlocked}
+        onkeypress={handleValidation} data-maxlength="8">
+      </lightning-input>
+    </div>
+    <div class="slds-m-top_medium">
+      <lightning-input label={labels.bankDetails.Building_society_roll_number} onchange={handleTextChange}
+        value={permissionForm.societyRollNumber} name="societyRollNumber" max-length="20"
+        disabled={permissionForm.isBlocked}
+        onkeypress={handleValidation} data-maxlength="20">
+      </lightning-input>
+    </div>
+    <div class="slds-m-top_medium">
+      <lightning-textarea label={labels.bankDetails.If_applicable_please_provide_a_reference_number}
+        onchange={handleTextChange} value={permissionForm.paymentCode} name="paymentCode"
+        disabled={permissionForm.isBlocked} max-length="1000"
+        onkeypress={handleValidation} data-maxlength="1000"></lightning-textarea>
+    </div>
+    <div class="slds-m-top_medium">
+      <span>
+        {labels.bankDetails.Please_provide_the_names_and_signatures}
+      </span>
+      <div>
+        <div class="slds-m-top_medium">
+          <lightning-input label="Name" onchange={handleTextChange} value={permissionForm.authorisedPerson1}
+            name="authorisedPerson1" disabled={permissionForm.isBlocked} max-length="100"
+            onkeypress={handleValidation} data-maxlength="100"></lightning-input>
+        </div>
+        <div class="slds-m-top_medium">
+          <lightning-input label="Name" onchange={handleTextChange} value={permissionForm.authorisedPerson2}
+            name="authorisedPerson2" disabled={permissionForm.isBlocked} max-length="100"
+            onkeypress={handleValidation} data-maxlength="100"></lightning-input>
+        </div>
+        <div class="slds-m-top_medium">
+          <lightning-input label="Name" onchange={handleTextChange} value={permissionForm.authorisedPerson3}
+            name="authorisedPerson3" disabled={permissionForm.isBlocked} max-length="100"
+            onkeypress={handleValidation} data-maxlength="100"></lightning-input>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

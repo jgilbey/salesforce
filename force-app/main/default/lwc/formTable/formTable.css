@@ -1,0 +1,11 @@
+.new-project-button {
+    text-align: right;
+}
+
+table{
+    table-layout: fixed;
+    width: 100%;
+}
+table th:first-child{
+    width: 190px;
+}

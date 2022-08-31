@@ -1,0 +1,254 @@
+<template>
+  <div class="slds-theme_default">
+    <div class="slds-p-around_medium lgc-bg">
+      <div>
+        <h1 role="heading" data-first-element>{labels.Stage_8_title}</h1>
+        <br />
+        <p>
+          {labels.Intro_section_8}
+        </p>
+      </div>
+
+      <div class="slds-p-top_medium lgc-bg">
+        <p><b>{labels.For_all_projects}</b></p>
+        <div class="slds-p-top_medium">
+          <p>
+            1. {labels.All_projects_question_1}
+          </p>
+          <p class="slds-p-top_medium">
+            {labels.All_projects_question_1_extra_info}
+          </p>
+
+          <c-supporting-document name="allProjectsQuestion1" dosc-data={allProjectsDocsQuestionsData}
+            app-form={applicationFormObject} accepted-formats={acceptedFormats}
+            document-provision-types={documentProvisionTypes} onchangeprovisiontype={handleProvisionTypeChange}
+            onuploadfinished={handleUploadFinished} onrowaction={handleRowAction}></c-supporting-document>
+        </div>
+
+        <div class="slds-p-top_medium">
+          <p>
+            2. {labels.All_projects_question_2}
+          </p>
+          <div class="slds-m-top_medium">
+            <c-supporting-document name="allProjectsQuestion2" dosc-data={allProjectsDocsQuestionsData}
+              app-form={applicationFormObject} accepted-formats={acceptedFormats}
+              document-provision-types={documentProvisionTypes} onchangeprovisiontype={handleProvisionTypeChange}
+              onuploadfinished={handleUploadFinished} onrowaction={handleRowAction}></c-supporting-document>
+          </div>
+        </div>
+
+        <div class="slds-p-top_medium">
+          <p>
+            3. {labels.All_projects_question_3}
+          </p>
+          <div class="slds-m-top_medium">
+            <c-supporting-document name="allProjectsQuestion3" dosc-data={allProjectsDocsQuestionsData}
+              app-form={applicationFormObject} accepted-formats={acceptedFormats}
+              document-provision-types={documentProvisionTypes} onchangeprovisiontype={handleProvisionTypeChange}
+              onuploadfinished={handleUploadFinished} onrowaction={handleRowAction}></c-supporting-document>
+          </div>
+        </div>
+
+        <div class="slds-p-top_medium">
+          <p>4. {labels.All_projects_question_4}</p>
+          <div class="slds-m-top_medium">
+            <c-supporting-document name="allProjectsQuestion4" dosc-data={allProjectsDocsQuestionsData}
+              app-form={applicationFormObject} accepted-formats={acceptedFormats}
+              document-provision-types={documentProvisionTypes} onchangeprovisiontype={handleProvisionTypeChange}
+              onuploadfinished={handleUploadFinished} onrowaction={handleRowAction}></c-supporting-document>
+          </div>
+        </div>
+
+        <div class="slds-p-top_medium">
+          <p>
+            5. {labels.All_projects_question_5}
+          </p>
+          <div class="slds-m-top_medium">
+            <c-supporting-document name="allProjectsQuestion5" dosc-data={allProjectsDocsQuestionsData}
+              app-form={applicationFormObject} accepted-formats={acceptedFormats}
+              document-provision-types={documentProvisionTypes} onchangeprovisiontype={handleProvisionTypeChange}
+              onuploadfinished={handleUploadFinished} onrowaction={handleRowAction}></c-supporting-document>
+          </div>
+        </div>
+
+        <div class="slds-p-top_medium">
+          <p>
+            6. {labels.All_projects_question_6}
+          </p>
+          <div class="slds-m-top_medium">
+            <c-supporting-document name="allProjectsQuestion6" dosc-data={allProjectsDocsQuestionsData}
+              app-form={applicationFormObject} accepted-formats={acceptedFormats}
+              document-provision-types={documentProvisionTypes} onchangeprovisiontype={handleProvisionTypeChange}
+              onuploadfinished={handleUploadFinished} onrowaction={handleRowAction}></c-supporting-document>
+          </div>
+        </div>
+
+        <div class="slds-p-top_medium">
+          <p>
+            7. {labels.All_projects_question_7}
+          </p>
+          <div class="slds-m-top_medium">
+            <c-supporting-document name="allProjectsQuestion7" dosc-data={allProjectsDocsQuestionsData}
+              app-form={applicationFormObject} accepted-formats={acceptedFormats}
+              document-provision-types={documentProvisionTypes} onchangeprovisiontype={handleProvisionTypeChange}
+              onuploadfinished={handleUploadFinished} onrowaction={handleRowAction}></c-supporting-document>
+          </div>
+        </div>
+
+        <div class="slds-p-top_medium lgc-bg">
+          <p><b>{labels.For_acquisition_projects}</b></p>
+
+          <div class="slds-p-top_medium">
+            <p>1. {labels.Acquisition_Projects_1}</p>
+            <div class="slds-m-top_medium">
+              <c-supporting-document name="acquisitionProjects1" dosc-data={allProjectsDocsQuestionsData}
+                app-form={applicationFormObject} accepted-formats={acceptedFormats}
+                document-provision-types={documentProvisionTypes} onchangeprovisiontype={handleProvisionTypeChange}
+                onuploadfinished={handleUploadFinished} onrowaction={handleRowAction}></c-supporting-document>
+            </div>
+          </div>
+
+          <div class="slds-p-top_medium">
+            <p>
+              2. {labels.Acquisition_Projects_2}
+            </p>
+            <div class="slds-m-top_medium">
+              <c-supporting-document name="acquisitionProjects2" dosc-data={allProjectsDocsQuestionsData}
+                app-form={applicationFormObject} accepted-formats={acceptedFormats}
+                document-provision-types={documentProvisionTypes} onchangeprovisiontype={handleProvisionTypeChange}
+                onuploadfinished={handleUploadFinished} onrowaction={handleRowAction}></c-supporting-document>
+            </div>
+          </div>
+
+          <div class="slds-p-top_medium">
+            <p>3. {labels.Acquisition_Projects_3}</p>
+            <div class="slds-m-top_medium">
+              <c-supporting-document name="acquisitionProjects3" dosc-data={allProjectsDocsQuestionsData}
+                app-form={applicationFormObject} accepted-formats={acceptedFormats}
+                document-provision-types={documentProvisionTypes} onchangeprovisiontype={handleProvisionTypeChange}
+                onuploadfinished={handleUploadFinished} onrowaction={handleRowAction}></c-supporting-document>
+            </div>
+          </div>
+
+          <div class="slds-p-top_medium">
+            <p>4. {labels.Acquisition_Projects_4}</p>
+            <div class="slds-m-top_medium">
+              <c-supporting-document name="acquisitionProjects4" dosc-data={allProjectsDocsQuestionsData}
+                app-form={applicationFormObject} accepted-formats={acceptedFormats}
+                document-provision-types={documentProvisionTypes} onchangeprovisiontype={handleProvisionTypeChange}
+                onuploadfinished={handleUploadFinished} onrowaction={handleRowAction}></c-supporting-document>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="slds-p-top_medium lgc-bg">
+          <p><b>{labels.For_Capital_Works}</b></p>
+
+          <div class="slds-p-top_medium">
+            <p>1. {labels.Capital_Works_Projects_1}</p>
+            <div class="slds-m-top_medium">
+              <c-supporting-document name="capitalWorksProjects1" dosc-data={allProjectsDocsQuestionsData}
+                app-form={applicationFormObject} accepted-formats={acceptedFormats}
+                document-provision-types={documentProvisionTypes} onchangeprovisiontype={handleProvisionTypeChange}
+                onuploadfinished={handleUploadFinished} onrowaction={handleRowAction}></c-supporting-document>
+            </div>
+          </div>
+
+          <div class="slds-p-top_medium">
+            <p>2. {labels.Capital_Works_Projects_2}</p>
+            <div class="slds-m-top_medium">
+              <c-supporting-document name="capitalWorksProjects2" dosc-data={allProjectsDocsQuestionsData}
+                app-form={applicationFormObject} accepted-formats={acceptedFormats}
+                document-provision-types={documentProvisionTypes} onchangeprovisiontype={handleProvisionTypeChange}
+                onuploadfinished={handleUploadFinished} onrowaction={handleRowAction}></c-supporting-document>
+            </div>
+          </div>
+
+          <div class="slds-p-top_medium">
+            <p>
+              3. {labels.Capital_Works_Projects_3}
+            </p>
+            <div class="slds-m-top_medium">
+              <c-supporting-document name="capitalWorksProjects3" dosc-data={allProjectsDocsQuestionsData}
+                app-form={applicationFormObject} accepted-formats={acceptedFormats}
+                document-provision-types={documentProvisionTypes} onchangeprovisiontype={handleProvisionTypeChange}
+                onuploadfinished={handleUploadFinished} onrowaction={handleRowAction}></c-supporting-document>
+            </div>
+          </div>
+
+          <div class="slds-p-top_medium">
+            <p>4. {labels.Capital_Works_Projects_4}</p>
+            <div class="slds-m-top_medium">
+              <c-supporting-document name="capitalWorksProjects4" dosc-data={allProjectsDocsQuestionsData}
+                app-form={applicationFormObject} accepted-formats={acceptedFormats}
+                document-provision-types={documentProvisionTypes} onchangeprovisiontype={handleProvisionTypeChange}
+                onuploadfinished={handleUploadFinished} onrowaction={handleRowAction}></c-supporting-document>
+            </div>
+          </div>
+
+          <div class="slds-p-top_medium">
+            <p>
+              5. {labels.Capital_Works_Projects_5_1}&nbsp;
+              <b>{labels.Capital_Works_Projects_5_2}</b>.
+            </p>
+            <div class="slds-m-top_medium">
+              <c-supporting-document name="capitalWorksProjects5" dosc-data={allProjectsDocsQuestionsData}
+                app-form={applicationFormObject} accepted-formats={acceptedFormats}
+                document-provision-types={documentProvisionTypes} onchangeprovisiontype={handleProvisionTypeChange}
+                onuploadfinished={handleUploadFinished} onrowaction={handleRowAction}></c-supporting-document>
+            </div>
+          </div>
+
+          <div class="slds-p-top_medium">
+            <p>6. {labels.Capital_Works_Projects_6}</p>
+            <div class="slds-m-top_medium">
+              <c-supporting-document name="capitalWorksProjects6" dosc-data={allProjectsDocsQuestionsData}
+                app-form={applicationFormObject} accepted-formats={acceptedFormats}
+                document-provision-types={documentProvisionTypes} onchangeprovisiontype={handleProvisionTypeChange}
+                onuploadfinished={handleUploadFinished} onrowaction={handleRowAction}></c-supporting-document>
+            </div>
+          </div>
+
+          <div class="slds-p-top_medium">
+            <p>
+              7. {labels.Capital_Works_Projects_7}
+            </p>
+            <div class="slds-m-top_medium">
+              <c-supporting-document name="capitalWorksProjects7" dosc-data={allProjectsDocsQuestionsData}
+                app-form={applicationFormObject} accepted-formats={acceptedFormats}
+                document-provision-types={documentProvisionTypes} onchangeprovisiontype={handleProvisionTypeChange}
+                onuploadfinished={handleUploadFinished} onrowaction={handleRowAction}></c-supporting-document>
+            </div>
+          </div>
+
+          <div class="slds-p-top_medium">
+            <p>
+              8. {labels.Capital_Works_Projects_8}
+            </p>
+            <div class="slds-m-top_medium">
+              <c-supporting-document name="capitalWorksProjects8" dosc-data={allProjectsDocsQuestionsData}
+                app-form={applicationFormObject} accepted-formats={acceptedFormats}
+                document-provision-types={documentProvisionTypes} onchangeprovisiontype={handleProvisionTypeChange}
+                onuploadfinished={handleUploadFinished} onrowaction={handleRowAction}></c-supporting-document>
+            </div>
+            <br />
+          </div>
+        </div>
+
+
+        <div>
+          <p>
+            <b>{labels.Attach_any_additional_documents}</b>
+          </p>
+          <div class="slds-m-top_medium">
+            <c-supporting-document name="allProjectsQuestion8" dosc-data={allProjectsDocsQuestionsData}
+              app-form={applicationFormObject} accepted-formats={acceptedFormats}
+              document-provision-types={documentProvisionTypes} onchangeprovisiontype={handleProvisionTypeChange}
+              onuploadfinished={handleUploadFinished} onrowaction={handleRowAction}></c-supporting-document>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

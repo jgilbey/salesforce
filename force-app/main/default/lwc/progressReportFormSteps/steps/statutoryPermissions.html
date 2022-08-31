@@ -1,0 +1,33 @@
+<template>
+    <h1 role="heading" class="header-text">{sectionTitle}</h1>
+    <div class="slds-p-around_medium lgc-bg">
+        <p>{labels.statutoryPermissions.permissions_required}</p>        
+        <div class="checkbox-wrap slds-m-top_medium">
+            <lightning-input
+                type="checkbox"
+                name="statutoryPermissionsRequired"
+                data-name="statutoryPermissionsRequired"
+                label="Confirm?"
+                onchange={handleChange}
+                checked={progressForm.statutoryPermissionsRequired}
+                disabled={isBlocked}
+            >
+            </lightning-input>
+        </div>
+        <div class="slds-m-top_medium"
+            if:true={progressForm.statutoryPermissionsRequired}>
+            <lightning-textarea
+                name="statutoryPermissionsFurtherInfo"
+                data-name="statutoryPermissionsFurtherInfo"
+                label={labels.statutoryPermissions.furtherInformation}
+                value={progressForm.statutoryPermissionsFurtherInfo}
+                required="true"
+                onchange={handleChange}
+                max-length="5000"
+                disabled={isBlocked}
+                onkeypress={handleValidation} data-maxlength="5000"
+                >
+            </lightning-textarea>
+        </div>
+    </div>
+</template>

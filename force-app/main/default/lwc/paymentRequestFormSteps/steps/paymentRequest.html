@@ -1,0 +1,19 @@
+<template>
+    <h1 role="heading" class="header-text">{sectionTitle}</h1>
+    <div class="slds-p-around_medium">
+        <c-spending-cost-summary spending-cost-list={spendingCosts} picklist-data={spendingCostPicklistValues}
+            prev-calculation=100 to-delete-id-set={toDeleteIdSet} record-id={paymentForm.id} uploaded-files={proofFiles}
+            is-blocked={isBlocked} payment-limit={paymentLimit} percentage-limit={paymentForm.paymentPercentage}> 
+        </c-spending-cost-summary>
+        <div class="slds-p-top_medium">
+            <lightning-textarea label={labels.paymentRequest.inform_any_substantive_changes_budget}
+            value={paymentForm.substantiveChanges}
+            name="substantiveChanges"
+            onchange={changeFormHandler}
+            disabled={isBlocked}
+            max-length="5000" 
+            onkeypress={handleValidation} data-maxlength="5000"
+            ></lightning-textarea>
+        </div>
+    </div>
+</template>

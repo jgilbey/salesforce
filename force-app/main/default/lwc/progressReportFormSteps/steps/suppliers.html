@@ -1,0 +1,77 @@
+<template>
+    <h1 role="heading" class="header-text">{sectionTitle}</h1>
+    <div class="slds-p-around_medium lgc-bg">
+        <p>{labels.suppliers.haveGoods}</p>
+        <div class="checkbox-wrap slds-m-top_small ">
+            <lightning-input
+                type="checkbox"
+                name="havePurchasedGoods"
+                data-name="havePurchasedGoods"
+                label="Confirm?"
+                onchange={handleChange}
+                checked={progressForm.havePurchasedGoods}
+                disabled={isBlocked}
+            >
+            </lightning-input>
+        </div>
+        <div class="slds-m-top_medium"
+            if:true={progressForm.havePurchasedGoods}>
+            <lightning-textarea
+                name="purchasedGoodsDetails"
+                data-name="purchasedGoodsDetails"
+                label={labels.suppliers.purchasedGoodsDetails}
+                value={progressForm.purchasedGoodsDetails}
+                required="false"
+                onchange={handleChange}
+                max-length="5000"
+                disabled={isBlocked}
+                onkeypress={handleValidation} data-maxlength="5000"
+                >
+            </lightning-textarea>
+        </div>
+        <div class="slds-m-top_medium">
+            <!-- if:false={progressForm.havePurchasedGoods}> -->
+            <lightning-textarea
+                name="reasonNotAwardTender"
+                data-name="reasonNotAwardTender"
+                label={labels.suppliers.reasonNotAward}
+                value={progressForm.reasonNotAwardTender}
+                onchange={handleChange}
+                max-length="5000"
+                disabled={isBlocked}
+                onkeypress={handleValidation} data-maxlength="5000"
+                >
+            </lightning-textarea>
+        </div>
+        <div class="slds-m-top_medium">
+            <p>{labels.suppliers.isVendorLinked}</p>
+            <div class="checkbox-wrap slds-m-top_small">
+                <lightning-input
+                    type="checkbox"
+                    name="isVendorLinked"
+                    data-name="isVendorLinked"
+                    label="Confirm?"
+                    onchange={handleChange}
+                    checked={progressForm.isVendorLinked}
+                    disabled={isBlocked}
+                >
+                </lightning-input>
+            </div>
+        </div>
+        <div class="slds-m-top_medium"
+            if:true={progressForm.isVendorLinked}>
+            <lightning-textarea
+                name="explainVendorAppointed"
+                data-name="explainVendorAppointed"
+                label={labels.suppliers.explainWhyVendorAppointed}
+                value={progressForm.explainVendorAppointed}
+                required="true"
+                onchange={handleChange}
+                max-length="5000"
+                disabled={isBlocked}
+                onkeypress={handleValidation} data-maxlength="5000"
+                >
+            </lightning-textarea>
+        </div>
+    </div>
+</template>

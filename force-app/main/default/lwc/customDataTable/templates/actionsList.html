@@ -1,0 +1,19 @@
+<template>
+  <div class="slds-grid slds-grid--align-center">
+      <template for:each={typeAttributes.buttonList} for:item="button">
+        <div class="slds-m-horizontal_small" key={button.id} >
+          <lightning-button-icon 
+            data-index={typeAttributes.index} 
+            icon-name={button.typeAttributes.icon}
+            variant={button.typeAttributes.variant} 
+            alternative-text={button.typeAttributes.text} 
+            class={button.typeAttributes.class}
+            title={button.typeAttributes.title} 
+            onclick={button.typeAttributes.handler} 
+            disabled={button.typeAttributes.isDisabled}>
+          </lightning-button-icon>
+        </div>
+      </template>
+  </div>
+
+</template>

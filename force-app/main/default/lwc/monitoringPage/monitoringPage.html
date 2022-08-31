@@ -1,0 +1,8 @@
+<template>
+  <div class="monitoring__container">
+    <c-monitoring-page-cases preselected-case={preselectedCase} cases={cases} oncaseclick={handleCaseClick}></c-monitoring-page-cases>
+    <template if:true={forms}>
+        <c-monitoring-page-forms forms={forms} onopenform={handleOpenForm}></c-monitoring-page-forms>
+    </template>
+  </div>
+</template>

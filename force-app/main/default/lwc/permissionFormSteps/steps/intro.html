@@ -1,0 +1,55 @@
+<template>
+  <div>
+    <div class="lgc-bg">
+      <lightning-input
+        type="text"
+        label={labels.intro.Project_title}
+        value={permissionForm.projectTitle}
+        disabled
+      >
+      </lightning-input>
+    </div>
+
+    <div class="slds-p-top_medium lgc-bg">
+      <lightning-input
+        type="text"
+        label={labels.intro.Project_Number}
+        value={permissionForm.projectRef}
+        disabled
+      >
+      </lightning-input>
+    </div>
+
+    <div class="slds-p-top_medium lgc-bg">
+      <lightning-input
+        type="date"
+        label={labels.intro.Grant_expiry_date}
+        value={permissionForm.grantExpiryDate}
+        disabled
+      >
+      </lightning-input>
+    </div>
+  </div>
+
+  <div>
+    <div class="slds-m-top_medium">
+      {labels.intro.Please_read_the_Receiving_a_Grant}
+    </div>
+    <div class="slds-m-top_medium">
+      <template if:false={isCapital}>
+        {labels.intro.Do_not_proceed_in_making_your_acquisition}
+      </template>
+      <template if:true={isCapital}>
+        {labels.intro.do_not_start_any_work_on_your_project}
+      </template>
+    </div>
+    <div if:true={isCapital} class="slds-m-top_medium">
+      <div>
+        <p>{labels.intro.in_this_form_we_ask_you_to_provide_copies}</p>
+      </div>
+      <div class="slds-m-top_medium">
+        <p>{labels.intro.once_we_have_approved_all_of_these_documents}</p>
+      </div>
+    </div>
+  </div>
+</template>

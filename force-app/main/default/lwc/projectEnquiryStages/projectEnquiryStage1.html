@@ -1,0 +1,62 @@
+<!--
+  @description       : First stage of project enquiry form
+  @author            : Methods
+  @group             : 
+  @last modified on  : 01-14-2021
+  @last modified by  : Methods
+  Modifications Log 
+  Ver   Date         Author   Modification
+  1.0   01-14-2021   Methods   Initial Version
+-->
+<template>
+    <div class="slds-p-around_medium">
+        <div>
+            <h1>{labels.section_1_your_project}</h1>
+        </div>
+        <div class="slds-p-around_medium">
+            <div class="slds-m-top_medium lgc-bg question__container">
+                <div class="question-numb">
+                    <span>1a</span>
+                </div>
+                <lightning-textarea name="What_is_your_project__c" data-name="What_is_your_project__c"
+                    label={labels.What_is_your_project} placeholder={labels.Limit_200_words}
+                    value={projectEnquiryForm.projectEnquiry.What_is_your_project__c} onchange={handleChange}
+                    disabled={projectEnquiryForm.isBlocked} required="true" max-length="3000" onkeypress={handleValidation} data-maxlength="3000">
+                </lightning-textarea>
+            </div>
+            <div class="slds-m-top_medium lgc-bg question__container">
+                <div class="question-numb">
+                    <span>1b</span>
+                </div>
+                <lightning-textarea name="About_Project_Focus__c" data-name="About_Project_Focus__c"
+                    label={labels.Please_describe_the_heritage_item_or_property_your_project_focuses_on}
+                    placeholder={labels.Limit_200_words}
+                    value={projectEnquiryForm.projectEnquiry.About_Project_Focus__c} onchange={handleChange}
+                    disabled={projectEnquiryForm.isBlocked} required="true" max-length="10000" onkeypress={handleValidation} data-maxlength="10000">
+                </lightning-textarea>
+            </div>
+            <div class="slds-m-top_medium lgc-bg checkbox-input question__container">
+                <div class="question-numb">
+                    <span>1c</span>
+                </div>
+                <p>
+                    <span>{labels.Is_there_an_important_deadline_by_which_you_need_a_decision}</span>
+                    <lightning-input type="checkbox" name="Deadline_by_which_you_need_a_decision__c"
+                        data-name="Deadline_by_which_you_need_a_decision__c" onchange={handleChange}
+                        checked={projectEnquiryForm.projectEnquiry.Deadline_by_which_you_need_a_decision__c}
+                        disabled={projectEnquiryForm.isBlocked}></lightning-input>
+                </p>
+            </div>
+            <template if:true={projectEnquiryForm.projectEnquiry.Deadline_by_which_you_need_a_decision__c}>
+                <div class="slds-m-top_medium lgc-bg">
+                    <lightning-textarea name="Deadline_details__c" data-name="Deadline_details__c"
+                        label={labels.Please_give_details_and_explain_why}
+                        value={projectEnquiryForm.projectEnquiry.Deadline_details__c} onchange={handleChange}
+                        disabled={projectEnquiryForm.isBlocked} required="true" max-length="5000" onkeypress={handleValidation} data-maxlength="5000">
+                    </lightning-textarea>
+                </div>
+            </template>
+
+        </div>
+    </div>
+</template>

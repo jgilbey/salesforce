@@ -1,0 +1,216 @@
+<template>
+  <div class="slds-theme_default">
+    <div class="slds-p-around_medium lgc-bg">
+      <div>
+        <h1 role="heading" data-first-element>{labels.Header_section_2}</h1>
+        <br />
+        <p>{labels.Intro_section_2}</p>
+      </div>
+
+      <div class="slds-p-around_medium lgc-bg">
+        <div class="slds-p-top_medium lgc-bg">
+          <p>
+            <b class="question-numb">2a</b>
+            <span>{labels.AF_2a_section} </span>
+            <lightning-textarea class="slds-p-top_medium required-without-label"
+              name="Deadline_by_which_you_need_a_decision__c" data-name="Deadline_by_which_you_need_a_decision__c"
+              value={applicationFormObject.projectCase.Deadline_by_which_you_need_a_decision__c} required="true"
+              onchange={handleChange} disabled={applicationFormObject.isBlocked} max-length="5000"
+              onkeypress={handleValidation} data-maxlength="5000">
+            </lightning-textarea>
+          </p>
+        </div>
+
+        <div class="slds-p-top_medium">
+          <p><b class="question-numb">2b</b> {labels.AF_2b_section}</p>
+          <lightning-textarea name="Do_you_want_a_grant_to_buy_Property__c"
+            data-name="Do_you_want_a_grant_to_buy_Property__c"
+            value={applicationFormObject.projectCase.Do_you_want_a_grant_to_buy_Property__c} required="true"
+            onchange={handleChange} disabled={applicationFormObject.isBlocked}
+            class="slds-p-top_medium required-without-label" max-length="5000"
+            onkeypress={handleValidation} data-maxlength="5000">
+          </lightning-textarea>
+        </div>
+
+        <div class="slds-p-top_medium">
+          <p><b class="question-numb">2c</b> {labels.AF_2c_section}</p>
+          <lightning-textarea name="Information_about_the_value_of_property__c"
+            data-name="Information_about_the_value_of_property__c"
+            value={applicationFormObject.projectCase.Information_about_the_value_of_property__c} required="true"
+            class="slds-p-top_medium required-without-label" onchange={handleChange}
+            disabled={applicationFormObject.isBlocked} max-length="5000"
+            onkeypress={handleValidation} data-maxlength="5000">
+          </lightning-textarea>
+        </div>
+
+        <div class="checkbox-input slds-p-top_medium">
+          <p>
+            <b class="question-numb">2d</b>
+            <span> {labels.AF_2d_section}</span>
+            <lightning-input type="checkbox" name="Does_project_involve_physical_heritage__c"
+              data-name="Does_project_involve_physical_heritage__c" onchange={handleChange}
+              checked={applicationFormObject.projectCase.Does_project_involve_physical_heritage__c}
+              disabled={applicationFormObject.isBlocked}>
+            </lightning-input>
+          </p>
+        </div>
+
+        <template if:true={applicationFormObject.projectCase.Does_project_involve_physical_heritage__c}>
+          <div class="slds-p-top_medium lgc-bg">
+            <lightning-textarea label={labels.Tell_building_name}
+                name="Name_of_physical_heritage__c" data-name="Name_of_physical_heritage__c"
+                value={applicationFormObject.projectCase.Name_of_physical_heritage__c}
+                onchange={handleChange} disabled={applicationFormObject.isBlocked} max-length="5000"
+                onkeypress={handleValidation} data-maxlength="5000">
+              </lightning-textarea>
+          </div>
+
+
+          <div class="slds-p-top_medium">
+            <p>{labels.Tell_capital_work_owner}</p>
+          </div>
+
+          <lightning-combobox name="Capital_work_owner__c" data-name="Capital_work_owner__c"
+            label="Please select one of the following" value={applicationFormObject.projectCase.Capital_work_owner__c}
+            placeholder={labels.Select_Type} options={workOwnerList} onchange={handleChange}
+            disabled={applicationFormObject.isBlocked} required="true" class="slds-p-top_medium"
+            dropdown-alignment="auto">
+          </lightning-combobox>
+
+          <template if:true={isYourOrganisation}>
+            <div class="lgc-bg slds-p-top_medium">
+              <p>{labels.Tell_us}</p>
+              <ul class="slds-p-top_medium">
+                <li>
+                  {labels.If_Org_has_a_land}
+                </li>
+                <li>
+                  {labels.If_Org_has_the_lease}
+                </li>
+                <li>
+                  {labels.If_Org_has_a_mortage}
+                </li>
+                <li>
+                  {labels.Give_details_of_lender}
+                </li>
+              </ul>
+
+              <lightning-textarea class="slds-p-top_medium required-without-label"
+                name="Capital_work_by_Organization_details__c" data-name="Capital_work_by_Organization_details__c"
+                required="true" value={applicationFormObject.projectCase.Capital_work_by_Organization_details__c}
+                onchange={handleChange} disabled={applicationFormObject.isBlocked} max-length="5000"
+                onkeypress={handleValidation} data-maxlength="5000">
+              </lightning-textarea>
+            </div>
+          </template>
+
+          <template if:true={isProjectPartner}>
+            <div class="lgc-bg slds-p-top_medium">
+              <p>{labels.Tell_us}</p>
+              <ul class="slds-p-top_medium">
+                <li>{labels.Partner_Org_Name}</li>
+                <li>
+                  {labels.Partner_has_freehold_of_land}
+                </li>
+                <li>
+                  {labels.If_partner_has_lease}
+                </li>
+                <li>
+                  {labels.If_partner_has_mortgage}
+                </li>
+                <li>
+                  {labels.Give_details_of_lender_and_amount}
+                </li>
+              </ul>
+              <lightning-textarea class="slds-p-top_medium required-without-label"
+                name="Capital_work_by_Project_partner_details__c" data-name="Capital_work_by_Project_partner_details__c"
+                required="true" value={applicationFormObject.projectCase.Capital_work_by_Project_partner_details__c}
+                onchange={handleChange} disabled={applicationFormObject.isBlocked} max-length="5000"
+                onkeypress={handleValidation} data-maxlength="5000">
+              </lightning-textarea>
+            </div>
+          </template>
+
+          <template if:true={isNeither}>
+            <div class="lgc-bg slds-p-top_medium">
+              <p>
+                {labels.If_not_meet_ownership_requirements}
+              </p>
+
+              <lightning-input type="date" name="Capital_work_ownership_will_assign__c"
+                data-name="Capital_work_ownership_will_assign__c"
+                value={applicationFormObject.projectCase.Capital_work_ownership_will_assign__c} onchange={handleChange}
+                disabled={applicationFormObject.isBlocked} class="slds-p-top_medium required-without-label"
+                required="true" max-length="180">
+              </lightning-input>
+            </div>
+          </template>
+
+          <div class="slds-p-top_medium checkbox-input">
+            <p>
+              <span>
+                {labels.Any_legal_conditions}</span>
+              <lightning-input type="checkbox" name="Any_legal_restriction_which_may_impact__c"
+                data-name="Any_legal_restriction_which_may_impact__c" onchange={handleChange}
+                checked={applicationFormObject.projectCase.Any_legal_restriction_which_may_impact__c}
+                disabled={applicationFormObject.isBlocked}>
+              </lightning-input>
+            </p>
+          </div>
+
+          <template if:true={applicationFormObject.projectCase.Any_legal_restriction_which_may_impact__c}>
+            <div class="slds-p-top_medium lgc-bg">
+              <lightning-textarea label={labels.Please_provide_details} name="Detail_of_legal_restriction__c"
+                data-name="Detail_of_legal_restriction__c"
+                value={applicationFormObject.projectCase.Detail_of_legal_restriction__c} onchange={handleChange}
+                disabled={applicationFormObject.isBlocked} max-length="5000"
+                onkeypress={handleValidation} data-maxlength="5000">
+              </lightning-textarea>
+            </div>
+          </template>
+
+          <div class="slds-p-top_medium checkbox-input">
+            <p>
+              <span>
+                {labels.Has_condition_survey_been_undertaken}
+              </span>
+              <lightning-input type="checkbox" name="Survey_in_last_5_years__c" data-name="Survey_in_last_5_years__c"
+                onchange={handleChange} checked={applicationFormObject.projectCase.Survey_in_last_5_years__c}
+                disabled={applicationFormObject.isBlocked}>
+              </lightning-input>
+            </p>
+          </div>
+          <lightning-textarea label={labels.Provide_Ordnance_Survey_grid} name="Landscape_Projects_Survey_Grid__c"
+            data-name="Landscape_Projects_Survey_Grid__c"
+            value={applicationFormObject.projectCase.Landscape_Projects_Survey_Grid__c} onchange={handleChange}
+            disabled={applicationFormObject.isBlocked} max-length="5000" class="slds-p-top_medium"
+            onkeypress={handleValidation} data-maxlength="5000">
+          </lightning-textarea>
+        </template>
+
+        <div class="slds-p-top_medium checkbox-input">
+          <p>
+            <b class="question-numb">2e</b>
+            <span>{labels.Does_project_involve_acquisition}</span>
+            <lightning-input type="checkbox" name="Project_involved_acquisition__c"
+              data-name="Project_involved_acquisition__c" onchange={handleChange}
+              checked={applicationFormObject.projectCase.Project_involved_acquisition__c}
+              disabled={applicationFormObject.isBlocked}>
+            </lightning-input>
+          </p>
+        </div>
+
+        <template if:true={isMultipicklistEnabled}>
+          <div class="slds-m-top_medium">
+            <p>
+              <span>{labels.Tick_any_of_following}</span>
+            </p>
+          </div>
+
+          <c-multiselect options={options} application-form-object={applicationFormObject}
+            onselectoption={handleSelectOption} onchangedata={handleChange}></c-multiselect>
+        </template>
+      </div>
+    </div>
+  </div>
+</template>

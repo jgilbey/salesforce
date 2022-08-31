@@ -1,0 +1,393 @@
+<template>
+  <div class="slds-theme_default">
+    <div class="slds-p-around_medium">
+      <div>
+        <lightning-formatted-rich-text
+          value={labels.Stage_1_title}
+          data-first-element
+          ></lightning-formatted-rich-text>
+      </div>
+      <div class="slds-p-around_medium">
+        <div class="lgc-bg">
+          <lightning-formatted-rich-text
+            value={labels.AF_1a_section}
+          ></lightning-formatted-rich-text>
+          <div class="slds-m-top_medium">
+            <lightning-input
+              type="text"
+              name="Account.BillingStreet"
+              data-name="Account.BillingStreet"
+              label="Street"
+              value={applicationFormObject.projectCase.Account.BillingStreet}
+              disabled="true"
+              max-length="255"
+              onkeypress={handleValidation} data-maxlength="255"
+            >
+            </lightning-input>
+          </div>
+          <div class="slds-m-top_medium">
+            <lightning-input
+              type="text"
+              name="Account.BillingCity"
+              data-name="Account.BillingCity"
+              label="City"
+              value={applicationFormObject.projectCase.Account.BillingCity}
+              disabled="true"
+              max-length="100"
+              onkeypress={handleValidation} data-maxlength="100"
+            >
+            </lightning-input>
+          </div>
+          <div class="slds-m-top_medium">
+            <lightning-input
+              type="text"
+              name="Account.BillingState"
+              data-name="Account.BillingState"
+              label="County"
+              value={applicationFormObject.projectCase.Account.BillingState}
+              disabled="true"
+              max-length="100"
+              onkeypress={handleValidation} data-maxlength="100"
+            >
+            </lightning-input>
+          </div>
+          <div class="slds-m-top_medium">
+            <lightning-input
+              type="text"
+              name="Account.BillingPostalCode"
+              data-name="Account.BillingPostalCode"
+              label="Post Code"
+              value={applicationFormObject.projectCase.Account.BillingPostalCode}
+              disabled="true"
+              max-length="100"
+              onkeypress={handleValidation} data-maxlength="100"
+            >
+            </lightning-input>
+          </div>
+        </div>
+        <div class="slds-m-top_medium lgc-bg checkbox-input">
+          <p>
+            <b class="question-numb">1b</b>
+            <span>{labels.AF_1b_section}</span>
+            <lightning-input
+              type="checkbox"
+              name="Is_Project_organisation_address_same__c"
+              data-name="Is_Project_organisation_address_same__c"
+              onchange={handleChange}
+              checked={applicationFormObject.projectCase.Is_Project_organisation_address_same__c}
+              disabled={applicationFormObject.isBlocked}
+            ></lightning-input>
+          </p>
+        </div>
+        <template
+          if:false={applicationFormObject.projectCase.Is_Project_organisation_address_same__c}
+        >
+          <div class="slds-m-top_medium">
+            <lightning-input
+              type="text"
+              name="Project_Street__c"
+              data-name="Project_Street__c"
+              onchange={handleChange}
+              label="Street"
+              value={applicationFormObject.projectCase.Project_Street__c}
+              max-length="255"
+              required="true"
+              disabled={applicationFormObject.isBlocked}
+              onkeypress={handleValidation} data-maxlength="255"
+            >
+            </lightning-input>
+          </div>
+          <div class="slds-m-top_medium">
+            <lightning-input
+              type="text"
+              name="Project_City__c"
+              data-name="Project_City__c"
+              onchange={handleChange}
+              label="City"
+              value={applicationFormObject.projectCase.Project_City__c}
+              max-length="150"
+              required="true"
+              disabled={applicationFormObject.isBlocked}
+              onkeypress={handleValidation} data-maxlength="150"
+            >
+            </lightning-input>
+          </div>
+          <div class="slds-m-top_medium">
+            <lightning-input
+              type="text"
+              name="Project_County__c"
+              data-name="Project_County__c"
+              onchange={handleChange}
+              label="County"
+              value={applicationFormObject.projectCase.Project_County__c}
+              max-length="255"
+              required="true"
+              disabled={applicationFormObject.isBlocked}
+              onkeypress={handleValidation} data-maxlength="255"
+            >
+            </lightning-input>
+          </div>
+          <div class="slds-m-top_medium">
+            <lightning-input
+              type="text"
+              name="Project_Post_Code__c"
+              data-name="Project_Post_Code__c"
+              onchange={handleChange}
+              label="Post Code"
+              value={applicationFormObject.projectCase.Project_Post_Code__c}
+              min-length="2"
+              max-length="20"
+              required="true"
+              disabled={applicationFormObject.isBlocked}
+              onkeypress={handleValidation} data-maxlength="20"
+            >
+            </lightning-input>
+          </div>
+        </template>
+        
+        <div class="slds-p-top_medium lgc-bg">
+          <lightning-formatted-rich-text
+            value={labels.AF_1c_section}
+          ></lightning-formatted-rich-text>
+          <lightning-textarea
+            name="Account.Organisation_s_Main_Purpose_Activities__c"
+            data-name="Account.Organisation_s_Main_Purpose_Activities__c"
+            class="slds-p-top_medium required-without-label"
+            value={applicationFormObject.projectCase.Account.Organisation_s_Main_Purpose_Activities__c}
+            onchange={handleChange}
+            disabled={applicationFormObject.isBlocked}
+            required="true"
+            max-length="5000"
+            onkeypress={handleValidation} data-maxlength="5000"
+          >
+          </lightning-textarea>
+        </div>
+
+        <div class="slds-p-top_medium lgc-bg">
+          <lightning-formatted-rich-text
+            class="slds-p-top_medium"
+            value={labels.AF_1d_section}
+          ></lightning-formatted-rich-text>
+          <lightning-combobox
+            name="Account.Organisation_s_Legal_Status_part_1__c"
+            class="slds-p-top_medium"
+            data-name="Account.Organisation_s_Legal_Status_part_1__c"
+            label="Please select one of the following"
+            value={applicationFormObject.projectCase.Account.Organisation_s_Legal_Status_part_1__c}
+            placeholder={labels.Select_Type}
+            options={legalStatusList1}
+            onchange={handleChange}
+            disabled={applicationFormObject.isBlocked}
+            required="true"
+            dropdown-alignment="auto">
+          </lightning-combobox>
+        </div>
+        <template if:true={isOrgNotInPublicSector}>
+          <div class="slds-p-top_medium lgc-bg">
+            <lightning-combobox
+              name="Account.Organisation_s_Legal_Status_part_2__c"
+              class="slds-p-top_medium"
+              data-name="Account.Organisation_s_Legal_Status_part_2__c"
+              label="Please select one of the following"
+              value={applicationFormObject.projectCase.Account.Organisation_s_Legal_Status_part_2__c}
+              placeholder={labels.Select_Type}
+              options={legalStatusList2}
+              onchange={handleChange}
+              disabled={applicationFormObject.isBlocked}
+              required="true"
+              dropdown-alignment="auto"
+            >
+            </lightning-combobox>
+
+            <template if:true={isOther}>
+              <div class="slds-p-top_medium lgc-bg">
+                <lightning-input
+                  type="text"
+                  name="Account.Other_Legal_Status_Type__c"
+                  data-name="Account.Other_Legal_Status_Type__c"
+                  label={labels.Please_specify}
+                  placeholder={labels.type_here}
+                  value={applicationFormObject.projectCase.Account.Other_Legal_Status_Type__c}
+                  onchange={handleChange}
+                  disabled={applicationFormObject.isBlocked}
+                  required="true"
+                  max-length="180"
+                  onkeypress={handleValidation} data-maxlength="180"
+                ></lightning-input>
+              
+              </div>
+            </template>
+
+            <lightning-textarea
+            name="Account.Organization_size_and_staff_structure__c"
+            data-name="Account.Organization_size_and_staff_structure__c"
+            label={labels.Org_size_staff_structure}
+            class="slds-p-top_medium"
+            value={applicationFormObject.projectCase.Account.Organization_size_and_staff_structure__c}
+            onchange={handleChange}
+            disabled={applicationFormObject.isBlocked}
+            max-length="5000"
+            onkeypress={handleValidation} data-maxlength="5000">
+            </lightning-textarea>
+
+            <lightning-input
+              type="number"
+              name="Account.Number_Of_Board_members_or_Trustees__c"
+              label={labels.How_many_board_members_in_org}
+              class="slds-p-top_medium"
+              data-name="Account.Number_Of_Board_members_or_Trustees__c"
+              max-length="10"
+              onchange={handleChange}
+              value={applicationFormObject.projectCase.Account.Number_Of_Board_members_or_Trustees__c}
+              disabled={applicationFormObject.isBlocked}
+            >
+            </lightning-input>
+  
+            <lightning-input
+              type="number"
+              name="Account.Amount_spent_in_the_last_financial_year__c"
+              label={labels.Last_financial_year_org_expenses}
+              class="slds-p-top_medium"
+              formatter="currency"
+              step="0.01"
+              max-length="50"
+              data-name="Account.Amount_spent_in_the_last_financial_year__c"
+              onchange={handleChange}
+              value={applicationFormObject.projectCase.Account.Amount_spent_in_the_last_financial_year__c}
+              disabled={applicationFormObject.isBlocked}
+            >
+            </lightning-input>
+  
+            <lightning-input
+              type="number"
+              name="Account.level_of_unrestricted_funds__c"
+              label={labels.What_level_of_unrestricted_funds}
+              class="slds-p-top_medium"
+              data-name="Account.level_of_unrestricted_funds__c"
+              onchange={handleChange}
+              formatter="currency"
+              step="0.01"
+              max-length="50"
+              value={applicationFormObject.projectCase.Account.level_of_unrestricted_funds__c}
+              disabled={applicationFormObject.isBlocked}
+            >
+            </lightning-input>
+
+          </div>
+        </template>
+
+
+        <div class="slds-p-top_medium lgc-bg">
+          <lightning-formatted-rich-text
+            class="slds-p-top_medium"
+            value={labels.Org_type_info_title}
+          ></lightning-formatted-rich-text>
+          <lightning-input
+            type="text"
+            name="Account.Company_Registration_Number__c"
+            label={labels.Company_registration_number}
+            data-name="Account.Company_Registration_Number__c"
+            onchange={handleChange}
+            class="slds-p-top_medium"
+            value={applicationFormObject.projectCase.Account.Company_Registration_Number__c}
+            disabled={applicationFormObject.isBlocked}
+            max-length="80"
+            onkeypress={handleValidation} data-maxlength="80"
+          >
+          </lightning-input>
+          <lightning-input
+            type="text"
+            name="Account.Registered_Charity_Reg_no__c"
+            label={labels.Charity_in_England_Scotland_Wales}
+            class="slds-p-top_medium"
+            data-name="Account.Registered_Charity_Reg_no__c"
+            onchange={handleChange}
+            value={applicationFormObject.projectCase.Account.Registered_Charity_Reg_no__c}
+            disabled={applicationFormObject.isBlocked}
+            max-length="255"
+            onkeypress={handleValidation} data-maxlength="255"
+          >
+          </lightning-input>
+          <lightning-input
+            type="text"
+            name="Account.Charity_Recognised_Ref_no__c"
+            label="Charity recognised by HM Revenue and Customs in Northern Ireland – give reference number"
+            data-name="Account.Charity_Recognised_Ref_no__c"
+            onchange={handleChange}
+            class="slds-p-top_medium"
+            value={applicationFormObject.projectCase.Account.Charity_Recognised_Ref_no__c}
+            disabled={applicationFormObject.isBlocked}
+            max-length="255"
+            onkeypress={handleValidation} data-maxlength="255"
+          >
+          </lightning-input>
+        </div>
+
+        <div class="slds-p-top_medium lgc-bg checkbox-input">
+          <p>
+            <b class="question-numb">1e</b> <span>{labels.AF_1e_section}</span
+            ><lightning-input
+              type="checkbox"
+              name="Delivered_by_partnership__c"
+              data-name="Delivered_by_partnership__c"
+              onchange={handleChange}
+              checked={applicationFormObject.projectCase.Delivered_by_partnership__c}
+              disabled={applicationFormObject.isBlocked}
+            ></lightning-input>
+          </p>
+        </div>
+        <template
+          if:true={applicationFormObject.projectCase.Delivered_by_partnership__c}
+        >
+          <div class="lgc-bg slds-p-top_medium">
+            <lightning-textarea
+              name="Delivery_partner_details__c"
+              data-name="Delivery_partner_details__c"
+              label={labels.Who_are_your_partners}
+              value={applicationFormObject.projectCase.Delivery_partner_details__c}
+              required="true"
+              onchange={handleChange}
+              disabled={applicationFormObject.isBlocked}
+              max-length="5000"
+              onkeypress={handleValidation} data-maxlength="5000"
+            >
+            </lightning-textarea>
+          </div>
+        </template>
+
+        <div class="slds-p-top_medium lgc-bg checkbox-input">
+          <p>
+            <b class="question-numb">1f</b>
+            <span>{labels.AF_1f_section}</span>
+            <lightning-input
+              type="checkbox"
+              name="Account.Are_you_VAT_registered__c"
+              data-name="Account.Are_you_VAT_registered__c"
+              onchange={handleChange}
+              checked={applicationFormObject.projectCase.Account.Are_you_VAT_registered__c}
+              disabled={applicationFormObject.isBlocked}
+            ></lightning-input>
+          </p>
+        </div>
+        <template
+          if:true={applicationFormObject.projectCase.Account.Are_you_VAT_registered__c}
+        >
+          <div class="lgc-bg slds-p-top_medium">
+            <lightning-input
+              name="Account.VAT_number__c"
+              data-name="Account.VAT_number__c"
+              label={labels.Provide_VAT_Number}
+              required="true"
+              value={applicationFormObject.projectCase.Account.VAT_number__c}
+              onchange={handleChange}
+              disabled={applicationFormObject.isBlocked}
+              max-length="100"
+              onkeypress={handleValidation} data-maxlength="100"
+            >
+            </lightning-input>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</template>

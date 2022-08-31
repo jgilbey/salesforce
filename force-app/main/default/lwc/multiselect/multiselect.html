@@ -1,0 +1,26 @@
+<template>
+  <div>
+    <template for:each={options} for:item="option" for:index="index">
+      <c-multiselect-item index={index} option={option} key={option.value}
+        application-form-object={applicationFormObject} oncheckoption={handleCheckOption}
+        onchangedata={handleChangeData}></c-multiselect-item>
+    </template>
+    <template if:true={isRegisterNumberNeeded}>
+      <div class="slds-m-top_medium">
+        <div>
+          <span>
+            {labels.If_applicable_what_is_the_registration_or_inventory_number_s}
+          </span>
+        </div>
+
+        <div>
+
+          <lightning-textarea name="Registered_Park_inventory_number__c" data-name="Registered_Park_inventory_number__c"
+            value={applicationFormObject.projectCase.Registered_Park_inventory_number__c} onchange={handleChangeData}
+            disabled={applicationFormObject.isBlocked} max-length="5000">
+          </lightning-textarea>
+        </div>
+      </div>
+    </template>
+  </div>
+</template>

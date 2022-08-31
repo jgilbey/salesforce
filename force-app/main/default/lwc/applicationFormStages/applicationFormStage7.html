@@ -1,0 +1,226 @@
+<template>
+  <div class="slds-theme_default">
+    <div class="slds-p-around_medium lgc-bg">
+      <div>
+        <h1 role="heading" data-first-element>{labels.Stage_7_title}</h1>
+        <br />
+      </div>
+
+      <div class="slds-p-around_medium lgc-bg">
+        <p><b>a) {labels.Terms_of_Grant}</b></p>
+        <br />
+        <div>
+          <p>{labels.Must_read_terms_of_grant}</p>
+        </div>
+        <br />
+        <div>
+          <p>
+            {labels.All_partners_must_confirm_by_adding_a_contact}
+          </p>
+        </div>
+        <br />
+
+        <p><b>b) {labels.Freedom_of_Information}</b></p>
+        <br />
+        <div>
+          <p>
+            {labels.We_are_committed_to_being_as_open_as_possible}
+          </p>
+        </div>
+        <br />
+
+        <div>
+          <p>
+            {labels.As_part_of_the_application_process}
+          </p>
+        </div>
+        <br />
+
+        <div>
+          <p>
+            {labels.When_complete_the_Declaration}
+          </p>
+          <br />
+          <lightning-textarea name="Reason_for_not_make_3_public_available__c"
+            value={applicationFormObject.projectCase.Reason_for_not_make_3_public_available__c} onchange={handleChange}
+            disabled={applicationFormObject.isBlocked} max-length="5000"
+            onkeypress={handleValidation} data-maxlength="5000">
+          </lightning-textarea>
+        </div>
+        <br />
+
+        <div>
+          <p>
+            {labels.We_will_take_these_into_account}
+          </p>
+        </div>
+        <br />
+
+        <div>
+          <p>
+            {labels.When_complete_Declaration_also_agree}
+          </p>
+
+          <br />
+
+          <ul>
+            <li>{labels.Whether_to_give_grant}</li>
+            <li>
+              {labels.Monitor_and_evaluate_grants}
+            </li>
+            <li>
+              {labels.Legitimate_interest_in_applications}
+            </li>
+            <li>{labels.To_hold_in_database}</li>
+            <li>
+              {labels.If_we_offer_grant}
+            </li>
+            <li>
+              {labels.Support_our_work}
+            </li>
+          </ul>
+          <br />
+        </div>
+
+        <div>
+          <p>
+            {labels.Org_has_given_authority}
+          </p>
+
+          <p>
+            {labels.Application_falls_within_the_purposes}
+          </p>
+
+          <p>
+            {labels.Org_has_power_to_accept_grant}
+          </p>
+
+          <p>
+            {labels.If_Org_receives_grant}
+          </p>
+
+          <p>
+            {labels.Info_is_true_and_correct}
+          </p>
+
+          <p>{labels.I_confirm_that_I_agree_with_the_above_statements}</p>
+          <br />
+          <div class="checkbox-input confirm_text">
+            <p>
+              <span><b>Confirm</b></span>
+              <lightning-input type="checkbox" name="Consent_for_application_form__c" onchange={handleChange}
+                checked={applicationFormObject.projectCase.Consent_for_application_form__c}
+                disabled={applicationFormObject.isBlocked} required="true"></lightning-input>
+            </p>
+          </div>
+
+          <br />
+
+          <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+            <tbody>
+              <tr>
+                <td>Name</td>
+                <td>
+                  <lightning-input type="text" name="Contact.Name"
+                    value={applicationFormObject.projectCase.Contact.Name} disabled="true">
+                  </lightning-input>
+                </td>
+              </tr>
+              <tr>
+                <td>Organisation</td>
+                <td>
+                  <lightning-input type="text" name="Account.Name"
+                    value={applicationFormObject.projectCase.Account.Name} disabled="true">
+                  </lightning-input>
+                </td>
+              </tr>
+              <tr>
+                <td>Position</td>
+                <td>
+                  <lightning-input type="text" name="Contact.Title" onchange={handleChange}
+                    value={applicationFormObject.projectCase.Contact.Title} disabled={applicationFormObject.isBlocked}
+                    required="true"
+                    max-length="120" onkeypress={handleValidation} data-maxlength="120"></lightning-input>
+                </td>
+              </tr>
+              <tr>
+                <td>Date</td>
+                <td>
+                  <lightning-input type="date" value={currentDateTime} disabled="true" class="label-hidden">
+                  </lightning-input>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <br />
+        <div>
+          <div class="checkbox-input">
+            <p>
+              <span>{labels.Applying_on_behalf_of_partnership}</span>
+              <lightning-input type="checkbox" name="Behalf_of_partnership__c" data-name="Behalf_of_partnership__c"
+                onchange={handleChange} checked={applicationFormObject.projectCase.Behalf_of_partnership__c}
+                disabled={applicationFormObject.isBlocked}></lightning-input>
+            </p>
+          </div>
+
+          <template if:true={applicationFormObject.projectCase.Behalf_of_partnership__c}>
+            <template for:each={partnersObjectData} for:item="row" for:index="index">
+              <table key={row.uuid} class="slds-table slds-table_bordered slds-table_cell-buffer">
+                <tbody>
+                  <tr class="slds-p-around_medium">
+                    <td colspan="3">
+                      <p>{labels.Please_provide_details}</p>
+                    </td>
+                  </tr>
+                  <tr key={row.uuid}>
+                    <td>Name</td>
+                    <td>
+                      <lightning-input type="text" name="Name" id={row.uuid} value={row.data.Name}
+                        onchange={handlePartnerChange} disabled={applicationFormObject.isBlocked} required="true"
+                        max-length="80" onkeypress={handleValidation} data-maxlength="80">
+                      </lightning-input>
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr key={row.uuid}>
+                    <td>Organisation</td>
+                    <td>
+                      <lightning-input type="text" name="Organisation__c" id={row.uuid} value={row.data.Organisation__c}
+                        onchange={handlePartnerChange} disabled={applicationFormObject.isBlocked} required="true"
+                        max-length="200" onkeypress={handleValidation} data-maxlength="200">
+                      </lightning-input>
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr key={row.uuid}>
+                    <td>Position</td>
+                    <td>
+                      <lightning-input type="text" name="Position__c" onchange={handlePartnerChange}
+                        value={row.data.Position__c} id={row.uuid} disabled={applicationFormObject.isBlocked}
+                        required="true"
+                        max-length="200" onkeypress={handleValidation} data-maxlength="200">
+                      </lightning-input>
+                    </td>
+                    <td class="delete__button">
+                      <lightning-button-icon icon-name="utility:delete" alternative-text="Delete" title="Delete"
+                        value={index} variant="brand" label="Delete" disabled={applicationFormObject.isBlocked}
+                        onclick={removePartnerRow}>
+                      </lightning-button-icon>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </template>
+            <div class="slds-p-top_medium">
+              <lightning-button variant="brand" label="Add" disabled={applicationFormObject.isBlocked}
+                onclick={addPartnerRow}>
+              </lightning-button>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

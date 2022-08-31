@@ -1,0 +1,51 @@
+<!--
+  @description       : 
+  @author            : Methods
+  @group             : 
+  @last modified on  : 01-14-2021
+  @last modified by  : Methods
+  Modifications Log 
+  Ver   Date         Author   Modification
+  1.0   01-14-2021   Methods   Initial Version
+-->
+<template>
+    <div class="slds-align_absolute-center">
+        
+        <template if:false={isFirstStage}>
+            <lightning-button label={prevButtonName} class="slds-m-left_x-small" onclick={handleBackButton}>
+            </lightning-button>
+        </template>
+        <template if:false={isLastStage}>
+            <lightning-button variant="brand" class="slds-m-left_x-small" label={nextButtonName}
+                onclick={handleNextButton}>
+            </lightning-button>
+        </template>
+
+        <div class="submit-button__container slds-m-left_x-small">
+            <template if:true={isLastStage}>
+                <template if:true={showErrorMessage}>
+                    <section aria-label="Dialog title" aria-describedby="popover-body-id" class="slds-popover slds-nubbin_bottom" role="dialog">
+                        <button class="slds-button slds-button_icon slds-button_icon slds-button_icon-small slds-float_right slds-popover__close" title="Close dialog" onclick={handleMessageClose}>
+                        <span class="slds-button__icon" aria-hidden="true" onclick={handleMessageClose}>
+                            <lightning-icon icon-name='utility:close' size="x-small"></lightning-icon>                                  
+                        </span>
+                        <span class="slds-assistive-text">Close dialog</span>
+                        </button>
+                        <div id="popover-body-id" class="slds-popover__body">
+                        <p>{errorMessage}</p>
+                        </div>
+                    </section>
+                </template>
+                    <lightning-button variant="brand" label={submitButtonName}
+                        onclick={handleSubmitButton}>
+                    </lightning-button>
+            </template>
+        </div>
+
+        <template if:false={disableSaveButton}>
+            <lightning-button variant="brand" class="slds-m-left_x-small" label={saveButtonName}
+                onclick={handleSaveButton}>
+            </lightning-button>
+        </template>
+    </div>
+</template>

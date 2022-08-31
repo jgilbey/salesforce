@@ -1,0 +1,19 @@
+<template>
+    <h1 role="heading" class="header-text">{sectionTitle}</h1>
+    <div class="slds-p-around_medium">
+        <div class="slds-p-top_medium">
+            <lightning-formatted-rich-text value={labels.nextStep.Next_Step_Permission}>
+            </lightning-formatted-rich-text>
+        </div>
+        <div class="slds-p-top_medium" if:false={permissionForm.isBlocked}>
+            <lightning-button variant="brand" label={labels.declaration.create_PDF} onclick={handleGenerateUrl}>
+            </lightning-button>
+        </div>
+        <div class="slds-p-top_medium">
+            <c-document-uploader  accepted-formats={acceptedFormats} record-id={permissionForm.id} uploaded-files={permissionForm.lastStepFile}
+                name={LAST_STEP_FILE_PREFIX} table-columns={fileColumns} is-blocked={permissionForm.isBlocked}>
+            </c-document-uploader>
+        </div>
+
+    </div>
+</template>

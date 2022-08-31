@@ -1,0 +1,49 @@
+<template>
+  <h1 role="heading" class="header-text" data-first-element>{sectionTitle}</h1>
+  <div class="slds-p-around_medium">
+    <div class="lgc-bg">
+      <lightning-input type="number" formatter="currency" label={labels.funding.total_project_costs}
+        value={permissionForm.totalCosts} disabled>
+      </lightning-input>
+    </div>
+
+    <div class="slds-m-top_medium lgc-bg">
+      <lightning-input type="number" formatter="currency" label={labels.funding.grant_award}
+        value={permissionForm.grantAwarded} disabled>
+      </lightning-input>
+    </div>
+
+    <div class="slds-m-top_medium lgc-bg">
+      <lightning-input type="number" formatter="percent-fixed" label={labels.funding.grant_percentage}
+        value={permissionForm.grantPercentage} disabled step="0.01">
+      </lightning-input>
+    </div>
+
+    <div class="slds-m-top_medium lgc-bg">
+      <lightning-input type="number" formatter="currency" label={labels.funding.total_partnership_funding}
+        value={permissionForm.totalPartnershipFunding} disabled>
+      </lightning-input>
+    </div>
+    <div class="slds-m-top_medium">
+      <div>
+        <span>{labels.funding.partnership_funding}</span>
+      </div>
+      <div class="document-table slds-box slds-p-around--none">
+        <c-custom-data-table data={permissionForm.partnershipFunding} hide-checkbox-column
+          columns={partnerShipColumnList} key-field="id">
+        </c-custom-data-table>
+      </div>
+    </div>
+    <div class="slds-m-top_x-large">
+      <div>
+        <span>
+          {labels.funding.if_a_shortfall_in_partnership_funding_remains}
+        </span>
+      </div>
+    </div>
+    <c-document-uploader accepted-formats={acceptedFormats} record-id={permissionForm.id} uploaded-files={permissionForm.partnerFindingFiles}
+      name={PARTNER_FINDING_FILE_PREFIX} table-columns={fileColumns} is-blocked={permissionForm.isBlocked}>
+    </c-document-uploader>
+  </div>
+
+</template>

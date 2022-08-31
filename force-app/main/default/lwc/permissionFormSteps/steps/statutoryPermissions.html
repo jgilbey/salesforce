@@ -1,0 +1,47 @@
+<template>
+  <h1 role="heading" class="header-text" data-first-element>{labels.statutoryPermissions.PF_Section_3}</h1>
+  <div class="slds-p-around_medium">
+    <div class="check-box__container">
+      <p>
+        {labels.statutoryPermissions.We_are_attaching_proposed_timetable}
+      </p>
+      <p class="checkbox-wrap slds-m-top_small">
+        <lightning-input label="Confirm?" type="checkbox" checked={permissionForm.isAttachingTimetable}
+          onchange={handleCheckbox} name="isAttachingTimetable" disabled={permissionForm.isBlocked}>
+        </lightning-input>
+      </p>
+    </div>
+  </div>
+
+  <h1 class="header-text">{labels.statutoryPermissions.PF_Section_4}</h1>
+  <div class="slds-p-around_medium">
+    <div class="check-box__container">
+      <p>
+        {labels.statutoryPermissions.Attaching_details_of_our_project_management_structure}
+      </p>
+      <p class="checkbox-wrap slds-m-top_small">
+        <lightning-input label="Confirm?" type="checkbox" checked={permissionForm.isAttachingDetailsProjectManagement}
+          onchange={handleCheckbox} name="isAttachingDetailsProjectManagement" disabled={permissionForm.isBlocked}>
+        </lightning-input>
+      </p>
+    </div>
+  </div>
+
+  <h1 class="header-text">{labels.statutoryPermissions.PF_Section_5}</h1>
+  <div class="slds-p-around_medium">
+    <div class="check-box__container">
+      <p>
+        {labels.statutoryPermissions.Information_on_any_permissions}
+      </p>
+      <!-- <p class="slds-text-align--center">
+        <lightning-input type="checkbox" checked={permissionForm.statutoryPermission} onchange={handleCheckbox}
+        name="statutoryPermission" disabled={permissionForm.isBlocked}></lightning-input>
+      </p> -->
+      <p class="slds-text-align--center">
+        <lightning-textarea onchange={handleTextChange} name="statutoryPermission" disabled={permissionForm.isBlocked}
+          value={permissionForm.statutoryPermission} max-length="5000"
+          onkeypress={handleValidation} data-maxlength="5000"></lightning-textarea>
+      </p>
+    </div>
+  </div>
+</template>

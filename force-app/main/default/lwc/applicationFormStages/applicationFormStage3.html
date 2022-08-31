@@ -1,0 +1,162 @@
+<template>
+  <div class="slds-theme_default">
+    <div class="slds-p-around_medium lgc-bg">
+      <div>
+        <h1 role="heading" data-first-element>{labels.Stage_3_title}</h1>
+        <br />
+        <p>
+          {labels.Section_3_Intro}
+        </p>
+      </div>
+
+      <div class="slds-p-around_medium lgc-bg">
+        <p>
+          <b class="question-numb">3a</b>
+          <span
+            >{labels.AF_3a_section}</span
+          >
+        </p>
+        <lightning-textarea
+          name="Item_of_importance_to_national_heritage__c"
+          data-name="Item_of_importance_to_national_heritage__c"
+          value={applicationFormObject.projectCase.Item_of_importance_to_national_heritage__c}
+          required="true"
+          class="slds-p-top_medium required-without-label"
+          onchange={handleChange}
+          disabled={applicationFormObject.isBlocked}
+          max-length="5000"
+          onkeypress={handleValidation} data-maxlength="5000"
+        >
+        </lightning-textarea>
+
+        <div class="slds-p-top_medium">
+          <p>
+            <b class="question-numb">3b</b>
+            <span
+              >{labels.AF_3b_section}</span
+            >
+          </p>
+          <lightning-textarea
+            name="Property_item_of_outstanding_interest__c"
+            data-name="Property_item_of_outstanding_interest__c"
+            value={applicationFormObject.projectCase.Property_item_of_outstanding_interest__c}
+            required="true"
+            class="slds-p-top_medium required-without-label"
+            onchange={handleChange}
+            disabled={applicationFormObject.isBlocked}
+            max-length="5000"
+            onkeypress={handleValidation} data-maxlength="5000"
+          >
+          </lightning-textarea>
+        </div>
+
+        <div class="slds-p-top_medium">
+          <p>
+            <b class="question-numb">3c</b> {labels.AF_3c_section}
+          </p>
+          <lightning-textarea
+            name="Property_Details__c"
+            data-name="Property_Details__c"
+            value={applicationFormObject.projectCase.Property_Details__c}
+            required="true"
+            onchange={handleChange}
+            class="slds-p-top_medium required-without-label"
+            disabled={applicationFormObject.isBlocked}
+            max-length="5000"
+            onkeypress={handleValidation} data-maxlength="5000"
+          >
+          </lightning-textarea>
+        </div>
+
+        <div class="slds-p-top_medium">
+          <p>
+            <b class="question-numb">3d</b> {labels.AF_3d_section}
+          </p>
+          <lightning-textarea
+            name="Details_for_risk_of_item_or_property__c"
+            data-name="Details_for_risk_of_item_or_property__c"
+            value={applicationFormObject.projectCase.Details_for_risk_of_item_or_property__c}
+            required="true"
+            onchange={handleChange}
+            disabled={applicationFormObject.isBlocked}
+            class="slds-p-top_medium required-without-label"
+            max-length="5000"
+            onkeypress={handleValidation} data-maxlength="5000"
+          >
+          </lightning-textarea>
+        </div>
+
+        <div class="slds-p-top_medium">
+          <p>
+            <b class="question-numb">3e</b> {labels.AF_3e_section}
+          </p>
+          <lightning-textarea
+            name="Does_your_property_have_Memorial_connect__c"
+            data-name="Does_your_property_have_Memorial_connect__c"
+            value={applicationFormObject.projectCase.Does_your_property_have_Memorial_connect__c}
+            onchange={handleChange}
+            class="slds-p-top_medium"
+            disabled={applicationFormObject.isBlocked}
+            max-length="5000"
+            onkeypress={handleValidation} data-maxlength="5000"
+          >
+          </lightning-textarea>
+        </div>
+
+        <div class="slds-p-top_medium">
+          <p>
+            <b class="question-numb">3f</b> {labels.AF_3f_section}
+          </p>
+          <lightning-textarea
+            name="Details_of_providing_care_for_property__c"
+            data-name="Details_of_providing_care_for_property__c"
+            value={applicationFormObject.projectCase.Details_of_providing_care_for_property__c}
+            required="true"
+            onchange={handleChange}
+            class="slds-p-top_medium required-without-label"
+            disabled={applicationFormObject.isBlocked}
+            max-length="5000"
+            onkeypress={handleValidation} data-maxlength="5000"
+          >
+          </lightning-textarea>
+        </div>
+
+        <div class="slds-p-top_medium">
+          <p>
+            <b class="question-numb">3g</b> {labels.AF_3g_section}
+          </p>
+          <lightning-textarea
+            name="Other_measures_to_raise_funds__c"
+            data-name="Other_measures_to_raise_funds__c"
+            value={applicationFormObject.projectCase.Other_measures_to_raise_funds__c}
+            required="true"
+            onchange={handleChange}
+            class="slds-p-top_medium required-without-label"
+            disabled={applicationFormObject.isBlocked}
+            max-length="5000"
+            onkeypress={handleValidation} data-maxlength="5000"
+          >
+          </lightning-textarea>
+        </div>
+
+        <div class="slds-p-top_medium">
+          <p>
+            <b class="question-numb">3h</b> {labels.AF_3h_section}
+          </p>
+          <lightning-textarea
+            name="Public_access_to__c"
+            data-name="Public_access_to__c"
+            value={applicationFormObject.projectCase.Public_access_to__c}
+            required="true"
+            onchange={handleChange}
+            class="slds-p-top_medium required-without-label"
+            disabled={applicationFormObject.isBlocked}
+            max-length="5000"
+            onkeypress={handleValidation} data-maxlength="5000"
+          >
+          </lightning-textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

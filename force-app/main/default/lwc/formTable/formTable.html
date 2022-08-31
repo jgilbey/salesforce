@@ -1,0 +1,55 @@
+<template>
+  <div class="form-table">
+    <div class="new-project-button">
+      <lightning-button label={labels.lableProjectButton} variant="brand" onclick={newProjectHandler}
+        disabled={blockProjectCreation}></lightning-button>
+    </div>
+    <table class="slds-table slds-table_bordered">
+      <thead>
+        <tr class="slds-line-height_reset">
+          <th class="" scope="col">
+            <div class="slds-truncate" title={labels.labelProject_Number}>
+              {labels.labelProject_Number}
+            </div>
+          </th>
+          <th class="" scope="col">
+            <div class="slds-truncate" title={labels.labelProject_Name}>
+              {labels.labelProject_Name}
+            </div>
+          </th>
+          <th class="" scope="col">
+            <div class="slds-truncate" title={labels.projectEnquiry}>
+              {labels.projectEnquiry}
+            </div>
+          </th>
+          <th class="" scope="col">
+            <div class="slds-truncate" title={labels.enquiryStatus}>
+              {labels.enquiryStatus}
+            </div>
+          </th>
+          <th class="" scope="col">
+            <div class="slds-truncate" title={labels.application}>
+              {labels.application}
+            </div>
+          </th>
+          <th class="" scope="col">
+            <div class="slds-truncate" title={labels.applicationStatus}>
+              {labels.applicationStatus}
+            </div>
+          </th>
+          
+          
+        </tr>
+      </thead>
+      <tbody>
+        <template for:each={projectList} for:item="project">
+          <c-form-table-row project={project} key={project.Id} oncontinue={continueProjectHandler}
+            onremove={openConfirmation}></c-form-table-row>
+        </template>
+      </tbody>
+    </table>
+  </div>
+  <c-confirmation-dialog title={labels.Modal_Title} message={labels.Modal_message} confirm-label={labels.Modal_Yes}
+    cancel-label={labels.Modal_No} visible={isDialogVisible} name="confirmModal" onclick={handleDialogClick}>
+  </c-confirmation-dialog>
+</template>

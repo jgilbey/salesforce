@@ -1,0 +1,46 @@
+<template>
+  <td data-label={labels.labelProject_Number}>
+    <div class="slds-truncate" title={labels.labelProject_Number}>
+      {project.projectNumber}
+    </div>
+  </td>
+  <td data-label={labels.labelProject_Name}>
+    <div class="slds-truncate" title={labels.labelProject_Name}>
+      {project.Name}
+    </div>
+  </td>
+  <td data-label="Buttons">
+    <div class="slds-truncate buttons-column-item" title="Continue">
+      <lightning-button variant="brand" label={project.projectButtonLabel} onclick={continueProjectHandler}>
+      </lightning-button>
+    </div>
+  </td>
+  <td data-label={labels.projectEnquiry}>
+    <div class="slds-truncate" title={labels.projectEnquiry}>{project.Status}</div>
+  </td>
+
+  
+  
+  <td>
+    <div class="buttons-column-container">
+      <template if:true={project.allowApplication}>
+        <div class="slds-truncate" title="Application">
+          <lightning-button variant="brand" label={applicationButtonLabel} onclick={continueApplicationHandler}>
+          </lightning-button>
+        </div>
+      </template>
+    </div>
+  </td>
+  <td data-label={labels.applicationStatus}>
+    <div class="slds-truncate" title={labels.applicationStatus}>{project.caseStatus}</div>
+  </td>
+  
+  <td>
+    <template if:true={project.allowRemoving}>
+      <div class="slds-truncate" title="Remove">
+        <lightning-button-icon icon-name="utility:delete" alternative-text="Delete" title="Delete" variant="brand"
+          class="delete-button" label={labels.labelRemovePoject} onclick={removeProjectHandler}></lightning-button-icon>
+      </div>
+    </template>
+  </td>
+</template>

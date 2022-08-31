@@ -1,0 +1,14 @@
+<template>
+  <div class="monitoring__cases">
+    <div class="projects__title">
+      <span>{labels.Projects}</span>
+    </div>
+    <template for:each={cases} for:item="caseObject">
+      <c-monitoring-page-case
+        key={caseObject.Id}
+        preselected-case={preselectedCase}
+        case-object={caseObject}
+      ></c-monitoring-page-case>
+    </template>
+  </div>
+</template>

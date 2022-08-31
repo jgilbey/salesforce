@@ -1,0 +1,72 @@
+<template>
+  <div class="slds-theme_default">
+    <div class="slds-p-around_medium lgc-bg">
+      <div>
+        <h1 role="heading" data-first-element>{labels.Stage_5_title}</h1>
+        <br />
+        <p>
+          {labels.Intro_section_5}
+        </p>
+      </div>
+
+      <div class="slds-p-around_medium lgc-bg">
+        <div>
+          <p>
+            <b class="question-numb">5a</b>
+            <span
+              >{labels.AF_5a_section}</span
+            >
+          </p>
+          <lightning-textarea
+            name="Managing_costs_after_funding_ends__c"
+            data-name="Managing_costs_after_funding_ends__c"
+            value={applicationFormObject.projectCase.Managing_costs_after_funding_ends__c}
+            onchange={handleChange}
+            disabled={applicationFormObject.isBlocked}
+            class="slds-p-top_medium"
+            max-length="5000"
+            onkeypress={handleValidation} data-maxlength="5000"
+          >
+          </lightning-textarea>
+        </div>
+
+        <div class="slds-p-top_medium">
+          <p>
+            <b class="question-numb">5b</b>
+            <span
+              >{labels.AF_5b_section}</span
+            >
+          </p>
+          <div class="slds-p-top_medium">
+            <c-risks-table 
+              risks-data={futureRisksObjectData}
+              likelihood-list={riskLikelihoodList}
+              impact-list={riskImpactList}
+              app-form={applicationFormObject}
+              onaddrow={addFutureRiskRow}
+              onremoverow={removeFutureRiskRow}
+              onchangerisk={handleFutureRiskChange}
+            ></c-risks-table>
+          </div>
+        </div>
+
+        <div class="slds-p-top_medium">
+          <p>
+            <b class="question-numb">5c</b> {labels.AF_5c_section}
+          </p>
+          <lightning-textarea
+            name="How_will_you_evaluate_your_project__c"
+            data-name="How_will_you_evaluate_your_project__c"
+            value={applicationFormObject.projectCase.How_will_you_evaluate_your_project__c}
+            onchange={handleChange}
+            disabled={applicationFormObject.isBlocked}
+            max-length="5000"
+            class="slds-p-top_medium"
+            onkeypress={handleValidation} data-maxlength="5000"
+          >
+          </lightning-textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

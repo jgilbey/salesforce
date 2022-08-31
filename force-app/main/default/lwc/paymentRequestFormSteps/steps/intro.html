@@ -1,0 +1,41 @@
+<template>
+    <div>
+        <div class="slds-p-bottom_medium lgc-bg">
+            <lightning-input type="text" label={labels.intro.Project_title} value={paymentForm.projectTitle} disabled>
+            </lightning-input>
+        </div>
+
+        <div class="slds-p-bottom_medium lgc-bg">
+            <lightning-input type="text" label={labels.intro.Project_Number} value={paymentForm.projectRef} disabled>
+            </lightning-input>
+        </div>
+
+        <div class="slds-p-bottom_medium lgc-bg">
+            <lightning-input type="number" formatter="currency" label={labels.intro.total_project_costs}
+                value={paymentForm.totalCosts} disabled>
+            </lightning-input>
+        </div>
+        <div class="slds-p-bottom_medium lgc-bg">
+            <lightning-input type="number" formatter="currency" label={labels.intro.intro_Total_grant_award}
+                value={paymentForm.totalGrantAwarded} disabled>
+            </lightning-input>
+        </div>
+        <div class="slds-p-bottom_medium lgc-bg">
+            <lightning-input type="date" label={labels.intro.grant_expiry_date} value={paymentForm.grantExpiryDate} disabled>
+            </lightning-input>
+        </div>
+        <div class="slds-p-bottom_medium lgc-bg">
+            <lightning-input type="number" label={labels.intro.payment_percentage} formatter="percent-fixed" value={paymentForm.paymentPercentage} disabled step="0.01">
+            </lightning-input>
+        </div>
+        <div class="slds-p-bottom_medium lgc-bg">
+            <lightning-input type="number" formatter="currency"  label={labels.intro.grant_paid_so_far_PF} value={grandPaid} disabled>
+            </lightning-input>
+        </div>
+        <div class="slds-p-bottom_medium lgc-bg">
+            <lightning-input type="number" label={labels.intro.paid_so_far_as_a_percentage} formatter="percent-fixed" value={grandPaidPercentage}
+                disabled step="0.01">
+            </lightning-input>
+        </div>
+    </div>
+</template>

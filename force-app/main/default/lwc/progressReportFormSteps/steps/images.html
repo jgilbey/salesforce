@@ -1,0 +1,17 @@
+<template>
+  <div class="lgc-bg">
+    <h1 role="heading" class="header-text">{sectionTitle}</h1>
+    <div class="slds-m-around_medium">
+      <p> {labels.images.attachedLabel} </p>
+      <div class="slds-p-top_medium">
+        <c-document-uploader
+          record-id={progressForm.id}
+          name="Image" accepted-formats={acceptedFormats}
+          uploaded-files={imageFiles}
+          is-blocked={isBlocked}
+          table-columns={fileColumns}>
+        </c-document-uploader>
+      </div>
+    </div> 
+  </div>
+</template>

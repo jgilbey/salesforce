@@ -1,0 +1,8 @@
+<template>
+    <div data-searchname="dataTableElement" class="slds-text-align_center slds-m-horizontal_medium">
+        <lightning-input data-index={typeAttributes.index} data-searchname="dataTableElement"
+            name={typeAttributes.fieldName} type="checkbox" variant="label-hidden" checked={value} value={value}
+            required={typeAttributes.isRequired} disabled={typeAttributes.isDisabled} onchange={typeAttributes.handler}>
+        </lightning-input>
+    </div>
+</template>

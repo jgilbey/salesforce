@@ -1,0 +1,59 @@
+<template>
+  <table class="slds-table slds-table_bordered slds-m-bottom_large">
+    <thead>
+      <tr class="slds-text-title_caps">
+        <template for:each={risksColumns} for:item="column">
+          <th key={column.apiName}>
+            <div class="slds-truncate">{column.label}</div>
+          </th>
+        </template>
+      </tr>
+    </thead>
+    <tbody>
+      <template for:each={risksData} for:item="row" for:index="index">
+        <tr class="inputRows" key={row.uuid}>
+          <td>
+            <c-multiline-input name="Name" value={row.data.Name} ondatachange={handleCurrentRiskChange}
+              is-disabled={appForm.isBlocked} id={row.uuid} max-length="80" is-required="true"></c-multiline-input>
+          </td>
+          <td>
+            <lightning-combobox name="Likelihood__c" value={row.data.Likelihood__c} id={row.uuid}
+              placeholder={labels.Select_Type} options={likelihoodList} onchange={handleCurrentRiskChange}
+              disabled={appForm.isBlocked} dropdown-alignment="auto" required="true">
+            </lightning-combobox>
+          </td>
+          <td>
+            <lightning-combobox name="Impact__c" value={row.data.Impact__c} id={row.uuid}
+              placeholder={labels.Select_Type} options={impactList} onchange={handleCurrentRiskChange}
+              disabled={appForm.isBlocked} dropdown-alignment="auto" required="true">
+            </lightning-combobox>
+          </td>
+          <td>
+            <c-multiline-input name="Mitigation__c" value={row.data.Mitigation__c}
+              ondatachange={handleCurrentRiskChange} is-disabled={appForm.isBlocked} id={row.uuid} is-required="true">
+            </c-multiline-input>
+          </td>
+          <td>
+            <c-multiline-input id={row.uuid} name="Who_will_lead_this__c" value={row.data.Who_will_lead_this__c}
+              is-disabled={appForm.isBlocked} ondatachange={handleCurrentRiskChange} max-length="200"
+              is-required="true">
+            </c-multiline-input>
+          </td>
+          <td>
+            <lightning-button-icon icon-name="utility:delete" alternative-text="Delete" title="Delete" value={index}
+              variant="brand" label="Delete" disabled={appForm.isBlocked} onclick={removeCurrentRiskRow}>
+            </lightning-button-icon>
+          </td>
+        </tr>
+      </template>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td>
+          <lightning-button variant="brand" label="Add" disabled={appForm.isBlocked} onclick={addCurrentRiskRow}>
+          </lightning-button>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</template>

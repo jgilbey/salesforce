@@ -1,0 +1,66 @@
+<!--
+  @description       : Forth and final step of project enquiry form
+  @author            : Methods
+  @group             : 
+  @last modified on  : 01-14-2021
+  @last modified by  : Methods
+  Modifications Log 
+  Ver   Date         Author   Modification
+  1.0   01-14-2021   Methods   Initial Version
+-->
+<template>
+  <div class="slds-p-around_medium">
+    <div>
+      <h1 role="heading">{labels.section_4_public_access}</h1>
+    </div>
+    <div class="slds-p-around_medium">
+      <div class="slds-m-top_medium lgc-bg">
+        <lightning-textarea
+          name="Does_project_have_public_access__c"
+          data-name="Does_project_have_public_access__c"
+          label={labels.NHMF_requires_that_the_public_have_access_to_your_project_Please_explain_how_yo}
+          placeholder={labels.Limit_150_words}
+          value={projectEnquiryForm.projectEnquiry.Does_project_have_public_access__c}
+          onchange={handleChange}
+          disabled={projectEnquiryForm.isBlocked}
+          required="true"
+          max-length="5000"
+          data-maxlength="5000" onkeypress={handleValidation}
+        >
+        </lightning-textarea>
+      </div>
+      <div class="slds-m-top_medium lgc-bg">
+        <lightning-input
+          type="checkbox"
+          label={labels.Do_you_want_upload_files}
+          checked={hasFiles}
+          disabled={projectEnquiryForm.isBlocked}
+          onchange={handleHasFilesChange}
+        ></lightning-input>
+      </div>
+      <template if:true={hasFiles}>
+        <div class="slds-m-top_medium">
+          <lightning-file-upload
+            name="fileUploader"
+            accept={acceptedFormats}
+            record-id={projectEnquiryForm.projectEnquiry.Id}
+            onuploadfinished={handleUploadFinished}
+            multiple
+            disabled={projectEnquiryForm.isBlocked}
+          >
+          </lightning-file-upload>
+          <div class="document-table slds-m-top_medium slds-box">
+            <lightning-datatable
+              data={projectEnquiryForm.documentList}
+              columns={columns}
+              key-field="id"
+              hide-checkbox-column
+              onrowaction={handleRowAction}
+            >
+            </lightning-datatable>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+</template>

@@ -1,0 +1,25 @@
+<template>
+  <h1 role="heading" class="header-text">{sectionTitle}</h1>
+  <div class="slds-p-around_medium">
+    <div>
+      <span>
+        {labels.approvedPurposes.The_Approved_Purposes_in_the_table}
+      </span>
+    </div>
+    <div class="document-table">
+      <c-custom-data-table data={permissionForm.approvedPurposes} hide-checkbox-column max-column-width="1200"
+        columns={approvedPuprosesColumList} key-field="id">
+      </c-custom-data-table>
+    </div>
+    <div class="check-box__container slds-m-top_medium">
+      <p>
+        {labels.approvedPurposes.We_are_attaching_cost_breakdown}
+      </p>
+      <p class="checkbox-wrap slds-m-top_small">
+        <lightning-input type="checkbox" label="Confirm?" checked={permissionForm.attachingCostBreakdown} name="attachingCostBreakdown"
+          onchange={handleCheckbox} disabled={permissionForm.isBlocked}> 
+        </lightning-input>
+      </p>
+    </div>
+  </div>
+</template>

@@ -1,0 +1,13 @@
+<template>
+    <lightning-button label={label.Exit_button} class="slds-m-left_xx-small" onclick={navigateToHomePage}>
+    </lightning-button>
+    <template if:false={formObject.isBlocked}>
+        <lightning-button label={label.Save} size="medium" alternative-text="back" class="slds-m-left_xx-small"
+            onclick={saveForm}></lightning-button>
+    </template>
+    <!-- <lightning-button-icon icon-name="utility:back"  size="medium"   alternative-text="back" class="slds-m-left_xx-small" onclick={navigateToHomePage}></lightning-button-icon> -->
+    <c-application-form-component data-type="form" application-form-object={formObject}
+        onrelateddataupdate={refreshRelatedData} onformchanged={handleFormChanges} onfilesuploaded={handleFilesuploaded}
+        case-rt-id={caseRtId} cost-rt-id={costRtId} income-rt-id={incomeRtId}>
+    </c-application-form-component>
+</template>

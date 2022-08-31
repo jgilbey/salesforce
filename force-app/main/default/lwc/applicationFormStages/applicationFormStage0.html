@@ -1,0 +1,34 @@
+<template>
+    <div class="slds-theme_default">
+        <div class="slds-p-around_medium">
+            <div>
+                <lightning-formatted-rich-text value={labels.Intro_Application_Form_Notes}></lightning-formatted-rich-text>
+                <lightning-formatted-rich-text value={labels.Intro_AF_Confirmation}></lightning-formatted-rich-text>
+            </div>
+
+            <div>
+                <div class="slds-p-vertical_medium lgc-bg">
+                    <lightning-input name="Project_Reference_Number__c" data-name="Project_Reference_Number__c" label="Project Reference Number"
+                        value={applicationFormObject.projectCase.Project_Reference_Number__c}
+                        disabled=true max-length="100">
+                    </lightning-input>
+                </div>
+                <div class="slds-p-vertical_medium lgc-bg">
+                    <lightning-input name="Project_Title__c" data-name="Project_Title__c" label={labels.Project_title}
+                        value={applicationFormObject.projectCase.Project_Title__c} onchange={handleChange}
+                        disabled={applicationFormObject.isBlocked} required="true" max-length="100"
+                        placeholder={labels.Limit_15_words} onkeypress={handleValidation} data-maxlength="100">
+                    </lightning-input>
+                </div>
+                <div class="slds-p-vertical_medium lgc-bg">
+                    <lightning-textarea  name="Project_Summery__c" data-name="Project_Summery__c" label="Project summary"
+                        value={applicationFormObject.projectCase.Project_Summery__c} onchange={handleChange}
+                        disabled={applicationFormObject.isBlocked} required="true" max-length="5000"
+                        placeholder={labels.Limit_15_words} onkeypress={handleValidation} data-maxlength="5000">
+                    </lightning-textarea>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</template>

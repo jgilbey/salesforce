@@ -1,0 +1,8 @@
+.slds-path__item {
+    position: relative;
+    flex: 1;
+    margin-left: .375rem;
+    margin-right: .4375rem;
+    min-width: 3rem;
+    text-align: center;
+}

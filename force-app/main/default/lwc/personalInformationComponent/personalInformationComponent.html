@@ -1,0 +1,84 @@
+<template>
+    <lightning-card>
+        <template if:true={showSpinner}>
+            <div class="spinner-container">
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </div>
+        </template>
+        <div class="main-section">
+            <div class="contact-section">
+                <div class="contact-header">
+                    <h1>{label.Contact_information_header}</h1>
+                </div>
+                <lightning-input label={label.Contact_First_Name} value={contactInformation.FirstName}
+                    data-field="FirstName" onchange={contactChangeHanlder} required
+                    max-length="40" onkeypress={handleValidation} data-maxlength="40"></lightning-input>
+                <lightning-input label={label.Contact_Last_Name} value={contactInformation.LastName}
+                    data-field="LastName" onchange={contactChangeHanlder} required
+                    max-length="40" onkeypress={handleValidation} data-maxlength="40"></lightning-input>
+                <lightning-input label={label.Contact_Title} value={contactInformation.Title} data-field="Title"
+                    onchange={contactChangeHanlder}
+                    max-length="50" onkeypress={handleValidation} data-maxlength="50"></lightning-input>
+                <div class='contact-address'>
+                    <lightning-textarea label={label.Contact_Street_Address} value={contactInformation.MailingStreet}
+                        data-field="MailingStreet" onchange={contactChangeHanlder}
+                        max-length="255" onkeypress={handleValidation} data-maxlength="255"></lightning-textarea>
+                    <lightning-input label={label.Contact_City} value={contactInformation.MailingCity}
+                        data-field="MailingCity" onchange={contactChangeHanlder}
+                        max-length="40" onkeypress={handleValidation} data-maxlength="40"></lightning-input>
+                    <lightning-input label={label.Contact_Country} value={contactInformation.MailingState}
+                        data-field="MailingState" onchange={contactChangeHanlder}
+                        max-length="80" onkeypress={handleValidation} data-maxlength="80"></lightning-input>
+                    <lightning-input label={label.Contact_Postcode} value={contactInformation.MailingPostalCode}
+                        data-field="MailingPostalCode" onchange={contactChangeHanlder}
+                        max-length="20" onkeypress={handleValidation} data-maxlength="20"></lightning-input>
+                </div>
+                <lightning-input label={label.Contact_Phone} value={contactInformation.Phone} type='tel'
+                    pattern={PHONE_PATTERN} data-field="Phone" min-length={PHONE_MIN_SIZE} max-length={PHONE_MAX_SIZE}
+                    onchange={contactChangeHanlder} onkeypress={handleValidation} data-maxlength={PHONE_MAX_SIZE}></lightning-input>
+
+                <lightning-input label={label.Contact_Email} value={contactInformation.Email} type="email"
+                    data-field="Email" onchange={contactChangeHanlder}></lightning-input>
+
+                <lightning-input label={label.Contact_Birthdate} value={contactInformation.Birthdate} type="date"
+                    date-style="short" data-field="Birthdate" onchange={contactChangeHanlder}>
+                </lightning-input>
+                <lightning-combobox name="langluage" label={label.Language} value={selectedLangluage} options={langluageList}
+                    onchange={handleLangluage}>
+                </lightning-combobox>
+            </div>
+            <div class="organisation-section">
+                <div class="orgainisation-header">
+                    <h1>{label.Organisation_information_header}</h1>
+                </div>
+                <lightning-input label={label.Organisation_Name} value={organisationAccount.Name} data-field="Name"
+                    onchange={accountChangeHandler} required
+                    max-length="255" onkeypress={handleValidation} data-maxlength="255"></lightning-input>
+                <div class='organisation-address'>
+
+                    <lightning-textarea label={label.Organisation_Street_Address}
+                        value={organisationAccount.BillingStreet} data-field="BillingStreet"
+                        onchange={accountChangeHandler} required
+                        max-length="255" onkeypress={handleValidation} data-maxlength="255"></lightning-textarea>
+                    <lightning-input label={label.Organisation_City} value={organisationAccount.BillingCity}
+                        data-field="BillingCity" onchange={accountChangeHandler} required
+                        max-length="40" onkeypress={handleValidation} data-maxlength="40"></lightning-input>
+                    <lightning-input label={label.Organisation_Country} value={organisationAccount.BillingState}
+                        data-field="BillingState" onchange={accountChangeHandler} required
+                        max-length="80" onkeypress={handleValidation} data-maxlength="80"></lightning-input>
+                    <lightning-input label={label.Organisation_Postcode} value={organisationAccount.BillingPostalCode}
+                        data-field="BillingPostalCode" onchange={accountChangeHandler} required
+                        max-length="20" onkeypress={handleValidation} data-maxlength="20"></lightning-input>
+                </div>
+            </div>
+        </div>
+        <div class="button-container">
+            <lightning-button label="Save" variant="brand" onclick={submitPersonalInformation}
+                disabled={isBlockedSaving}></lightning-button>
+        </div>
+    </lightning-card>
+
+    <c-confirmation-dialog title={label.Modal_Title} message={label.Modal_message} confirm-label={label.Modal_Yes}
+        cancel-label={label.Modal_No} visible={isDialogVisible} name="confirmModal" onclick={handleDialogClick}>
+    </c-confirmation-dialog>
+</template>

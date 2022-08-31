@@ -1,0 +1,42 @@
+<template>
+  <h1 role="heading" class="header-text">{sectionTitle}</h1>
+  <div class="slds-p-around_medium">
+    <div class="slds-p-top_medium lgc-bg" if:true={isCapital}>
+      <lightning-input type="number" formatter="currency" label={labels.intro.total_project_costs}
+        value={completionForm.totalCosts} disabled>
+      </lightning-input>
+    </div>
+    <div class="slds-p-top_medium lgc-bg" if:true={isCapital}>
+      <lightning-input type="number" formatter="currency" label={labels.intro.grant_award}
+        value={completionForm.totalGrantAwarded} disabled>
+      </lightning-input>
+    </div>
+    <div class="slds-p-top_medium lgc-bg" if:true={isCapital}>
+      <lightning-input type="number" formatter="percent-fixed" label={labels.intro.grant_percentage}
+        value={completionForm.paymentPercentage} disabled step="0.01">
+      </lightning-input>
+    </div>
+    <div class="slds-p-top_medium lgc-bg" if:true={isCapital}>
+      <lightning-input type="number" formatter="currency" label={labels.paymentRequest.grant_paid_so_far_PF} value={calculatedAlreadyPayed}
+        disabled>
+      </lightning-input>
+    </div>
+    <div class="slds-p-vertical_medium lgc-bg" if:true={isCapital}>
+      <lightning-input type="number" label={labels.paymentRequest.paid_so_far_as_a_percentage} formatter="percent-fixed"
+        value={grandPaidPercentage} disabled step="0.01">
+      </lightning-input>
+    </div>
+
+    <c-spending-cost-summary spending-cost-list={completionForm.spendingCosts} picklist-data={spendingCostsOptions}
+      prev-calculation=100 record-id={completionForm.id} is-blocked={completionForm.isBlocked}
+      payment-limit={paymentLimit} percentage-limit={completionForm.paymentPercentage} uploaded-files={completionForm.proofFiles}>
+    </c-spending-cost-summary>
+
+    <div class="slds-p-top_medium lgc-bg">
+      <lightning-textarea label={labels.paymentRequest.inform_any_substantive_changes_budget}
+        value={completionForm.substantiveChanges} name="substantiveChanges" onchange={handleTextChange} max-length="5000"
+        disabled={completionForm.isBlocked}
+        onkeypress={handleValidation} data-maxlength="5000"></lightning-textarea>
+    </div>
+  </div>
+</template>

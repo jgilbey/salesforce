@@ -1,0 +1,96 @@
+<!--
+  @description       : Second stage of project enquiry form
+  @author            : Methods
+  @group             : 
+  @last modified on  : 01-25-2021
+  @last modified by  : Methods
+  Modifications Log 
+  Ver   Date         Author   Modification
+  1.0   01-25-2021   Methods   Initial Version
+-->
+<template>
+  <div class="slds-p-around_medium">
+    <div>
+      <h1 role="heading">{labels.section_2_our_standards_for_funding}</h1>
+    </div>
+    <div class="slds-m-top_medium">
+      <lightning-formatted-rich-text
+        value={labels.p_Use_this_section_to_show_us_how_the_heritage_item_which_your_project_focuses}
+      >
+      </lightning-formatted-rich-text>
+    </div>
+    <div class="slds-p-around_medium">
+      <div class="lgc-bg question__container">
+        <div class="question-numb">
+            <span>2a</span>
+        </div>
+        <lightning-textarea
+          name="Importance_to_the_national_heritage__c"
+          data-name="Importance_to_the_national_heritage__c"
+          label={labels.Importance_to_the_national_heritage_explain_how_the_heritage_item_or_property_i}
+          placeholder={labels.Limit_200_words}
+          value={projectEnquiryForm.projectEnquiry.Importance_to_the_national_heritage__c}
+          onchange={handleChange}
+          disabled={projectEnquiryForm.isBlocked}
+          required="true"
+          max-length="2000"
+          data-maxlength="2000" onkeypress={handleValidation}
+        ></lightning-textarea>
+      </div>
+      <div class="slds-m-top_medium lgc-bg question__container">
+        <div class="question-numb">
+            <span>2b</span>
+        </div>
+        <lightning-textarea
+          name="Outstanding_interest__c"
+          data-name="Outstanding_interest__c"
+          label={labels.Outstanding_interest_explain_how_the_heritage_item_or_property_is_of_outstandin}
+          placeholder={labels.Limit_200_words}
+          value={projectEnquiryForm.projectEnquiry.Outstanding_interest__c}
+          onchange={handleChange}
+          disabled={projectEnquiryForm.isBlocked}
+          required="true"
+          max-length="2000"
+          data-maxlength="2000" onkeypress={handleValidation}
+        >
+        </lightning-textarea>
+      </div>
+      <div class="slds-m-top_medium lgc-bg question__container">
+        <div class="question-numb">
+            <span>2c</span>
+        </div>
+        <lightning-textarea
+          name="Is_Heritage_item_or_property_at_risk__c"
+          data-name="Is_Heritage_item_or_property_at_risk__c"
+          label={labels.At_risk_explain_why_the_heritage_item_or_property_is_at_risk}
+          placeholder={labels.Limit_200_words}
+          value={projectEnquiryForm.projectEnquiry.Is_Heritage_item_or_property_at_risk__c}
+          onchange={handleChange}
+          disabled={projectEnquiryForm.isBlocked}
+          max-length="10000"
+          data-maxlength="10000" onkeypress={handleValidation}
+        ></lightning-textarea>
+      </div>
+      <div class="slds-m-top_medium">
+        <lightning-formatted-rich-text value={labels.And_or}>
+        </lightning-formatted-rich-text>
+      </div>
+      <div class="slds-m-top_medium lgc-bg question__container">
+        <div class="question-numb">
+            <span>2d</span>
+        </div>
+        <lightning-textarea
+          name="Memorial_character__c"
+          data-name="Memorial_character__c"
+          label={labels.Memorial_character_we_give_special_consideration_to_heritage_item_or_property_w}
+          placeholder={labels.Limit_150_words}
+          value={projectEnquiryForm.projectEnquiry.Memorial_character__c}
+          onchange={handleChange}
+          disabled={projectEnquiryForm.isBlocked}
+          max-length="10000"
+          data-maxlength="10000" onkeypress={handleValidation}
+        ></lightning-textarea>
+      </div>
+    </div>
+  </div>
+</template>

@@ -1,0 +1,23 @@
+.submit-button__container{
+    position: relative;
+}
+
+.submit-button__container .slds-popover{
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translate(-50%, -12px);
+}
+
+.slds-popover {
+    background-color: #C23934;
+    color: white
+}
+
+.slds-nubbin_bottom::before{
+    background-color: #C23934;
+}
+
+.slds-icon-text-default {
+    fill: none;
+}

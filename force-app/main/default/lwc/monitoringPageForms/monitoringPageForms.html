@@ -1,0 +1,21 @@
+<template>
+  <table
+    class="slds-table slds-table_bordered"
+  >
+    <thead>
+      <tr>
+        <th>{labels.Form_Title}</th>
+        <!-- <th>{labels.Status}</th> -->
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <template for:each={forms} for:item="form">
+        <c-monitoring-page-form
+          key={form.Id}
+          form={form}
+        ></c-monitoring-page-form>
+      </template>
+    </tbody>
+  </table>
+</template>

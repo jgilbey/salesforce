@@ -1,0 +1,10 @@
+<template>
+    <lightning-button label={label.Exit_button} size="medium" alternative-text="back" class="slds-m-left_xx-small"
+        onclick={navigateToMonitoringPage}></lightning-button>
+    <template if:false={formObject.isBlocked}>
+        <lightning-button label={label.Save} size="medium" alternative-text="back" class="slds-m-left_xx-small"
+            onclick={saveForm}></lightning-button>
+    </template>
+    <c-progress-report-form progress-form-data={formObject} data-type="form">
+    </c-progress-report-form>
+</template>

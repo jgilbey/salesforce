@@ -1,0 +1,10 @@
+<template>
+    <div data-searchname="dataTableElement">
+        <lightning-textarea data-index={typeAttributes.index} data-searchname="dataTableElement"
+            name={typeAttributes.fieldName} variant="label-hidden" value={value} required={typeAttributes.isRequired}
+            disabled={typeAttributes.isDisabled} onchange={typeAttributes.handler}
+            max-length={typeAttributes.maxLength}
+            onkeypress={typeAttributes.keypresshandler} data-maxlength={typeAttributes.maxLength}>
+        </lightning-textarea>
+    </div>
+</template>

@@ -1,0 +1,96 @@
+<template>
+  <div>
+    <span> {option.label} </span>
+  </div>
+  <div>
+    <lightning-input type="checkbox" name={option.value} onchange={checkOption} checked={option.isChecked}
+      disabled={applicationFormObject.isBlocked}>
+    </lightning-input>
+  </div>
+
+  <template if:true={isGradeOneA}>
+    <div class="slds-m-top_medium">
+      <div>
+        <span>
+          {labels.How_many_buildings_of_this_type_are_included_in_your_project}
+        </span>
+      </div>
+
+      <div>
+        <lightning-input pattern="^(0|[1-9][0-9]*)$" message-when-pattern-mismatch="Only numbers can be entered" min="0"
+          formatter="decimal" name="Grade_I_or_A_buildings__c" data-name="Grade_I_or_A_buildings__c"
+          value={applicationFormObject.projectCase.Grade_I_or_A_buildings__c} onchange={handleChange}
+          disabled={applicationFormObject.isBlocked} max-length={NUMBER_FIELDS_MAX_LENGTH}>
+        </lightning-input>
+      </div>
+    </div>
+  </template>
+
+  <template if:true={isGradeTwoB}>
+    <div class="slds-m-top_medium">
+      <div>
+        <span>{labels.How_many_buildings_of_this_type_are_included_in_your_project}</span>
+      </div>
+
+      <div>
+        <lightning-input pattern="^(0|[1-9][0-9]*)$" message-when-pattern-mismatch="Only numbers can be entered" min="0"
+          formatter="decimal" name="Grade_II_or_B_buildings__c" data-name="Grade_II_or_B_buildings__c"
+          value={applicationFormObject.projectCase.Grade_II_or_B_buildings__c} onchange={handleChange}
+          disabled={applicationFormObject.isBlocked} max-length={NUMBER_FIELDS_MAX_LENGTH}>
+        </lightning-input>
+      </div>
+    </div>
+  </template>
+
+  <template if:true={isGradeTwoС}>
+    <div class="slds-m-top_medium">
+      <div>
+        <span>
+          {labels.How_many_buildings_of_this_type_are_included_in_your_project}
+        </span>
+      </div>
+
+      <div>
+        <lightning-input pattern="^(0|[1-9][0-9]*)$" message-when-pattern-mismatch="Only numbers can be entered" min="0"
+          formatter="decimal" name="Grade_II_or_C_buildings__c" data-name="Grade_II_or_C_buildings__c"
+          value={applicationFormObject.projectCase.Grade_II_or_C_buildings__c} onchange={handleChange}
+          disabled={applicationFormObject.isBlocked} max-length={NUMBER_FIELDS_MAX_LENGTH}>
+        </lightning-input>
+      </div>
+    </div>
+  </template>
+
+  <template if:true={isLocalList}>
+    <div class="slds-m-top_medium">
+      <div>
+        <span>{labels.How_many_buildings_of_this_type_are_included_in_your_project}</span>
+      </div>
+      <div>
+        <lightning-input pattern="^(0|[1-9][0-9]*)$" message-when-pattern-mismatch="Only numbers can be entered" min="0"
+          formatter="decimal" name="Local_List__c" data-name="Local_List__c"
+          value={applicationFormObject.projectCase.Local_List__c} onchange={handleChange}
+          disabled={applicationFormObject.isBlocked} max-length={NUMBER_FIELDS_MAX_LENGTH}>
+        </lightning-input>
+      </div>
+    </div>
+  </template>
+
+  <template if:true={isHistoricShip}>
+    <div class="slds-m-top_medium">
+      <div>
+        <span>
+          {labels.What_is_the_certificate_number}
+        </span>
+      </div>
+
+      <div>
+        <lightning-input pattern="^(0|[1-9][0-9]*)$" message-when-pattern-mismatch="Only numbers can be entered" min="0"
+          formatter="decimal" name="Registered_Historic_ship_Certificate_no__c"
+          data-name="Registered_Historic_ship_Certificate_no__c"
+          value={applicationFormObject.projectCase.Registered_Historic_ship_Certificate_no__c} onchange={handleChange}
+          disabled={applicationFormObject.isBlocked} max-length={NUMBER_FIELDS_MAX_LENGTH}>
+        </lightning-input>
+      </div>
+    </div>
+  </template>
+</template>

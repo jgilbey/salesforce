@@ -1,0 +1,17 @@
+<template>
+  <div class="lgc-bg">
+    <h1 role="heading" class="header-text">{sectionTitle}</h1>
+    <lightning-textarea
+      name="howRisksBeingManaged"
+      data-name="howRisksBeingManaged"
+      label={labels.manageRisk.How_project_risks_being_managed}
+      value={progressForm.howRisksBeingManaged}
+      required="true"
+      onchange={handleChange}
+      max-length="5000"
+      disabled={isBlocked}
+      onkeypress={handleValidation} data-maxlength="5000"
+    >
+    </lightning-textarea>
+  </div>
+</template>

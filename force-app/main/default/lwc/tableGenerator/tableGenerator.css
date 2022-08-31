@@ -1,0 +1,8 @@
+:host table{
+    table-layout: fixed;
+    width: 100%;
+}
+
+:host th div{
+    white-space: break-spaces;
+}

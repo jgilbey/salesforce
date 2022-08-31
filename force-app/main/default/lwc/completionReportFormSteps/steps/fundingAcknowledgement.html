@@ -1,0 +1,19 @@
+<template>
+  <h1 role="heading" class="header-text">{sectionTitle}</h1>
+  <div class="slds-p-around_medium">
+    <lightning-textarea
+      label={labels.fundingAcknowledgement.Describe_how_you_acknowledged_your_NHMF_funding_and_include_information_on_t}
+      placeholder={labels.Limit_200_words} value={completionForm.fundingAknowledgement} name="fundingAknowledgement"
+      onchange={handleTextChange} disabled={completionForm.isBlocked} max-length="10000"
+      onkeypress={handleValidation} data-maxlength="10000">
+    </lightning-textarea>
+    <div class="slds-m-top_medium" if:false={isCapital}>
+      <lightning-textarea
+        label={labels.fundingAcknowledgement.Please_provide_details_on_any_lessons_learned_relating_to_your_acquisition}
+        placeholder={labels.Limit_200_words} value={completionForm.lessonLearnedDetails} name="lessonLearnedDetails"
+        onchange={handleTextChange} disabled={completionForm.isBlocked} max-length="10000"
+        onkeypress={handleValidation} data-maxlength="10000">
+      </lightning-textarea>
+    </div>
+  </div>
+</template>

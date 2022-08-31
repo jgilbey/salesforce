@@ -1,0 +1,21 @@
+:host {
+  display: table-row;
+  font:  13px / 19.5px 'Open Sans';
+  color: #333;
+}
+
+/* :host td:first-child{
+  width: 50%;
+  max-width: 25vw;
+} */
+
+/* :host td:nth-child(2){
+  width: 25%;
+} */
+td:first-child {
+  max-width: 0;
+}
+td:last-child{
+  text-align: right;
+  width: 1px;
+}

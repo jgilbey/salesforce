@@ -1,0 +1,73 @@
+<template>
+  <table class="slds-table slds-table_bordered slds-m-bottom_large">
+    <thead>
+      <tr class="slds-text-title_caps">
+        <template for:each={columns} for:item="column">
+          <th key={column.apiName}>
+            <div>{column.label}</div>
+          </th>
+        </template>
+      </tr>
+    </thead>
+    <tbody if:true={tableData.length}>
+      <template for:each={tableData} for:item="row" for:index="index">
+        <tr key={row.idgen}>
+          <template for:each={row.columns} for:item="column" for:index="indexColumn">
+            <td key={column.id}>
+              <template if:true={column.typeText}>
+                <lightning-input type="text" value={column.value} onchange={column.handler} disabled={column.disabled}
+                  id={column.id} name={column.name} data-index={index} required={column.required}>
+                </lightning-input>
+              </template>
+              <template if:true={column.typeNumber}>
+                <lightning-input type="number" value={column.value} formatter={column.formatter} step={column.step}
+                  onchange={column.handler} id={column.id} name={column.name} data-index={index}
+                  disabled={column.disabled} required={column.required}>
+                </lightning-input>
+              </template>
+              <template if:true={column.typeCheckbox}>
+                <lightning-input type="checkbox" checked={column.value} onchange={column.handler} id={column.id}
+                  name={column.name} data-index={index} disabled={column.disabled} required={column.required}>
+                </lightning-input>
+              </template>
+              <template if:true={column.typeCombobox}>
+                <lightning-combobox name={column.name} value={column.value} id={column.id} options={column.options}
+                  onchange={column.handler} disabled={column.disabled} dropdown-alignment="auto" data-index={index}
+                  required={column.required}>
+                </lightning-combobox>
+              </template>
+              <template if:true={column.typeDate}>
+                <lightning-input type="date" value={column.value} onchange={column.handler} id={column.id}
+                  name={column.name} data-index={index} disabled={column.disabled} required={column.required}>
+                </lightning-input>
+              </template>
+              <template if:true={column.typeEdit}>
+                <lightning-button variant="brand" label="Edit" disabled={column.disabled} onclick={column.handler}
+                  data-index={index}>
+                </lightning-button>
+              </template>
+              <template if:true={column.typeDelete}>
+                <lightning-button variant="brand" label="Delete" disabled={column.disabled} onclick={column.handler}
+                  data-index={index}>
+                </lightning-button>
+              </template>
+            </td>
+          </template>
+        </tr>
+      </template>
+    </tbody>
+    <!-- <tfoot>
+        <tr>
+          <td>
+            <lightning-button
+              variant="brand"
+              label="Add"
+              disabled={appForm.isBlocked}
+              onclick={addCurrentRiskRow}
+            >
+            </lightning-button>
+          </td>
+        </tr>
+      </tfoot> -->
+  </table>
+</template>

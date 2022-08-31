@@ -1,0 +1,76 @@
+<template>
+  <h1 role="heading" class="header-text" data-first-element>{sectionTitle}</h1>
+  <div class="slds-p-around_medium">
+    <div>
+      <span>
+        {labels.declaration.nhmf_is_committed_to_being_as_open_as_possible}
+        <br />
+        <br />
+        {labels.declaration.when_you_completed_the_declaration}
+        <br />
+        <br />
+        {labels.declaration.we_will_take_these_into_account}
+        <br />
+        <br />
+        {labels.declaration.when_you_completed_the_declaration_you_also}
+        <ul>
+          <li>{labels.declaration.to_provide_copies_to_other_individuals}</li>
+          <li>
+            {labels.declaration.to_share_information_with_organisations}
+          </li>
+          <li>{labels.declaration.to_hold_in_a_database_and_use_for}</li>
+          <li>
+            {labels.declaration.to_publish_information_about_you_relating_to_the_project}
+          </li>
+          <li>{labels.declaration.to_support_our_work_to_preserve}</li>
+        </ul>
+        <br />
+        <br />
+        {labels.declaration.nhmf_may_use_your_photographs_in_publicity_material}
+        <br />
+        <br />
+        {labels.declaration.i_confirm_that_the_organisation_named}
+        <br />
+        <br />
+        {labels.declaration.i_confirm_that_the_project_described_in_the_application}
+        <br />
+        <br />
+        {labels.declaration.i_confirm_that_the_organisation_has_the_power}
+        <br />
+        <br />
+        {labels.declaration.i_confirm_that_we_will_keep_to_the_standard}
+        <br />
+        <br />
+        {labels.declaration.i_confirm_that_as_far_as_i_know_the_information}
+        <br />
+        <br />
+      </span>
+      <div class="check-box__container">
+        <p>{labels.declaration.i_confirm_that_i_agree_with_the_above_statements}</p>
+        <div class=" checkbox-wrap slds-m-top_small">
+          <lightning-input type="checkbox" label={labels.declaration.confirm} onchange={handleCheckbox} checked={permissionForm.agreeWithStatements}
+            name="agreeWithStatements" required="true" disabled={permissionForm.isBlocked}>
+          </lightning-input>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="slds-m-top_medium">
+        <lightning-input onchange={handleTextChange} label="Name" value={permissionForm.contactName} name="contactName"
+          disabled="true"></lightning-input>
+      </div>
+      <div class="slds-m-top_medium">
+        <lightning-input onchange={handleTextChange} label="Organisation" value={permissionForm.organisationName}
+          name="organisationName" disabled="true"></lightning-input>
+      </div>
+      <div class="slds-m-top_medium">
+        <lightning-input onchange={handleTextChange} label="Position" value={permissionForm.contactTitle}
+          name="contactTitle" disabled="true"></lightning-input>
+      </div>
+      <div class="slds-m-top_medium">
+        <lightning-input type="date" label="Date" value={currentDateTime} disabled="true" class="label-hidden">
+        </lightning-input>
+      </div>
+    </div>
+  </div>
+</template>

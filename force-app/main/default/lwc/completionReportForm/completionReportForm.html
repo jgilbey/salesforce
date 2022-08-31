@@ -1,0 +1,35 @@
+<template>
+  <template if:true={isLoading}>
+    <div>
+      <lightning-spinner alternative-text="Loading..." variant="brand" size="large">
+      </lightning-spinner>
+    </div>
+  </template>
+  <div class="slds-theme_default">
+    <template if:false={isFirst}>
+      <div class="slds-p-top_medium slds-p-horizontal_small">
+        <c-form-progress-step current-step={selectedStepString} all-steps={steps} onchangestep={handleChangeStep}>
+        </c-form-progress-step>
+      </div>
+    </template>
+    <div class="slds-p-around_medium">
+      <c-completion-report-form-steps selected-step-index={selectedStepIndex} is-capital={isCapital}
+        spending-costs-options={spendingCostsOptions} completion-form={completionForm} onformchanged={handleFormChanges}
+        onuploadfinished={handleUploadFinished} onrowaction={handleRowAction}
+        onspendingcostchanges={spendingCostChangesHandler}>
+      </c-completion-report-form-steps>
+
+      <div class="slds-p-vertical_medium">
+        <c-form-footer is-first-stage={isFirst} is-last-stage={isLast} disable-save-button={completionForm.isBlocked}
+          submit-button-name={submitButtonName} onnext={handleNext} onback={handlePrev} onsubmit={handleFinish}
+          onsave={handleSave}>
+        </c-form-footer>
+      </div>
+    </div>
+  </div>
+
+  <c-confirmation-dialog title={labels.Confirmation_Title} message={labels.Do_you_want_to_submit}
+    confirm-label={labels.Yes} cancel-label={labels.No} visible={isDialogVisible} original-message="test"
+    name="confirmModal" onclick={handleDialogClick}>
+  </c-confirmation-dialog>
+</template>

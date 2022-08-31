@@ -1,0 +1,11 @@
+<template>
+  <h1 role="heading" class="header-text">{sectionTitle}</h1>
+  <div class="slds-p-around_medium">
+    <p>{labels.submission.Please_now_attach_any_supporting_documents_required}</p>
+    <div class="slds-p-top_medium">
+      <c-document-uploader accepted-formats={acceptedFormats} record-id={completionForm.id} uploaded-files={completionForm.submissions}
+        name={SUBMISSION_FILE_PREFIX} table-columns={fileColumns} is-blocked={completionForm.isBlocked}>
+      </c-document-uploader>
+    </div>
+  </div>
+</template>

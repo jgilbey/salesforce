@@ -1,0 +1,11 @@
+<template>
+  <h1 role="heading" class="header-text">{sectionTitle}</h1>
+  <div class="slds-p-around_medium">
+    <p>{labels.images.Please_attached_high_resolution_images_of_the_item_or_items_you_have_acquired_N}</p>
+    <div class="slds-p-top_medium">
+      <c-document-uploader  accepted-formats={acceptedFormats} record-id={completionForm.id} uploaded-files={completionForm.images}
+        name={FORM_IMAGES_FILE_PREFIX} table-columns={fileColumns} is-blocked={completionForm.isBlocked}>
+      </c-document-uploader>
+    </div>
+  </div>
+</template>
