@@ -46,7 +46,7 @@ public inherited sharing class ProjectCostFormController {
     List<Project_Income__c> existingContributions = new List<Project_Income__c>();
 
     List<Project_Income__c> conts = [
-      SELECT Id, Secured__c, Income_Description__c, Value__c
+      SELECT Id, Secured__c, Description_for_cash_contributions__c, Amount_you_have_received__c
       FROM Project_Income__c
       WHERE Case__c = :projectId
     ];
