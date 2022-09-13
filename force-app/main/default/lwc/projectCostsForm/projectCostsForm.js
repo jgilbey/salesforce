@@ -1,11 +1,11 @@
-import { LightningElement, api, wire, track } from 'lwc';
+import { LightningElement, api, wire } from 'lwc';
 import getProjectCosts from '@salesforce/apex/ProjectCostFormController.getProjectCosts';
 import getCashContributions from '@salesforce/apex/ProjectCostFormController.getCashContributions';
 import saveProjectCosts from '@salesforce/apex/ProjectCostFormController.saveProjectCosts';
 import deleteProjectCost from '@salesforce/apex/ProjectCostFormController.removeProjectCost';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 export default class ProjectCostsForm extends LightningElement {
-    //@track projectCosts = [];
+    projectCosts = [];
     cashContributions = [];
     columns = [
         {label: 'Cost Heading', editable: true, fieldName: 'Cost_heading__c'},
@@ -44,8 +44,9 @@ export default class ProjectCostsForm extends LightningElement {
               let preparedRow = {};
               //Secured__c, Income_Description__c, Value__c
               preparedRow.Secured__c = income.Secured__c; //amount
-              preparedRow.Income_Description__c = income.Income_Description__c;
-              preparedRow.Value__c = income.Value__c;
+              preparedRow.Description_for_cash_contributions__c = income.Description_for_cash_contributions__c;
+              preparedRow.Amount_you_have_received__c = income.Amount_you_have_received__c;
+              preparedRow.Id = income.Id;
               preparedRow.index = i;
               preparedRows.push(preparedRow);
               i++;
@@ -54,8 +55,15 @@ export default class ProjectCostsForm extends LightningElement {
              console.log('costs',this.cashContributions);
         
       }
+      else{
+        this.cashContributions = undefined;
+      }
     }
-/*
+
+    get cashContributions(){
+      return this.cashContributions;
+    }
+
     @wire(getProjectCosts, {
         projectId: '$recordId'
       })
@@ -84,7 +92,7 @@ export default class ProjectCostsForm extends LightningElement {
           console.log('error', error);
         }
       }
-  */ 
+  
     handleSave(event) {
         //this.saveDraftValues = event.detail.draftValues;
         //need to update the values of data with the draft values    

@@ -1,57 +1,50 @@
 <template>
-
-    
-    <td data-label={income}
+    <td data-label="Description"
         data-id={income.index}
         data-field="Description_for_cash_contributions__c">
     
-        <div class="slds-truncate" title={income.Description_for_cash_contributions__c}> 
+        <div class="slds-truncate">
             <lightning-textarea 
             name="Description_for_cash_contributions__c" 
             value={income.Description_for_cash_contributions__c}
-            data-id={income.index}
-            onchange={handleOnChange}></lightning-textarea>
+            data-id={income.index}></lightning-textarea>
         </div>
     </td>   
     
-    <td data-label={income}
+    <td data-label="IncomeSec"
         data-id={income.index}
         data-field="Secured__c">
-        <div class="slds-truncate" title={income.Secured__c}> 
+        <div class="slds-truncate">
         
           <lightning-input type="checkbox" 
                                     name="Secured__c" 
                                     value={income.Secured__c}
-                                    onchange={handleOnChange}
                                     data-id={income.index}>
           </lightning-input>
                     
         </div>
     </td>   
 
-    <td data-label={income} 
+    <td data-label="Amount" 
     data-id={income.index}
-    data-field="Value__c"
+    data-field="Amount_you_have_received__c"
     class="">
 
-        <div class="slds-truncate" title="Value__c">
+    <div class="slds-truncate">
             <lightning-input type="currency" 
-                             name="Value__c" 
-                             value={income.Value__c}
-                             onchange={handleOnChange}
+                             name="Amount_you_have_received__c" 
+                             value={income.Amount_you_have_received__c}
                              data-id={income.index}>
             </lightning-input>
       </div> 
     </td>
-   <td data-id={income.index}>
-        <template if:true={allowremoving}>
-          <div class="slds-truncate" title="Remove">
+    <td data-id={income.index}>
+          <div class=”slds-cell-wrap”>
             <lightning-button-icon label="delete" 
             icon-name="utility:delete" 
             alternative-text="Delete" title="Delete" 
             variant="brand" class="delete-button" 
             onclick={removeCostItemHandler}></lightning-button-icon>
           </div>
-        </template>
       </td> 
 </template>

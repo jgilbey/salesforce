@@ -5,9 +5,9 @@
       variant="Neutral"
       onclick={handleAddProjectCost}>
   </c-button>-->
-  <!--
+  
         <template if:true={projectCosts}>
-            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+          <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
                 <thead>
                     <tr class="slds-line-height_reset">
                       
@@ -15,7 +15,9 @@
                       
                     
                       <th class="" scope="col" key={col.index}>
-                        {col.label}
+                        <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Description_for_cash_contributions__c">
+                           
+                        {col.label} </a>
                       </th>
                     
                     </template>
@@ -34,15 +36,46 @@
                 </tbody>
             </table>
 
-          </template>-->
+          </template>
           <template if:true={cashContributions}>
-            <table>
-              <thead></thead>
-              <tbody><template for:each={cashContributions} for:item="income">
-                  <c-project-income-item key={income.index} income={income} onchange={handleChange}>
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+              <thead>
+                <tr class="slds-line-height_reset">
+                    <th class="" scope="col">
+                        <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Description_for_cash_contributions__c">
+                            Description
+                        </a>
+                    </th>
+                    <th class="" scope="col">
+                        <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Secured__c">
+                            Secured
+                        </a>
+                    </th>
+                    <th class="" scope="col">
+                        <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Amount_you_have_received__c">
+                            Amount
+                        </a>
+                    </th>
+                    <th class="" scope="col">
+                      <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Remove">
+                      </a>
+                  </th>
+                </tr>
+            </thead>
+             
+              <tbody>
+                <template if:true={cashContributions}>
+                  <template for:each={cashContributions} for:item="income">
+                <tr class="slds-hint-parent" key={income.index}>
+                  &nbsp;
+                  <c-project-income-item key={income.Id} income={income}>
                   </c-project-income-item>
-              </template></tbody>
-            </table>
+                
+                </tr>
+              </template>
+            </template>
+          </tbody>
+          </table>
     </template>
 
       <!--<c-button
