@@ -1,10 +1,10 @@
 <template>
 
-    <!--<td data-label={cost}
+    <td data-label={cost}
         data-id={cost.index}
         data-field="Cost_heading__c">
     
-        <div class="slds-truncate" title={cost.Cost_heading__c}> 
+        <div class="slds-truncate"> 
         
           <c-selectlist placeholder="Select heading" 
           style-class={styleClass} 
@@ -27,7 +27,7 @@
         data-id={cost.index}
         data-field="Project_Cost_Description__c">
     
-        <div class="slds-truncate" title={cost.Project_Cost_Description__c}> 
+        <div class="slds-truncate"> 
             <lightning-textarea 
             name="Project_Cost_Description__c" 
             value={cost.Project_Cost_Description__c}
@@ -51,7 +51,6 @@
       </div> 
     </td>
    <td data-id={cost.index}>
-        <template if:true={allowremoving}>
           <div class="slds-truncate" title="Remove">
             <lightning-button-icon label="delete" 
             icon-name="utility:delete" 
@@ -59,6 +58,5 @@
             variant="brand" class="delete-button" 
             onclick={removeCostItemHandler}></lightning-button-icon>
           </div>
-        </template>
-      </td> -->
+      </td> 
 </template>

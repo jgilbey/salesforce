@@ -1,5 +1,23 @@
 public inherited sharing class ProjectCostFormController {
   //TODO modify by to get by record type id
+
+  @AuraEnabled
+  public static Case getProject(Id projectId) {
+    Case project = [
+      SELECT
+        Total_Cost__c,
+        Grant_Award__c,
+        Grant_requested__c,
+        Total_Development_Income__c,
+        NHMF_Total_cash_contributions__c,
+        Grant_Percentage__c,
+        payment_percentage__c
+      FROM case
+    ];
+
+    return project;
+  }
+
   @AuraEnabled(cacheable=true)
   public static List<Project_Cost__c> getProjectCosts(Id projectId) {
     List<Project_Cost__c> existingCosts = new List<Project_Cost__c>();
@@ -46,7 +64,11 @@ public inherited sharing class ProjectCostFormController {
     List<Project_Income__c> existingContributions = new List<Project_Income__c>();
 
     List<Project_Income__c> conts = [
-      SELECT Id, Secured__c, Description_for_cash_contributions__c, Amount_you_have_received__c
+      SELECT
+        Id,
+        Secured__c,
+        Description_for_cash_contributions__c,
+        Amount_you_have_received__c
       FROM Project_Income__c
       WHERE Case__c = :projectId
     ];

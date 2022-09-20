@@ -1,35 +1,39 @@
 <template>
     
-  <!--<c-button
+  <div>
+    <c-project-cost-form-header project={project}></c-project-cost-form-header>
+  </div>
+<c-button
       label="Add Project Cost"
       variant="Neutral"
       onclick={handleAddProjectCost}>
-  </c-button>-->
+  </c-button>
   
         <template if:true={projectCosts}>
           <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+          
                 <thead>
                     <tr class="slds-line-height_reset">
-                      
                     <template for:each={columns} for:item="col">
-                      
+                      &nbsp;
                     
                       <th class="" scope="col" key={col.index}>
                         <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Description_for_cash_contributions__c">
-                           
-                        {col.label} </a>
+                                            {col.label} </a>
                       </th>
                     
                     </template>
+                    <th class="" scope="col">
+                      <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Remove">
+                      </a>
+                  </th>
                  </tr>
                 </thead>
                 <tbody>
                         <template for:each={projectCosts} for:item="cost">
-                          <tr key={cost.index}>
-                            <div key={cost.index}>
-                            <c-project-cost-item cost={cost} onchange={handleChange} allowremoving={cost.allowRemoving}>
+                          <tr class="slds-hint-parent" key={cost.index}>
+                            <c-project-cost-item key={cost.index} cost={cost}>
                             </c-project-cost-item>
-                            </div>
                           </tr>
                         </template>
 

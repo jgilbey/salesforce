@@ -1,4 +1,6 @@
 import { LightningElement, api, wire } from 'lwc';
+
+import getProject from '@salesforce/apex/ProjectCostFormController.getProject';
 import getProjectCosts from '@salesforce/apex/ProjectCostFormController.getProjectCosts';
 import getCashContributions from '@salesforce/apex/ProjectCostFormController.getCashContributions';
 import saveProjectCosts from '@salesforce/apex/ProjectCostFormController.saveProjectCosts';
@@ -28,8 +30,16 @@ export default class ProjectCostsForm extends LightningElement {
         {label: 'Amount', editable: true, fieldName: 'Costs__c'}
         
     ];
+    
     @api recordId;
     @api columnWidthsMode = 'fixed';
+
+    @wire(getProject, {projectId: '$recordId'})
+    wiredProject({error, data}){
+      if(data){
+        console.log('project', data);
+      }
+    }
 
     @wire(getCashContributions, {
       projectId: '$recordId'
