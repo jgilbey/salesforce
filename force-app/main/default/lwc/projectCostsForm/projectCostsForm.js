@@ -3,10 +3,11 @@ import { LightningElement, api, wire } from 'lwc';
 import getProject from '@salesforce/apex/ProjectCostFormController.getProject';
 import getProjectCosts from '@salesforce/apex/ProjectCostFormController.getProjectCosts';
 import getCashContributions from '@salesforce/apex/ProjectCostFormController.getCashContributions';
-import saveProjectCosts from '@salesforce/apex/ProjectCostFormController.saveProjectCosts';
-import deleteProjectCost from '@salesforce/apex/ProjectCostFormController.removeProjectCost';
+//import saveProjectCosts from '@salesforce/apex/ProjectCostFormController.saveProjectCosts';
+//import deleteProjectCost from '@salesforce/apex/ProjectCostFormController.removeProjectCost';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 export default class ProjectCostsForm extends LightningElement {
+    project = [];
     projectCosts = [];
     cashContributions = [];
     columns = [
@@ -37,7 +38,10 @@ export default class ProjectCostsForm extends LightningElement {
     @wire(getProject, {projectId: '$recordId'})
     wiredProject({error, data}){
       if(data){
+        this.project = data;
         console.log('project', data);
+      } else {
+        console.log('error retrieving project')
       }
     }
 

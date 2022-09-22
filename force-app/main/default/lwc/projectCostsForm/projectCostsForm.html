@@ -1,7 +1,9 @@
 <template>
     
   <div>
-    <c-project-cost-form-header project={project}></c-project-cost-form-header>
+    <template if:true={project}>
+      <c-project-cost-form-header project={project}></c-project-cost-form-header>
+    </template>
   </div>
 <c-button
       label="Add Project Cost"
@@ -91,4 +93,5 @@
       label="Cancel"
       variant="Neutral">
   </c-button>
-    </template>
+
+    </template> 
