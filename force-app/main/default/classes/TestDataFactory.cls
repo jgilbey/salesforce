@@ -10,7 +10,9 @@ Date                Version     Developer                  Comments
 21/11/2019          1.0.0       Gajendra                   Created
 10/03/2021          1.0.1       Antony                     Updated to include Custom Settings and a Contact Email Address.
 13/03/2021          1.0.2       Alicia                     Updated to include no insert versions of the CreateAccount & CreateContact methods
-/***********************************************************************************/
+20/09/2022          1.0.3       Rakesh                     Creating methods for all recordtypes of Grants
+22/09/2022			1.0.4		Rakesh					   Creating Methods for Project Cost and Project Income
+/**********************************************************************************************************************/
 public class TestDataFactory {
     public static Account testAccount;
     public static Contact testContact;  
@@ -25,7 +27,7 @@ public class TestDataFactory {
           Account acct = new Account(Name='Test Account');        
           insert acct;
           testAccount = acct;
-          return acct;
+          return testAccount;
     } 
   
     public static Contact createContact(){
@@ -145,6 +147,58 @@ public class TestDataFactory {
       Case cs= New Case(Description = 'Test Case',                             
                                 Status = 'New',
                                 RecordTypeId= recordTypeId,
+                                //AccountId = testAccount.id,
+                                //ContactId = testContact.id,                                
+                                Project_Post_Code__c = 'BR12345',
+                                Grant_Expiry_Date__c = Date.today().AddDays(5)
+                                );
+  
+      if(isInsert){
+          insert cs;
+      }
+      return cs;
+    }
+    //Creating project cost for given project and number of project costs to be created 
+    public static List<Project_Cost__c> createProjectCost(id projectId , integer noOfProjCosts)
+    {
+        List<Project_Cost__c> prjCostLst = new List<Project_Cost__c>();
+        for(integer pc = 1 ; pc <= noOfProjCosts ; pc++){
+        Project_Cost__c projCost= New Project_Cost__c();
+            					projCost.case__c = projectId;
+            					projCost.Cost_heading__c = 'Professional fees';                          
+                                projCost.Costs__c =1000;
+                                projCost.project_Cost_Description__c = 'some professioanl fees description';
+            					prjCostLst.add(projCost);
+        }
+                                
+        return prjCostLst;
+        
+         
+    }
+    ////Creating project Cash contribution for given project and number of project cash contribution to be created
+    public static List<Project_Income__c> createProjectIncome(id projectId , integer noOfProjIncome)
+    {
+        List<Project_Income__c> prjIncomeLst = new List<Project_Income__c>();
+        for(integer pi = 1 ; pi <= noOfProjIncome ; pi++){
+        Project_Income__c projIncome= New Project_Income__c();
+            					projIncome.case__c = projectId;
+            					projIncome.Secured__c = false;                          
+                                projIncome.Amount_you_have_received__c =500;
+                                projIncome.Description_for_cash_contributions__c = 'CC1';
+            					prjIncomeLst.add(projIncome);
+        }
+                                
+        return prjIncomeLst;
+        
+         
+    }
+    
+    
+    public static Case createLargeGrantCase(boolean isInsert){
+      Id recordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('Large_Development_250_500k').getRecordTypeId();
+      Case cs= New Case(Description = 'Test Case Large Grant',                             
+                                Status = 'New',
+                                RecordTypeId= recordTypeId,
                                 ContactId = testContact.id,
                                 AccountId = testAccount.id,
                                 Project_Post_Code__c = 'BR12345',
@@ -156,7 +210,55 @@ public class TestDataFactory {
       }
       return cs;
     }
+    public static Case createMemorial(boolean isInsert){
+      Id recordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('Memorial').getRecordTypeId();
+      Case cs= New Case(Description = 'Test Case Memorial',                             
+                                Status = 'New',
+                                RecordTypeId= recordTypeId,
+                                ContactId = testContact.id,
+                                AccountId = testAccount.id,
+                                Project_Post_Code__c = 'BR12345',
+                                Grant_Expiry_Date__c = Date.today().AddDays(5)
+                                );
   
+      if(isInsert){
+          insert cs;
+      }
+      return cs;
+    }
+    public static Case createMedium(boolean isInsert){
+      Id recordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('Medium').getRecordTypeId();
+      Case cs= New Case(Description = 'Test Case Medium',                             
+                                Status = 'New',
+                                RecordTypeId= recordTypeId,
+                                ContactId = testContact.id,
+                                AccountId = testAccount.id,
+                                Project_Post_Code__c = 'BR12345',
+                                Grant_Expiry_Date__c = Date.today().AddDays(5)
+                                );
+  
+      if(isInsert){
+          insert cs;
+      }
+      return cs;
+    }
+    public static Case createLarge(boolean isInsert){
+      Id recordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('Large').getRecordTypeId();
+      Case cs= New Case(Description = 'Test Case Large',                             
+                                Status = 'New',
+                                RecordTypeId= recordTypeId,
+                                ContactId = testContact.id,
+                                AccountId = testAccount.id,
+                                Project_Post_Code__c = 'BR12345',
+                                Grant_Expiry_Date__c = Date.today().AddDays(5)
+                                );
+  
+      if(isInsert){
+          insert cs;
+      }
+      return cs;
+    }
+        
     public static EOI_Project_Enquiry__c createEOI_ProjectEnquiry(boolean isInsert){
       Id recordTypeId = Schema.SObjectType.EOI_Project_Enquiry__c.getRecordTypeInfosByDeveloperName().get('EOI_NHMF').getRecordTypeId();//Project_Enquiry
       EOI_Project_Enquiry__c eoi= New EOI_Project_Enquiry__c(
