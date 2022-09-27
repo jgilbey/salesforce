@@ -19,7 +19,7 @@
                     <template for:each={columns} for:item="col">
                     
                       <th class="" scope="col" key={col.index}>
-                        <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Description_for_cash_contributions__c">
+                        <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs}>
                                             {col.label} </a>
                       </th>
                     
@@ -31,6 +31,7 @@
                  </tr>
                 </thead>
                 <tbody>
+                  <template if:true={projectCosts}>
                         <template for:each={projectCosts} for:item="cost">
                           <tr class="slds-hint-parent" key={cost.index}>
                             &nbsp;
@@ -38,7 +39,7 @@
                             </c-project-cost-item>
                           </tr>
                         </template>
-
+                      </template>
                 </tbody>
             </table>
 
