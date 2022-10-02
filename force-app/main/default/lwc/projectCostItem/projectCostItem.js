@@ -9,6 +9,7 @@ export default class ProjectCostItem extends LightningElement {
     @api allowremoving;
     @api recordTypeId;
     @track objectInfo;
+    @track visible = true;
     
 @wire(getObjectInfo, { objectApiName: PROJECT_COST_OBJECT })
 wiredRecord({ error,data }){
@@ -64,15 +65,16 @@ wiredRecord({ error,data }){
     }
 
     removeCostItemHandler(){
-        console.log('the cost item', this.cost);
+        console.log('the cost item is', JSON.stringify(this.cost));
             this.fireEvent({
               eventName: "remove",
-              details: { id: this.cost.Id }
+              details: { Id: this.cost.Id }
             });
+            this.visible = false;
         
     }
 
     fireEvent({ eventName, details }) {
-        this.dispatchEvent(new CustomEvent(eventName, { detail: details }));
+        this.dispatchEvent(new CustomEvent(eventName, { detail: details }))
     }       
 }

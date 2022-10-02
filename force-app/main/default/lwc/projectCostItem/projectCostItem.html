@@ -1,5 +1,5 @@
 <template>
-
+  <template if:true={visible}>
     <td data-label={cost}
         data-id={cost.index}
         data-field="Cost_heading__c">
@@ -59,4 +59,5 @@
             onclick={removeCostItemHandler}></lightning-button-icon>
           </div>
       </td> 
+      </template>
 </template>

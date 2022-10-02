@@ -4,7 +4,7 @@ import getProject from '@salesforce/apex/ProjectCostFormController.getProject';
 import getProjectCosts from '@salesforce/apex/ProjectCostFormController.getProjectCosts';
 import getCashContributions from '@salesforce/apex/ProjectCostFormController.getCashContributions';
 //import saveProjectCosts from '@salesforce/apex/ProjectCostFormController.saveProjectCosts';
-//import deleteProjectCost from '@salesforce/apex/ProjectCostFormController.removeProjectCost';
+import deleteProjectCost from '@salesforce/apex/ProjectCostFormController.removeProjectCost';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 export default class ProjectCostsForm extends LightningElement {
     project = [];
@@ -92,7 +92,7 @@ export default class ProjectCostsForm extends LightningElement {
               preparedRow.Cost_heading__c = cost.Cost_heading__c;
               preparedRow.Project_Cost_Description__c = cost.Project_Cost_Description__c;
               //preparedRow.Vat__c = cost.Vat__c;
-              //preparedRow.Id = cost.Id ? cost.Id : null;
+              preparedRow.Id = cost.Id ? cost.Id : null;
               //preparedRow.allowRemoving = true;
               preparedRow.index = i;
               preparedRows.push(preparedRow);
@@ -165,16 +165,17 @@ export default class ProjectCostsForm extends LightningElement {
     }
 
     handleRemove(e) {
-//        console.log(e.detail.Id);
-    //    this.deleteCostProject(e.detail.Id);
+        console.log('in handle remove', e.detail.Id);
+        this.deleteCostProject(e.detail.Id);
     }
 
-    /*deleteCostProject(projectId){
+    deleteCostProject(projectId){
         //delete controller method
+        console.log('in delete project cost', projectId);
         deleteProjectCost({projectCostToRemove: projectId})
         .then(response=>{
           if(response.success) {
-            this.retrieveData();
+            //this.retrieveData();
             console.log('successfully removed project cost')
           } else {
             this.showToast('error', 'Removing failed', this.errorMessageHandler(response.message));
@@ -189,5 +190,5 @@ export default class ProjectCostsForm extends LightningElement {
           this.isDialogVisible = false;
         });
         
-    }*/
+    }
 }

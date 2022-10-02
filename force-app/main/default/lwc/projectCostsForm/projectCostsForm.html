@@ -35,7 +35,7 @@
                         <template for:each={projectCosts} for:item="cost">
                           <tr class="slds-hint-parent" key={cost.index}>
                             &nbsp;
-                            <c-project-cost-item key={cost.index} cost={cost}>
+                            <c-project-cost-item key={cost.index} cost={cost} onremove={handleRemove}>
                             </c-project-cost-item>
                           </tr>
                         </template>
@@ -75,7 +75,7 @@
                   <template for:each={cashContributions} for:item="income">
                 <tr class="slds-hint-parent" key={income.index}>
                   &nbsp;
-                  <c-project-income-item key={income.Id} income={income}>
+                  <c-project-income-item key={income.Id} income={income} onremove={handleRemove}>
                   </c-project-income-item>
                 
                 </tr>
