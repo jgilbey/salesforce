@@ -1,13 +1,17 @@
-import { LightningElement, api, wire } from 'lwc';
+import { LightningElement, api, wire, track } from 'lwc';
 
 import getProject from '@salesforce/apex/ProjectCostFormController.getProject';
 import getProjectCosts from '@salesforce/apex/ProjectCostFormController.getProjectCosts';
 import getCashContributions from '@salesforce/apex/ProjectCostFormController.getCashContributions';
 //import saveProjectCosts from '@salesforce/apex/ProjectCostFormController.saveProjectCosts';
 import deleteProjectCost from '@salesforce/apex/ProjectCostFormController.removeProjectCost';
+import deleteProjectIncome from '@salesforce/apex/ProjectCostFormController.removeIncomeItem';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 export default class ProjectCostsForm extends LightningElement {
-    project = [];
+    @track project = {};
+    realTimeProject = {};
+    totalCost = 0;
+    totalCashContributions = 0;
     projectCosts = [];
     cashContributions = [];
     columns = [
@@ -38,8 +42,15 @@ export default class ProjectCostsForm extends LightningElement {
     @wire(getProject, {projectId: '$recordId'})
     wiredProject({error, data}){
       if(data){
-        this.project = data;
-        console.log('project', data);
+
+        //let local = data;
+        Object.keys(data).forEach(field => 
+          {
+            this.project[field] = data[field];
+          })
+
+          console.log('the project is ',this.project);
+        
       } else {
         console.log('error retrieving project')
       }
@@ -151,24 +162,44 @@ export default class ProjectCostsForm extends LightningElement {
         };
     }
 
-    handleAddProjectCost(){
-
-    }
-
-    handleChange(e){/*
-        e.stopPropagation();
+    handleIncomeChange(e){
+      e.stopPropagation();
         console.log('handling in parent');
         console.log(e.detail.value); //... Field API Name
         //console.log(e.detail.value); //... value
         console.log(e.detail.id); //...Record Id
-        this.projecCosts[e.detail.id][e.detail.name] = e.detail.value;*/
+        this.cashContributions[e.detail.id][e.detail.name] = e.detail.value;
+        //if the field was the amount - recalculate totals
+        this.totalCashContributions = 0;
+        this.calculateContributions();
+        var fieldName = 'Total_Development_Income__c';
+        console.log('the development income', this.project[fieldName]);
+        this.project[fieldName] = this.totalCashContributions;
     }
 
-    handleRemove(e) {
-        console.log('in handle remove', e.detail.Id);
+    calculateContributions(){
+      for(var cont in this.cashContributions){
+        this.totalCashContributions += parseInt(this.cashContributions[cont].Amount_you_have_received__c);
+        
+      }
+    }
+
+
+    handleAddProjectCost(){
+    }
+
+
+    
+    handleRemoveIncome(e) {
+      console.log('in handle remove income', e.detail.Id);
+      this.deleteProjectIncome(e.detail.Id);
+  }
+
+    handleRemoveCost(e) {
+        console.log('in handle remove cost', e.detail.Id);
         this.deleteCostProject(e.detail.Id);
     }
-
+    
     deleteCostProject(projectId){
         //delete controller method
         console.log('in delete project cost', projectId);
@@ -191,4 +222,29 @@ export default class ProjectCostsForm extends LightningElement {
         });
         
     }
+
+    
+    deleteProjectIncome(projectId){
+      //delete controller method
+      console.log('in delete project cost', projectId);
+      deleteProjectIncome({projectIncomeToRemove: projectId})
+      .then(response=>{
+        if(response.success) {
+          //this.retrieveData();
+          console.log('successfully removed project cost')
+        } else {
+          this.showToast('error', 'Removing failed', this.errorMessageHandler(response.message));
+          console.log('Delete fail: ' + response.message);
+        }
+      })
+      .catch(error=>{
+        this.showToast('error', 'Removing failed', this.errorMessageHandler(JSON.stringify(error)));
+        console.log(JSON.stringify(error));
+      })
+      .finally(()=>{
+        this.isDialogVisible = false;
+      });
+      
+  }
+
 }

@@ -34,7 +34,8 @@
             <lightning-input type="currency" 
                              name="Amount_you_have_received__c" 
                              value={income.Amount_you_have_received__c}
-                             data-id={income.index}>
+                             data-id={income.index}
+                             onchange={handleOnChange}>
             </lightning-input>
       </div> 
     </td>
