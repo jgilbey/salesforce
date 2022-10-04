@@ -60,7 +60,7 @@ wiredRecord({ error,data }){
         console.log(JSON.stringify(e.target)); //...Record Id
         console.log(e.target.name);
         this.dispatchEvent(
-            new CustomEvent('change', { detail: { name: e.target.name, value: e.target.value, id: e.target.dataset.id } })
+            new CustomEvent('costchange', { detail: { name: e.target.name, value: e.target.value, id: e.target.dataset.id } })
           );
     }
 

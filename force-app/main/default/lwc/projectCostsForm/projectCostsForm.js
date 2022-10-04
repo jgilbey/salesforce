@@ -7,9 +7,11 @@ import getCashContributions from '@salesforce/apex/ProjectCostFormController.get
 import deleteProjectCost from '@salesforce/apex/ProjectCostFormController.removeProjectCost';
 import deleteProjectIncome from '@salesforce/apex/ProjectCostFormController.removeIncomeItem';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import UserPreferencesRecordHomeSectionCollapseWTShown from '@salesforce/schema/User.UserPreferencesRecordHomeSectionCollapseWTShown';
 export default class ProjectCostsForm extends LightningElement {
     @track project = {};
     realTimeProject = {};
+    totalCosts = 0;
     totalCost = 0;
     totalCashContributions = 0;
     projectCosts = [];
@@ -177,9 +179,31 @@ export default class ProjectCostsForm extends LightningElement {
         this.project[fieldName] = this.totalCashContributions;
     }
 
+    handleCostChange(e){
+      e.stopPropagation();
+        console.log('handling in parent');
+        console.log(e.detail.value); //... Field API Name
+        //console.log(e.detail.value); //... value
+        console.log(e.detail.id); //...Record Id
+        this.projectCosts[e.detail.id][e.detail.name] = e.detail.value;
+        //if the field was the amount - recalculate totals
+        this.totalCosts = 0;
+        this.calculateCosts();
+        var fieldName = 'Total_Cost__c';
+        console.log('the total costs plus contributions', this.project[fieldName]);
+        this.project[fieldName] = this.totalCosts;
+    }
+
     calculateContributions(){
       for(var cont in this.cashContributions){
         this.totalCashContributions += parseInt(this.cashContributions[cont].Amount_you_have_received__c);
+        
+      }
+    }
+
+    calculateCosts(){
+      for(var cost in this.projectCosts){
+        this.totalCosts += parseInt(this.projectCosts[cost].Costs__c);
         
       }
     }
@@ -220,6 +244,9 @@ export default class ProjectCostsForm extends LightningElement {
         .finally(()=>{
           this.isDialogVisible = false;
         });
+
+        
+      recalculateCostsSummary();
         
     }
 
@@ -244,7 +271,14 @@ export default class ProjectCostsForm extends LightningElement {
       .finally(()=>{
         this.isDialogVisible = false;
       });
+
+      recalculateCostsSummary();
       
+  }
+
+  recalculateCostsSummary(){
+    this.calculateContributions();
+    this.calculateCosts();
   }
 
 }
