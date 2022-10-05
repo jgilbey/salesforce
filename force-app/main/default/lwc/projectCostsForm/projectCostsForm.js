@@ -1,12 +1,12 @@
 import { LightningElement, api, wire, track } from 'lwc';
-
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getProject from '@salesforce/apex/ProjectCostFormController.getProject';
 import getProjectCosts from '@salesforce/apex/ProjectCostFormController.getProjectCosts';
 import getCashContributions from '@salesforce/apex/ProjectCostFormController.getCashContributions';
 //import saveProjectCosts from '@salesforce/apex/ProjectCostFormController.saveProjectCosts';
 import deleteProjectCost from '@salesforce/apex/ProjectCostFormController.removeProjectCost';
 import deleteProjectIncome from '@salesforce/apex/ProjectCostFormController.removeIncomeItem';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+
 import UserPreferencesRecordHomeSectionCollapseWTShown from '@salesforce/schema/User.UserPreferencesRecordHomeSectionCollapseWTShown';
 export default class ProjectCostsForm extends LightningElement {
     @track project = {};
@@ -128,6 +128,8 @@ export default class ProjectCostsForm extends LightningElement {
     @api
     handleSaveProjectCosts() {
 
+      //perform validation on server side
+
         /*var selectedRecords = this.template.querySelector("lightning-datatable").getSelectedRows();  
         console.log('the revenues'+selectedRecords);
         createForecastRevenue({forecastList: selectedRecords})  
@@ -181,7 +183,7 @@ export default class ProjectCostsForm extends LightningElement {
 
     handleCostChange(e){
       e.stopPropagation();
-        console.log('handling in parent');
+        console.log('handling cost change in parent');
         console.log(e.detail.value); //... Field API Name
         //console.log(e.detail.value); //... value
         console.log(e.detail.id); //...Record Id
@@ -204,7 +206,6 @@ export default class ProjectCostsForm extends LightningElement {
     calculateCosts(){
       for(var cost in this.projectCosts){
         this.totalCosts += parseInt(this.projectCosts[cost].Costs__c);
-        
       }
     }
 
@@ -224,41 +225,59 @@ export default class ProjectCostsForm extends LightningElement {
         this.deleteCostProject(e.detail.Id);
     }
     
-    deleteCostProject(projectId){
+    deleteCostProject(projectCostToRemove){
         //delete controller method
-        console.log('in delete project cost', projectId);
-        deleteProjectCost({projectCostToRemove: projectId})
+        console.log('in delete project cost', projectCostToRemove);
+        deleteProjectCost({projectId: this.project.Id, projectCostToRemove: projectCostToRemove, 
+          grantPercentage: this.project.Grant_Percentage__c, 
+          totalCost: this.project.Total_Cost__c})
         .then(response=>{
           if(response.success) {
             //this.retrieveData();
             console.log('successfully removed project cost')
           } else {
-            this.showToast('error', 'Removing failed', this.errorMessageHandler(response.message));
             console.log('Delete fail: ' + response.message);
+            this.showToast('error', 'Removing failed', this.errorMessageHandler(response.message));
+            
           }
         })
         .catch(error=>{
-          this.showToast('error', 'Removing failed', this.errorMessageHandler(JSON.stringify(error)));
-          console.log(JSON.stringify(error));
+          console.log('error ',JSON.stringify(error));
+          let variant = 'error'
+          let title = 'Removed failed'
+          let message = this.errorMessageHandler(error.message);
+          this.dispatchEvent(
+            new ShowToastEvent({variant, title, message})
+          );
+        
+          //this.showToast('error', 'Removing failed', this.errorMessageHandler(JSON.stringify(error)));
+          
         })
         .finally(()=>{
-          this.isDialogVisible = false;
+          //this.isDialogVisible = false;
         });
 
         
-      recalculateCostsSummary();
+      this.recalculateCostsSummary();
         
     }
-
     
-    deleteProjectIncome(projectId){
+    
+  // handlers functins --start
+  showToast(variant, title, message) {
+    this.dispatchEvent(
+      new ShowToastEvent({variant, title, message})
+    );
+  }
+    
+    deleteProjectIncome(incomeId){
       //delete controller method
-      console.log('in delete project cost', projectId);
-      deleteProjectIncome({projectIncomeToRemove: projectId})
+      console.log('in delete project cost', incomeId);
+      deleteProjectIncome({projectId: '$recordId', projectIncomeToRemove: incomeId, grantPercentage: this.project.Grant_Percentage__c, totalCost: this.project.Total_Cost__c})
       .then(response=>{
         if(response.success) {
           //this.retrieveData();
-          console.log('successfully removed project cost')
+          console.log('successfully removed project income')
         } else {
           this.showToast('error', 'Removing failed', this.errorMessageHandler(response.message));
           console.log('Delete fail: ' + response.message);
