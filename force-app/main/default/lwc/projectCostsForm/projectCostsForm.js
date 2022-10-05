@@ -3,7 +3,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getProject from '@salesforce/apex/ProjectCostFormController.getProject';
 import getProjectCosts from '@salesforce/apex/ProjectCostFormController.getProjectCosts';
 import getCashContributions from '@salesforce/apex/ProjectCostFormController.getCashContributions';
-//import saveProjectCosts from '@salesforce/apex/ProjectCostFormController.saveProjectCosts';
+import saveProjectCosts from '@salesforce/apex/ProjectCostFormController.saveProjectCosts';
 import deleteProjectCost from '@salesforce/apex/ProjectCostFormController.removeProjectCost';
 import deleteProjectIncome from '@salesforce/apex/ProjectCostFormController.removeIncomeItem';
 
@@ -120,41 +120,39 @@ export default class ProjectCostsForm extends LightningElement {
           console.log('error', error);
         }
       }
-  
-    handleSave(event) {
-        //this.saveDraftValues = event.detail.draftValues;
-        //need to update the values of data with the draft values    
-    }
 
-    @api
+    
     handleSaveProjectCosts() {
 
-      //perform validation on server side
+      //send the items to be saved to back end
+      console.log(this.projectCosts, this.cashContributions)
 
-        /*var selectedRecords = this.template.querySelector("lightning-datatable").getSelectedRows();  
-        console.log('the revenues'+selectedRecords);
-        createForecastRevenue({forecastList: selectedRecords})  
-        .then(result=>{  
-            console.log('handle created done', result);
-         //return refreshApex(this.oppList);  
-       });  */
-       /*console.log(this.projectCosts)
+      let newProjectCosts = [];
+      this.projectCosts.forEach(cost => { 
+          let preparedCost = {};
+          preparedCost.Costs__c = parseInt(cost.Costs__c);
+          preparedCost.Project_Cost_Description__c = cost.Project_Cost_Description__c;
+          preparedCost.Placement__c = cost.Cost_heading__c;
+          preparedCost.Id = cost.Id ? cost.Id : '';
+          newProjectCosts.push(preparedCost);
+      });
+      this.projectCosts = newProjectCosts; //hmm
 
-       let projectCostsWithoutIds = [];
-       this.projectCosts.forEach(projectCost => { 
-           let preparedCosts = {};
-           preparedCosts.Costs__c = parseInt(projectCost.Costs__c);
-           preparedCosts.Cost_heading__c = projectCost.Cost_heading__c;
-           projectCostsWithoutIds.push(preparedCosts);
-       });
-       this.projectCosts = projectCostsWithoutIds;
-       console.log('before sending', this.projectCosts)
-       saveProjectCosts({projectCosts: this.projectCosts})  
-        .then(result=>{  
-            console.log('handle created done', result);
-         //return refreshApex(this.oppList);  
-       }); */
-        // then navigate to placement page and refresh?
+      let newCashContributions = [];
+      this.cashContributions.forEach(cont => { 
+          let preparedContribution = {};
+          preparedContribution.Amount_you_have_received__c = parseInt(cont.Amount_you_have_received__c);
+          preparedContribution.Secured__c = cont.Secured__c;
+          preparedContribution.Description_for_cash_contributions__c = cont.Description_for_cash_contributions__c;
+          newCashContributions.push(preparedContribution);
+      });
+      this.cashContributions = newCashContributions;
+      console.log('before sending', this.newCashContributions)
+      saveProjectCosts({cashContributions: this.newCashContributions, projectCosts: this.projectCosts}) 
+       .then(result=>{  
+           console.log('handle created done', result);
+        //return refreshApex(this.oppList);  
+      }); 
     }
 
     buildChangeEventDetail(e){

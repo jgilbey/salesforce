@@ -44,40 +44,17 @@ public inherited sharing class ProjectCostFormController {
 
   @AuraEnabled
   public static void saveProjectCosts(
-    String projectId,
-    String projectCostsToSave,
-    String grantPercentage,
-    String totalCost
+    List<Project_Income__c> cashContributions,
+    List<project_cost__c> projectCosts
   ) {
-    Case project = [
-      SELECT
-        Id,
-        Total_Cost__c,
-        Grant_Award__c,
-        Grant_requested__c,
-        Total_Development_Income__c,
-        NHMF_Total_cash_contributions__c,
-        Grant_Percentage__c,
-        payment_percentage__c,
-        Application_Stages__c
-      FROM case
-      WHERE Id = :projectId
-    ];
+    /* validate then save*/
+    //try{
+      upsert cashContributions;
+      upsert projectCosts;
 
-    //check record type
-    //for small grants
-    if (
-      project.Application_Stages__c == 'Confirm Decision' &&
-      (String.valueOf(project.Grant_Percentage__c) != grantPercentage) &&
-      (String.valueOf(project.Total_Cost__c) != totalCost)
-    ) {
-    }
-
-    //if the project application stage is 'Confirm Decision'
-    // the original grant percentage can't be less than the new one
-    // the new total costs value can't be different to the old total costs
-
-    //deserialize to project cost . class
+    //} catch(Exception e){
+      
+    //}
   }
 
   @AuraEnabled
@@ -125,11 +102,10 @@ public inherited sharing class ProjectCostFormController {
       } catch (Exception e) {
         //do something
         throw new AuraHandledException(
-        'There was a problem deleting the record'
-      ); //move this inside try
+          'There was a problem deleting the record'
+        ); //move this inside try
       }
     }
-      
   }
 
   @AuraEnabled
