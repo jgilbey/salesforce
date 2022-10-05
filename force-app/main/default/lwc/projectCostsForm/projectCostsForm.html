@@ -1,10 +1,10 @@
 <template>
     
-  <div>
+  
     <template if:true={project}>
-      <c-project-cost-form-header project={project} rtproject={realTimeProject}></c-project-cost-form-header>
+      <c-project-cost-form-header project={project}></c-project-cost-form-header>
     </template>
-  </div>
+  
 <c-button
       label="Add Project Cost"
       variant="Neutral"
@@ -44,7 +44,14 @@
             </table>
 
           </template>
+          
+          <c-button
+          label="Add Cash Contribution"
+          variant="Neutral"
+          onclick={handleAddCashContribution}>
+          </c-button>
           <template if:true={cashContributions}>
+            
             <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
               <thead>
                 <tr class="slds-line-height_reset">

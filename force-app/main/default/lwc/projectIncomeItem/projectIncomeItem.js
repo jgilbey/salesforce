@@ -3,9 +3,10 @@ import { LightningElement, api } from 'lwc';
 export default class ProjectIncomeItem extends LightningElement {
 
     @api income;
+    @api visible;
 
     removeIncometItemHandler(){
-        console.log('the cost item is', JSON.stringify(this.cost));
+        console.log('the income item is', JSON.stringify(this.income));
             this.fireEvent({
               eventName: "remove",
               details: { Id: this.income.Id }

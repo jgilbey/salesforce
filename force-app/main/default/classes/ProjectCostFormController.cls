@@ -97,21 +97,24 @@ public inherited sharing class ProjectCostFormController {
         NHMF_Total_cash_contributions__c,
         Grant_Percentage__c,
         payment_percentage__c,
-        Application_Stages__c
+        Confirm_award_amount__c
       FROM case
       WHERE Id = :projectId
     ];
 
     //for small grants
     if (
-      project.Application_Stages__c == 'Confirm Decision' &&
+      project.Confirm_award_amount__c &&
       (String.valueOf(project.Grant_Percentage__c) != grantPercentage) &&
       (String.valueOf(project.Total_Cost__c) != totalCost)
     ) {
       //check that
       // the original grant percentage can't be less than the new one
       // the new total costs value can't be different to the old total costs
-
+      throw new AuraHandledException(
+        'The grant percentage and total costs cannot change after a decision is confirmed'
+      ); //move this inside try
+    } else {
       try {
         Project_Income__c toDelete = [
           SELECT Id
@@ -121,12 +124,12 @@ public inherited sharing class ProjectCostFormController {
         delete toDelete;
       } catch (Exception e) {
         //do something
-      }
-    } else {
-      throw new AuraHandledException(
-        'The grant percentage and total costs cannot change after a decision is confirmed'
+        throw new AuraHandledException(
+        'There was a problem deleting the record'
       ); //move this inside try
+      }
     }
+      
   }
 
   @AuraEnabled

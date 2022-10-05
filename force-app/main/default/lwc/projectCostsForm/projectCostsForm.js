@@ -14,8 +14,8 @@ export default class ProjectCostsForm extends LightningElement {
     totalCosts = 0;
     totalCost = 0;
     totalCashContributions = 0;
-    projectCosts = [];
-    cashContributions = [];
+    @track projectCosts = [];
+    @track cashContributions = [];
     columns = [
         {label: 'Cost Heading', editable: true, fieldName: 'Cost_heading__c'},
         {label: 'Project Description', editable: true, fieldName: 'Project_Cost_Description__c'},
@@ -57,6 +57,7 @@ export default class ProjectCostsForm extends LightningElement {
         console.log('error retrieving project')
       }
     }
+    
 
     @wire(getCashContributions, {
       projectId: '$recordId'
@@ -210,9 +211,33 @@ export default class ProjectCostsForm extends LightningElement {
     }
 
 
-    handleAddProjectCost(){
+    handleAddProjectCost(){      
+      let newProjectCosts = this.projectCosts;
+      let preparedRow = {};
+      preparedRow.Costs__c = 0; //amount
+      preparedRow.Cost_heading__c = '';
+      preparedRow.Project_Cost_Description__c = '';
+      //preparedRow.Vat__c = cost.Vat__c;
+      preparedRow.Id = '';
+      this.projectCosts.push(preparedRow);
+      
+      this.projectCosts = newProjectCosts;
     }
+    
 
+    
+    handleAddCashContribution(){
+      
+      let preparedRow = {};
+      //Secured__c, Income_Description__c, Value__c
+      preparedRow.Secured__c = 0; //amount
+      preparedRow.Description_for_cash_contributions__c = '';
+      preparedRow.Amount_you_have_received__c = 0;
+      preparedRow.index = this.cashContributions.length + 1;
+      this.cashContributions.push(preparedRow);
+      this.cashContributions = this.cashContributions;
+
+    }
 
     
     handleRemoveIncome(e) {
@@ -262,33 +287,32 @@ export default class ProjectCostsForm extends LightningElement {
         
     }
     
-    
-  // handlers functins --start
-  showToast(variant, title, message) {
-    this.dispatchEvent(
-      new ShowToastEvent({variant, title, message})
-    );
-  }
-    
     deleteProjectIncome(incomeId){
       //delete controller method
-      console.log('in delete project cost', incomeId);
-      deleteProjectIncome({projectId: '$recordId', projectIncomeToRemove: incomeId, grantPercentage: this.project.Grant_Percentage__c, totalCost: this.project.Total_Cost__c})
+      console.log('in delete project income', incomeId);
+      deleteProjectIncome({projectId: this.project.Id, projectIncomeToRemove: incomeId, 
+        grantPercentage: this.project.Grant_Percentage__c, totalCost: this.project.Total_Cost__c})
       .then(response=>{
         if(response.success) {
           //this.retrieveData();
-          console.log('successfully removed project income')
+          console.log('successfully removed project income');
         } else {
-          this.showToast('error', 'Removing failed', this.errorMessageHandler(response.message));
+          //this.showToast('error', 'Removing failed', this.errorMessageHandler(response.message));
           console.log('Delete fail: ' + response.message);
         }
       })
       .catch(error=>{
-        this.showToast('error', 'Removing failed', this.errorMessageHandler(JSON.stringify(error)));
-        console.log(JSON.stringify(error));
+        //this.showToast('error', 'Removing failed', this.errorMessageHandler(JSON.stringify(error)));
+        console.log('error ',JSON.stringify(error));
+        let variant = 'error'
+        let title = 'Removed failed'
+        let message = error.message;
+        this.dispatchEvent(
+          new ShowToastEvent({variant, title, message})
+        );
       })
       .finally(()=>{
-        this.isDialogVisible = false;
+        //this.isDialogVisible = false;
       });
 
       recalculateCostsSummary();
