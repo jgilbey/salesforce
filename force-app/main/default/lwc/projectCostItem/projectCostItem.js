@@ -70,7 +70,7 @@ wiredRecord({ error,data }){
         console.log('the cost item is', JSON.stringify(this.cost));
             this.fireEvent({
               eventName: "remove",
-              details: { Id: this.cost.Id }
+              details: { Id: this.cost.Id, index: this.cost.index }
             });
             this.visible = false;
         

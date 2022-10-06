@@ -1,11 +1,10 @@
 <template>
   <template if:true={visible}>
-    <td data-label={cost}
+    <td data-label="Heading"
         data-id={cost.index}
         data-field="Cost_heading__c">
     
         <div class="slds-truncate"> 
-        
           <c-selectlist placeholder="Select heading" 
           style-class={styleClass} 
           options={costHeadingList} 
@@ -14,7 +13,6 @@
           data-id={cost.index}
           data-field="Cost_heading__c"
           name="Cost_heading__c" >
-
           </c-selectlist>
           <lightning-input type="text" 
                                     name="Cost_heading__c" 
@@ -23,14 +21,14 @@
                                     onchange={handleOnChange}
                                     data-id={cost.index}>
           </lightning-input>
-                    
         </div>
     </td>   
-    <td data-label={cost}
+    <td data-label="Project_Cost_Description__c"
         data-id={cost.index}
         data-field="Project_Cost_Description__c">
     
         <div class="slds-truncate"> 
+
             <lightning-textarea 
             name="Project_Cost_Description__c" 
             value={cost.Project_Cost_Description__c}
@@ -39,12 +37,12 @@
         </div>
     </td>   
     
-    <td data-label={cost} 
+    <td data-label="Cost" 
     data-id={cost.index}
     data-field="Costs__c"
     class="">
 
-        <div class="slds-truncate" title={Amount}>
+        <div class="slds-truncate">
             <lightning-input type="currency" 
                              name="Costs__c" 
                              value={cost.Costs__c}
@@ -54,7 +52,7 @@
       </div> 
     </td>
    <td data-id={cost.index}>
-          <div class="slds-truncate" title="Remove">
+          <div class=”slds-cell-wrap” title="Remove">
             <lightning-button-icon label="delete" 
             icon-name="utility:delete" 
             alternative-text="Delete" title="Delete" 
