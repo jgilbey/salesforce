@@ -133,8 +133,11 @@ export default class ProjectCostsForm extends LightningElement {
           preparedCost.Costs__c = parseInt(cost.Costs__c);
           preparedCost.Project_Cost_Description__c = cost.Project_Cost_Description__c;
           preparedCost.Placement__c = cost.Cost_heading__c;
-          preparedCost.Id = cost.Id ? cost.Id : '';
+          preparedCost.Id = cost.Id ? cost.Id : null;
+          preparedCost.Case__c = this.project.Id;
           newProjectCosts.push(preparedCost);
+          
+          console.log('cont', JSON.stringify(preparedCost));
       });
       this.projectCosts = newProjectCosts; //hmm
 
@@ -143,12 +146,15 @@ export default class ProjectCostsForm extends LightningElement {
           let preparedContribution = {};
           preparedContribution.Amount_you_have_received__c = parseInt(cont.Amount_you_have_received__c);
           preparedContribution.Secured__c = cont.Secured__c;
+          preparedContribution.Case__c = this.project.Id;
+          preparedContribution.Id = cont.Id ? cont.Id : null;
           preparedContribution.Description_for_cash_contributions__c = cont.Description_for_cash_contributions__c;
           newCashContributions.push(preparedContribution);
+          console.log('cont', JSON.stringify(preparedContribution));
       });
       this.cashContributions = newCashContributions;
-      console.log('before sending', this.newCashContributions)
-      saveProjectCosts({cashContributions: this.newCashContributions, projectCosts: this.projectCosts}) 
+      console.log('before sending', JSON.stringify(this.projectCosts));
+      saveProjectCosts({cashContributions: this.cashContributions, projectCosts: this.projectCosts}) 
        .then(result=>{  
            console.log('handle created done', result);
         //return refreshApex(this.oppList);  
@@ -187,6 +193,7 @@ export default class ProjectCostsForm extends LightningElement {
         //console.log(e.detail.value); //... value
         console.log(e.detail.id); //...Record Id
         this.projectCosts[e.detail.id][e.detail.name] = e.detail.value;
+        console.log('the project costs are now', JSON.stringify(this.projectCosts));
         //if the field was the amount - recalculate totals
         this.totalCosts = 0;
         this.calculateCosts();

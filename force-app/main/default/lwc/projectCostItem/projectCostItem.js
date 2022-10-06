@@ -58,7 +58,9 @@ wiredRecord({ error,data }){
         console.log(e.target.value); //... value
         console.log('dataset',JSON.stringify(e.target.dataset.id)); //...Record Id
         console.log(JSON.stringify(e.target)); //...Record Id
-        console.log(e.target.name);
+        console.log('the name', JSON.stringify(e.target.name));
+        
+        console.log('the field name', JSON.stringify(e.target.dataset.field));
         this.dispatchEvent(
             new CustomEvent('costchange', { detail: { name: e.target.name, value: e.target.value, id: e.target.dataset.id } })
           );

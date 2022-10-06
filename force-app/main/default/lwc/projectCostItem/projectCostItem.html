@@ -11,11 +11,13 @@
           options={costHeadingList} 
           value={cost.Cost_heading__c} 
           onchange={handleOnChange} 
-          data-id={cost.index}>
+          data-id={cost.index}
+          name="Cost_heading__c" >
 
           </c-selectlist>
           <lightning-input type="text" 
                                     name="Cost_heading__c" 
+                                    data-field="Cost_heading__c" 
                                     value={cost.Cost_heading__c}
                                     onchange={handleOnChange}
                                     data-id={cost.index}>
