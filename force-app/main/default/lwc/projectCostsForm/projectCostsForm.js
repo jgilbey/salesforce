@@ -154,11 +154,26 @@ export default class ProjectCostsForm extends LightningElement {
       });
       this.cashContributions = newCashContributions;
       console.log('before sending', JSON.stringify(this.projectCosts));
-      saveProjectCosts({cashContributions: this.cashContributions, projectCosts: this.projectCosts}) 
+      saveProjectCosts({projectId: this.project.Id, totalCost: this.project.Total_Cost__c, cashContributions: this.cashContributions, projectCosts: this.projectCosts}) 
        .then(result=>{  
            console.log('handle created done', result);
-        //return refreshApex(this.oppList);  
-      }); 
+           let variant = 'success';
+          let title = 'Project Saved';
+          let message = 'Project costs were saved successfully';
+          this.dispatchEvent(
+            new ShowToastEvent({variant, title, message})
+          )})
+          .catch(error=>{
+            console.log('error ',JSON.stringify(error));
+            let variant = 'error';
+            let title = 'Save failed';
+            let message = error.body.message;
+            this.dispatchEvent(
+              new ShowToastEvent({variant, title, message})
+            );
+            
+          })
+        //return refreshApex(this.oppList);  ; 
     }
 
     buildChangeEventDetail(e){
@@ -180,7 +195,7 @@ export default class ProjectCostsForm extends LightningElement {
         this.cashContributions[e.detail.id][e.detail.name] = e.detail.value;
         //if the field was the amount - recalculate totals
         this.totalCashContributions = 0;
-        this.calculateContributions();
+        this.recalculateCostsSummary();
         var fieldName = 'Total_Development_Income__c';
         console.log('the development income', this.project[fieldName]);
         this.project[fieldName] = this.totalCashContributions;
@@ -188,6 +203,7 @@ export default class ProjectCostsForm extends LightningElement {
 
     handleCostChange(e){
       e.stopPropagation();
+        console.log('project costs', this.projectCosts);
         console.log('handling cost change in parent');
         console.log(e.detail.value); //... Field API Name
         //console.log(e.detail.value); //... value
@@ -196,7 +212,7 @@ export default class ProjectCostsForm extends LightningElement {
         console.log('the project costs are now', JSON.stringify(this.projectCosts));
         //if the field was the amount - recalculate totals
         this.totalCosts = 0;
-        this.calculateCosts();
+        this.recalculateCostsSummary()
         var fieldName = 'Total_Cost__c';
         console.log('the total costs plus contributions', this.project[fieldName]);
         this.project[fieldName] = this.totalCosts;
@@ -273,14 +289,12 @@ export default class ProjectCostsForm extends LightningElement {
         })
         .catch(error=>{
           console.log('error ',JSON.stringify(error));
-          let variant = 'error'
-          let title = 'Removed failed'
+          let variant = 'error';
+          let title = 'Removed failed';
           let message = this.errorMessageHandler(error.message);
           this.dispatchEvent(
             new ShowToastEvent({variant, title, message})
           );
-        
-          //this.showToast('error', 'Removing failed', this.errorMessageHandler(JSON.stringify(error)));
           
         })
         .finally(()=>{
