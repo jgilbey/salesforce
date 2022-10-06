@@ -132,7 +132,7 @@ export default class ProjectCostsForm extends LightningElement {
           let preparedCost = {};
           preparedCost.Costs__c = parseInt(cost.Costs__c);
           preparedCost.Project_Cost_Description__c = cost.Project_Cost_Description__c;
-          preparedCost.Placement__c = cost.Cost_heading__c;
+          preparedCost.Cost_heading__c = cost.Cost_heading__c;
           preparedCost.Id = cost.Id ? cost.Id : null;
           preparedCost.Case__c = this.project.Id;
           newProjectCosts.push(preparedCost);
