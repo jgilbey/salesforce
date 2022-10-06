@@ -4,23 +4,21 @@
         data-id={cost.index}
         data-field="Cost_heading__c">
     
-        <div class="slds-truncate"> 
-          <c-selectlist placeholder="Select heading" 
+        <div class="picklistBlock"> 
+          <c-selectlist 
+          style="slds-popover"
+          is-select={visible}
+          title="Cost_heading__c"
+          placeholder="Select heading" 
           style-class={styleClass} 
           options={costHeadingList} 
           value={cost.Cost_heading__c} 
           onchange={handleOnChange} 
           data-id={cost.index}
           data-field="Cost_heading__c"
-          name="Cost_heading__c" >
+          name="Cost_heading__c"
+          disabled={disabled}>
           </c-selectlist>
-          <lightning-input type="text" 
-                                    name="Cost_heading__c" 
-                                    data-field="Cost_heading__c" 
-                                    value={cost.Cost_heading__c}
-                                    onchange={handleOnChange}
-                                    data-id={cost.index}>
-          </lightning-input>
         </div>
     </td>   
     <td data-label="Project_Cost_Description__c"

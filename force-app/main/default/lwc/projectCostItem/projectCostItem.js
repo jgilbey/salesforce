@@ -10,6 +10,7 @@ export default class ProjectCostItem extends LightningElement {
     @api recordTypeId;
     @track objectInfo;
     @track visible = true;
+    @track disabled = false;
     
 @wire(getObjectInfo, { objectApiName: PROJECT_COST_OBJECT })
 wiredRecord({ error,data }){

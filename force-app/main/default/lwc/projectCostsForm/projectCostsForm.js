@@ -125,7 +125,7 @@ export default class ProjectCostsForm extends LightningElement {
     handleSaveProjectCosts() {
 
       //send the items to be saved to back end
-      console.log(this.projectCosts, this.cashContributions)
+      console.log('project cost before save',JSON.stringify(this.projectCosts));
 
       let newProjectCosts = [];
       this.projectCosts.forEach(cost => { 
@@ -133,7 +133,7 @@ export default class ProjectCostsForm extends LightningElement {
           preparedCost.Costs__c = parseInt(cost.Costs__c);
           preparedCost.Project_Cost_Description__c = cost.Project_Cost_Description__c;
           preparedCost.Cost_heading__c = cost.Cost_heading__c;
-          preparedCost.Id = cost.Id ? cost.Id : null;
+          if(cost.Id.length != 0){preparedCost.Id = cost.Id}; 
           preparedCost.Case__c = this.project.Id;
           newProjectCosts.push(preparedCost);
           
@@ -268,33 +268,50 @@ export default class ProjectCostsForm extends LightningElement {
 
     handleRemoveCost(e) {
         console.log('in handle remove cost', e.detail.Id);
-        this.deleteCostProject(e.detail.Id);
+        
+        console.log('in handle remove cost', e.detail.index);
+        this.deleteCostProject(e.detail.Id, e.detail.index);
     }
     
-    deleteCostProject(projectCostToRemove){
+    deleteCostProject(projectCostToRemove, projectIndex){
         //delete controller method
         console.log('in delete project cost', projectCostToRemove);
         deleteProjectCost({projectId: this.project.Id, projectCostToRemove: projectCostToRemove, 
           grantPercentage: this.project.Grant_Percentage__c, 
           totalCost: this.project.Total_Cost__c})
         .then(response=>{
-          if(response.success) {
             //this.retrieveData();
-            console.log('successfully removed project cost')
-          } else {
+            console.log('successfully removed project cost', this.projectCosts);
+            //remove from ui list
+            /*this.projectCosts = this.projectCosts.filter(function (element) { 
+              return parseInt(element.id) !== accessKey;
+            });*/
+            const index = this.projectCosts.indexOf(projectIndex);
+            let array = this.projectCosts;
+            console.log('the array', array);
+            if (index > -1) { // only splice array when item is found
+              console.log('splicing', true)
+              array.splice(index, 1); // 2nd parameter means remove one item only
+            }
+            console.log('spliced array is', array)
+            this.projectCosts = this.array;
+            console.log('response', JSON.stringify(response));
+            console.log('****the costs are now', JSON.stringify(this.projectCosts));
+        /*
             console.log('Delete fail: ' + response.message);
-            this.showToast('error', 'Removing failed', this.errorMessageHandler(response.message));
+            this.showToast('error', 'Removing failed', response.message);
             
-          }
+          */
         })
         .catch(error=>{
           console.log('error ',JSON.stringify(error));
           let variant = 'error';
           let title = 'Removed failed';
-          let message = this.errorMessageHandler(error.message);
+          let message = error.message;
           this.dispatchEvent(
             new ShowToastEvent({variant, title, message})
           );
+          return false;
           
         })
         .finally(()=>{

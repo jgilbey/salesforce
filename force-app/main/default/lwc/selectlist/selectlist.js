@@ -37,6 +37,8 @@ export default class Selectlist extends LightningElement {
     }
 
     connectedCallback() {
+        console.log('is disabled', this.disabled);
+        
         this.setLabelForValue();
     }
 

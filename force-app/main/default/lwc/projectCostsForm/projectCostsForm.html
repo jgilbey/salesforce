@@ -11,39 +11,38 @@
       onclick={handleAddProjectCost}>
   </c-button>
   
-        <template if:true={projectCosts}>
-          <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+        
+  <template if:true={projectCosts}>
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+      <thead>
+          <tr class="slds-line-height_reset">
+          <template for:each={columns} for:item="col">
           
-                <thead>
-                    <tr class="slds-line-height_reset">
-                    <template for:each={columns} for:item="col">
-                    
-                      <th class="" scope="col" key={col.index}>
-                        <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs}>
-                                            {col.label} </a>
-                      </th>
-                    
-                    </template>
-                    <th class="" scope="col">
-                      <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Remove">
-                      </a>
-                  </th>
-                 </tr>
-                </thead>
-                <tbody>
-                  <template if:true={projectCosts}>
-                        <template for:each={projectCosts} for:item="cost">
-                          <tr class="slds-hint-parent" key={cost.index}>
-                            &nbsp;
-                            <c-project-cost-item key={cost.index} cost={cost} onremove={handleRemoveCost} oncostchange={handleCostChange}>
-                            </c-project-cost-item>
-                          </tr>
-                        </template>
-                      </template>
-                </tbody>
-            </table>
-
+            <th class="" scope="col" key={col.label}>
+              <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name={col.label}>
+                                  {col.label} </a>
+            </th>
+              
           </template>
+              <th class="" scope="col">
+                <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Remove">
+                </a>
+            </th>
+           </tr>
+          </thead>
+          <tbody>
+            <template if:true={projectCosts}>
+              <template for:each={projectCosts} for:item="cost">
+                <tr class="slds-hint-parent" key={cost.index}>
+                  &nbsp;
+                  <c-project-cost-item key={cost.index} cost={cost} onremove={handleRemoveCost} oncostchange={handleCostChange}>
+                  </c-project-cost-item>
+                </tr>
+              </template>
+            </template>
+          </tbody>
+      </table>
+</template>
           
           <c-button
           label="Add Cash Contribution"
