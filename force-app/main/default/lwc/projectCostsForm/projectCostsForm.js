@@ -6,6 +6,7 @@ import getCashContributions from '@salesforce/apex/ProjectCostFormController.get
 import saveProjectCosts from '@salesforce/apex/ProjectCostFormController.saveProjectCosts';
 import deleteProjectCost from '@salesforce/apex/ProjectCostFormController.removeProjectCost';
 import deleteProjectIncome from '@salesforce/apex/ProjectCostFormController.removeIncomeItem';
+import { refreshApex } from '@salesforce/apex';
 
 import UserPreferencesRecordHomeSectionCollapseWTShown from '@salesforce/schema/User.UserPreferencesRecordHomeSectionCollapseWTShown';
 export default class ProjectCostsForm extends LightningElement {
@@ -139,7 +140,7 @@ export default class ProjectCostsForm extends LightningElement {
           
           console.log('cont', JSON.stringify(preparedCost));
       });
-      this.projectCosts = newProjectCosts; //hmm
+      //this.projectCosts = newProjectCosts; //hmm
 
       let newCashContributions = [];
       this.cashContributions.forEach(cont => { 
@@ -147,14 +148,15 @@ export default class ProjectCostsForm extends LightningElement {
           preparedContribution.Amount_you_have_received__c = parseInt(cont.Amount_you_have_received__c);
           preparedContribution.Secured__c = cont.Secured__c;
           preparedContribution.Case__c = this.project.Id;
-          preparedContribution.Id = cont.Id ? cont.Id : null;
+          console.log('cont.Id.length ', cont.Id.length );
+          if(cont.Id.length != 0) {preparedContribution.Id = cont.Id;};
           preparedContribution.Description_for_cash_contributions__c = cont.Description_for_cash_contributions__c;
           newCashContributions.push(preparedContribution);
           console.log('cont', JSON.stringify(preparedContribution));
       });
-      this.cashContributions = newCashContributions;
+      //this.cashContributions = newCashContributions;
       console.log('before sending', JSON.stringify(this.projectCosts));
-      saveProjectCosts({projectId: this.project.Id, totalCost: this.project.Total_Cost__c, cashContributions: this.cashContributions, projectCosts: this.projectCosts}) 
+      saveProjectCosts({projectId: this.project.Id, totalCost: this.project.Total_Cost__c, cashContributions: newCashContributions, projectCosts: newProjectCosts}) 
        .then(result=>{  
            console.log('handle created done', result);
            let variant = 'success';
@@ -162,7 +164,11 @@ export default class ProjectCostsForm extends LightningElement {
           let message = 'Project costs were saved successfully';
           this.dispatchEvent(
             new ShowToastEvent({variant, title, message})
-          )})
+          );
+          refreshApex(this.projectCosts);
+          refreshApex(this.cashContributions);
+          
+          })
           .catch(error=>{
             console.log('error ',JSON.stringify(error));
             let variant = 'error';
@@ -212,7 +218,7 @@ export default class ProjectCostsForm extends LightningElement {
         console.log('the project costs are now', JSON.stringify(this.projectCosts));
         //if the field was the amount - recalculate totals
         this.totalCosts = 0;
-        this.recalculateCostsSummary()
+        this.recalculateCostsSummary();
         var fieldName = 'Total_Cost__c';
         console.log('the total costs plus contributions', this.project[fieldName]);
         this.project[fieldName] = this.totalCosts;
@@ -281,20 +287,22 @@ export default class ProjectCostsForm extends LightningElement {
           totalCost: this.project.Total_Cost__c})
         .then(response=>{
             //this.retrieveData();
-            console.log('successfully removed project cost', this.projectCosts);
+            console.log('successfully removed project cost', JSON.stringify(this.projectCosts));
             //remove from ui list
             /*this.projectCosts = this.projectCosts.filter(function (element) { 
               return parseInt(element.id) !== accessKey;
             });*/
             const index = this.projectCosts.indexOf(projectIndex);
             let array = this.projectCosts;
-            console.log('the array', array);
-            if (index > -1) { // only splice array when item is found
+            console.log('the array', JSON.stringify(array));
+            
+            console.log('the index', JSON.stringify(index));
+            if (index <= -1) { // only splice array when item is found
               console.log('splicing', true)
-              array.splice(index, 1); // 2nd parameter means remove one item only
+              array.splice(projectIndex, 1); // 2nd parameter means remove one item only
             }
-            console.log('spliced array is', array)
-            this.projectCosts = this.array;
+            console.log('spliced array is', JSON.stringify(array));
+            this.projectCosts = array;
             console.log('response', JSON.stringify(response));
             console.log('****the costs are now', JSON.stringify(this.projectCosts));
         /*
