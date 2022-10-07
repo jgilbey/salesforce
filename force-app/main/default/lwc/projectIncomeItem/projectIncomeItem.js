@@ -25,13 +25,9 @@ export default class ProjectIncomeItem extends LightningElement {
         console.log(JSON.stringify(e.target)); //...Record Id
         console.log('name',e.target.name);
         
-        this.fireEvent({
-            eventName: "incomechange", 
-            details: { name: e.target.name, 
-                value: e.target.value, 
-                id: e.target.dataset.id }
-        } );
-        
+        this.dispatchEvent(
+            new CustomEvent('incomechange', { detail: { name: e.target.name, value: e.target.value, id: e.target.dataset.id } })
+            );
     }
 
     fireEvent({ eventName, details }) {
