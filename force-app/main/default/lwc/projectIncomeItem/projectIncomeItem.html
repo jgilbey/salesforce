@@ -7,7 +7,8 @@
             <lightning-textarea 
             name="Description_for_cash_contributions__c" 
             value={income.Description_for_cash_contributions__c}
-            data-id={income.index}></lightning-textarea>
+            data-id={income.index}
+            onchange={handleOnChange}></lightning-textarea>
         </div>
     </td>   
     

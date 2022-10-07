@@ -9,7 +9,7 @@ export default class ProjectIncomeItem extends LightningElement {
         console.log('the income item is', JSON.stringify(this.income));
             this.fireEvent({
               eventName: "remove",
-              details: { Id: this.income.Id }
+              details: { Id: this.income.Id, index: this.income.index }
             });
             this.visible = false;
         

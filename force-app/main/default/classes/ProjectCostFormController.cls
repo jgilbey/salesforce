@@ -44,16 +44,46 @@ public inherited sharing class ProjectCostFormController {
 
   @AuraEnabled
   public static void saveProjectCosts(
+    String projectId,
+    String totalCost,
     List<Project_Income__c> cashContributions,
     List<project_cost__c> projectCosts
   ) {
     /* validate then save*/
     //try{
+
+    Case project = [
+      SELECT
+        Id,
+        Total_Cost__c,
+        Grant_Award__c,
+        Grant_requested__c,
+        Total_Development_Income__c,
+        NHMF_Total_cash_contributions__c,
+        Grant_Percentage__c,
+        payment_percentage__c,
+        Confirm_award_amount__c
+      FROM case
+      WHERE Id = :projectId
+    ];
+
+    if (
+      project.Confirm_award_amount__c &&
+      (String.valueOf(project.Total_Cost__c) != totalCost)
+    ) {
+      //check that
+      // the original grant percentage can't be less than the new one
+      // the new total costs value can't be different to the old total costs
+      throw new AuraHandledException(
+        'The grant percentage and total costs cannot change after a decision is confirmed'
+      ); //move this inside try
+    } else {
       upsert cashContributions;
       upsert projectCosts;
+    }
 
     //} catch(Exception e){
-      
+
     //}
   }
 
@@ -161,6 +191,7 @@ public inherited sharing class ProjectCostFormController {
       SELECT
         Id,
         Secured__c,
+        Secured_non_cash_contributions__c,
         Description_for_cash_contributions__c,
         Amount_you_have_received__c
       FROM Project_Income__c

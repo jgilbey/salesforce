@@ -148,8 +148,8 @@ export default class ProjectCostsForm extends LightningElement {
           preparedContribution.Amount_you_have_received__c = parseInt(cont.Amount_you_have_received__c);
           preparedContribution.Secured__c = cont.Secured__c;
           preparedContribution.Case__c = this.project.Id;
-          console.log('cont.Id.length ', cont.Id.length );
-          if(cont.Id.length != 0) {preparedContribution.Id = cont.Id;};
+          //console.log('cont.Id.length ', cont.Id.length );
+          if(cont.Id && cont.Id.length != 0) {preparedContribution.Id = cont.Id;};
           preparedContribution.Description_for_cash_contributions__c = cont.Description_for_cash_contributions__c;
           newCashContributions.push(preparedContribution);
           console.log('cont', JSON.stringify(preparedContribution));
@@ -194,7 +194,7 @@ export default class ProjectCostsForm extends LightningElement {
 
     handleIncomeChange(e){
       e.stopPropagation();
-        console.log('handling in parent');
+        console.log('handling in parent', JSON.stringify(e.detail));
         console.log(e.detail.value); //... Field API Name
         //console.log(e.detail.value); //... value
         console.log(e.detail.id); //...Record Id
@@ -207,6 +207,7 @@ export default class ProjectCostsForm extends LightningElement {
         this.project[fieldName] = this.totalCashContributions;
     }
 
+    @api
     handleCostChange(e){
       e.stopPropagation();
         console.log('project costs', this.projectCosts);
@@ -246,9 +247,11 @@ export default class ProjectCostsForm extends LightningElement {
       preparedRow.Project_Cost_Description__c = '';
       //preparedRow.Vat__c = cost.Vat__c;
       preparedRow.Id = '';
-      this.projectCosts.push(preparedRow);
+      preparedRow.index = this.projectCosts.length;
+      newProjectCosts.push(preparedRow);
       
       this.projectCosts = newProjectCosts;
+      console.log('the project costs with new row', JSON.stringify(this.projectCosts));
     }
     
 
@@ -260,7 +263,11 @@ export default class ProjectCostsForm extends LightningElement {
       preparedRow.Secured__c = 0; //amount
       preparedRow.Description_for_cash_contributions__c = '';
       preparedRow.Amount_you_have_received__c = 0;
-      preparedRow.index = this.cashContributions.length + 1;
+      if(this.cashContributions.length < 1) {
+        preparedRow.index = 0;
+      } else {
+        preparedRow.index = 0;
+      }
       this.cashContributions.push(preparedRow);
       this.cashContributions = this.cashContributions;
 
@@ -269,7 +276,7 @@ export default class ProjectCostsForm extends LightningElement {
     
     handleRemoveIncome(e) {
       console.log('in handle remove income', e.detail.Id);
-      this.deleteProjectIncome(e.detail.Id);
+      this.deleteProjectIncome(e.detail.Id, e.detail.index);
   }
 
     handleRemoveCost(e) {
@@ -331,35 +338,44 @@ export default class ProjectCostsForm extends LightningElement {
         
     }
     
-    deleteProjectIncome(incomeId){
+    deleteProjectIncome(incomeId, incomeIndex){
       //delete controller method
       console.log('in delete project income', incomeId);
-      deleteProjectIncome({projectId: this.project.Id, projectIncomeToRemove: incomeId, 
-        grantPercentage: this.project.Grant_Percentage__c, totalCost: this.project.Total_Cost__c})
-      .then(response=>{
-        if(response.success) {
-          //this.retrieveData();
-          console.log('successfully removed project income');
-        } else {
-          //this.showToast('error', 'Removing failed', this.errorMessageHandler(response.message));
-          console.log('Delete fail: ' + response.message);
-        }
-      })
-      .catch(error=>{
-        //this.showToast('error', 'Removing failed', this.errorMessageHandler(JSON.stringify(error)));
-        console.log('error ',JSON.stringify(error));
-        let variant = 'error'
-        let title = 'Removed failed'
-        let message = error.message;
-        this.dispatchEvent(
-          new ShowToastEvent({variant, title, message})
-        );
-      })
-      .finally(()=>{
-        //this.isDialogVisible = false;
-      });
-
-      recalculateCostsSummary();
+      if(incomeId){
+        deleteProjectIncome({projectId: this.project.Id, projectIncomeToRemove: incomeId, 
+          grantPercentage: this.project.Grant_Percentage__c, totalCost: this.project.Total_Cost__c})
+        .then(response=>{
+          
+          const index = this.cashContributions.indexOf(incomeIndex);
+          let array = this.cashContributions;
+          console.log('the array', JSON.stringify(array));
+          
+          console.log('the index', JSON.stringify(index));
+          if (index <= -1) { // only splice array when item is found
+            console.log('splicing', true)
+            array.splice(incomeIndex, 1); // 2nd parameter means remove one item only
+          }
+          console.log('spliced array is', JSON.stringify(array));
+          this.cashContributions = array;
+          console.log('response', JSON.stringify(response));
+          console.log('****the cash are now', JSON.stringify(this.cashContributions));
+        })
+        .catch(error=>{
+          //this.showToast('error', 'Removing failed', this.errorMessageHandler(JSON.stringify(error)));
+          console.log('error ',JSON.stringify(error));
+          let variant = 'error'
+          let title = 'Removed failed'
+          let message = error.message;
+          this.dispatchEvent(
+            new ShowToastEvent({variant, title, message})
+          );
+        })
+        .finally(()=>{
+          //this.isDialogVisible = false;
+          
+          this.recalculateCostsSummary();
+        });
+      }
       
   }
 
