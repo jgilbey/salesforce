@@ -9,7 +9,8 @@
 
     <targetConfigs>
         <targetConfig targets="lightning__RecordPage">
-            <property name="recordId" label="Record Id" type="String" default=""></property>
+            <property name="recordId" type="String" label="Record Id" description="Pass the page's record id to the component variable" default="{!recordId}" />
+            <property name="objectApiName" type="String" label="Object Name" description="Pass the page's object name to the component variable" default="{!objectApiName}" />
         </targetConfig>
     </targetConfigs>
 

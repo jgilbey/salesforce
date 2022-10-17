@@ -1,4 +1,5 @@
 <template>
+  <template if:true={visible}>
     <td data-label="Description"
         data-id={income.index}
         data-field="Description_for_cash_contributions__c">
@@ -15,15 +16,30 @@
     <td data-label="IncomeSec"
         data-id={income.index}
         data-field="Secured__c">
-        <div class="slds-truncate">
+       <!-- <div class="slds-truncate">
         
           <lightning-input type="checkbox" 
                                     name="Secured__c" 
                                     value={income.Secured__c}
                                     data-id={income.index}>
-          </lightning-input>
-                    
-        </div>
+          </lightning-input></div>-->
+          <div class="picklistBlock"> 
+            <c-selectlist
+            is-select={visible}
+            title="Secured_non_cash_contributions__c"
+            field-id="Secured_non_cash_contributions__c"
+            placeholder="Select heading" 
+            style-class={styleClass} 
+            options={incomeSecuredList} 
+            value={income.Secured_non_cash_contributions__c} 
+            onchange={handleOnChange} 
+            data-id={income.index}
+            data-field="Secured_non_cash_contributions__c"
+            name="Secured_non_cash_contributions__c"
+            disabled={disabled}>
+            </c-selectlist>
+          </div>
+              
     </td>   
 
     <td data-label="Amount" 
@@ -49,4 +65,5 @@
             onclick={removeIncometItemHandler}></lightning-button-icon>
           </div>
       </td> 
+  </template>
 </template>

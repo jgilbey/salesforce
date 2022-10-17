@@ -1,41 +1,45 @@
 import { LightningElement, track, api, wire } from 'lwc';
 import COST_HEADING from "@salesforce/schema/Project_Cost__c.Cost_heading__c";
 import PROJECT_COST_OBJECT from "@salesforce/schema/Project_Cost__c";
-import { getPicklistValues } from "lightning/uiObjectInfoApi";
-import { getObjectInfo } from "lightning/uiObjectInfoApi";
+import { getObjectInfo, getPicklistValues } from "lightning/uiObjectInfoApi";
 export default class ProjectCostItem extends LightningElement {
     
     @api cost;
     @api allowremoving;
     @api recordTypeId;
-    @track objectInfo;
     @track visible = true;
     @track disabled = false;
+    @track costHeadingList;
+    @api styleClass; //= "slds-popover";
+    @api objectApiName;
+    @track costRecordTypeId;
+    error;
     
 @wire(getObjectInfo, { objectApiName: PROJECT_COST_OBJECT })
 wiredRecord({ error,data }){
     if (data) {
-        this.objectInfo = data;
-    }
+
+                if(data.recordTypeInfos) {
+                    console.log('the reti',JSON.stringify(data.recordTypeInfos));
+                    this.costRecordTypeId = Object.values(data.recordTypeInfos).find(
+                        (item) => item.name === "Master"
+                      ).recordTypeId;
+                }
+                
+            this.error = undefined;
+    
+            } else if (error) {
+                this.error = error;
+                this.assetRecordTypeId = undefined;
+              }
 }
 
-    get recordTypeId() {
-        // Returns a map of record type Ids 
-        if(this.objectInfo){
-            if(this.objectInfo.data){
-                if(this.objectInfo.data.recordTypeInfos) {
-                    const rtis = this.objectInfo.data.recordTypeInfos;
-                    return Object.keys(rtis).find(rti => rtis[rti].name === 'Project_Inc');
-                }
-            }
-        }
-    }
 
     @wire(
         getPicklistValues,
 
         {
-            recordTypeId: "0124J000000t4QnQAI",
+            recordTypeId: '$costRecordTypeId',
 
             fieldApiName: COST_HEADING
         }
@@ -48,8 +52,6 @@ wiredRecord({ error,data }){
         console.log('error getting picklist values', error);
         }
     }
-    costHeadingList;
- 
 
    handleOnChange(e) {
         e.stopPropagation();

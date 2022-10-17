@@ -4,7 +4,9 @@
     <template if:true={project}>
       <c-project-cost-form-header project={project}></c-project-cost-form-header>
     </template>
-  
+
+    <!-- ACORDIAN-->
+    <!-- this should be acccordian section 1-->
 <c-button
       label="Add Project Cost"
       variant="Neutral"
@@ -44,6 +46,8 @@
       </table>
 </template>
           
+
+<!-- this should be acordiansection  2-->
           <c-button
           label="Add Cash Contribution"
           variant="Neutral"
@@ -90,15 +94,12 @@
           </tbody>
           </table>
     </template>
-
+<!-- END ACCORDIAN -->
     <c-button
       label="Save"
       variant="Neutral"
       onclick={handleSaveProjectCosts}> 
   </c-button>
-  <c-button
-      label="Cancel"
-      variant="Neutral">
-  </c-button>
+
 
     </template> 

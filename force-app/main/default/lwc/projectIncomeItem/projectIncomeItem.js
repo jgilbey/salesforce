@@ -1,9 +1,50 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api, wire, track } from 'lwc';
+import INCOME_SECURED from "@salesforce/schema/Project_Income__c.Secured_non_cash_contributions__c";
+import PROJECT_INCOME_OBJECT from "@salesforce/schema/Project_Income__c";
+import { getPicklistValues, getObjectInfo } from "lightning/uiObjectInfoApi";
 
 export default class ProjectIncomeItem extends LightningElement {
 
     @api income;
-    @api visible;
+    @track visible = true;
+    @api disabled = false;
+    @api recordId;
+    @track recordTypeId;
+    styleClass;
+    
+    @track incomeSecuredList;
+
+    @wire(getObjectInfo, { objectApiName: PROJECT_INCOME_OBJECT })
+    wiredRecord({ error,data }){
+        if (data) {
+
+            console.log('data.recordTypeInfo', JSON.stringify(data.recordTypeInfos))
+    
+                    if(data.recordTypeInfos) {
+                        this.costRecordTypeId = Object.values(data.recordTypeInfos).find(
+                            (item) => item.name === "Master"
+                          ).recordTypeId;
+                    }
+        }
+    }
+
+    @wire(
+        getPicklistValues,
+
+        {
+            recordTypeId: '$costRecordTypeId',
+
+            fieldApiName: INCOME_SECURED
+        }
+    )
+    incomeSecuredList({ error, data }) {
+        if (data) {
+        console.log('this is the data', data);
+        this.incomeSecuredList = data.values;
+        } else  {
+        console.log('error getting picklist values', error);
+        }
+    }
 
     removeIncometItemHandler(){
         console.log('the income item is', JSON.stringify(this.income));

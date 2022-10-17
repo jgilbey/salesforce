@@ -10,6 +10,8 @@ import { refreshApex } from '@salesforce/apex';
 
 import UserPreferencesRecordHomeSectionCollapseWTShown from '@salesforce/schema/User.UserPreferencesRecordHomeSectionCollapseWTShown';
 export default class ProjectCostsForm extends LightningElement {
+
+   @api objectApiName
     @track project = {};
     realTimeProject = {};
     totalCosts = 0;
@@ -81,12 +83,10 @@ export default class ProjectCostsForm extends LightningElement {
               i++;
              });  
              this.cashContributions = preparedRows;
-             console.log('costs',this.cashContributions);
+             console.log('cash',this.cashContributions);
         
       }
-      else{
-        this.cashContributions = undefined;
-      }
+      
     }
 
     get cashContributions(){
@@ -98,7 +98,7 @@ export default class ProjectCostsForm extends LightningElement {
       })
       wiredProjects({ error, data }) {
         if (data) {
-            console.log('data is', JSON.stringify(data));
+            console.log('project cost data is', JSON.stringify(data));
             let preparedRows = [];
             let i = 0;
             data.forEach(cost => {
