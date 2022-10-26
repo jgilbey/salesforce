@@ -43,11 +43,28 @@ public inherited sharing class ProjectCostFormController {
   }
 
   @AuraEnabled
+  public static void deleteProjectCostsAndContributions(
+    List<Project_Income__c> cashContributions,
+    List<project_cost__c> projectCosts
+  ) {
+    try {
+      List<SObject> toDelete = new List<SObject>();
+      toDelete.addAll(cashContributions);
+      toDelete.addAll(projectCosts);
+      delete toDelete;
+    } catch (Exception e) {
+      throw new AuraHandledException(e.getMessage());
+    }
+  }
+
+  @AuraEnabled
   public static void saveProjectCosts(
     String projectId,
     String totalCost,
     List<Project_Income__c> cashContributions,
-    List<project_cost__c> projectCosts
+    List<project_cost__c> projectCosts,
+    List<Project_Income__c> removedCashContributions,
+    List<project_cost__c> removedProjectCosts
   ) {
     /* validate then save*/
     //try{
@@ -78,6 +95,7 @@ public inherited sharing class ProjectCostFormController {
         'The grant percentage and total costs cannot change after a decision is confirmed'
       ); //move this inside try
     } else {
+      deleteProjectCostsAndContributions(removedCashContributions, removedProjectCosts);
       upsert cashContributions;
       upsert projectCosts;
     }

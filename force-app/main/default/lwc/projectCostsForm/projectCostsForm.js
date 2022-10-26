@@ -11,6 +11,19 @@ import { refreshApex } from '@salesforce/apex';
 import UserPreferencesRecordHomeSectionCollapseWTShown from '@salesforce/schema/User.UserPreferencesRecordHomeSectionCollapseWTShown';
 export default class ProjectCostsForm extends LightningElement {
 
+  activeSections = ['A', 'B'];
+  activeSectionsMessage = '';
+
+  handleSectionToggle(event) {
+      const openSections = event.detail.openSections;
+
+      if (openSections.length === 0) {
+          this.activeSectionsMessage = '';
+      } else {
+          this.activeSectionsMessage =
+              'Open sections: ' + openSections.join(', ');
+      }
+    }
    @api objectApiName
     @track project = {};
     realTimeProject = {};
@@ -19,6 +32,8 @@ export default class ProjectCostsForm extends LightningElement {
     totalCashContributions = 0;
     @track projectCosts = [];
     @track cashContributions = [];
+    @track removedProjectCosts = [];
+    @track removedContributions = [];
     columns = [
         {label: 'Cost Heading', editable: true, fieldName: 'Cost_heading__c'},
         {label: 'Project Description', editable: true, fieldName: 'Project_Cost_Description__c'},
@@ -75,6 +90,7 @@ export default class ProjectCostsForm extends LightningElement {
               let preparedRow = {};
               //Secured__c, Income_Description__c, Value__c
               preparedRow.Secured__c = income.Secured__c; //amount
+              preparedRow.Secured_non_cash_contributions__c = income.Secured_non_cash_contributions__c;
               preparedRow.Description_for_cash_contributions__c = income.Description_for_cash_contributions__c;
               preparedRow.Amount_you_have_received__c = income.Amount_you_have_received__c;
               preparedRow.Id = income.Id;
@@ -147,6 +163,7 @@ export default class ProjectCostsForm extends LightningElement {
           let preparedContribution = {};
           preparedContribution.Amount_you_have_received__c = parseInt(cont.Amount_you_have_received__c);
           preparedContribution.Secured__c = cont.Secured__c;
+          preparedContribution.Secured_non_cash_contributions__c = cont.Secured_non_cash_contributions__c;
           preparedContribution.Case__c = this.project.Id;
           //console.log('cont.Id.length ', cont.Id.length );
           if(cont.Id && cont.Id.length != 0) {preparedContribution.Id = cont.Id;};
@@ -156,7 +173,9 @@ export default class ProjectCostsForm extends LightningElement {
       });
       //this.cashContributions = newCashContributions;
       console.log('before sending', JSON.stringify(this.projectCosts));
-      saveProjectCosts({projectId: this.project.Id, totalCost: this.project.Total_Cost__c, cashContributions: newCashContributions, projectCosts: newProjectCosts}) 
+      saveProjectCosts({projectId: this.project.Id, totalCost: this.project.Total_Cost__c, 
+        cashContributions: newCashContributions, projectCosts: newProjectCosts, 
+        removedCashContributions: this.removedContributions, removedProjectCosts: this.removedProjectCosts}) 
        .then(result=>{  
            console.log('handle created done', result);
            let variant = 'success';
@@ -289,7 +308,7 @@ export default class ProjectCostsForm extends LightningElement {
     deleteCostProject(projectCostToRemove, projectIndex){
         //delete controller method
         console.log('in delete project cost', projectCostToRemove);
-        deleteProjectCost({projectId: this.project.Id, projectCostToRemove: projectCostToRemove, 
+       /* deleteProjectCost({projectId: this.project.Id, projectCostToRemove: projectCostToRemove, 
           grantPercentage: this.project.Grant_Percentage__c, 
           totalCost: this.project.Total_Cost__c})
         .then(response=>{
@@ -302,7 +321,7 @@ export default class ProjectCostsForm extends LightningElement {
             const index = this.projectCosts.indexOf(projectIndex);
             let array = this.projectCosts;
             console.log('the array', JSON.stringify(array));
-            
+            this.removedProjectCosts.push(this.removedProjectCosts.at(projectIndex));
             console.log('the index', JSON.stringify(index));
             if (index <= -1) { // only splice array when item is found
               console.log('splicing', true)
@@ -310,7 +329,7 @@ export default class ProjectCostsForm extends LightningElement {
             }
             console.log('spliced array is', JSON.stringify(array));
             this.projectCosts = array;
-            console.log('response', JSON.stringify(response));
+           // console.log('response', JSON.stringify(response));
             console.log('****the costs are now', JSON.stringify(this.projectCosts));
         /*
             console.log('Delete fail: ' + response.message);
@@ -342,14 +361,15 @@ export default class ProjectCostsForm extends LightningElement {
       //delete controller method
       console.log('in delete project income', incomeId);
       if(incomeId){
-        deleteProjectIncome({projectId: this.project.Id, projectIncomeToRemove: incomeId, 
+        /*deleteProjectIncome({projectId: this.project.Id, projectIncomeToRemove: incomeId, 
           grantPercentage: this.project.Grant_Percentage__c, totalCost: this.project.Total_Cost__c})
         .then(response=>{
-          
+        */
           const index = this.cashContributions.indexOf(incomeIndex);
           let array = this.cashContributions;
           console.log('the array', JSON.stringify(array));
-          
+          console.log('trying to delete', JSON.stringify(this.cashContributions.at(incomeIndex)));
+          this.removedContributions.push(this.cashContributions.at(incomeIndex));
           console.log('the index', JSON.stringify(index));
           if (index <= -1) { // only splice array when item is found
             console.log('splicing', true)
@@ -357,9 +377,9 @@ export default class ProjectCostsForm extends LightningElement {
           }
           console.log('spliced array is', JSON.stringify(array));
           this.cashContributions = array;
-          console.log('response', JSON.stringify(response));
+          //console.log('response', JSON.stringify(response));
           console.log('****the cash are now', JSON.stringify(this.cashContributions));
-        })
+        /*})
         .catch(error=>{
           //this.showToast('error', 'Removing failed', this.errorMessageHandler(JSON.stringify(error)));
           console.log('error ',JSON.stringify(error));
@@ -370,11 +390,11 @@ export default class ProjectCostsForm extends LightningElement {
             new ShowToastEvent({variant, title, message})
           );
         })
-        .finally(()=>{
+        .finally(()=>{*/
           //this.isDialogVisible = false;
           
           this.recalculateCostsSummary();
-        });
+       // });
       }
       
   }

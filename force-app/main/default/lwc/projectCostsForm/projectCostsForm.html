@@ -1,105 +1,116 @@
 <template>
     
   
-    <template if:true={project}>
-      <c-project-cost-form-header project={project}></c-project-cost-form-header>
-    </template>
+  <template if:true={project}>
+    <c-project-cost-form-header project={project}></c-project-cost-form-header>
+  </template>
 
-    <!-- ACORDIAN-->
-    <!-- this should be acccordian section 1-->
-<c-button
-      label="Add Project Cost"
-      variant="Neutral"
-      onclick={handleAddProjectCost}>
-  </c-button>
-  
+
+
+
+      
+<template if:true={projectCosts}>
+  <div>
+    <lightning-accordion allow-multiple-sections-open
+                          onsectiontoggle={handleSectionToggle}
+                          active-section-name={activeSections}>
+         <lightning-accordion-section name="A" label="Project Cost">
+      <lightning-button variant="brand" 
+                   label="Add Project Cost"  
+                   onclick={handleAddProjectCost} 
+                   class="slds-float_right"></lightning-button>
+  <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+    <thead>
+        <tr class="slds-line-height_reset">
+        <template for:each={columns} for:item="col">
         
-  <template if:true={projectCosts}>
-    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
-      <thead>
-          <tr class="slds-line-height_reset">
-          <template for:each={columns} for:item="col">
-          
-            <th class="" scope="col" key={col.label}>
-              <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name={col.label}>
-                                  {col.label} </a>
-            </th>
-              
-          </template>
-              <th class="" scope="col">
-                <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Remove">
-                </a>
-            </th>
-           </tr>
-          </thead>
-          <tbody>
-            <template if:true={projectCosts}>
-              <template for:each={projectCosts} for:item="cost">
-                <tr class="slds-hint-parent" key={cost.index}>
-                  &nbsp;
-                  <c-project-cost-item key={cost.index} cost={cost} onremove={handleRemoveCost} oncostchange={handleCostChange}>
-                  </c-project-cost-item>
-                </tr>
-              </template>
+          <th class="" scope="col" key={col.label}>
+            <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name={col.label}>
+                                {col.label} </a>
+          </th>
+            
+        </template>
+            <th class="" scope="col">
+              <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Remove">
+              </a>
+          </th>
+         </tr>
+        </thead>
+        <tbody>
+          <template if:true={projectCosts}>
+            <template for:each={projectCosts} for:item="cost">
+              <tr class="slds-hint-parent" key={cost.index}>
+                &nbsp;
+                <c-project-cost-item key={cost.index} cost={cost} onremove={handleRemoveCost} oncostchange={handleCostChange}>
+                </c-project-cost-item>
+              </tr>
             </template>
-          </tbody>
-      </table>
+          </template>
+        </tbody>
+    </table>
+    </lightning-accordion-section>
+</lightning-accordion>
+</div> 
 </template>
-          
+        
 
 <!-- this should be acordiansection  2-->
-          <c-button
-          label="Add Cash Contribution"
-          variant="Neutral"
-          onclick={handleAddCashContribution}>
-          </c-button>
-          <template if:true={cashContributions}>
-            
-            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
-              <thead>
-                <tr class="slds-line-height_reset">
-                    <th class="" scope="col">
-                        <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Description_for_cash_contributions__c">
-                            Description
-                        </a>
-                    </th>
-                    <th class="" scope="col">
-                        <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Secured__c">
-                            Secured
-                        </a>
-                    </th>
-                    <th class="" scope="col">
-                        <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Amount_you_have_received__c">
-                            Amount
-                        </a>
-                    </th>
-                    <th class="" scope="col">
-                      <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Remove">
+        <template if:true={cashContributions}>
+               <lightning-accordion allow-multiple-sections-open
+                       onsectiontoggle={handleSectionToggle}
+                       active-section-name={activeSections}>
+            <lightning-accordion-section name="B" label="Cash Contribution">
+               <lightning-button variant="brand" 
+                label="Add Cash Contribution"  
+                onclick={handleAddCashContribution} 
+                class="slds-float_right"></lightning-button>
+
+          
+          <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+            <thead>
+              <tr class="slds-line-height_reset">
+                  <th class="" scope="col">
+                      <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Description_for_cash_contributions__c">
+                          Description
                       </a>
                   </th>
-                </tr>
-            </thead>
-             
-              <tbody>
-                <template if:true={cashContributions}>
-                  <template for:each={cashContributions} for:item="income">
-                <tr class="slds-hint-parent" key={income.index}>
-                  &nbsp;
-                  <c-project-income-item key={income.index} income={income} onremove={handleRemoveIncome} onincomechange={handleIncomeChange}>
-                  </c-project-income-item>
-                
-                </tr>
-              </template>
+                  <th class="" scope="col">
+                      <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Secured__c">
+                          Secured
+                      </a>
+                  </th>
+                  <th class="" scope="col">
+                      <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Amount_you_have_received__c">
+                          Amount
+                      </a>
+                  </th>
+                  <th class="" scope="col">
+                    <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Remove">
+                    </a>
+                </th>
+              </tr>
+          </thead>
+           
+            <tbody>
+              <template if:true={cashContributions}>
+                <template for:each={cashContributions} for:item="income">
+              <tr class="slds-hint-parent" key={income.index}>
+                &nbsp;
+                <c-project-income-item key={income.index} income={income} onremove={handleRemoveIncome} onincomechange={handleIncomeChange}>
+                </c-project-income-item>
+              
+              </tr>
             </template>
-          </tbody>
-          </table>
-    </template>
+          </template>
+        </tbody>
+        </table>
+         </lightning-accordion-section>
+</lightning-accordion>
+  </template>  
+  <lightning-button variant="brand" 
+  label="Save"  
+  onclick={handleSaveProjectCosts} 
+  class="slds-float_right"></lightning-button>
 <!-- END ACCORDIAN -->
-    <c-button
-      label="Save"
-      variant="Neutral"
-      onclick={handleSaveProjectCosts}> 
-  </c-button>
 
-
-    </template> 
+  </template> 
