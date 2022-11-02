@@ -33,6 +33,7 @@ export default class ProjectCostsForm extends LightningElement {
     totalCosts = 0;
     totalCost = 0;
     totalCashContributions = 0;
+    totalVAT = 0;
     @track projectCosts = [];
     @track cashContributions = [];
     @track removedProjectCosts = [];
@@ -247,6 +248,7 @@ export default class ProjectCostsForm extends LightningElement {
         var fieldName = 'Total_Development_Income__c';
         console.log('the development income', this.project[fieldName]);
         this.project[fieldName] = this.totalCashContributions;
+        
     }
 
     @api
@@ -262,6 +264,8 @@ export default class ProjectCostsForm extends LightningElement {
         //if the field was the amount - recalculate totals
         this.totalCosts = 0;
         this.recalculateCostsSummary();
+        var fieldName = 'Total_project_VAT__c'
+        this.project[fieldName] = this.totalVAT;
         var fieldName = 'Total_Cost__c';
         console.log('the total costs plus contributions', this.project[fieldName]);
         this.project[fieldName] = this.totalCosts;
@@ -275,9 +279,15 @@ export default class ProjectCostsForm extends LightningElement {
     }
 
     calculateCosts(){
+      var newTotalCosts = 0;
+      var newVATTotal = 0;
       for(var cost in this.projectCosts){
-        this.totalCosts += parseInt(this.projectCosts[cost].Costs__c);
+        newTotalCosts += parseInt(this.projectCosts[cost].Costs__c);
+        newVATTotal += parseInt(this.projectCosts[cost].Vat__c);
+        
       }
+      this.totalCosts = newTotalCosts;
+      this.totalVAT = newVATTotal;
     }
 
 
