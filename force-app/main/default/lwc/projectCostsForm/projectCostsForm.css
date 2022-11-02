@@ -1,0 +1,14 @@
+tr th, tr td {
+	padding: 10px 14px;
+	font-size:15px!important;
+  	line-height:21px!important;
+  	vertical-align: top;
+}
+
+.lightning-spinner {
+    position: relative;
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+  }
+  

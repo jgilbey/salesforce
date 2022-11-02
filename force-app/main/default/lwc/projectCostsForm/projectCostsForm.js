@@ -11,8 +11,11 @@ import { refreshApex } from '@salesforce/apex';
 import UserPreferencesRecordHomeSectionCollapseWTShown from '@salesforce/schema/User.UserPreferencesRecordHomeSectionCollapseWTShown';
 export default class ProjectCostsForm extends LightningElement {
 
+  loading = false;
   activeSections = ['A', 'B'];
   activeSectionsMessage = '';
+  smallGrantProject = "Small_Grant_3_10k";
+  mediumGrantProject = "Medium";
 
   handleSectionToggle(event) {
       const openSections = event.detail.openSections;
@@ -34,7 +37,7 @@ export default class ProjectCostsForm extends LightningElement {
     @track cashContributions = [];
     @track removedProjectCosts = [];
     @track removedContributions = [];
-    columns = [
+    smallCols = [
         {label: 'Cost Heading', editable: true, fieldName: 'Cost_heading__c'},
         {label: 'Project Description', editable: true, fieldName: 'Project_Cost_Description__c'},
         {label: 'Amount', editable: true, fieldName: 'Costs__c'}
@@ -45,7 +48,8 @@ export default class ProjectCostsForm extends LightningElement {
         {label: 'Cost Heading', editable: true, fieldName: 'Cost_heading__c'},
         {label: 'Project Description', editable: true, fieldName: 'Project_Cost_Description__c'},
         {label: 'Amount', editable: true, fieldName: 'Costs__c'},
-        {label: 'VAT', editable: true, fieldName: 'VAT__C'}
+        {label: 'VAT', editable: true, fieldName: 'VAT__C'},
+        {label: 'Total Cost', editable: true, fieldName: ''},
         
     ];
     
@@ -56,6 +60,17 @@ export default class ProjectCostsForm extends LightningElement {
         
     ];
     
+
+    get columns(){
+      if (this.project && this.project.RecordType) {
+        switch (this.project.RecordType.DeveloperName) {
+          case this.smallGrantProject:
+            return this.smallCols;
+          case this.mediumGrantProject:
+            return this.mediumColumns;
+        }}
+    }
+
     @api recordId;
     @api columnWidthsMode = 'fixed';
 
@@ -69,7 +84,7 @@ export default class ProjectCostsForm extends LightningElement {
             this.project[field] = data[field];
           })
 
-          console.log('the project is ',this.project);
+          console.log('the project is ',JSON.stringify(this.project));
         
       } else {
         console.log('error retrieving project')
@@ -94,6 +109,7 @@ export default class ProjectCostsForm extends LightningElement {
               preparedRow.Description_for_cash_contributions__c = income.Description_for_cash_contributions__c;
               preparedRow.Amount_you_have_received__c = income.Amount_you_have_received__c;
               preparedRow.Id = income.Id;
+              preparedRow.RecordTypeName = income.RecordType.Name;
               preparedRow.index = i;
               preparedRows.push(preparedRow);
               i++;
@@ -122,15 +138,22 @@ export default class ProjectCostsForm extends LightningElement {
               preparedRow.Costs__c = cost.Costs__c; //amount
               preparedRow.Cost_heading__c = cost.Cost_heading__c;
               preparedRow.Project_Cost_Description__c = cost.Project_Cost_Description__c;
+              preparedRow.RecordTypeName = cost.RecordType.Name;
+              console.log('record type ', cost.RecordType);
+              console.log('record type name', cost.RecordType.Name);
+              if(cost.RecordType.Name === 'Medium Grants'){
+                preparedRow.Vat__c = cost.Vat__c;
+              }
               //preparedRow.Vat__c = cost.Vat__c;
               preparedRow.Id = cost.Id ? cost.Id : null;
               //preparedRow.allowRemoving = true;
               preparedRow.index = i;
               preparedRows.push(preparedRow);
+              console.log('preparedRow', preparedRow);
               i++;
              });  
              this.projectCosts = preparedRows;
-             console.log('costs',this.projectCosts);
+            // console.log('costs',this.projectCosts);
         } else if (error) {
           this.projectCosts = [];
           this.error = error;
@@ -143,7 +166,7 @@ export default class ProjectCostsForm extends LightningElement {
 
       //send the items to be saved to back end
       console.log('project cost before save',JSON.stringify(this.projectCosts));
-
+      this.loading = true;
       let newProjectCosts = [];
       this.projectCosts.forEach(cost => { 
           let preparedCost = {};
@@ -186,7 +209,7 @@ export default class ProjectCostsForm extends LightningElement {
           );
           refreshApex(this.projectCosts);
           refreshApex(this.cashContributions);
-          
+          this.loading = false;
           })
           .catch(error=>{
             console.log('error ',JSON.stringify(error));
@@ -196,7 +219,7 @@ export default class ProjectCostsForm extends LightningElement {
             this.dispatchEvent(
               new ShowToastEvent({variant, title, message})
             );
-            
+            this.loading = false;
           })
         //return refreshApex(this.oppList);  ; 
     }
@@ -262,7 +285,7 @@ export default class ProjectCostsForm extends LightningElement {
       let newProjectCosts = this.projectCosts;
       let preparedRow = {};
       preparedRow.Costs__c = 0; //amount
-      preparedRow.Cost_heading__c = '';
+      preparedRow.Cost_heading__c = 'Select heading';
       preparedRow.Project_Cost_Description__c = '';
       //preparedRow.Vat__c = cost.Vat__c;
       preparedRow.Id = '';
@@ -285,7 +308,7 @@ export default class ProjectCostsForm extends LightningElement {
       if(this.cashContributions.length < 1) {
         preparedRow.index = 0;
       } else {
-        preparedRow.index = 0;
+        preparedRow.index = this.cashContributions.length;
       }
       this.cashContributions.push(preparedRow);
       this.cashContributions = this.cashContributions;
@@ -336,7 +359,7 @@ export default class ProjectCostsForm extends LightningElement {
             this.showToast('error', 'Removing failed', response.message);
             
           */
-        })
+        /*})
         .catch(error=>{
           console.log('error ',JSON.stringify(error));
           let variant = 'error';
@@ -350,7 +373,7 @@ export default class ProjectCostsForm extends LightningElement {
         })
         .finally(()=>{
           //this.isDialogVisible = false;
-        });
+        });*/
 
         
       this.recalculateCostsSummary();

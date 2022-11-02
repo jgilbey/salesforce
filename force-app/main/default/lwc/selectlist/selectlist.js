@@ -60,7 +60,7 @@ export default class Selectlist extends LightningElement {
         evt.stopPropagation();
         this.toggleOptions(evt);
         this.value = evt.detail.value;
-        this.dispatchEvent(new CustomEvent('change', { detail: { value: evt.detail.value, fieldId: this.fieldId } }));
+        this.dispatchEvent(new CustomEvent('change', { detail: { value: evt.detail.value, name: this.fieldId } }));
     }
 
     toggleOptions(evt) {

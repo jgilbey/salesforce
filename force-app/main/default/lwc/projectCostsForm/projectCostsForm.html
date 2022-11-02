@@ -1,24 +1,36 @@
 <template>
+  <template if:true={loading}>
+                  <lightning-spinner
+                   alternative-text="Loading"
+                    size="medium"
+                  ></lightning-spinner>
+  </template>
+  <article class="slds-card">
     
-  
+  <!-- HEADER -->
+  <div class="slds-card__header">
   <template if:true={project}>
     <c-project-cost-form-header project={project}></c-project-cost-form-header>
   </template>
+  </div>
 
 
-
-
+<!--BODY -->
+<div class="slds-media__body">
       
 <template if:true={projectCosts}>
   <div>
     <lightning-accordion allow-multiple-sections-open
                           onsectiontoggle={handleSectionToggle}
                           active-section-name={activeSections}>
-         <lightning-accordion-section name="A" label="Project Cost">
-      <lightning-button variant="brand" 
+         <lightning-accordion-section name="A" label="Project Costs">
+          <div class="slds-var-m-around_medium slds-clearfix">
+            <lightning-button variant="brand" 
                    label="Add Project Cost"  
                    onclick={handleAddProjectCost} 
                    class="slds-float_right"></lightning-button>
+          </div>
+      
   <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
     <thead>
         <tr class="slds-line-height_reset">
@@ -53,17 +65,17 @@
 </div> 
 </template>
         
-
-<!-- this should be acordiansection  2-->
         <template if:true={cashContributions}>
                <lightning-accordion allow-multiple-sections-open
                        onsectiontoggle={handleSectionToggle}
                        active-section-name={activeSections}>
-            <lightning-accordion-section name="B" label="Cash Contribution">
+            <lightning-accordion-section name="B" label="Cash Contributions">
+              <div class="slds-var-m-around_medium slds-clearfix">
                <lightning-button variant="brand" 
                 label="Add Cash Contribution"  
                 onclick={handleAddCashContribution} 
                 class="slds-float_right"></lightning-button>
+              </div>
 
           
           <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
@@ -107,10 +119,13 @@
          </lightning-accordion-section>
 </lightning-accordion>
   </template>  
+  <div class="slds-var-m-around_medium slds-clearfix">
   <lightning-button variant="brand" 
   label="Save"  
-  onclick={handleSaveProjectCosts} 
-  class="slds-float_right"></lightning-button>
-<!-- END ACCORDIAN -->
-
+  onclick={handleSaveProjectCosts} class="slds-float_right"></lightning-button>
+</div>
+</div>
+</article>
   </template> 
+
+  

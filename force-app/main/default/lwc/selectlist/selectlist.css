@@ -7,7 +7,6 @@
 	display:block;
 	line-height: normal;
 	min-height: 36px; /* covers no default value scenarios */
-	background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNzYgMjEwIj48cGF0aCBmaWxsPSIjNTU2OThkIiBkPSJNNTYgNTBoMTY0YzQgMCA4IDYgNCAxMGwtODAgOThjLTMgMy05IDMtMTIgMEw1MiA2MGMtNC00LTEtMTAgNC0xMHoiLz48L3N2Zz4=)!important;
 	background-repeat:no-repeat;
 	background-size: 0.8125rem 0.8125rem, 100% 100%;
 	text-decoration:none;

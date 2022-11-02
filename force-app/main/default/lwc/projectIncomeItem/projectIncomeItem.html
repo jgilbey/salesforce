@@ -3,13 +3,13 @@
     <td data-label="Description"
         data-id={income.index}
         data-field="Description_for_cash_contributions__c">
-    
-        <div class="slds-truncate">
+        <div class="slds-truncate">  
             <lightning-textarea 
             name="Description_for_cash_contributions__c" 
             value={income.Description_for_cash_contributions__c}
             data-id={income.index}
             onchange={handleOnChange}></lightning-textarea>
+            
         </div>
     </td>   
     
@@ -24,11 +24,12 @@
                                     data-id={income.index}>
           </lightning-input></div>-->
           <div class="picklistBlock"> 
+            <label class="slds-form-element__label"></label>
             <c-selectlist
             is-select={visible}
             title="Secured_non_cash_contributions__c"
             field-id="Secured_non_cash_contributions__c"
-            placeholder="Select heading" 
+            placeholder={income.Secured_non_cash_contributions__c} 
             style-class={styleClass} 
             options={incomeSecuredList} 
             value={income.Secured_non_cash_contributions__c} 
@@ -56,8 +57,27 @@
             </lightning-input>
       </div> 
     </td>
+
+    <template if:true={isMedium}></template>
+    <td data-label="VAT" 
+    data-id={income.index}
+    data-field="VAT__c"
+    class="">
+
+    <div class="slds-truncate">
+            <lightning-input type="currency" 
+                             name="VAT__c" 
+                             value={income.VAT__c}
+                             data-id={income.index}
+                             onchange={handleOnChange}>
+            </lightning-input>
+      </div> 
+    </td>
+    </template>
+
     <td data-id={income.index}>
-          <div class=”slds-cell-wrap”>
+      <label class="slds-form-element__label"></label>
+        <div class=”slds-cell-wrap”>
             <lightning-button-icon label="delete" 
             icon-name="utility:delete" 
             alternative-text="Delete" title="Delete" 

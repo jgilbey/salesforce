@@ -13,6 +13,7 @@ export default class ProjectCostItem extends LightningElement {
     @api styleClass; //= "slds-popover";
     @api objectApiName;
     @track costRecordTypeId;
+    @track totalCost = 0;
     error;
     
 @wire(getObjectInfo, { objectApiName: PROJECT_COST_OBJECT })
@@ -22,7 +23,7 @@ wiredRecord({ error,data }){
                 if(data.recordTypeInfos) {
                     console.log('the reti',JSON.stringify(data.recordTypeInfos));
                     this.costRecordTypeId = Object.values(data.recordTypeInfos).find(
-                        (item) => item.name === "Master"
+                        (item) => item.name === this.cost.RecordTypeName
                       ).recordTypeId;
                 }
                 
@@ -65,6 +66,12 @@ wiredRecord({ error,data }){
         this.dispatchEvent(
             new CustomEvent('costchange', { detail: { name: e.target.name, value: e.target.value, id: e.target.dataset.id } })
             );
+            
+        this.calculateTotalCost();
+    }
+
+    renderedCallback() {
+        this.calculateTotalCost();
     }
 
     removeCostItemHandler(){
@@ -76,6 +83,14 @@ wiredRecord({ error,data }){
             this.visible = false;
         
     }
+
+    calculateTotalCost(){
+        if(this.cost.Vat__c) {
+            this.totalCost = Number(this.cost.Costs__c) + Number(this.cost.Vat__c);
+        }
+        
+    }
+
 
     fireEvent({ eventName, details }) {
         this.dispatchEvent(new CustomEvent(eventName, { detail: details }))

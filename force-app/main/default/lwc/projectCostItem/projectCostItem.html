@@ -1,19 +1,21 @@
 <template>
-  <template if:true={visible}>
+  <template if:true={cost}>
     <td data-label="Heading"
         data-id={cost.index}
         data-field="Cost_heading__c">
     
         <div class="picklistBlock"> 
+          <label class="slds-form-element__label"></label>
           <c-selectlist
+          placeholder={cost.Cost_heading__c}
           is-select={visible}
           title="Cost_heading__c"
-          placeholder="Select heading" 
           style-class={styleClass} 
           options={costHeadingList} 
           value={cost.Cost_heading__c} 
           onchange={handleOnChange} 
           data-id={cost.index}
+          field-id={cost.Cost_heading__c}
           data-field="Cost_heading__c"
           name="Cost_heading__c"
           disabled={disabled}>
@@ -24,7 +26,7 @@
         data-id={cost.index}
         data-field="Project_Cost_Description__c">
     
-        <div class="slds-truncate"> 
+        <div class=”slds-cell-wrap” > 
 
             <lightning-textarea 
             name="Project_Cost_Description__c" 
@@ -39,7 +41,7 @@
     data-field="Costs__c"
     class="">
 
-        <div class="slds-truncate">
+        <div class=”slds-cell-wrap” >
             <lightning-input type="currency" 
                              name="Costs__c" 
                              value={cost.Costs__c}
@@ -48,7 +50,38 @@
             </lightning-input>
       </div> 
     </td>
+
+    <template if:true={cost.Vat__c}>
+    <td data-label="Cost" 
+    data-id={cost.index}
+    data-field="Vat__c"
+    class="">
+
+        <div class=”slds-cell-wrap” >
+            <lightning-input type="currency" 
+                             name="Vat__c" 
+                             value={cost.Vat__c}
+                             onchange={handleOnChange}
+                             data-id={cost.index}>
+            </lightning-input>
+      </div> 
+    </td>
+    </template>
+    <template if:true={cost.Vat__c}>
+    <td data-label="Cost" 
+    data-id={cost.index}
+    data-field="Total Cost"
+    class="">
+
+    <label class="slds-form-element__label"></label>
+        <div class=”slds-cell-wrap” >
+          
+            {totalCost}
+      </div> 
+    </td>
+    </template>
    <td data-id={cost.index}>
+    <label class="slds-form-element__label"></label>
           <div class=”slds-cell-wrap” title="Remove">
             <lightning-button-icon label="delete" 
             icon-name="utility:delete" 

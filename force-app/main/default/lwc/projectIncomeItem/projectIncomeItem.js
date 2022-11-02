@@ -22,7 +22,7 @@ export default class ProjectIncomeItem extends LightningElement {
     
                     if(data.recordTypeInfos) {
                         this.costRecordTypeId = Object.values(data.recordTypeInfos).find(
-                            (item) => item.name === "Master"
+                            (item) => item.name === this.income.RecordTypeName
                           ).recordTypeId;
                     }
         }
