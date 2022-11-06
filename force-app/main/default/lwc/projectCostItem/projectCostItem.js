@@ -23,15 +23,14 @@ wiredRecord({ error,data }){
                 if(data.recordTypeInfos) {
                     console.log('the reti',JSON.stringify(data.recordTypeInfos));
                     this.costRecordTypeId = Object.values(data.recordTypeInfos).find(
-                        (item) => item.name === this.cost.RecordTypeName
-                      ).recordTypeId;
+                      (item) => item.name === this.cost.RecordTypeName
+                    )?.recordTypeId;
                 }
                 
             this.error = undefined;
     
             } else if (error) {
                 this.error = error;
-                this.assetRecordTypeId = undefined;
               }
 }
 
@@ -54,7 +53,7 @@ wiredRecord({ error,data }){
         }
     }
 
-   handleOnChange(e) {
+   /*handleOnChange(e) {
         e.stopPropagation();
         //myList[i][e.target.name] = e.target.value;
         console.log('handling in child');
@@ -68,31 +67,48 @@ wiredRecord({ error,data }){
             );
             
         this.calculateTotalCost();
+    }*/
+
+    handleOnChange(e) {
+        e.stopPropagation();
+        //myList[i][e.target.name] = e.target.value;
+        console.log("handling in child");
+        //console.log(e.target.name); //... Field API Name
+        console.log("dataset value ", e.target.value); //... value
+        console.log("dataset id", JSON.stringify(e.target.dataset.id)); //...Record Id
+        //console.log(JSON.stringify(e.target)); //...Record Id
+        console.log("name", e.target.name);
+        this.dispatchEvent(
+          new CustomEvent("costchange", {
+            detail: {
+              name: e.target.name,
+              value: e.target.value,
+              id: e.target.dataset.id
+            }
+          })
+        );
     }
 
     renderedCallback() {
         this.calculateTotalCost();
     }
 
-    removeCostItemHandler(){
-        console.log('the cost item is', JSON.stringify(this.cost));
-            this.fireEvent({
-              eventName: "remove",
-              details: { Id: this.cost.Id, index: this.cost.index }
-            });
-            this.visible = false;
-        
-    }
-
-    calculateTotalCost(){
-        if(this.cost.Vat__c) {
-            this.totalCost = Number(this.cost.Costs__c) + Number(this.cost.Vat__c);
+    removeCostItemHandler() {
+        console.log("the cost item is", JSON.stringify(this.cost));
+        this.fireEvent({
+          eventName: "remove",
+          details: { id: this.cost.Id, index: this.cost.index }
+        });
+        this.visible = false;
+      }
+    
+      calculateTotalCost() {
+        if (this.cost.Vat__c) {
+          this.totalCost = Number(this.cost.Costs__c) + Number(this.cost.Vat__c);
         }
-        
-    }
-
-
-    fireEvent({ eventName, details }) {
-        this.dispatchEvent(new CustomEvent(eventName, { detail: details }))
-    }       
+      }
+    
+      fireEvent({ eventName, details }) {
+        this.dispatchEvent(new CustomEvent(eventName, { detail: details }));
+      }       
 }

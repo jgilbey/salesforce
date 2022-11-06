@@ -12,17 +12,24 @@
             
         </div>
     </td>   
-    
-    <td data-label="IncomeSec"
-        data-id={income.index}
-        data-field="Secured__c">
-       <!-- <div class="slds-truncate">
-        
+    <template if:false={income.Secured_non_cash_contributions__c}>
+      <td>
+        <div class="slds-truncate">
+          
+          <label class="slds-form-element__label"></label>
           <lightning-input type="checkbox" 
                                     name="Secured__c" 
                                     value={income.Secured__c}
-                                    data-id={income.index}>
-          </lightning-input></div>-->
+                                    data-id={income.index}
+                                    onchange={handleOnChange} >
+          </lightning-input></div>
+      </td>
+    </template>
+    <template if:true={income.Secured_non_cash_contributions__c}>
+    <td data-label="IncomeSec"
+        data-id={income.index}
+        data-field="Secured_non_cash_contributions__c">
+       
           <div class="picklistBlock"> 
             <label class="slds-form-element__label"></label>
             <c-selectlist
@@ -41,7 +48,7 @@
             </c-selectlist>
           </div>
               
-    </td>   
+    </td> </template>  
 
     <td data-label="Amount" 
     data-id={income.index}
@@ -57,23 +64,6 @@
             </lightning-input>
       </div> 
     </td>
-
-    <template if:true={isMedium}></template>
-    <td data-label="VAT" 
-    data-id={income.index}
-    data-field="VAT__c"
-    class="">
-
-    <div class="slds-truncate">
-            <lightning-input type="currency" 
-                             name="VAT__c" 
-                             value={income.VAT__c}
-                             data-id={income.index}
-                             onchange={handleOnChange}>
-            </lightning-input>
-      </div> 
-    </td>
-    </template>
 
     <td data-id={income.index}>
       <label class="slds-form-element__label"></label>

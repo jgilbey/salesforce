@@ -53,13 +53,17 @@
             <template for:each={projectCosts} for:item="cost">
               <tr class="slds-hint-parent" key={cost.index}>
                 &nbsp;
-                <c-project-cost-item key={cost.index} cost={cost} onremove={handleRemoveCost} oncostchange={handleCostChange}>
+                <c-project-cost-item key={cost.index} 
+                cost={cost} 
+                onremove={handleRemoveCost} 
+                oncostchange={handleCostChange}>
                 </c-project-cost-item>
               </tr>
             </template>
           </template>
         </tbody>
     </table>
+    <c-project-costs-form-totals project={project}></c-project-costs-form-totals>
     </lightning-accordion-section>
 </lightning-accordion>
 </div> 

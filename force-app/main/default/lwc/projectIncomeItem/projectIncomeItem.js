@@ -9,7 +9,7 @@ export default class ProjectIncomeItem extends LightningElement {
     @track visible = true;
     @api disabled = false;
     @api recordId;
-    @track recordTypeId;
+    @track incomeRecordTypeId;
     styleClass;
     
     @track incomeSecuredList;
@@ -21,7 +21,8 @@ export default class ProjectIncomeItem extends LightningElement {
             console.log('data.recordTypeInfo', JSON.stringify(data.recordTypeInfos))
     
                     if(data.recordTypeInfos) {
-                        this.costRecordTypeId = Object.values(data.recordTypeInfos).find(
+                        console.log('this.income.RecordTypeName', this.income.RecordTypeName);
+                        this.incomeRecordTypeId = Object.values(data.recordTypeInfos).find(
                             (item) => item.name === this.income.RecordTypeName
                           ).recordTypeId;
                     }
@@ -32,7 +33,7 @@ export default class ProjectIncomeItem extends LightningElement {
         getPicklistValues,
 
         {
-            recordTypeId: '$costRecordTypeId',
+            recordTypeId: '$incomeRecordTypeId',
 
             fieldApiName: INCOME_SECURED
         }

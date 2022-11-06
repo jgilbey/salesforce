@@ -4,13 +4,12 @@ import getProject from '@salesforce/apex/ProjectCostFormController.getProject';
 import getProjectCosts from '@salesforce/apex/ProjectCostFormController.getProjectCosts';
 import getCashContributions from '@salesforce/apex/ProjectCostFormController.getCashContributions';
 import saveProjectCosts from '@salesforce/apex/ProjectCostFormController.saveProjectCosts';
-import deleteProjectCost from '@salesforce/apex/ProjectCostFormController.removeProjectCost';
-import deleteProjectIncome from '@salesforce/apex/ProjectCostFormController.removeIncomeItem';
 import { refreshApex } from '@salesforce/apex';
 
 import UserPreferencesRecordHomeSectionCollapseWTShown from '@salesforce/schema/User.UserPreferencesRecordHomeSectionCollapseWTShown';
 export default class ProjectCostsForm extends LightningElement {
 
+  _wireResultProjectCosts = {};
   loading = false;
   activeSections = ['A', 'B'];
   activeSectionsMessage = '';
@@ -64,6 +63,11 @@ export default class ProjectCostsForm extends LightningElement {
 
     get columns(){
       if (this.project && this.project.RecordType) {
+        console.log('project.recordtype.developername', this.project.RecordType.DeveloperName);
+        
+        console.log('is it', this.smallGrantProject);
+        
+        console.log('or is it', this.mediumGrantProject);
         switch (this.project.RecordType.DeveloperName) {
           case this.smallGrantProject:
             return this.smallCols;
@@ -84,8 +88,6 @@ export default class ProjectCostsForm extends LightningElement {
           {
             this.project[field] = data[field];
           })
-
-          console.log('the project is ',JSON.stringify(this.project));
         
       } else {
         console.log('error retrieving project')
@@ -105,86 +107,134 @@ export default class ProjectCostsForm extends LightningElement {
             data.forEach(income => {
               let preparedRow = {};
               //Secured__c, Income_Description__c, Value__c
-              preparedRow.Secured__c = income.Secured__c; //amount
-              preparedRow.Secured_non_cash_contributions__c = income.Secured_non_cash_contributions__c;
+              console.log('case record type name', income.Case__r.RecordType.DeveloperName)
+              if(income.Case__r.RecordType.DeveloperName === this.mediumGrantProject){
+                preparedRow.Secured__c = income.Secured__c; //amount
+              } else {
+                preparedRow.Secured_non_cash_contributions__c = income.Secured_non_cash_contributions__c;
+              
+              }
               preparedRow.Description_for_cash_contributions__c = income.Description_for_cash_contributions__c;
               preparedRow.Amount_you_have_received__c = income.Amount_you_have_received__c;
               preparedRow.Id = income.Id;
               preparedRow.RecordTypeName = income.RecordType.Name;
               preparedRow.index = i;
+              preparedRow.deleted = false;
               preparedRows.push(preparedRow);
               i++;
+              console.log('income prepared',preparedRow);
              });  
              this.cashContributions = preparedRows;
-             console.log('cash',this.cashContributions);
+             //console.log('cash',this.cashContributions);
         
       }
       
     }
 
-    get cashContributions(){
-      return this.cashContributions;
+    @wire(getProjectCosts, {
+      projectId: "$recordId"
+    })
+    wiredProjectCosts(result) {
+      this._wireResultProjectCosts = result;
+      const { error, data } = result;
+      if (data) {
+        console.log("project cost data is", JSON.stringify(data));
+        this.projectCosts = data.map((cost, index) => {
+          let retVal = {};
+          retVal.Costs__c = cost.Costs__c; //amount
+          // retVal.deleted = false; We remove item from array instead of setting flag to false
+          retVal.Cost_heading__c = cost.Cost_heading__c;
+          retVal.Project_Cost_Description__c = cost.Project_Cost_Description__c;
+          retVal.RecordTypeName = cost.RecordType.Name;
+          retVal.Id = cost.Id;
+          retVal.index = index;
+          if (retVal.RecordTypeName === "Medium Grants") {
+            retVal.Vat__c = cost.Vat__c;
+          }
+          return retVal; //oi
+        });
+      } else if (error) {
+        this.projectCosts = [];
+        this.error = error;
+        console.log("error", error);
+      }
+    }
+//wtf come the f on
+    getNewContributions() {
+      return this.cashContributions.map((cont) => {
+        let preparedContribution = {};
+        preparedContribution.Amount_you_have_received__c = parseInt(cont.Amount_you_have_received__c);
+        preparedContribution.Secured__c = cont.Secured__c;
+        preparedContribution.Secured_non_cash_contributions__c = cont.Secured_non_cash_contributions__c;
+        preparedContribution.Case__c = this.project.Id;
+        //console.log('cont.Id.length ', cont.Id.length );
+        if (cont.Id) {
+          preparedContribution.Id = cont.Id;
+        }
+        preparedContribution.Description_for_cash_contributions__c = cont.Description_for_cash_contributions__c;
+        console.log("colllnt", JSON.stringify(preparedContribution));
+        return preparedContribution;
+      });
     }
 
-    @wire(getProjectCosts, {
-        projectId: '$recordId'
-      })
-      wiredProjects({ error, data }) {
-        if (data) {
-            console.log('project cost data is', JSON.stringify(data));
-            let preparedRows = [];
-            let i = 0;
-            data.forEach(cost => {
-              let preparedRow = {};
-              preparedRow.Costs__c = cost.Costs__c; //amount
-              preparedRow.Cost_heading__c = cost.Cost_heading__c;
-              preparedRow.Project_Cost_Description__c = cost.Project_Cost_Description__c;
-              preparedRow.RecordTypeName = cost.RecordType.Name;
-              console.log('record type ', cost.RecordType);
-              console.log('record type name', cost.RecordType.Name);
-              if(cost.RecordType.Name === 'Medium Grants'){
-                preparedRow.Vat__c = cost.Vat__c;
-              }
-              //preparedRow.Vat__c = cost.Vat__c;
-              preparedRow.Id = cost.Id ? cost.Id : null;
-              //preparedRow.allowRemoving = true;
-              preparedRow.index = i;
-              preparedRows.push(preparedRow);
-              console.log('preparedRow', preparedRow);
-              i++;
-             });  
-             this.projectCosts = preparedRows;
-            // console.log('costs',this.projectCosts);
-        } else if (error) {
-          this.projectCosts = [];
-          this.error = error;
-          console.log('error', error);
-        }
+      handleSaveProjectCosts() {
+        this.loading = true;
+        let newProjectCosts = this.getNewCosts();
+        let newCashContributions = this.getNewContributions();
+    
+        console.log("***********mmm**** before sending", JSON.stringify(this.projectCosts));
+        console.log("*************** before deleting", JSON.stringify(this.removedProjectCosts));
+    
+        saveProjectCosts({
+          projectId: this.project.Id,
+          totalCost: this.project.Total_Cost__c,
+          cashContributions: newCashContributions,
+          projectCosts: newProjectCosts,
+          removedCashContributions: this.removedContributions,
+          removedProjectCosts: this.removedProjectCosts
+        })
+          .then((result) => {
+            console.log("handle created done", result);
+            let variant = "success";
+            let title = "Project Saved";
+            let message = "Project costs were saved successfully";
+            this.dispatchEvent(new ShowToastEvent({ variant, title, message }));
+            refreshApex(this._wireResultProjectCosts);
+            refreshApex(this._wireResultContributions);
+            this.loading = false;
+          })
+          .catch((error) => {
+            console.log("error ", JSON.stringify(error));
+            let variant = "error";
+            let title = "Save failed";
+            let message = error.body.message;
+            this.dispatchEvent(new ShowToastEvent({ variant, title, message }));
+            this.loading = false;
+          });
       }
 
-    
+    /*
     handleSaveProjectCosts() {
-
-      //send the items to be saved to back end
-      console.log('project cost before save',JSON.stringify(this.projectCosts));
       this.loading = true;
       let newProjectCosts = [];
       this.projectCosts.forEach(cost => { 
           let preparedCost = {};
+          if(cost.deleted == false){
           preparedCost.Costs__c = parseInt(cost.Costs__c);
           preparedCost.Project_Cost_Description__c = cost.Project_Cost_Description__c;
           preparedCost.Cost_heading__c = cost.Cost_heading__c;
           if(cost.Id.length != 0){preparedCost.Id = cost.Id}; 
           preparedCost.Case__c = this.project.Id;
           newProjectCosts.push(preparedCost);
+        }
           
-          console.log('cont', JSON.stringify(preparedCost));
       });
       //this.projectCosts = newProjectCosts; //hmm
 
       let newCashContributions = [];
       this.cashContributions.forEach(cont => { 
           let preparedContribution = {};
+          if(cont.deleted == false){
           preparedContribution.Amount_you_have_received__c = parseInt(cont.Amount_you_have_received__c);
           preparedContribution.Secured__c = cont.Secured__c;
           preparedContribution.Secured_non_cash_contributions__c = cont.Secured_non_cash_contributions__c;
@@ -193,10 +243,14 @@ export default class ProjectCostsForm extends LightningElement {
           if(cont.Id && cont.Id.length != 0) {preparedContribution.Id = cont.Id;};
           preparedContribution.Description_for_cash_contributions__c = cont.Description_for_cash_contributions__c;
           newCashContributions.push(preparedContribution);
+          }
           console.log('cont', JSON.stringify(preparedContribution));
       });
       //this.cashContributions = newCashContributions;
-      console.log('before sending', JSON.stringify(this.projectCosts));
+      
+      console.log('*************** before sending', JSON.stringify(this.projectCosts));
+      
+      console.log('*************** before deleting', JSON.stringify(this.removedProjectCosts));
       saveProjectCosts({projectId: this.project.Id, totalCost: this.project.Total_Cost__c, 
         cashContributions: newCashContributions, projectCosts: newProjectCosts, 
         removedCashContributions: this.removedContributions, removedProjectCosts: this.removedProjectCosts}) 
@@ -222,18 +276,24 @@ export default class ProjectCostsForm extends LightningElement {
             );
             this.loading = false;
           })
-        //return refreshApex(this.oppList);  ; 
+    }*/
+
+    getNewCosts() {
+      return this.projectCosts.map((cost) => {
+        let preparedCost = {};
+        // if (cost.deleted == false) {
+        preparedCost.Costs__c = parseInt(cost.Costs__c);
+        preparedCost.Project_Cost_Description__c = cost.Project_Cost_Description__c;
+        preparedCost.Cost_heading__c = cost.Cost_heading__c;
+        if (cost.Id) {
+          preparedCost.Id = cost.Id;
+        }
+        preparedCost.Case__c = this.project.Id;
+        return preparedCost;
+        // }
+      });
     }
 
-    buildChangeEventDetail(e){
-        const { id } = e.target.dataset;
-        return { 
-            cost: {
-                ...cost,
-                [id]: e.detail.value
-            }
-        };
-    }
 
     handleIncomeChange(e){
       e.stopPropagation();
@@ -246,11 +306,11 @@ export default class ProjectCostsForm extends LightningElement {
         this.totalCashContributions = 0;
         this.recalculateCostsSummary();
         var fieldName = 'Total_Development_Income__c';
-        console.log('the development income', this.project[fieldName]);
+        console.log('the development income changed', this.project[fieldName]);
         this.project[fieldName] = this.totalCashContributions;
         
     }
-
+/*
     @api
     handleCostChange(e){
       e.stopPropagation();
@@ -269,6 +329,26 @@ export default class ProjectCostsForm extends LightningElement {
         var fieldName = 'Total_Cost__c';
         console.log('the total costs plus contributions', this.project[fieldName]);
         this.project[fieldName] = this.totalCosts;
+    }*/
+
+    @api
+    handleCostChange(e) {
+      e.stopPropagation();
+      console.log("project costs", this.projectCosts);
+      console.log("handling cost change in parent");
+      console.log(e.detail.value); //... Field API Name
+      //console.log(e.detail.value); //... value
+      console.log(e.detail.id); //...Record Id
+      this.projectCosts[e.detail.id][e.detail.name] = e.detail.value;
+      console.log("the project costs are now", JSON.stringify(this.projectCosts));
+      //if the field was the amount - recalculate totals
+  
+      this.recalculateCostsSummary();
+      // var fieldName = "Total_project_VAT__c";
+      this.project.Total_project_VAT__c = this.totalVAT;
+      // var fieldName = "Total_Cost__c";
+      console.log("the total costs plus contributions", this.project.Total_Cost__c);
+      this.project.Total_Cost__c = this.totalCosts;
     }
 
     calculateContributions(){
@@ -291,7 +371,7 @@ export default class ProjectCostsForm extends LightningElement {
     }
 
 
-    handleAddProjectCost(){      
+    /*handleAddProjectCost(){      
       let newProjectCosts = this.projectCosts;
       let preparedRow = {};
       preparedRow.Costs__c = 0; //amount
@@ -303,8 +383,22 @@ export default class ProjectCostsForm extends LightningElement {
       newProjectCosts.push(preparedRow);
       
       this.projectCosts = newProjectCosts;
-      console.log('the project costs with new row', JSON.stringify(this.projectCosts));
-    }
+    }*/
+    
+    handleAddProjectCost() {
+    let preparedRow = {};
+    preparedRow.Costs__c = 0; //amount
+    preparedRow.Cost_heading__c = "Select heading";
+    preparedRow.Project_Cost_Description__c = "";
+    preparedRow.RecordTypeName = 'Small Grants'
+    //preparedRow.Vat__c = cost.Vat__c;
+    preparedRow.Id = "";
+
+    // preparedRow.deleted = false;
+
+    this.projectCosts = [...this.projectCosts, preparedRow];
+    this.recalcIndexes(this.projectCosts);
+  }
     
 
     
@@ -327,83 +421,61 @@ export default class ProjectCostsForm extends LightningElement {
 
     
     handleRemoveIncome(e) {
-      console.log('in handle remove income', e.detail.Id);
+      console.log('in handle remove income', e.detail.id);
       this.deleteProjectIncome(e.detail.Id, e.detail.index);
   }
 
     handleRemoveCost(e) {
-        console.log('in handle remove cost', e.detail.Id);
-        
+        console.log('in handle remove cost', e.detail.id);
         console.log('in handle remove cost', e.detail.index);
-        this.deleteCostProject(e.detail.Id, e.detail.index);
+        this.deleteCostProject(e.detail.id, e.detail.index);
     }
+
     
-    deleteCostProject(projectCostToRemove, projectIndex){
+    
+    /*deleteCostProject(projectCostToRemove, projectIndex){
         //delete controller method
         console.log('in delete project cost', projectCostToRemove);
-       /* deleteProjectCost({projectId: this.project.Id, projectCostToRemove: projectCostToRemove, 
-          grantPercentage: this.project.Grant_Percentage__c, 
-          totalCost: this.project.Total_Cost__c})
-        .then(response=>{
-            //this.retrieveData();
-            console.log('successfully removed project cost', JSON.stringify(this.projectCosts));
-            //remove from ui list
-            /*this.projectCosts = this.projectCosts.filter(function (element) { 
-              return parseInt(element.id) !== accessKey;
-            });*/
             const index = this.projectCosts.indexOf(projectIndex);
+            this.projectCosts.at(projectIndex).deleted = true;
             let array = this.projectCosts;
-            console.log('the array', JSON.stringify(array));
-            this.removedProjectCosts.push(this.removedProjectCosts.at(projectIndex));
-            console.log('the index', JSON.stringify(index));
+            //console.log('the array', JSON.stringify(array));
+            this.removedProjectCosts.push(this.projectCosts.at(projectIndex));
+            //console.log('the index', JSON.stringify(index));
             if (index <= -1) { // only splice array when item is found
-              console.log('splicing', true)
+             console.log('splicing', true)
               array.splice(projectIndex, 1); // 2nd parameter means remove one item only
             }
             console.log('spliced array is', JSON.stringify(array));
-            this.projectCosts = array;
-           // console.log('response', JSON.stringify(response));
-            console.log('****the costs are now', JSON.stringify(this.projectCosts));
-        /*
-            console.log('Delete fail: ' + response.message);
-            this.showToast('error', 'Removing failed', response.message);
-            
-          */
-        /*})
-        .catch(error=>{
-          console.log('error ',JSON.stringify(error));
-          let variant = 'error';
-          let title = 'Removed failed';
-          let message = error.message;
-          this.dispatchEvent(
-            new ShowToastEvent({variant, title, message})
-          );
-          return false;
-          
-        })
-        .finally(()=>{
-          //this.isDialogVisible = false;
-        });*/
-
+            console.log('the project costs', this.removedProjectCosts);
+            //this.projectCosts = array;
+           console.log('****the costs are now', JSON.stringify(this.projectCosts));
         
+        this.projectCosts = array;
       this.recalculateCostsSummary();
         
+    }*/
+    deleteCostProject(projectCostId, projectIndex) {
+      //delete controller method
+      if (projectCostId) {
+        this.removedProjectCosts.push(this.projectCosts[projectIndex]);
+      }
+      this.projectCosts.splice(projectIndex, 1);
+      this.projectCosts = [...this.projectCosts];
+      this.recalcIndexes(this.projectCosts);
+      this.recalculateCostsSummary();
     }
     
     deleteProjectIncome(incomeId, incomeIndex){
       //delete controller method
       console.log('in delete project income', incomeId);
       if(incomeId){
-        /*deleteProjectIncome({projectId: this.project.Id, projectIncomeToRemove: incomeId, 
-          grantPercentage: this.project.Grant_Percentage__c, totalCost: this.project.Total_Cost__c})
-        .then(response=>{
-        */
           const index = this.cashContributions.indexOf(incomeIndex);
           let array = this.cashContributions;
-          console.log('the array', JSON.stringify(array));
-          console.log('trying to delete', JSON.stringify(this.cashContributions.at(incomeIndex)));
+          //console.log('the array', JSON.stringify(array));
+          //console.log('trying to delete', JSON.stringify(this.cashContributions.at(incomeIndex)));
           this.removedContributions.push(this.cashContributions.at(incomeIndex));
-          console.log('the index', JSON.stringify(index));
+          //console.log('the index', JSON.stringify(index));
           if (index <= -1) { // only splice array when item is found
             console.log('splicing', true)
             array.splice(incomeIndex, 1); // 2nd parameter means remove one item only
@@ -412,25 +484,17 @@ export default class ProjectCostsForm extends LightningElement {
           this.cashContributions = array;
           //console.log('response', JSON.stringify(response));
           console.log('****the cash are now', JSON.stringify(this.cashContributions));
-        /*})
-        .catch(error=>{
-          //this.showToast('error', 'Removing failed', this.errorMessageHandler(JSON.stringify(error)));
-          console.log('error ',JSON.stringify(error));
-          let variant = 'error'
-          let title = 'Removed failed'
-          let message = error.message;
-          this.dispatchEvent(
-            new ShowToastEvent({variant, title, message})
-          );
-        })
-        .finally(()=>{*/
-          //this.isDialogVisible = false;
           
           this.recalculateCostsSummary();
-       // });
+       
       }
       
   }
+
+  recalcIndexes(arr) {
+    arr.forEach((row, i) => (row.index = i));
+  }
+//
 
   recalculateCostsSummary(){
     this.calculateContributions();

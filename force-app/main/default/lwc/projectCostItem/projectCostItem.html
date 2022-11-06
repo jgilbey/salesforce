@@ -1,5 +1,6 @@
 <template>
   <template if:true={cost}>
+    <template if:false={deleted}>
     <td data-label="Heading"
         data-id={cost.index}
         data-field="Cost_heading__c">
@@ -91,4 +92,5 @@
           </div>
       </td> 
       </template>
+    </template>
 </template>

@@ -50,7 +50,7 @@ export default class Selectlist extends LightningElement {
                    option = thisOption;
                }
            }
-            this.label = option && option.label ? option.label : option.value;
+           // this.label = option && option.label ? option.label : option.value;
         } else {
             this.label = this.placeholder ? this.placeholder : "";
         }
