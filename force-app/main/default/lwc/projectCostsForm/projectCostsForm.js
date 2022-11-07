@@ -400,22 +400,17 @@ export default class ProjectCostsForm extends LightningElement {
     this.recalcIndexes(this.projectCosts);
   }
     
-
-    
     handleAddCashContribution(){
       
       let preparedRow = {};
       //Secured__c, Income_Description__c, Value__c
-      preparedRow.Secured__c = 0; //amount
+      //preparedRow.Secured__c = 0; //amountif(income.Case__r.RecordType.DeveloperName === this.mediumGrantProject){
+      preparedRow.Secured_non_cash_contributions__c ='';
       preparedRow.Description_for_cash_contributions__c = '';
       preparedRow.Amount_you_have_received__c = 0;
-      if(this.cashContributions.length < 1) {
-        preparedRow.index = 0;
-      } else {
-        preparedRow.index = this.cashContributions.length;
-      }
-      this.cashContributions.push(preparedRow);
-      this.cashContributions = this.cashContributions;
+      preparedRow.RecordTypeName = 'Delivery'
+      this.cashContributions =  [...this.cashContributions, preparedRow];;
+      this.recalcIndexes(this.cashContributions);
 
     }
 
@@ -431,30 +426,6 @@ export default class ProjectCostsForm extends LightningElement {
         this.deleteCostProject(e.detail.id, e.detail.index);
     }
 
-    
-    
-    /*deleteCostProject(projectCostToRemove, projectIndex){
-        //delete controller method
-        console.log('in delete project cost', projectCostToRemove);
-            const index = this.projectCosts.indexOf(projectIndex);
-            this.projectCosts.at(projectIndex).deleted = true;
-            let array = this.projectCosts;
-            //console.log('the array', JSON.stringify(array));
-            this.removedProjectCosts.push(this.projectCosts.at(projectIndex));
-            //console.log('the index', JSON.stringify(index));
-            if (index <= -1) { // only splice array when item is found
-             console.log('splicing', true)
-              array.splice(projectIndex, 1); // 2nd parameter means remove one item only
-            }
-            console.log('spliced array is', JSON.stringify(array));
-            console.log('the project costs', this.removedProjectCosts);
-            //this.projectCosts = array;
-           console.log('****the costs are now', JSON.stringify(this.projectCosts));
-        
-        this.projectCosts = array;
-      this.recalculateCostsSummary();
-        
-    }*/
     deleteCostProject(projectCostId, projectIndex) {
       //delete controller method
       if (projectCostId) {
@@ -470,31 +441,19 @@ export default class ProjectCostsForm extends LightningElement {
       //delete controller method
       console.log('in delete project income', incomeId);
       if(incomeId){
-          const index = this.cashContributions.indexOf(incomeIndex);
-          let array = this.cashContributions;
-          //console.log('the array', JSON.stringify(array));
-          //console.log('trying to delete', JSON.stringify(this.cashContributions.at(incomeIndex)));
           this.removedContributions.push(this.cashContributions.at(incomeIndex));
-          //console.log('the index', JSON.stringify(index));
-          if (index <= -1) { // only splice array when item is found
-            console.log('splicing', true)
-            array.splice(incomeIndex, 1); // 2nd parameter means remove one item only
-          }
-          console.log('spliced array is', JSON.stringify(array));
-          this.cashContributions = array;
-          //console.log('response', JSON.stringify(response));
-          console.log('****the cash are now', JSON.stringify(this.cashContributions));
           
-          this.recalculateCostsSummary();
-       
       }
+      this.cashContributions.splice(incomeIndex, 1);
+      this.cashContributions = [...this.cashContributions];
+      this.recalcIndexes(this.cashContributions);
+      this.recalculateCostsSummary();
       
   }
 
   recalcIndexes(arr) {
     arr.forEach((row, i) => (row.index = i));
   }
-//
 
   recalculateCostsSummary(){
     this.calculateContributions();
