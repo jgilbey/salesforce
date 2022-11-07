@@ -10,6 +10,7 @@ import UserPreferencesRecordHomeSectionCollapseWTShown from '@salesforce/schema/
 export default class ProjectCostsForm extends LightningElement {
 
   _wireResultProjectCosts = {};
+  _wireResultContributions = {};
   loading = false;
   activeSections = ['A', 'B'];
   activeSectionsMessage = '';
@@ -212,72 +213,6 @@ export default class ProjectCostsForm extends LightningElement {
             this.loading = false;
           });
       }
-
-    /*
-    handleSaveProjectCosts() {
-      this.loading = true;
-      let newProjectCosts = [];
-      this.projectCosts.forEach(cost => { 
-          let preparedCost = {};
-          if(cost.deleted == false){
-          preparedCost.Costs__c = parseInt(cost.Costs__c);
-          preparedCost.Project_Cost_Description__c = cost.Project_Cost_Description__c;
-          preparedCost.Cost_heading__c = cost.Cost_heading__c;
-          if(cost.Id.length != 0){preparedCost.Id = cost.Id}; 
-          preparedCost.Case__c = this.project.Id;
-          newProjectCosts.push(preparedCost);
-        }
-          
-      });
-      //this.projectCosts = newProjectCosts; //hmm
-
-      let newCashContributions = [];
-      this.cashContributions.forEach(cont => { 
-          let preparedContribution = {};
-          if(cont.deleted == false){
-          preparedContribution.Amount_you_have_received__c = parseInt(cont.Amount_you_have_received__c);
-          preparedContribution.Secured__c = cont.Secured__c;
-          preparedContribution.Secured_non_cash_contributions__c = cont.Secured_non_cash_contributions__c;
-          preparedContribution.Case__c = this.project.Id;
-          //console.log('cont.Id.length ', cont.Id.length );
-          if(cont.Id && cont.Id.length != 0) {preparedContribution.Id = cont.Id;};
-          preparedContribution.Description_for_cash_contributions__c = cont.Description_for_cash_contributions__c;
-          newCashContributions.push(preparedContribution);
-          }
-          console.log('cont', JSON.stringify(preparedContribution));
-      });
-      //this.cashContributions = newCashContributions;
-      
-      console.log('*************** before sending', JSON.stringify(this.projectCosts));
-      
-      console.log('*************** before deleting', JSON.stringify(this.removedProjectCosts));
-      saveProjectCosts({projectId: this.project.Id, totalCost: this.project.Total_Cost__c, 
-        cashContributions: newCashContributions, projectCosts: newProjectCosts, 
-        removedCashContributions: this.removedContributions, removedProjectCosts: this.removedProjectCosts}) 
-       .then(result=>{  
-           console.log('handle created done', result);
-           let variant = 'success';
-          let title = 'Project Saved';
-          let message = 'Project costs were saved successfully';
-          this.dispatchEvent(
-            new ShowToastEvent({variant, title, message})
-          );
-          refreshApex(this.projectCosts);
-          refreshApex(this.cashContributions);
-          this.loading = false;
-          })
-          .catch(error=>{
-            console.log('error ',JSON.stringify(error));
-            let variant = 'error';
-            let title = 'Save failed';
-            let message = error.body.message;
-            this.dispatchEvent(
-              new ShowToastEvent({variant, title, message})
-            );
-            this.loading = false;
-          })
-    }*/
-
     getNewCosts() {
       return this.projectCosts.map((cost) => {
         let preparedCost = {};
