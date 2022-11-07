@@ -112,7 +112,7 @@
                 <template for:each={cashContributions} for:item="income">
               <tr class="slds-hint-parent" key={income.index}>
                 &nbsp;
-                <c-project-income-item key={income.index} income={income} onremove={handleRemoveIncome} onincomechange={handleIncomeChange}>
+                <c-project-income-item key={income.index} income={income} onremove={handleRemoveIncome} onincomechange={handleIncomeChange} projecttype={projectType}>
                 </c-project-income-item>
               
               </tr>

@@ -1,5 +1,5 @@
 <template>
-  <template if:true={visible}>
+  <template if:true={income}>
     <td data-label="Description"
         data-id={income.index}
         data-field="Description_for_cash_contributions__c">
@@ -12,7 +12,7 @@
             
         </div>
     </td>   
-    <template if:false={income.Secured_non_cash_contributions__c}>
+    <template if:true={isMedium}>
       <td>
         <div class="slds-truncate">
           
@@ -25,7 +25,7 @@
           </lightning-input></div>
       </td>
     </template>
-    <template if:true={income.Secured_non_cash_contributions__c}>
+    <template if:false={isMedium}>
     <td data-label="IncomeSec"
         data-id={income.index}
         data-field="Secured_non_cash_contributions__c">

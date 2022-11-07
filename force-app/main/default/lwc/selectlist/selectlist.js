@@ -50,7 +50,7 @@ export default class Selectlist extends LightningElement {
                    option = thisOption;
                }
            }
-           // this.label = option && option.label ? option.label : option.value;
+            this.label = option && option.label ? option.label : option.value;
         } else {
             this.label = this.placeholder ? this.placeholder : "";
         }
@@ -60,7 +60,10 @@ export default class Selectlist extends LightningElement {
         evt.stopPropagation();
         this.toggleOptions(evt);
         this.value = evt.detail.value;
-        this.dispatchEvent(new CustomEvent('change', { detail: { value: evt.detail.value, name: this.fieldId } }));
+        this.dispatchEvent(new CustomEvent('change', { detail: { 
+            value: evt.detail.value, 
+            name: evt.detail.name
+        } }));
     }
 
     toggleOptions(evt) {
