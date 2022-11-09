@@ -1,27 +1,39 @@
 <template>
-
-    <template if:true={visible}>
     <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
         <thead>
             <tr class="slds-line-height_reset">
-              <th class="" scope="col">
+              <!-- COL 1-->
+              <th class="" scope="col" style="width:66.75rem" >
                 <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0">
-                                    Totals </a>
+                                    Total</a>
+                                    <template if:true={smallGrant}> SMALL!</template>
+                <template if:true={mediumGrant}> MEDIUM!</template>
               </th>
-              <th></th>
-              <th class="" scope="col">
-                0
+
+              <!-- COL 2 EMPTY-->
+              <th style="width:66.75rem" > </th>
+              <th class="slds-text-align_left" style="width:66.75rem"  scope="col"> 
+                <template if:true={mediumGrant}> 
+                  {project.Total_Cost__c}
+                </template>
               </th>
-              
-              <th class="" scope="col">
-                0
+              <!-- COL 3-->
+              <th class="slds-text-align_left" scope="col" style="width:66.75rem" > 
+                <template if:true={smallGrant}> 
+                  Total {project.Total_Cost__c} 
+                </template>
+                <template if:true={mediumGrant}> 
+                  {project.Total_project_VAT__c}
+                </template>
               </th>
-              
-              <th class="" scope="col">
-                0
-              </th>
+              <template if:true={mediumGrant}>
+                <th class="slds-text-align_left" style="width:66.75rem" >
+                  COL 5 TOTAL VAT
+                </th>
+              </template>
+              <th style="width:66.75rem" > </th>
             </tr>
         </thead>    
     </table>    
-</template>
+
 </template>

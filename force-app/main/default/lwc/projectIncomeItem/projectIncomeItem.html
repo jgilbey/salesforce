@@ -12,7 +12,7 @@
             
         </div>
     </td>   
-    <template if:true={isMedium}>
+    <template if:true={mediumGrant}>
       <td>
         <div class="slds-truncate">
           
@@ -25,7 +25,7 @@
           </lightning-input></div>
       </td>
     </template>
-    <template if:false={isMedium}>
+    <template if:true={smallGrant}>
     <td data-label="IncomeSec"
         data-id={income.index}
         data-field="Secured_non_cash_contributions__c">

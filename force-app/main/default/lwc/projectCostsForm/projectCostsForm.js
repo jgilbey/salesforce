@@ -16,6 +16,13 @@ export default class ProjectCostsForm extends LightningElement {
   activeSectionsMessage = '';
   smallGrantProject = "Small_Grant_3_10k";
   mediumGrantProject = "Medium";
+  nhmfGrantProject = "Memorial";
+  largeGrantDevelopmentProject = "Large_Development_250_500k"
+  largeGrantDeliveryProject = "Large"
+  smallGrant = false;
+  mediumGrant = false;
+  largeGrant = false;
+  nhmfGrant = false;
 
   handleSectionToggle(event) {
       const openSections = event.detail.openSections;
@@ -61,6 +68,15 @@ export default class ProjectCostsForm extends LightningElement {
         
     ];
 
+    nhmfContributionColumns = [
+      {label: 'Source of Funding', editable: true, fieldName: 'Cost_heading__c'}, //TODO
+      {label: 'Description', editable: true, fieldName: 'Project_Cost_Description__c'}, //TODO
+      {label: 'Value', editable: true, fieldName: 'Costs__c'}, //TODO value
+      {label: 'Secured', editable: true, fieldName: 'Costs__c'}, //TODO secured
+      {label: 'Evidence Secured', editable: true, fieldName: 'Costs__c'} //TODO Evidence sec
+      
+  ];
+
     get projectType(){
 
       if (this.project && this.project.RecordType) {
@@ -85,7 +101,10 @@ export default class ProjectCostsForm extends LightningElement {
             return this.smallCols;
           case this.mediumGrantProject:
             return this.mediumColumns;
-        }}
+          case this.nhmfGrantProject:
+            return this.mediumColumns;
+        }
+      }
     }
 
     @api recordId;
@@ -101,6 +120,14 @@ export default class ProjectCostsForm extends LightningElement {
             this.project[field] = data[field];
           })
         
+          if(this.project.RecordType.DeveloperName === this.smallGrantProject){
+            this.smallGrant = true;
+          } else if(this.project.RecordType.DeveloperName === this.mediumGrantProject){
+            this.mediumGrant = true;
+          } else if(this.project.RecordType.DeveloperName === this.nhmfGrantProject){
+            this.nhmfGrant = true;
+          }
+
       } else {
         console.log('error retrieving project')
       }

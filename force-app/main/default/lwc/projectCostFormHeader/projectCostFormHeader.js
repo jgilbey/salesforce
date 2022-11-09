@@ -3,6 +3,8 @@ import { LightningElement, api } from 'lwc';
 export default class ProjectCostFormHeader extends LightningElement {
 
     @api project;
+    @api projectType
+    @api mediumGrant;
 
     get grantPercentage(){
         if(this.project){

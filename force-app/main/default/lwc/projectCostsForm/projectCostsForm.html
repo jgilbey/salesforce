@@ -10,14 +10,14 @@
   <!-- HEADER -->
   <div class="slds-card__header">
   <template if:true={project}>
-    <c-project-cost-form-header project={project}></c-project-cost-form-header>
+    <c-project-cost-form-header project={project} project-type={projectType} medium-grant={mediumGrant}></c-project-cost-form-header>
   </template>
   </div>
 
 
 <!--BODY -->
 <div class="slds-media__body">
-      
+<template if:true={project}>
 <template if:true={projectCosts}>
   <div>
     <lightning-accordion allow-multiple-sections-open
@@ -56,17 +56,23 @@
                 <c-project-cost-item key={cost.index} 
                 cost={cost} 
                 onremove={handleRemoveCost} 
-                oncostchange={handleCostChange}>
+                oncostchange={handleCostChange}
+                small-grant={smallGrant}
+                medium-grant={mediumGrant}>
                 </c-project-cost-item>
               </tr>
             </template>
           </template>
         </tbody>
     </table>
-    <c-project-costs-form-totals project={project}></c-project-costs-form-totals>
+    <template if:true={project}>
+    <c-project-costs-form-totals project={project} small-grant={smallGrant} medium-grant={mediumGrant}></c-project-costs-form-totals>
+  </template>
     </lightning-accordion-section>
+
 </lightning-accordion>
 </div> 
+</template>
 </template>
         
         <template if:true={cashContributions}>
@@ -112,14 +118,23 @@
                 <template for:each={cashContributions} for:item="income">
               <tr class="slds-hint-parent" key={income.index}>
                 &nbsp;
-                <c-project-income-item key={income.index} income={income} onremove={handleRemoveIncome} onincomechange={handleIncomeChange} projecttype={projectType}>
+                <c-project-income-item key={income.index} 
+                income={income} 
+                onremove={handleRemoveIncome} 
+                onincomechange={handleIncomeChange} 
+                small-grant={smallGrant}
+                medium-grant={mediumGrant}
+                projecttype={projectType}>
                 </c-project-income-item>
-              
               </tr>
             </template>
+            
           </template>
         </tbody>
         </table>
+        
+        <c-project-income-totals project={project} medium-grant={mediumGrant}>
+        </c-project-income-totals>
          </lightning-accordion-section>
 </lightning-accordion>
   </template>  

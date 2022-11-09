@@ -12,13 +12,10 @@ export default class ProjectIncomeItem extends LightningElement {
     @track incomeRecordTypeId;
     styleClass;
     @api projectType;
-    
+    @api smallGrant;
+    @api mediumGrant;
     @track incomeSecuredList;
 
-    get isMedium(){
-        console.log(' is the project type',this.projectType);
-        return this.projectType ? this.projectType === 'Medium' : false;
-    }
 
     @wire(getObjectInfo, { objectApiName: PROJECT_INCOME_OBJECT })
     wiredRecord({ error,data }){

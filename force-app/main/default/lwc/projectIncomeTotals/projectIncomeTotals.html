@@ -1,0 +1,28 @@
+<template>
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+        <thead>
+            <tr class="slds-line-height_reset">
+              <!-- COL 1-->
+              <template if:true={mediumGrant}> 
+              <th class="" scope="col" style="width:66.75rem" >
+                
+                <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0">
+                                    </a>
+              </th>
+            </template>
+              <!-- COL 2 EMPTY-->
+              <th style="width:66.75rem" > </th>
+              <th class="slds-text-align_right" style="width:100%"  scope="col"> 
+                <template if:true={mediumGrant}> 
+                  Total {project.Total_Development_Income__c}
+                </template>
+              </th>
+              
+              <th style="width:66.75rem" > </th>
+              <th style="width:66.75rem" > </th>
+           
+            </tr>
+        </thead>    
+    </table>    
+
+</template>

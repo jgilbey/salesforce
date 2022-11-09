@@ -24,12 +24,21 @@
                     <tbody>
                         <tr>
                             <td><b>Total Cost:</b> {project.Total_Cost__c}</td>
-                            
+                            <template if:false={nhmfGrant}>
                             <td><b>Grant Award:</b> {project.Grant_Award__c}</td>
-                            
+                            </template>
+                            <template if:true={nhmfGrant}>
+                              <td><b>NHMF Grant Award:</b> {project.NHMF_Grant_Award__c}</td>
+                            </template>  
+                            <template if:true={nhmfGrant}>
+                            <td><b>NHMF Grant Percentage:</b> {nhmfGrantPercentage}</td>
+                          </template>
+                          <template if:false={nhmfGrant}>
                             <td><b>Grant Percentage:</b> {grantPercentage}</td>
-                            
+                          </template>
+                          <template if:true={mediumGrant}>
                           <td><b>Total VAT: </b>{project.Total_project_VAT__c}</td>
+                          </template>
                         </tr>
                         
                         <tr>

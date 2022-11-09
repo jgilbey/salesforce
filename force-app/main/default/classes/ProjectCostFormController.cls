@@ -9,10 +9,16 @@ public inherited sharing class ProjectCostFormController {
         Grant_Award__c,
         Grant_requested__c,
         Total_Development_Income__c,
+        Total_project_VAT__c,
         NHMF_Total_cash_contributions__c,
         Grant_Percentage__c,
         payment_percentage__c,
-        Application_Stages__c
+        Application_Stages__c,
+        NHMF_grant_award__c,
+        NHMF_Grant_Percentage__c,
+        NHMF_grant_request__c,
+        NHMF_Total_cash_contributions__c,
+        RecordType.DeveloperName
       FROM case
       WHERE Id = :projectId
     ];
@@ -25,7 +31,13 @@ public inherited sharing class ProjectCostFormController {
     List<Project_Cost__c> existingCosts = new List<Project_Cost__c>();
 
     List<Project_Cost__c> costs = [
-      SELECT Id, Cost_heading__c, Costs__c, Project_Cost_Description__c
+      SELECT
+        Id,
+        Cost_heading__c,
+        Costs__c,
+        Project_Cost_Description__c,
+        Vat__c,
+        RecordType.Name
       FROM Project_Cost__c
       WHERE Case__c = :projectId
     ];
@@ -49,9 +61,15 @@ public inherited sharing class ProjectCostFormController {
   ) {
     try {
       List<SObject> toDelete = new List<SObject>();
-      toDelete.addAll(cashContributions);
-      toDelete.addAll(projectCosts);
-      delete toDelete;
+      if (cashContributions.size() >= 1) {
+        toDelete.addAll(cashContributions);
+      }
+      if (projectCosts.size() >= 1) {
+        toDelete.addAll(projectCosts);
+      }
+      if (toDelete.size() >= 1) {
+        delete toDelete;
+      }
     } catch (Exception e) {
       throw new AuraHandledException(e.getMessage());
     }
@@ -79,7 +97,7 @@ public inherited sharing class ProjectCostFormController {
         NHMF_Total_cash_contributions__c,
         Grant_Percentage__c,
         payment_percentage__c,
-        Confirm_award_amount__c
+        Confirm_award_amount__c,
       FROM case
       WHERE Id = :projectId
     ];
@@ -95,9 +113,16 @@ public inherited sharing class ProjectCostFormController {
         'The grant percentage and total costs cannot change after a decision is confirmed'
       ); //move this inside try
     } else {
-      deleteProjectCostsAndContributions(removedCashContributions, removedProjectCosts);
-      upsert cashContributions;
-      upsert projectCosts;
+      deleteProjectCostsAndContributions(
+        removedCashContributions,
+        removedProjectCosts
+      );
+      if (cashContributions.size() >= 1) {
+        upsert cashContributions;
+      }
+      if (cashContributions.size() >= 1) {
+        upsert projectCosts;
+      }
     }
 
     //} catch(Exception e){
@@ -211,7 +236,9 @@ public inherited sharing class ProjectCostFormController {
         Secured__c,
         Secured_non_cash_contributions__c,
         Description_for_cash_contributions__c,
-        Amount_you_have_received__c
+        Amount_you_have_received__c,
+        RecordType.Name,
+        Case__r.RecordType.DeveloperName
       FROM Project_Income__c
       WHERE Case__c = :projectId
     ];
