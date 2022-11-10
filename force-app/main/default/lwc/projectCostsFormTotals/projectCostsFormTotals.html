@@ -5,7 +5,7 @@
               <!-- COL 1-->
               <th class="" scope="col" style="width:66.75rem" >
                 <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0">
-                                    Total</a>
+                                    </a>
                                     <template if:true={smallGrant}> SMALL!</template>
                 <template if:true={mediumGrant}> MEDIUM!</template>
               </th>
@@ -14,7 +14,7 @@
               <th style="width:66.75rem" > </th>
               <th class="slds-text-align_left" style="width:66.75rem"  scope="col"> 
                 <template if:true={mediumGrant}> 
-                  {project.Total_Cost__c}
+                  &nbsp; {project.Total_Cost__c}
                 </template>
               </th>
               <!-- COL 3-->
@@ -23,12 +23,12 @@
                   Total {project.Total_Cost__c} 
                 </template>
                 <template if:true={mediumGrant}> 
-                  {project.Total_project_VAT__c}
+                  &nbsp; {project.Total_project_VAT__c}
                 </template>
               </th>
               <template if:true={mediumGrant}>
                 <th class="slds-text-align_left" style="width:66.75rem" >
-                  COL 5 TOTAL VAT
+                  &nbsp; {projectPlusVAT}
                 </th>
               </template>
               <th style="width:66.75rem" > </th>

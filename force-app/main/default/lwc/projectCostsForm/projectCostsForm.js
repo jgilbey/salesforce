@@ -103,6 +103,10 @@ export default class ProjectCostsForm extends LightningElement {
             return this.mediumColumns;
           case this.nhmfGrantProject:
             return this.mediumColumns;
+          case this.largeGrantDevelopmentProject:
+            return this.mediumColumns;
+          case this.largeGrantDeliveryProject:
+            return this.mediumColumns;
         }
       }
     }
@@ -220,7 +224,8 @@ export default class ProjectCostsForm extends LightningElement {
     
         saveProjectCosts({
           projectId: this.project.Id,
-          totalCost: this.project.Total_Cost__c,
+          totalCost: this.totalCosts,
+          grantRequested: this.project.Grant_Requested__c,
           cashContributions: newCashContributions,
           projectCosts: newProjectCosts,
           removedCashContributions: this.removedContributions,
@@ -301,6 +306,8 @@ export default class ProjectCostsForm extends LightningElement {
       }
       this.totalCosts = newTotalCosts;
       this.totalVAT = newVATTotal;
+      this.project.Total_Cost__c = this.totalCosts;
+      this.project.Total_project_VAT__c = this.totalCosts;
     }
 
 
@@ -381,9 +388,15 @@ export default class ProjectCostsForm extends LightningElement {
     arr.forEach((row, i) => (row.index = i));
   }
 
+
+  calculateGrantAward(){
+    this.project.Grant_Requested__c = parseInt(this.totalCosts) - parseInt(this.totalCashContributions);
+  }
+
   recalculateCostsSummary(){
     this.calculateContributions();
     this.calculateCosts();
+    this.calculateGrantAward();
   }
 
 }

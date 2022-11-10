@@ -7,5 +7,9 @@ export default class ProjectCostsFormTotals extends LightningElement {
     @api smallGrant;
     @api mediumGrant;
 
+    get projectPlusVAT(){
+        return parseInt(this.project.Total_project_VAT__c) + parseInt(this.project.Total_Cost__c);
+    }
+
 
 }

@@ -10,7 +10,6 @@ public inherited sharing class ProjectCostFormController {
         Grant_requested__c,
         Total_Development_Income__c,
         Total_project_VAT__c,
-        NHMF_Total_cash_contributions__c,
         Grant_Percentage__c,
         payment_percentage__c,
         Application_Stages__c,
@@ -40,6 +39,7 @@ public inherited sharing class ProjectCostFormController {
         RecordType.Name
       FROM Project_Cost__c
       WHERE Case__c = :projectId
+      ORDER BY Costs__c DESC
     ];
 
     /*  Project_Cost__c newCost = new Project_Cost__c(
@@ -79,6 +79,7 @@ public inherited sharing class ProjectCostFormController {
   public static void saveProjectCosts(
     String projectId,
     String totalCost,
+    String grantRequested,
     List<Project_Income__c> cashContributions,
     List<project_cost__c> projectCosts,
     List<Project_Income__c> removedCashContributions,
@@ -97,18 +98,19 @@ public inherited sharing class ProjectCostFormController {
         NHMF_Total_cash_contributions__c,
         Grant_Percentage__c,
         payment_percentage__c,
-        Confirm_award_amount__c,
+        Confirm_award_amount__c
       FROM case
       WHERE Id = :projectId
     ];
 
     if (
       project.Confirm_award_amount__c &&
-      (String.valueOf(project.Total_Cost__c) != totalCost)
+      ((String.valueOf(project.Total_Cost__c) != totalCost) || (String.valueOf(project.Grant_requested__c) != grantRequested))
     ) {
       //check that
       // the original grant percentage can't be less than the new one
       // the new total costs value can't be different to the old total costs
+      //check that the grant award hasn't changed TODO
       throw new AuraHandledException(
         'The grant percentage and total costs cannot change after a decision is confirmed'
       ); //move this inside try
@@ -241,6 +243,7 @@ public inherited sharing class ProjectCostFormController {
         Case__r.RecordType.DeveloperName
       FROM Project_Income__c
       WHERE Case__c = :projectId
+      ORDER BY Amount_you_have_received__c DESC
     ];
 
     /* Project_Cost__c newCost = new Project_Cost__c(
