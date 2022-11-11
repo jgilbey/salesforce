@@ -53,7 +53,7 @@
       </div> 
     </td>
 
-    <template if:true={mediumGrant}>
+    <template if:false={smallGrant}>
     <td data-label="Cost" 
     data-id={cost.index}
     data-field="Vat__c"
@@ -70,7 +70,7 @@
       </div> 
     </td>
     </template>
-    <template if:true={mediumGrant}>
+    <template if:false={smallGrant}>
     <td data-label="Cost" 
     data-id={cost.index}
     data-field="Total Cost"
