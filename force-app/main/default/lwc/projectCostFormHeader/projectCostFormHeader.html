@@ -1,8 +1,5 @@
 <template>
   <template if:true={project}>
-    small grant {smallGrant}
-    med grant {mediumGrant}
-    mem grant {nhmfGrant}
     <div class="slds-page-header">
         <div class="slds-page-header__row">
           <div class="slds-page-header__col-title">
@@ -35,10 +32,10 @@
                               <td><b>NHMF Grant Award:</b> {project.NHMF_grant_award__c}</td>
                             </template>  
                             <template if:true={nhmfGrant}>
-                            <td><b>NHMF Grant Percentage:</b> {nhmfGrantPercentage}</td>
+                            <td><b>NHMF Grant Percentage:</b> {nhmfGrantPercentage}%</td>
                           </template>
                           <template if:false={nhmfGrant}>
-                            <td><b>Grant Percentage:</b> {grantPercentage}</td>
+                            <td><b>Grant Percentage:</b> {grantPercentage}%</td>
                           </template>
                           <template if:true={mediumGrant}>
                           <td><b>Total VAT: </b>{project.Total_project_VAT__c}</td>
