@@ -282,8 +282,8 @@ export default class ProjectCostsForm extends LightningElement {
         this.cashContributions[e.detail.id][e.detail.name] = e.detail.value;
         //if the field was the amount - recalculate totals
         this.totalCashContributions = 0;
-        this.recalculateCostsSummary();
         this.project.Total_Development_Income__c = this.totalCashContributions;
+        this.recalculateCostsSummary();
         
     }
 
@@ -291,9 +291,9 @@ export default class ProjectCostsForm extends LightningElement {
     handleCostChange(e) {
       e.stopPropagation();
       this.projectCosts[e.detail.id][e.detail.name] = e.detail.value;
-      this.recalculateCostsSummary();
       this.project.Total_project_VAT__c = this.totalVAT;
       this.project.Total_Cost__c = this.totalCosts;
+      this.recalculateCostsSummary();
     }
 
     calculateContributions(){
@@ -413,7 +413,9 @@ export default class ProjectCostsForm extends LightningElement {
   }
 
   calculateGrantAward(){
-    this.project.Grant_Requested__c = parseInt(this.totalCosts) - parseInt(this.totalCashContributions);
+    console.log('the grant rquested is  ', this.project.Grant_Requested__c)
+    this.project.Grant_requested__c = parseInt(this.totalCosts) - parseInt(this.totalCashContributions);
+    console.log('the grant rquested is now ', this.project.Grant_Requested__c)
   }
 
   recalculateCostsSummary(){
