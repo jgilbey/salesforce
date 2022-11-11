@@ -56,11 +56,12 @@
     class="">
 
     <div class="slds-truncate">
-            <lightning-input type="currency" 
+            <lightning-input type="number" 
                              name="Amount_you_have_received__c" 
                              value={income.Amount_you_have_received__c}
                              data-id={income.index}
-                             onchange={handleOnChange}>
+                             onchange={handleOnChange}
+                             step="0.01">
             </lightning-input>
       </div> 
     </td>

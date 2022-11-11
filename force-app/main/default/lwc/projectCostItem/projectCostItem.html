@@ -43,11 +43,12 @@
     class="">
 
         <div class=”slds-cell-wrap” >
-            <lightning-input type="currency" 
+            <lightning-input type="number" 
                              name="Costs__c" 
                              value={cost.Costs__c}
                              onchange={handleOnChange}
-                             data-id={cost.index}>
+                             data-id={cost.index}
+                             step="0.01">
             </lightning-input>
       </div> 
     </td>
@@ -56,14 +57,16 @@
     <td data-label="Cost" 
     data-id={cost.index}
     data-field="Vat__c"
+    step="0.01"
     class="">
 
         <div class=”slds-cell-wrap” >
-            <lightning-input type="currency" 
+            <lightning-input type="number" 
                              name="Vat__c" 
                              value={cost.Vat__c}
                              onchange={handleOnChange}
-                             data-id={cost.index}>
+                             data-id={cost.index}
+                             step="0.01">
             </lightning-input>
       </div> 
     </td>
