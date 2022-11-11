@@ -11,6 +11,7 @@ export default class ProjectCostsForm extends LightningElement {
 
   _wireResultProjectCosts = {};
   _wireResultContributions = {};
+  _wireResultProject;
   loading = false;
   activeSections = ['A', 'B'];
   activeSectionsMessage = '';
@@ -116,6 +117,8 @@ export default class ProjectCostsForm extends LightningElement {
 
     @wire(getProject, {projectId: '$recordId'})
     wiredProject({error, data}){
+      
+      this._wireResultProject = data;
       if(data){
 
         //let local = data;
@@ -123,6 +126,8 @@ export default class ProjectCostsForm extends LightningElement {
           {
             this.project[field] = data[field];
           })
+
+          console.log('the record develper name', this.project.RecordType.DeveloperName );
         
           if(this.project.RecordType.DeveloperName === this.smallGrantProject){
             this.smallGrant = true;
@@ -237,6 +242,8 @@ export default class ProjectCostsForm extends LightningElement {
             let title = "Project Saved";
             let message = "Project costs were saved successfully";
             this.dispatchEvent(new ShowToastEvent({ variant, title, message }));
+            
+            refreshApex(this._wireResultProject);
             refreshApex(this._wireResultProjectCosts);
             refreshApex(this._wireResultContributions);
             this.loading = false;

@@ -1,4 +1,8 @@
 <template>
+  <template if:true={project}>
+    small grant {smallGrant}
+    med grant {mediumGrant}
+    mem grant {nhmfGrant}
     <div class="slds-page-header">
         <div class="slds-page-header__row">
           <div class="slds-page-header__col-title">
@@ -28,7 +32,7 @@
                             <td><b>Grant Award:</b> {project.Grant_Award__c}</td>
                             </template>
                             <template if:true={nhmfGrant}>
-                              <td><b>NHMF Grant Award:</b> {project.NHMF_Grant_Award__c}</td>
+                              <td><b>NHMF Grant Award:</b> {project.NHMF_grant_award__c}</td>
                             </template>  
                             <template if:true={nhmfGrant}>
                             <td><b>NHMF Grant Percentage:</b> {nhmfGrantPercentage}</td>
@@ -42,8 +46,13 @@
                         </tr>
                         
                         <tr>
+                            <template if:false={nhmfGrant}>
                             <td><b>Grant Requested:</b> {project.Grant_requested__c}</td>
-                            
+                          </template>
+                          
+                          <template if:true={nhmfGrant}>
+                            <td><b>NHMF Grant  Request</b> {project.NHMF_grant_request__c}</td>
+                          </template>
                             <td><b>Total Cash Contributions:</b> {project.Total_Development_Income__c}</td>
                             
                             <td><b>Payment Percentage:</b> {project.payment_percentage__c}</td>
@@ -55,4 +64,5 @@
           </div>
         </div>
       </div>    
+    </template>
 </template>

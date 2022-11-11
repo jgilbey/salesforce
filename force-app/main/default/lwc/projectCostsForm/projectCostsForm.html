@@ -10,7 +10,7 @@
   <!-- HEADER -->
   <div class="slds-card__header">
   <template if:true={project}>
-    <c-project-cost-form-header project={project} project-type={projectType} medium-grant={mediumGrant}></c-project-cost-form-header>
+    <c-project-cost-form-header project={project} small-grant={smalLGrant} medium-grant={mediumGrant} nhmf-grant={nhmfGrant}></c-project-cost-form-header>
   </template>
   </div>
 
@@ -66,7 +66,12 @@
         </tbody>
     </table>
     <template if:true={project}>
-    <c-project-costs-form-totals project={project} small-grant={smallGrant} medium-grant={mediumGrant}></c-project-costs-form-totals>
+    <c-project-costs-form-totals 
+    project={project} 
+    small-grant={smallGrant} 
+    medium-grant={mediumGrant} 
+    nhmf-grant={nhmfGrant}>
+  </c-project-costs-form-totals>
   </template>
     </lightning-accordion-section>
 
