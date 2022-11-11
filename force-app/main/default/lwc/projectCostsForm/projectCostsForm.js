@@ -73,8 +73,8 @@ export default class ProjectCostsForm extends LightningElement {
       {label: 'Source of Funding', editable: true, fieldName: 'Cost_heading__c'}, //TODO
       {label: 'Description', editable: true, fieldName: 'Project_Cost_Description__c'}, //TODO
       {label: 'Value', editable: true, fieldName: 'Costs__c'}, //TODO value
-      {label: 'Secured', editable: true, fieldName: 'Costs__c'}, //TODO secured
-      {label: 'Evidence Secured', editable: true, fieldName: 'Costs__c'} //TODO Evidence sec
+      {label: 'Secured', editable: true, fieldName: 'Secured__c'}, //TODO secured
+      {label: 'Evidence Secured', editable: true, fieldName: 'Evidence_for_secured_income__c'} //TODO Evidence sec
       
   ];
 
@@ -160,6 +160,7 @@ export default class ProjectCostsForm extends LightningElement {
                 retVal.Secured_non_cash_contributions__c = income.Secured_non_cash_contributions__c;
               
               }
+              retVal.Evidence_for_secured_income__c = income.Evidence_for_secured_income__c;
               retVal.Description_for_cash_contributions__c = income.Description_for_cash_contributions__c;
               retVal.Amount_you_have_received__c = income.Amount_you_have_received__c;
               retVal.Id = income.Id;
@@ -188,6 +189,7 @@ export default class ProjectCostsForm extends LightningElement {
           retVal.Cost_heading__c = cost.Cost_heading__c;
           retVal.Project_Cost_Description__c = cost.Project_Cost_Description__c;
           retVal.RecordTypeName = cost.RecordType.Name;
+          retVal.Total_Cost__c = cost.Total_Cost__c;
           retVal.Id = cost.Id;
           retVal.index = index;
           if (retVal.RecordTypeName === "Medium Grants") {
@@ -207,6 +209,7 @@ export default class ProjectCostsForm extends LightningElement {
         let preparedContribution = {};
         preparedContribution.Amount_you_have_received__c = parseInt(cont.Amount_you_have_received__c);
         preparedContribution.Secured__c = cont.Secured__c;
+        preparedContribution.Evidence_for_secured_income__c = cont.Evidence_for_secured_income__c;
         preparedContribution.Secured_non_cash_contributions__c = cont.Secured_non_cash_contributions__c;
         preparedContribution.Case__c = this.project.Id;
         //console.log('cont.Id.length ', cont.Id.length );
@@ -263,6 +266,8 @@ export default class ProjectCostsForm extends LightningElement {
         preparedCost.Costs__c = parseInt(cost.Costs__c);
         preparedCost.Project_Cost_Description__c = cost.Project_Cost_Description__c;
         preparedCost.Cost_heading__c = cost.Cost_heading__c;
+        preparedCost.Vat__c = cost.Vat__c;
+        preparedCost.Total_Cost__c = cost.Total_Cost__c;
         if (cost.Id) {
           preparedCost.Id = cost.Id;
         }
@@ -335,18 +340,14 @@ export default class ProjectCostsForm extends LightningElement {
     handleAddCashContribution(){
       
       let preparedRow = {};
-      if(this.project.RecordType.DeveloperName === this.mediumGrantProject)
-      {
-        preparedRow.Secured_non_cash_contributions__c ='Select';
-      } else {
-        preparedRow.Secured__c ='';
-      }
+      preparedRow.Secured_non_cash_contributions__c ='Select';
+      preparedRow.Secured__c ='';
+      preparedRow.Evidence_for_secured_income__c ='';
       preparedRow.Description_for_cash_contributions__c = '';
       preparedRow.Amount_you_have_received__c = 0;
       preparedRow.RecordTypeName = 'Delivery'
       this.cashContributions =  [...this.cashContributions, preparedRow];
       this.recalcIndexes(this.cashContributions);
-
     }
 
     

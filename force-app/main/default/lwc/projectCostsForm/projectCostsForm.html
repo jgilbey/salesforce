@@ -106,6 +106,13 @@
                           Secured
                       </a>
                   </th>
+                  <!-- should be converted to list of cols like the other for readability-->
+                  
+                  <th class="" scope="col">
+                    <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Evidence_for_secured_income__c">
+                        Evidence Secured
+                    </a>
+                  </th>
                   <th class="" scope="col">
                       <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Amount_you_have_received__c">
                           Amount
@@ -129,7 +136,7 @@
                 onincomechange={handleIncomeChange} 
                 small-grant={smallGrant}
                 medium-grant={mediumGrant}
-                project-type={projectType}>
+                nhmf-grant={nhmfGrant}>
                 </c-project-income-item>
               </tr>
             </template>

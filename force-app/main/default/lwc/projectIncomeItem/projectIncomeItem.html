@@ -25,6 +25,19 @@
           </lightning-input></div>
       </td>
     </template>
+    <template if:true={nhmfGrant}>
+      <td>
+        <div class="slds-truncate">
+          
+          <label class="slds-form-element__label"></label>
+          <lightning-input type="checkbox" 
+                                    name="Evidence_for_secured_income__c" 
+                                    value={income.Evidence_for_secured_income__c}
+                                    data-id={income.index}
+                                    onchange={handleOnChange} >
+          </lightning-input></div>
+      </td>
+    </template>
     <template if:true={smallGrant}>
     <td data-label="IncomeSec"
         data-id={income.index}

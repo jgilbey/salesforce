@@ -11,9 +11,9 @@ export default class ProjectIncomeItem extends LightningElement {
     @api recordId;
     @track incomeRecordTypeId;
     styleClass;
-    @api projectType;
     @api smallGrant;
     @api mediumGrant;
+    @api nhmfGrant;
     @track incomeSecuredList;
 
 

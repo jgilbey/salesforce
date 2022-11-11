@@ -33,6 +33,7 @@ public inherited sharing class ProjectCostFormController {
       SELECT
         Id,
         Cost_heading__c,
+        Total_Cost__c,
         Costs__c,
         Project_Cost_Description__c,
         Vat__c,
@@ -105,7 +106,8 @@ public inherited sharing class ProjectCostFormController {
 
     if (
       project.Confirm_award_amount__c &&
-      ((String.valueOf(project.Total_Cost__c) != totalCost) || (String.valueOf(project.Grant_requested__c) != grantRequested))
+      ((String.valueOf(project.Total_Cost__c) != totalCost) ||
+      (String.valueOf(project.Grant_requested__c) != grantRequested))
     ) {
       //check that
       // the original grant percentage can't be less than the new one
@@ -237,6 +239,7 @@ public inherited sharing class ProjectCostFormController {
         Id,
         Secured__c,
         Secured_non_cash_contributions__c,
+        Evidence_for_secured_income__c,
         Description_for_cash_contributions__c,
         Amount_you_have_received__c,
         RecordType.Name,
