@@ -396,6 +396,22 @@ export default class ProjectCostsForm extends LightningElement {
   }
 
 
+  calculateGrantPercentage(){
+      if(this.project && this.project.Grant_requested__c && this.project.Total_Cost__c){
+        this.project.Grant_Percentage__c = Math.round((this.project.Grant_requested__c/this.project.Total_Cost__c)*100);
+      } else {
+        this.project.Grant_Percentage__c = 0;
+      }
+  }
+
+   calculateNHMFGrantPercentage(){
+      if(this.project && this.project.NHMF_Grant_requested__c && this.project.NHMF_Total_Cost__c) {
+          this.project.NHMF_Grant_Percentage__c = Math.round(parseInt(this.project.NHMF_Grant_requested__c)/parseInt(this.project.NHMF_Total_Cost__c))
+      } else {
+          this.project.NHMF_Grant_Percentage__c = 0;
+      }
+  }
+
   calculateGrantAward(){
     this.project.Grant_Requested__c = parseInt(this.totalCosts) - parseInt(this.totalCashContributions);
   }
@@ -404,6 +420,8 @@ export default class ProjectCostsForm extends LightningElement {
     this.calculateContributions();
     this.calculateCosts();
     this.calculateGrantAward();
+    this.calculateNHMFGrantPercentage();
+    this.calculateGrantPercentage();
   }
 
 }
