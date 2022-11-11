@@ -14,16 +14,18 @@
               <th style="width:66.75rem" > </th>
               <th class="slds-text-align_left" style="width:66.75rem"  scope="col"> 
                 <template if:true={mediumGrant}> 
-                  &nbsp; {project.Total_Cost__c}
+                  &nbsp;    <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
                 </template>
               </th>
               <!-- COL 3-->
               <th class="slds-text-align_left" scope="col" style="width:66.75rem" > 
                 <template if:true={smallGrant}> 
-                  Total {project.Total_Cost__c} 
+                  Total &nbsp;  
+                  <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
                 </template>
                 <template if:true={mediumGrant}> 
-                  &nbsp; {project.Total_project_VAT__c}
+                  &nbsp; 
+                  <lightning-formatted-number value={project.Total_project_VAT__c} maximum-fraction-digits="2"></lightning-formatted-number>
                 </template>
               </th>
               <template if:true={mediumGrant}>

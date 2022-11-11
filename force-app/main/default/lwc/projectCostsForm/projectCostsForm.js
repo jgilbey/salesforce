@@ -405,8 +405,8 @@ export default class ProjectCostsForm extends LightningElement {
   }
 
    calculateNHMFGrantPercentage(){
-      if(this.project && this.project.NHMF_Grant_requested__c && this.project.NHMF_Total_Cost__c) {
-          this.project.NHMF_Grant_Percentage__c = Math.round(parseInt(this.project.NHMF_Grant_requested__c)/parseInt(this.project.NHMF_Total_Cost__c))
+      if(this.project && this.project.NHMF_grant_request__c && this.project.Total_Cost__c) {
+          this.project.NHMF_grant_request__c = Math.round(parseInt(this.project.NHMF_grant_request__c)/parseInt(this.project.Total_Cost__c))
       } else {
           this.project.NHMF_Grant_Percentage__c = 0;
       }
@@ -417,11 +417,17 @@ export default class ProjectCostsForm extends LightningElement {
     this.project.Grant_requested__c = parseInt(this.totalCosts) - parseInt(this.totalCashContributions);
     console.log('the grant rquested is now ', this.project.Grant_Requested__c)
   }
+  calculateNHMFGrantAward(){
+    console.log('the grant rquested is  ', this.project.NHMF_grant_request__c)
+    this.project.NHMF_grant_request__c = parseInt(this.totalCosts) - parseInt(this.totalCashContributions); //TODO fix total cash cont.. some issue
+    console.log('the grant rquested is now ', this.project.NHMF_grant_request__c)
+  }
 
   recalculateCostsSummary(){
     this.calculateContributions();
     this.calculateCosts();
     this.calculateGrantAward();
+    this.calculateNHMFGrantAward();
     this.calculateNHMFGrantPercentage();
     this.calculateGrantPercentage();
   }
