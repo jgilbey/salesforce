@@ -291,8 +291,8 @@ export default class ProjectCostsForm extends LightningElement {
     handleCostChange(e) {
       e.stopPropagation();
       this.projectCosts[e.detail.id][e.detail.name] = e.detail.value;
-      this.project.Total_project_VAT__c = this.totalVAT;
-      this.project.Total_Cost__c = this.totalCosts;
+      //this.project.Total_project_VAT__c = this.totalVAT;
+      //this.project.Total_Cost__c = this.totalCosts;
       this.recalculateCostsSummary();
     }
 
@@ -314,7 +314,7 @@ export default class ProjectCostsForm extends LightningElement {
       this.totalCosts = newTotalCosts;
       this.totalVAT = newVATTotal;
       this.project.Total_Cost__c = this.totalCosts;
-      this.project.Total_project_VAT__c = this.totalCosts;
+      this.project.Total_project_VAT__c = this.totalVAT;
     }
 
 
