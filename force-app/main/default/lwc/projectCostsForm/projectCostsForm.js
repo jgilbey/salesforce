@@ -306,9 +306,15 @@ export default class ProjectCostsForm extends LightningElement {
 
     calculateContributions(){
       for(var cont in this.cashContributions){
-        this.totalCashContributions += parseInt(this.cashContributions[cont].Amount_you_have_received__c);
-        
+        if(!this.nhmfGrant){
+          
+          this.totalCashContributions += parseInt(this.cashContributions[cont].Amount_you_have_received__c);
+        } else{
+          this.totalCashContributions += parseInt(this.cashContributions[cont].Value__c);
+        }
       }
+
+      this.project.NHMF_Total_cash_contributions__c = this.totalCashContributions;
     }
 
     calculateCosts(){
@@ -321,7 +327,11 @@ export default class ProjectCostsForm extends LightningElement {
       }
       this.totalCosts = newTotalCosts;
       this.totalVAT = newVATTotal;
-      this.project.Total_Cost__c = this.totalCosts;
+      if(!this.nhmfGrant){
+        this.project.Total_Cost__c = this.totalCosts;
+      } else {
+        this.project.Total_amount_cost__c = this.totalCosts;
+      }
       this.project.Total_project_VAT__c = this.totalVAT;
     }
 
@@ -409,9 +419,11 @@ export default class ProjectCostsForm extends LightningElement {
   }
 
    calculateNHMFGrantPercentage(){
-    console.log('calculating new NHMF grant percentage')
+    console.log('calculating new NHMF grant percentage', this.project.NHMF_grant_request__c);
+    
+    console.log('divided by ', this.project.tot);
       if(this.project && this.project.NHMF_grant_request__c && this.project.Total_Cost__c) {
-          this.project.NHMF_grant_request__c = NHMF_Grant_Percentage__c.round(parseInt(this.project.NHMF_grant_request__c)/parseInt(this.project.Total_Cost__c))
+          this.project.NHMF_Grant_Percentage__c = Math.round(parseInt(this.project.NHMF_grant_request__c)/parseInt(this.project.Total_amount_cost__c))
       } else {
           this.project.NHMF_Grant_Percentage__c = 0;
       }
@@ -419,12 +431,12 @@ export default class ProjectCostsForm extends LightningElement {
 
   calculateGrantAward(){
     console.log('the grant rquested is  ', this.project.Grant_Requested__c)
-    this.project.Grant_requested__c = parseInt(this.totalCosts) - parseInt(this.totalCashContributions);
+    this.project.Grant_requested__c = parseInt(this.project.Total_Cost__c) - parseInt(this.project.Total_Development_Income__c);
     console.log('the grant rquested is now ', this.project.Grant_Requested__c)
   }
   calculateNHMFGrantAward(){
     console.log('the grant rquested is  ', this.project.NHMF_grant_request__c)
-    this.project.NHMF_grant_request__c = parseInt(this.totalCosts) - parseInt(this.totalCashContributions); //TODO fix total cash cont.. some issue
+    this.project.NHMF_grant_request__c = parseInt(this.project.Total_amount_cost__c) - parseInt(this.project.NHMF_Total_cash_contributions__c); //TODO fix total cash cont.. some issue
     console.log('the grant rquested is now ', this.project.NHMF_grant_request__c)
   }
 
