@@ -307,6 +307,7 @@ export default class ProjectCostsForm extends LightningElement {
     }
 
     calculateContributions(){
+      this.totalCashContributions = 0;
       for(var cont in this.cashContributions){
         if(!this.nhmfGrant){
           
