@@ -193,9 +193,9 @@ export default class ProjectCostsForm extends LightningElement {
           retVal.Project_Cost_Description__c = cost.Project_Cost_Description__c;
           retVal.RecordTypeName = cost.RecordType.Name;
           retVal.Total_Cost__c = cost.Total_Cost__c;
+          retVal.Vat__c = cost.Vat__c;
           retVal.Id = cost.Id;
           retVal.index = index;
-          retVal.Vat__c = cost.Vat__c;
           
           return retVal; //oi
         });
@@ -333,7 +333,7 @@ export default class ProjectCostsForm extends LightningElement {
     preparedRow.Cost_heading__c = "Select heading";
     preparedRow.Project_Cost_Description__c = "";
     preparedRow.RecordTypeName = 'Small Grants' //TODO fix
-    preparedRow.Vat__c = cost.Vat__c;
+    preparedRow.Vat__c = 0;
     preparedRow.Id = "";
 
     this.projectCosts = [...this.projectCosts, preparedRow];
