@@ -192,9 +192,8 @@ export default class ProjectCostsForm extends LightningElement {
           retVal.Total_Cost__c = cost.Total_Cost__c;
           retVal.Id = cost.Id;
           retVal.index = index;
-          if (retVal.RecordTypeName === "Medium Grants") {
-            retVal.Vat__c = cost.Vat__c;
-          }
+          retVal.Vat__c = cost.Vat__c;
+          
           return retVal; //oi
         });
       } else if (error) {
@@ -329,8 +328,8 @@ export default class ProjectCostsForm extends LightningElement {
     preparedRow.Costs__c = 0; //amount
     preparedRow.Cost_heading__c = "Select heading";
     preparedRow.Project_Cost_Description__c = "";
-    preparedRow.RecordTypeName = 'Small Grants'
-    //preparedRow.Vat__c = cost.Vat__c;
+    preparedRow.RecordTypeName = 'Small Grants' //TODO fix
+    preparedRow.Vat__c = cost.Vat__c;
     preparedRow.Id = "";
 
     this.projectCosts = [...this.projectCosts, preparedRow];

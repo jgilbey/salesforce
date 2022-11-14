@@ -8,12 +8,16 @@
                                     </a>
                                     <template if:true={smallGrant}> SMALL!</template>
                 <template if:true={mediumGrant}> MEDIUM!</template>
+                <template if:true={nhmfGrant}> Totals</template>
               </th>
 
               <!-- COL 2 EMPTY-->
               <th style="width:66.75rem" > </th>
               <th class="slds-text-align_left" style="width:66.75rem"  scope="col"> 
                 <template if:true={mediumGrant}> 
+                  &nbsp;    <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
+                </template>
+                <template if:true={nhmfGrant}> 
                   &nbsp;    <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
                 </template>
               </th>
@@ -27,8 +31,18 @@
                   &nbsp; 
                   <lightning-formatted-number value={project.Total_project_VAT__c} maximum-fraction-digits="2"></lightning-formatted-number>
                 </template>
+                <template if:true={nhmfGrant}> 
+                  &nbsp; 
+                  <lightning-formatted-number value={project.Total_project_VAT__c} maximum-fraction-digits="2"></lightning-formatted-number>
+                </template>
               </th>
               <template if:true={mediumGrant}>
+                <th class="slds-text-align_left" style="width:66.75rem" >
+                  &nbsp; {projectPlusVAT}
+                </th>
+              </template>
+              
+              <template if:true={nhmfGrant}>
                 <th class="slds-text-align_left" style="width:66.75rem" >
                   &nbsp; {projectPlusVAT}
                 </th>
