@@ -104,7 +104,9 @@ public inherited sharing class ProjectCostFormController {
       WHERE Id = :projectId
     ];
 
-    if (
+    if ( //for small grants and nhmf grants this logic is correct
+    // need to verify same for medium
+    // definitely differen tfor large 
       project.Confirm_award_amount__c &&
       ((String.valueOf(project.Total_Cost__c) != totalCost) ||
       (String.valueOf(project.Grant_requested__c) != grantRequested))
@@ -242,6 +244,7 @@ public inherited sharing class ProjectCostFormController {
         Evidence_for_secured_income__c,
         Description_for_cash_contributions__c,
         Amount_you_have_received__c,
+        Value__c,
         RecordType.Name,
         Case__r.RecordType.DeveloperName
       FROM Project_Income__c

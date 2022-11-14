@@ -16,7 +16,7 @@ public with sharing class ProjectCostFormControllerTest {
     }
 
 
-    @is@TestSetup
+    @isTest
     static void testSaveSmallProjectCosts_ForAddProjectCost_DecisionConfirmedStatus_ThrowsErrorMessage(){
         //@AuraEnabled
         //public static void saveProjectCosts(

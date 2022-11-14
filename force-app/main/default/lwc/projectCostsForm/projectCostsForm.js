@@ -163,11 +163,14 @@ export default class ProjectCostsForm extends LightningElement {
               retVal.Evidence_for_secured_income__c = income.Evidence_for_secured_income__c;
               retVal.Description_for_cash_contributions__c = income.Description_for_cash_contributions__c;
               retVal.Amount_you_have_received__c = income.Amount_you_have_received__c;
+              //retVal.
               retVal.Id = income.Id;
               retVal.RecordTypeName = income.RecordType.Name;
               retVal.index = index;
+              retVal.Value__c = income.Value__c;
               return retVal;
               });
+              console.log('cash cont',JSON.stringify(this.cashContributions));
     } else if (error) {
       this.projectCosts = [];
       this.error = error;
@@ -207,6 +210,7 @@ export default class ProjectCostsForm extends LightningElement {
       return this.cashContributions.map((cont) => {
         let preparedContribution = {};
         preparedContribution.Amount_you_have_received__c = parseInt(cont.Amount_you_have_received__c);
+        preparedContribution.Value__c = parseInt(cont.Value__c);
         preparedContribution.Secured__c = cont.Secured__c;
         preparedContribution.Evidence_for_secured_income__c = cont.Evidence_for_secured_income__c;
         preparedContribution.Secured_non_cash_contributions__c = cont.Secured_non_cash_contributions__c;

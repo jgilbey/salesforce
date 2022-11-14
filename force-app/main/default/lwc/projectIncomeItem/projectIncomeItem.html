@@ -63,6 +63,7 @@
               
     </td> </template>  
 
+    <template if:false={nhmfGrant}>
     <td data-label="Amount" 
     data-id={income.index}
     data-field="Amount_you_have_received__c"
@@ -78,7 +79,25 @@
             </lightning-input>
       </div> 
     </td>
+  </template>
+  
+  <template if:true={nhmfGrant}>
+    <td data-label="Amount" 
+    data-id={income.index}
+    data-field="Value__c"
+    class="">
 
+    <div class="slds-truncate">
+            <lightning-input type="number" 
+                             name="Value__c" 
+                             value={income.Value__c}
+                             data-id={income.index}
+                             onchange={handleOnChange}
+                             step="0.01">
+            </lightning-input>
+      </div> 
+    </td>
+  </template>
     <td data-id={income.index}>
       <label class="slds-form-element__label"></label>
         <div class=”slds-cell-wrap”>
