@@ -409,8 +409,9 @@ export default class ProjectCostsForm extends LightningElement {
   }
 
    calculateNHMFGrantPercentage(){
+    console.log('calculating new NHMF grant percentage')
       if(this.project && this.project.NHMF_grant_request__c && this.project.Total_Cost__c) {
-          this.project.NHMF_grant_request__c = Math.round(parseInt(this.project.NHMF_grant_request__c)/parseInt(this.project.Total_Cost__c))
+          this.project.NHMF_grant_request__c = NHMF_Grant_Percentage__c.round(parseInt(this.project.NHMF_grant_request__c)/parseInt(this.project.Total_Cost__c))
       } else {
           this.project.NHMF_Grant_Percentage__c = 0;
       }
