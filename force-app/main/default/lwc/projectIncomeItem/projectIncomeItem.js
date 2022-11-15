@@ -69,11 +69,17 @@ export default class ProjectIncomeItem extends LightningElement {
         console.log("dataset id", JSON.stringify(e.target.dataset.id)); //...Record Id
         //console.log(JSON.stringify(e.target)); //...Record Id
         console.log("name", e.target.name);
+        var incomeValue;
+        if(e.target.name === 'Evidence_for_secured_income__c' || e.target.name === "Secured__c"){
+            incomeValue = e.target.checked;
+        } else {
+            incomeValue = e.target.value;
+        }
         this.dispatchEvent(
           new CustomEvent("incomechange", {
             detail: {
               name: e.target.name,
-              value: e.target.value,
+              value: incomeValue,
               id: e.target.dataset.id
             }
           })

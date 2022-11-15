@@ -21,7 +21,8 @@
                                     name="Secured__c" 
                                     value={income.Secured__c}
                                     data-id={income.index}
-                                    onchange={handleOnChange} >
+                                    onchange={handleOnChange}
+                                    checked={income.Secured__c} >
           </lightning-input></div>
       </td>
     </template>
@@ -33,6 +34,7 @@
           <lightning-input type="checkbox" 
                                     name="Evidence_for_secured_income__c" 
                                     value={income.Evidence_for_secured_income__c}
+                                    checked={income.Evidence_for_secured_income__c}
                                     data-id={income.index}
                                     onchange={handleOnChange} >
           </lightning-input></div>

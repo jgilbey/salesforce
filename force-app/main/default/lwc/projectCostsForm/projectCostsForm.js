@@ -70,11 +70,11 @@ export default class ProjectCostsForm extends LightningElement {
     ];
 
     nhmfContributionColumns = [
-      {label: 'Source of Funding', editable: true, fieldName: 'Cost_heading__c'}, //TODO
-      {label: 'Description', editable: true, fieldName: 'Project_Cost_Description__c'}, //TODO
-      {label: 'Value', editable: true, fieldName: 'Costs__c'}, //TODO value
-      {label: 'Secured', editable: true, fieldName: 'Secured__c'}, //TODO secured
-      {label: 'Evidence Secured', editable: true, fieldName: 'Evidence_for_secured_income__c'} //TODO Evidence sec
+      {label: 'Source of Funding', editable: true, fieldName: 'Cost_heading__c'}, 
+      {label: 'Description', editable: true, fieldName: 'Project_Cost_Description__c'}, 
+      {label: 'Value', editable: true, fieldName: 'Costs__c'}, 
+      {label: 'Secured', editable: true, fieldName: 'Secured__c'}, 
+      {label: 'Evidence Secured', editable: true, fieldName: 'Evidence_for_secured_income__c'} 
       
   ];
 
@@ -92,11 +92,6 @@ export default class ProjectCostsForm extends LightningElement {
 
     get columns(){
       if (this.project && this.project.RecordType) {
-        console.log('project.recordtype.developername', this.project.RecordType.DeveloperName);
-        
-        console.log('is it', this.smallGrantProject);
-        
-        console.log('or is it', this.mediumGrantProject);
         switch (this.project.RecordType.DeveloperName) {
           case this.smallGrantProject:
             return this.smallCols;
@@ -121,7 +116,6 @@ export default class ProjectCostsForm extends LightningElement {
       this._wireResultProject = data;
       if(data){
 
-        //let local = data;
         Object.keys(data).forEach(field => 
           {
             this.project[field] = data[field];
@@ -137,8 +131,6 @@ export default class ProjectCostsForm extends LightningElement {
             this.nhmfGrant = true;
           }
 
-          console.log('this project', JSON.stringify(this.project));
-
       } else {
         console.log('error retrieving project')
       }
@@ -152,20 +144,18 @@ export default class ProjectCostsForm extends LightningElement {
       this._wireResultContributions = result;
       const { error, data } = result;
       if(data){
-        console.log('data is', JSON.stringify(data));
-
         this.cashContributions = data.map((income, index) => {
           let retVal = {};
               if(income.Case__r.RecordType.DeveloperName === this.mediumGrantProject){
-                retVal.Secured__c = income.Secured__c; //amount
+                retVal.Secured__c = (income.Secured__c === "true" || income.Secured__c === true) ? true : false;; 
               } else {
                 retVal.Secured_non_cash_contributions__c = income.Secured_non_cash_contributions__c;
               
               }
-              retVal.Evidence_for_secured_income__c = income.Evidence_for_secured_income__c;
+              
+              retVal.Evidence_for_secured_income__c = (income.Evidence_for_secured_income__c === "true" || income.Evidence_for_secured_income__c === true) ? true : false;
               retVal.Description_for_cash_contributions__c = income.Description_for_cash_contributions__c;
               retVal.Amount_you_have_received__c = income.Amount_you_have_received__c;
-              //retVal.
               retVal.Id = income.Id;
               retVal.RecordTypeName = income.RecordType.Name;
               retVal.index = index;
@@ -214,7 +204,8 @@ export default class ProjectCostsForm extends LightningElement {
         preparedContribution.Amount_you_have_received__c = parseInt(cont.Amount_you_have_received__c);
         preparedContribution.Value__c = parseInt(cont.Value__c);
         preparedContribution.Secured__c = cont.Secured__c;
-        preparedContribution.Evidence_for_secured_income__c = cont.Evidence_for_secured_income__c;
+        preparedContribution.Evidence_for_secured_income__c = cont.Evidence_for_secured_income__c === true;
+        console.log('cont.Evidence_for_secured_income__c', cont.Evidence_for_secured_income__c);
         preparedContribution.Secured_non_cash_contributions__c = cont.Secured_non_cash_contributions__c;
         preparedContribution.Case__c = this.project.Id;
         //console.log('cont.Id.length ', cont.Id.length );
@@ -232,7 +223,7 @@ export default class ProjectCostsForm extends LightningElement {
         let newProjectCosts = this.getNewCosts();
         let newCashContributions = this.getNewContributions();
     
-        console.log("***********mmm**** before sending", JSON.stringify(this.projectCosts));
+        console.log("***********mmm**** before sending", newCashContributions);
         console.log("*************** before deleting", JSON.stringify(this.removedProjectCosts));
     
         saveProjectCosts({
@@ -357,8 +348,8 @@ export default class ProjectCostsForm extends LightningElement {
       
       let preparedRow = {};
       preparedRow.Secured_non_cash_contributions__c ='Select';
-      preparedRow.Secured__c ='';
-      preparedRow.Evidence_for_secured_income__c ='';
+      preparedRow.Secured__c =false;
+      preparedRow.Evidence_for_secured_income__c =false;
       preparedRow.Description_for_cash_contributions__c = '';
       preparedRow.Amount_you_have_received__c = 0;
       preparedRow.RecordTypeName = 'Delivery'
