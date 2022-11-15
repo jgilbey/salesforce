@@ -146,8 +146,8 @@ export default class ProjectCostsForm extends LightningElement {
       if(data){
         this.cashContributions = data.map((income, index) => {
           let retVal = {};
-              if(income.Case__r.RecordType.DeveloperName === this.mediumGrantProject){
-                retVal.Secured__c = (income.Secured__c === "true" || income.Secured__c === true) ? true : false;; 
+              if(this.mediumGrant || this.nhmfGrant){
+                retVal.Secured__c = (income.Secured__c === "true" || income.Secured__c === true) ? true : false; 
               } else {
                 retVal.Secured_non_cash_contributions__c = income.Secured_non_cash_contributions__c;
               
