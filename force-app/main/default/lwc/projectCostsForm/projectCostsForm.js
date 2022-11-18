@@ -76,19 +76,7 @@ export default class ProjectCostsForm extends LightningElement {
       {label: 'Secured', editable: true, fieldName: 'Secured__c'}, 
       {label: 'Evidence Secured', editable: true, fieldName: 'Evidence_for_secured_income__c'} 
       
-  ];
-
-    get projectType(){
-
-      if (this.project && this.project.RecordType) {
-        switch (this.project.RecordType.DeveloperName) {
-          case this.smallGrantProject:
-            return 'Small';
-          case this.mediumGrantProject:
-            return 'Medium';
-        }}
-    }
-    
+  ];   
 
     get columns(){
       if (this.project && this.project.RecordType) {
@@ -223,13 +211,21 @@ export default class ProjectCostsForm extends LightningElement {
         let newProjectCosts = this.getNewCosts();
         let newCashContributions = this.getNewContributions();
     
-        console.log("***********mmm**** before sending", newCashContributions);
+      //  console.log("***********mmm**** before sending", newCashContributions);
+      console.log("***********mmm**** before sending", this.project.Grant_requested__c);
+      console.log("***********mmm**** before sending", this.totalCosts);
+      
         console.log("*************** before deleting", JSON.stringify(this.removedProjectCosts));
-    
+        
+        console.log("*************** before deleting", JSON.stringify(this.newProjectCosts));
+        
+
+//          totalCostAmount = this.project.Total_Cost__c;
+
         saveProjectCosts({
           projectId: this.project.Id,
           totalCost: this.totalCosts,
-          grantRequested: this.project.Grant_Requested__c,
+          grantRequested: this.project.Grant_requested__c,
           cashContributions: newCashContributions,
           projectCosts: newProjectCosts,
           removedCashContributions: this.removedContributions,
@@ -276,14 +272,16 @@ export default class ProjectCostsForm extends LightningElement {
     @api
     handleIncomeChange(e){
       e.stopPropagation();
-        console.log('handling in parent', JSON.stringify(e.detail));
-        console.log('the cash value',e.detail.value); //... Field API Name
+        console.log('handling in parent income change', JSON.stringify(e.detail));
+        console.log('the cash value change',e.detail.value); //... Field API Name
         //console.log(e.detail.value); //... value
         console.log('the cash id', e.detail.id); //...Record Id
         this.cashContributions[e.detail.id][e.detail.name] = e.detail.value;
         //if the field was the amount - recalculate totals
         this.totalCashContributions = 0;
         this.project.Total_Development_Income__c = this.totalCashContributions;
+        
+        //this.project.Grant_requested__c = parseInt(this.totalCosts) - parseInt(this.totalCashContributions);
         this.recalculateCostsSummary();
         
     }
@@ -336,13 +334,57 @@ export default class ProjectCostsForm extends LightningElement {
     preparedRow.Costs__c = 0; //amount
     preparedRow.Cost_heading__c = "Select heading";
     preparedRow.Project_Cost_Description__c = "";
-    preparedRow.RecordTypeName = 'Small Grants' //TODO fix
+    preparedRow.RecordTypeName = this.getProjectCostRecordType();
     preparedRow.Vat__c = 0;
     preparedRow.Id = "";
-
+      console.log('before add', JSON.stringify(this.projectCosts));
     this.projectCosts = [...this.projectCosts, preparedRow];
+    
+    console.log('after add', JSON.stringify(this.projectCosts));
     this.recalcIndexes(this.projectCosts);
   }
+
+  
+  //replace with more robust 
+  getProjectIncomeRecordType(){
+    //toodo
+    if (this.project && this.project.RecordType) {
+      switch (this.project.RecordType.DeveloperName) {
+        case this.smallGrantProject:
+          return 'Small grants';
+        case this.mediumGrantProject:
+          return 'Delivery';
+        case this.nhmfGrantProject:
+          return 'NHMF';
+        case this.largeGrantDevelopmentProject:
+          return 'Large'; //todo fix this name
+        case this.largeGrantDeliveryProject:
+          return 'Large_Grants_Actual_Delivery';
+      }
+    }
+
+  }
+
+  //replace with more robust 
+  getProjectCostRecordType(){
+    //toodo
+    if (this.project && this.project.RecordType) {
+      switch (this.project.RecordType.DeveloperName) {
+        case this.smallGrantProject:
+          return 'Small Grants';
+        case this.mediumGrantProject:
+          return 'Medium Grants';
+        case this.nhmfGrantProject:
+          return 'NHMF';
+        case this.largeGrantDevelopmentProject:
+          return 'Large Grants'; //todo fix this name
+        case this.largeGrantDeliveryProject:
+          return 'Large_Grants_Actual_Delivery';
+      }
+    }
+
+  }
+
     
     handleAddCashContribution(){
       
@@ -352,7 +394,7 @@ export default class ProjectCostsForm extends LightningElement {
       preparedRow.Evidence_for_secured_income__c =false;
       preparedRow.Description_for_cash_contributions__c = '';
       preparedRow.Amount_you_have_received__c = 0;
-      preparedRow.RecordTypeName = 'Delivery'
+      preparedRow.RecordTypeName = this.getProjectIncomeRecordType();
       this.cashContributions =  [...this.cashContributions, preparedRow];
       this.recalcIndexes(this.cashContributions);
     }
@@ -375,6 +417,7 @@ export default class ProjectCostsForm extends LightningElement {
         this.removedProjectCosts.push(this.projectCosts[projectIndex]);
       }
       this.projectCosts.splice(projectIndex, 1);
+      console.log('project costs', JSON.stringify(this.projectCosts));
       this.projectCosts = [...this.projectCosts];
       this.recalcIndexes(this.projectCosts);
       this.recalculateCostsSummary();
@@ -424,9 +467,9 @@ export default class ProjectCostsForm extends LightningElement {
   }
 
   calculateGrantAward(){
-    console.log('the grant rquested is  ', this.project.Grant_Requested__c)
+    console.log('the grant rquested is  ', this.project.Grant_requested__c)
     this.project.Grant_requested__c = parseInt(this.project.Total_Cost__c) - parseInt(this.project.Total_Development_Income__c);
-    console.log('the grant rquested is now ', this.project.Grant_Requested__c)
+    console.log('the grant rquested is now ', this.project.Grant_requested__c)
   }
   calculateNHMFGrantAward(){
     

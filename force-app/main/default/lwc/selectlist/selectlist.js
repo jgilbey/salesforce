@@ -45,12 +45,19 @@ export default class Selectlist extends LightningElement {
     setLabelForValue() {
         if (this.value != null && this.value != "" && this.options) {
            let option;
+           console.log('de bug selectlist optoosn', JSON.stringify(this.options));
            for(let thisOption of this.options){
                if(thisOption.value === this.value){
                    option = thisOption;
                }
            }
-            this.label = option && option.label ? option.label : option.value;
+           console.log('option', JSON.stringify(option))
+           if(typeof option !== 'undefined'){
+                this.label =  option.label ? option.label : option.value;
+           } else {
+            this.label = this.placeholder ? this.placeholder : "";
+           }
+
         } else {
             this.label = this.placeholder ? this.placeholder : "";
         }
