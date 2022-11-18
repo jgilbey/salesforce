@@ -305,7 +305,7 @@ export default class ProjectCostsForm extends LightningElement {
           this.totalCashContributions += parseInt(this.cashContributions[cont].Value__c);
         }
       }
-
+      this.project.Total_Development_Income__c = this.totalCashContributions;
       this.project.NHMF_Total_cash_contributions__c = this.totalCashContributions;
     }
 
