@@ -38,13 +38,13 @@
               </th>
               <template if:true={mediumGrant}>
                 <th class="slds-text-align_left" style="width:66.75rem" >
-                  &nbsp; {projectPlusVAT}
+                  &nbsp;  <lightning-formatted-number value={projectPlusVAT} maximum-fraction-digits="2"></lightning-formatted-number> 
                 </th>
               </template>
               
               <template if:true={nhmfGrant}>
                 <th class="slds-text-align_left" style="width:66.75rem" >
-                  &nbsp; {projectPlusVAT}
+                  &nbsp; <lightning-formatted-number value={projectPlusVAT} maximum-fraction-digits="2"></lightning-formatted-number> 
                 </th>
               </template>
               <th style="width:66.75rem" > </th>

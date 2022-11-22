@@ -5,6 +5,7 @@ import getProjectCosts from '@salesforce/apex/ProjectCostFormController.getProje
 import getCashContributions from '@salesforce/apex/ProjectCostFormController.getCashContributions';
 import saveProjectCosts from '@salesforce/apex/ProjectCostFormController.saveProjectCosts';
 import { refreshApex } from '@salesforce/apex';
+import SAVE_SUCCESSFUL from '@salesforce/label/c.Budget_Management_Save';
 
 import UserPreferencesRecordHomeSectionCollapseWTShown from '@salesforce/schema/User.UserPreferencesRecordHomeSectionCollapseWTShown';
 export default class ProjectCostsForm extends LightningElement {
@@ -109,7 +110,7 @@ export default class ProjectCostsForm extends LightningElement {
             this.project[field] = data[field];
           })
 
-          console.log('the record develper name', this.project.RecordType.DeveloperName );
+          //console.log('the record develper name', this.project.RecordType.DeveloperName );
         
           if(this.project.RecordType.DeveloperName === this.smallGrantProject){
             this.smallGrant = true;
@@ -118,6 +119,8 @@ export default class ProjectCostsForm extends LightningElement {
           } else if(this.project.RecordType.DeveloperName === this.nhmfGrantProject){
             this.nhmfGrant = true;
           }
+
+          console.log(JSON.stringify(this.project));
 
       } else {
         console.log('error retrieving project')
@@ -235,7 +238,7 @@ export default class ProjectCostsForm extends LightningElement {
             console.log("handle created done", result);
             let variant = "success";
             let title = "Project Saved";
-            let message = "Project costs were saved successfully";
+            let message = label.SAVE_SUCCESSFUL;
             this.dispatchEvent(new ShowToastEvent({ variant, title, message }));
             
             refreshApex(this._wireResultProject);

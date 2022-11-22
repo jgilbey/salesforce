@@ -107,7 +107,7 @@
                       </a>
                   </th>
                   <!-- should be converted to list of cols like the other for readability-->
-                  <template if:false={smallGrant}>
+                  <template if:true={nhmfGrant}>
                   <th class="" scope="col">
                     <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Evidence_for_secured_income__c">
                         Evidence Secured
@@ -146,8 +146,10 @@
         </tbody>
         </table>
         
-        <c-project-income-totals project={project} medium-grant={mediumGrant}>
+        <template if:true={project}>
+        <c-project-income-totals project={project} medium-grant={mediumGrant} nhmf-grant={nhmfGrant} small-grant={smallGrant}>
         </c-project-income-totals>
+         </template>
          </lightning-accordion-section>
 </lightning-accordion>
   </template>  
