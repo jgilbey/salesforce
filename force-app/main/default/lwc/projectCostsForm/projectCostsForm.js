@@ -6,8 +6,10 @@ import getCashContributions from '@salesforce/apex/ProjectCostFormController.get
 import saveProjectCosts from '@salesforce/apex/ProjectCostFormController.saveProjectCosts';
 import { refreshApex } from '@salesforce/apex';
 import SAVE_SUCCESSFUL from '@salesforce/label/c.Budget_Management_Save';
+import Saved from "@salesforce/label/c.Saved";
+import Success from "@salesforce/label/c.Success";
+import Error from "@salesforce/label/c.Error";
 
-import UserPreferencesRecordHomeSectionCollapseWTShown from '@salesforce/schema/User.UserPreferencesRecordHomeSectionCollapseWTShown';
 export default class ProjectCostsForm extends LightningElement {
 
   _wireResultProjectCosts = {};
@@ -25,6 +27,13 @@ export default class ProjectCostsForm extends LightningElement {
   mediumGrant = false;
   largeGrant = false;
   nhmfGrant = false;
+
+  labels = {
+    Saved,
+    SAVE_SUCCESSFUL,
+    Success,
+    Error 
+  }
 
   handleSectionToggle(event) {
       const openSections = event.detail.openSections;
@@ -236,9 +245,9 @@ export default class ProjectCostsForm extends LightningElement {
         })
           .then((result) => {
             console.log("handle created done", result);
-            let variant = "success";
-            let title = "Project Saved";
-            let message = label.SAVE_SUCCESSFUL;
+            let variant = this.labels.Success;
+            let title = this.labels.Saved;
+            let message = this.labels.SAVE_SUCCESSFUL;
             this.dispatchEvent(new ShowToastEvent({ variant, title, message }));
             
             refreshApex(this._wireResultProject);
@@ -248,7 +257,7 @@ export default class ProjectCostsForm extends LightningElement {
           })
           .catch((error) => {
             console.log("error ", JSON.stringify(error));
-            let variant = "error";
+            let variant = this.labels.Error;
             let title = "Save failed";
             let message = error.body.message;
             this.dispatchEvent(new ShowToastEvent({ variant, title, message }));
@@ -316,7 +325,7 @@ export default class ProjectCostsForm extends LightningElement {
       var newTotalCosts = 0;
       var newVATTotal = 0;
       for(var cost in this.projectCosts){
-        newTotalCosts += parseInt(this.projectCosts[cost].Costs__c);
+        newTotalCosts += (parseInt(this.projectCosts[cost].Costs__c) + parseInt(this.projectCosts[cost].Vat__c));
         newVATTotal += parseInt(this.projectCosts[cost].Vat__c);
         
       }
@@ -452,8 +461,10 @@ export default class ProjectCostsForm extends LightningElement {
 
   calculateGrantPercentage(){
       if(this.project && this.project.Grant_requested__c && this.project.Total_Cost__c){
-        this.project.Grant_Percentage__c = Math.round((this.project.Grant_requested__c/this.project.Total_Cost__c)*100);
+        this.project.Grant_Percentage__c = Math.round((this.project.Grant_requested__c/parseInt(this.project.Total_Cost__c))
+        )*100;
       } else {
+
         this.project.Grant_Percentage__c = 0;
       }
   }
@@ -463,7 +474,7 @@ export default class ProjectCostsForm extends LightningElement {
     
     console.log('divided by ', this.project.Total_amount_cost__c);
       if(this.project && this.project.NHMF_grant_request__c && this.project.Total_Cost__c) {
-          this.project.NHMF_Grant_Percentage__c = Math.round(parseInt(this.project.NHMF_grant_request__c)/parseInt(this.project.Total_amount_cost__c)*100)
+          this.project.NHMF_Grant_Percentage__c = Math.round(parseInt(this.project.NHMF_grant_request__c)/(parseInt(this.project.Total_amount_cost__c) + parseInt(this.project.Total_project_VAT__c))*100)
       } else {
           this.project.NHMF_Grant_Percentage__c = 0;
       }
@@ -478,7 +489,7 @@ export default class ProjectCostsForm extends LightningElement {
     
     console.log('the total amount cost is :  ', this.project.Total_amount_cost__c);
     console.log('minus this', this.project.NHMF_Total_cash_contributions__c);
-    this.project.NHMF_grant_request__c = parseInt(this.project.Total_amount_cost__c) - parseInt(this.project.NHMF_Total_cash_contributions__c); //TODO fix total cash cont.. some issue
+    this.project.NHMF_grant_request__c = (parseInt(this.project.Total_amount_cost__c) + parseInt(this.project.Total_project_VAT__c)) - parseInt(this.project.NHMF_Total_cash_contributions__c); //TODO fix total cash cont.. some issue
     console.log('the grant rquested is changed to now ', this.project.NHMF_grant_request__c)
   }
 
