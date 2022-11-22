@@ -220,6 +220,7 @@ export default class ProjectCostsForm extends LightningElement {
 
       handleSaveProjectCosts() {
         this.loading = true;
+        this.calculateCosts();
         let newProjectCosts = this.getNewCosts();
         let newCashContributions = this.getNewContributions();
     
@@ -249,7 +250,8 @@ export default class ProjectCostsForm extends LightningElement {
             let title = this.labels.Saved;
             let message = this.labels.SAVE_SUCCESSFUL;
             this.dispatchEvent(new ShowToastEvent({ variant, title, message }));
-            
+            this.removedContributions = [];
+            this.removedProjectCosts = [];
             refreshApex(this._wireResultProject);
             refreshApex(this._wireResultProjectCosts);
             refreshApex(this._wireResultContributions);

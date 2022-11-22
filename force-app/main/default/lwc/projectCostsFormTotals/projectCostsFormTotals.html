@@ -13,18 +13,21 @@
 
               <!-- COL 2 EMPTY-->
               <th style="width:66.75rem" > </th>
-              <th class="slds-text-align_left" style="width:66.75rem"  scope="col"> 
-                <template if:true={mediumGrant}> 
-                  &nbsp;    <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
-                </template>
-                <template if:true={nhmfGrant}> 
-                  &nbsp;    <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
-                </template>
-              </th>
               <!-- COL 3-->
               <th class="slds-text-align_left" scope="col" style="width:66.75rem" > 
-                <template if:true={smallGrant}> 
+                
                   Total &nbsp;  
+                  
+              <template if:true={mediumGrant}>
+                  &nbsp;  <lightning-formatted-number value={projectMinusVAT} maximum-fraction-digits="2"></lightning-formatted-number> 
+              </template>
+              
+              <template if:true={nhmfGrant}>
+                  &nbsp; <lightning-formatted-number value={projectMinusVAT} maximum-fraction-digits="2"></lightning-formatted-number> 
+              </template>
+              </th>
+              <th>
+                <template if:true={smallGrant}> 
                   <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
                 </template>
                 <template if:true={mediumGrant}> 
@@ -36,18 +39,15 @@
                   <lightning-formatted-number value={project.Total_project_VAT__c} maximum-fraction-digits="2"></lightning-formatted-number>
                 </template>
               </th>
-              <template if:true={mediumGrant}>
-                <th class="slds-text-align_left" style="width:66.75rem" >
-                  &nbsp;  <lightning-formatted-number value={projectPlusVAT} maximum-fraction-digits="2"></lightning-formatted-number> 
-                </th>
-              </template>
-              
-              <template if:true={nhmfGrant}>
-                <th class="slds-text-align_left" style="width:66.75rem" >
-                  &nbsp; <lightning-formatted-number value={projectPlusVAT} maximum-fraction-digits="2"></lightning-formatted-number> 
-                </th>
-              </template>
               <th style="width:66.75rem" > </th>
+              <th class="slds-text-align_left" style="width:66.75rem"  scope="col"> 
+                <template if:true={mediumGrant}> 
+                  &nbsp;    <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
+                </template>
+                <template if:true={nhmfGrant}> 
+                  &nbsp;    <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
+                </template>
+              </th>
             </tr>
         </thead>    
     </table>    

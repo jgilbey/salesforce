@@ -8,8 +8,8 @@ export default class ProjectCostsFormTotals extends LightningElement {
     @api mediumGrant;
     @api nhmfGrant;
 
-    get projectPlusVAT(){//todo change
-        return parseInt(this.project.Total_project_VAT__c) + parseInt(this.project.Total_Cost__c);
+    get projectMinusVAT(){//todo change
+        return parseInt(this.project.Total_Cost__c) - parseInt(this.project.Total_project_VAT__c);
     }
 
 

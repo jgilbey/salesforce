@@ -59,7 +59,7 @@ export default class FormTableRow extends LightningElement {
   removeProjectHandler() {
     this.fireEvent({
       eventName: "remove",
-      details: { id: this.cost.index }
+      details: { id: this.project.Id }
     });
   }
 
