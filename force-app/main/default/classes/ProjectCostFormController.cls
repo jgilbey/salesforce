@@ -1,6 +1,8 @@
 public inherited sharing class ProjectCostFormController {
   //TODO modify by to get by record type id
 
+  private static final String MEMORIAL_RECORD_TYPE_NAME = 'Memorial';
+
   @AuraEnabled(cacheable=true)
   public static Case getProject(Id projectId) {
     Case project = [
@@ -16,11 +18,12 @@ public inherited sharing class ProjectCostFormController {
         NHMF_grant_award__c,
         NHMF_Grant_Percentage__c,
         NHMF_grant_request__c,
+        Total_amount_cost__c,
         NHMF_Total_cash_contributions__c,
         RecordType.DeveloperName
       FROM case
       WHERE Id = :projectId
-    ];
+    ]; //changed
 
     return project;
   }
@@ -99,36 +102,53 @@ public inherited sharing class ProjectCostFormController {
         NHMF_Total_cash_contributions__c,
         Grant_Percentage__c,
         payment_percentage__c,
-        Confirm_award_amount__c
+        Confirm_award_amount__c,
+        RecordType.DeveloperName
       FROM case
       WHERE Id = :projectId
     ];
 
-    if ( //for small grants and nhmf grants this logic is correct
+    Boolean preventSaveForMemorial = false;
+    if (
+      project.RecordType.DeveloperName == MEMORIAL_RECORD_TYPE_NAME &&
+      project.Confirm_award_amount__c
+    ) {
+      preventSaveForMemorial = true;
+    }
+
+    //for small grants and nhmf grants this logic is correct
     // need to verify same for medium
-    // definitely differen tfor large 
+    // definitely differen tfor large
+    system.debug('prevent save' + preventSaveForMemorial);
+    system.debug('project.confirm' + project.confirm_award_amount__c);
+    system.debug('string fo total cost from backend' + project.total_cost__c);
+    system.debug('string fo total cost from ui' + totalCost);
+    system.debug('grant requested from backend' + project.Grant_requested__c);
+    system.debug('grant requested from ui' + grantRequested);
+    if (
       project.Confirm_award_amount__c &&
+      (preventSaveForMemorial ||
       ((String.valueOf(project.Total_Cost__c) != totalCost) ||
-      (String.valueOf(project.Grant_requested__c) != grantRequested))
+      (String.valueOf(project.Grant_requested__c) != grantRequested)))
     ) {
       //check that
       // the original grant percentage can't be less than the new one
       // the new total costs value can't be different to the old total costs
       //check that the grant award hasn't changed TODO
       throw new AuraHandledException(
-        'The grant percentage and total costs cannot change after a decision is confirmed'
+        System.Label.Budget_Management_Save_Error//;'The grant percentage and total costs cannot change after a decision is confirmed'
       ); //move this inside try
     } else {
-      deleteProjectCostsAndContributions(
-        removedCashContributions,
-        removedProjectCosts
-      );
       if (cashContributions.size() >= 1) {
         upsert cashContributions;
       }
       if (cashContributions.size() >= 1) {
         upsert projectCosts;
       }
+      deleteProjectCostsAndContributions(
+        removedCashContributions,
+        removedProjectCosts
+      );
     }
 
     //} catch(Exception e){
@@ -252,14 +272,7 @@ public inherited sharing class ProjectCostFormController {
       ORDER BY Amount_you_have_received__c DESC
     ];
 
-    /* Project_Cost__c newCost = new Project_Cost__c(
-      Costs__c = 0.00,
-      Cost_heading__c = '',
-      Project_Cost_Description__c = ''
-    );*/
-
     existingContributions.addAll(conts);
-    //existingContributions.add(newCost);
 
     return existingContributions;
   }
