@@ -96,6 +96,13 @@
           <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
             <thead>
               <tr class="slds-line-height_reset">
+                <template if:true={nhmfGrant}>
+                <th class="" scope="col">
+                  <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Description_for_cash_contributions__c">
+                      Source of Funding
+                  </a>
+              </th>
+            </template>
                   <th class="" scope="col">
                       <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Description_for_cash_contributions__c">
                           Description

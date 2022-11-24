@@ -157,6 +157,7 @@ export default class ProjectCostsForm extends LightningElement {
               retVal.Description_for_cash_contributions__c = income.Description_for_cash_contributions__c;
               retVal.Amount_you_have_received__c = income.Amount_you_have_received__c;
               retVal.Id = income.Id;
+              retVal.Source_Of_Funding__c = income.Source_Of_Funding__c;
               retVal.RecordTypeName = income.RecordType.Name;
               retVal.index = index;
               retVal.Value__c = income.Value__c;
@@ -205,6 +206,7 @@ export default class ProjectCostsForm extends LightningElement {
         preparedContribution.Value__c = parseInt(cont.Value__c);
         preparedContribution.Secured__c = cont.Secured__c;
         preparedContribution.Evidence_for_secured_income__c = cont.Evidence_for_secured_income__c === true;
+        preparedContribution.Source_Of_Funding__c = '';
         console.log('cont.Evidence_for_secured_income__c', cont.Evidence_for_secured_income__c);
         preparedContribution.Secured_non_cash_contributions__c = cont.Secured_non_cash_contributions__c;
         preparedContribution.Case__c = this.project.Id;

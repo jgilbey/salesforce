@@ -1,5 +1,31 @@
 <template>
-  <template if:true={income}>
+  <template if:true={income}>	
+    
+      <template if:true={nhmfGrant}>
+        <td data-label="IncomeSec"
+            data-id={income.index}
+            data-field="Source_Of_Funding__c">
+           
+              <div class="picklistBlock"> 
+                <label class="slds-form-element__label"></label>
+                <c-selectlist
+                is-select={visible}
+                title="Source_Of_Funding__c"
+                field-id="Source_Of_Funding__c"
+                placeholder={income.Source_Of_Funding__c} 
+                style-class={styleClass} 
+                options={incomeSourceOfFunding} 
+                value={income.Source_Of_Funding__c} 
+                onchange={handleOnChange} 
+                data-id={income.index}
+                data-field="Source_Of_Funding__c"
+                name="Source_Of_Funding__c"
+                disabled={disabled}>
+                </c-selectlist>
+              </div>
+                  
+        </td> </template>  
+
     <td data-label="Description"
         data-id={income.index}
         data-field="Description_for_cash_contributions__c">

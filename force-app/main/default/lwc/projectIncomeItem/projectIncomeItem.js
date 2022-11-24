@@ -1,6 +1,7 @@
 import { LightningElement, api, wire, track } from 'lwc';
 import INCOME_SECURED from "@salesforce/schema/Project_Income__c.Secured_non_cash_contributions__c";
 import PROJECT_INCOME_OBJECT from "@salesforce/schema/Project_Income__c";
+import SOURCE_OF_FUNDING from "@salesforce/schema/Project_Income__c.Source_Of_Funding__c"
 import { getPicklistValues, getObjectInfo } from "lightning/uiObjectInfoApi";
 
 export default class ProjectIncomeItem extends LightningElement {
@@ -15,6 +16,7 @@ export default class ProjectIncomeItem extends LightningElement {
     @api mediumGrant;
     @api nhmfGrant;
     @track incomeSecuredList;
+    @track incomeSourceOfFunding;
 
 
     @wire(getObjectInfo, { objectApiName: PROJECT_INCOME_OBJECT })
@@ -45,6 +47,24 @@ export default class ProjectIncomeItem extends LightningElement {
         if (data) {
         console.log('this is the data', data);
         this.incomeSecuredList = data.values;
+        } else  {
+        console.log('error getting picklist values', error);
+        }
+    }
+
+    @wire(
+        getPicklistValues,
+
+        {
+            recordTypeId: '$incomeRecordTypeId',
+
+            fieldApiName: SOURCE_OF_FUNDING
+        }
+    )
+    incomeSourceOfFunding({ error, data }) {
+        if (data) {
+        console.log('this is the data for source of funding', data);
+        this.incomeSourceOfFunding = data.values;
         } else  {
         console.log('error getting picklist values', error);
         }
