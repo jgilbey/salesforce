@@ -11,21 +11,24 @@
             </th>
           </template>
             <!-- COL 2 EMPTY-->
-            <th style="width:66.75rem" scope="col"> </th>
+            <th style="width:99.75rem" scope="col"> </th>
             
             
-            <th style="width:66.75rem" scope="col"> </th>
-            
-            <th class="slds-text-align_left" style="width:66.75rem" scope="col"> 
+            <th style="width:66.75rem" scope="col" class="slds-text-align_left" > 
+              Total 
               <template if:true={smallGrant}> 
-                Total <lightning-formatted-number value={project.Total_Development_Income__c} maximum-fraction-digits="2"></lightning-formatted-number> 
+                &nbsp; <lightning-formatted-number value={project.Total_Development_Income__c} maximum-fraction-digits="2"></lightning-formatted-number> 
               </template>
               <template if:true={mediumGrant}>                   
-                Total <lightning-formatted-number value={project.Total_Development_Income__c} maximum-fraction-digits="2"></lightning-formatted-number> 
+                &nbsp;  <lightning-formatted-number value={project.Total_Development_Income__c} maximum-fraction-digits="2"></lightning-formatted-number> 
               </template>
               <template if:true={nhmfGrant}> 
-                Total <lightning-formatted-number value={project.Total_Development_Income__c} maximum-fraction-digits="2"></lightning-formatted-number> 
+                &nbsp; <lightning-formatted-number value={project.Total_Development_Income__c} maximum-fraction-digits="2"></lightning-formatted-number> 
               </template>
+            </th>
+            
+            <th class="slds-text-align_left" style="width:66.75rem" scope="col"> 
+              
             </th>
             
           </tr>
