@@ -14,23 +14,35 @@
             <th style="width:99.75rem" scope="col"> </th>
             
             
-            <th style="width:66.75rem" scope="col" class="slds-text-align_left" > 
-              Total 
+            <th style="width:66.75rem" scope="col" class="slds-text-align_right" > 
+              <template if:true={smallGrant}> 
+                &nbsp; Total</template>
+               
+              <template if:true={mediumGrant}>
+                Total                   
+                &nbsp;  
+              </template>
+              <template if:true={nhmfGrant}> 
+                Total
+                &nbsp; <lightning-formatted-number value={project.Total_Development_Income__c} maximum-fraction-digits="2"></lightning-formatted-number> 
+              </template>
+            </th>
+            
+            <th class="slds-text-align_right" style="width:76.75rem" scope="col"> 
+              <template if:true={mediumGrant}>
+                &nbsp;  <lightning-formatted-number value={project.Total_Development_Income__c} maximum-fraction-digits="2"></lightning-formatted-number> 
+              </template>
               <template if:true={smallGrant}> 
                 &nbsp; <lightning-formatted-number value={project.Total_Development_Income__c} maximum-fraction-digits="2"></lightning-formatted-number> 
               </template>
-              <template if:true={mediumGrant}>                   
-                &nbsp;  <lightning-formatted-number value={project.Total_Development_Income__c} maximum-fraction-digits="2"></lightning-formatted-number> 
-              </template>
-              <template if:true={nhmfGrant}> 
-                &nbsp; <lightning-formatted-number value={project.Total_Development_Income__c} maximum-fraction-digits="2"></lightning-formatted-number> 
-              </template>
             </th>
-            
-            <th class="slds-text-align_left" style="width:66.75rem" scope="col"> 
-              
-            </th>
-            
+           <template if:true={smallGrant}> 
+              <th class="slds-text-align_right" style="width:199.75rem" scope="col"> </th>
+           </template>
+           <template if:true={mediumGrant}> 
+            <th class="slds-text-align_right" style="width:270.75rem" scope="col"> </th>
+         </template>
+         
           </tr>
       </thead>    
   </table>    

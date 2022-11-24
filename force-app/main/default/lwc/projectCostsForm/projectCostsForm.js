@@ -146,7 +146,7 @@ export default class ProjectCostsForm extends LightningElement {
       if(data){
         this.cashContributions = data.map((income, index) => {
           let retVal = {};
-              if(this.mediumGrant || this.nhmfGrant){
+              if(this.nhmfGrant){
                 retVal.Secured__c = (income.Secured__c === "true" || income.Secured__c === true) ? true : false; 
               } else {
                 retVal.Secured_non_cash_contributions__c = income.Secured_non_cash_contributions__c;
@@ -314,9 +314,9 @@ export default class ProjectCostsForm extends LightningElement {
       for(var cont in this.cashContributions){
         if(!this.nhmfGrant){
           
-          this.totalCashContributions += parseInt(this.cashContributions[cont].Amount_you_have_received__c);
+          this.totalCashContributions += parseInt(this.cashContributions[cont].Amount_you_have_received__c) || 0;
         } else{
-          this.totalCashContributions += parseInt(this.cashContributions[cont].Value__c);
+          this.totalCashContributions += parseInt(this.cashContributions[cont].Value__c) || 0;
         }
       }
       this.project.Total_Development_Income__c = this.totalCashContributions;
@@ -327,8 +327,9 @@ export default class ProjectCostsForm extends LightningElement {
       var newTotalCosts = 0;
       var newVATTotal = 0;
       for(var cost in this.projectCosts){
-        newTotalCosts += (parseInt(this.projectCosts[cost].Costs__c) + parseInt(this.projectCosts[cost].Vat__c));
-        newVATTotal += parseInt(this.projectCosts[cost].Vat__c);
+        if(parseInt(this.projectCosts[cost].Costs__c) )
+        newTotalCosts += ((parseInt(this.projectCosts[cost].Costs__c) || 0) + (parseInt(this.projectCosts[cost].Vat__c) || 0));
+        newVATTotal += parseInt(this.projectCosts[cost].Vat__c) || 0;
         
       }
       this.totalCosts = newTotalCosts;
@@ -463,8 +464,10 @@ export default class ProjectCostsForm extends LightningElement {
 
   calculateGrantPercentage(){
       if(this.project && this.project.Grant_requested__c && this.project.Total_Cost__c){
-        this.project.Grant_Percentage__c = Math.round((this.project.Grant_requested__c/parseInt(this.project.Total_Cost__c))
-        )*100;
+        this.project.Grant_Percentage__c = Math.round((parseInt(this.project.Grant_requested__c)/parseInt(this.project.Total_Cost__c))*100)
+        console.log('the grant req',this.project.Grant_requested__c);
+        
+        console.log('the total cost ',this.project.Total_Cost__c);
       } else {
 
         this.project.Grant_Percentage__c = 0;

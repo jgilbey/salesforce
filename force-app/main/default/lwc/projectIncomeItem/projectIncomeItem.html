@@ -12,7 +12,31 @@
             
         </div>
     </td>   
-    <template if:false={smallGrant}>
+    <template if:false={nhmfGrant}>
+      <td data-label="IncomeSec"
+          data-id={income.index}
+          data-field="Secured_non_cash_contributions__c">
+         
+            <div class="picklistBlock"> 
+              <label class="slds-form-element__label"></label>
+              <c-selectlist
+              is-select={visible}
+              title="Secured_non_cash_contributions__c"
+              field-id="Secured_non_cash_contributions__c"
+              placeholder={income.Secured_non_cash_contributions__c} 
+              style-class={styleClass} 
+              options={incomeSecuredList} 
+              value={income.Secured_non_cash_contributions__c} 
+              onchange={handleOnChange} 
+              data-id={income.index}
+              data-field="Secured_non_cash_contributions__c"
+              name="Secured_non_cash_contributions__c"
+              disabled={disabled}>
+              </c-selectlist>
+            </div>
+                
+      </td> </template>  
+    <template if:true={nhmfGrant}>
       <td>
         <div class="slds-truncate">
           
@@ -40,30 +64,6 @@
           </lightning-input></div>
       </td>
     </template>
-    <template if:true={smallGrant}>
-    <td data-label="IncomeSec"
-        data-id={income.index}
-        data-field="Secured_non_cash_contributions__c">
-       
-          <div class="picklistBlock"> 
-            <label class="slds-form-element__label"></label>
-            <c-selectlist
-            is-select={visible}
-            title="Secured_non_cash_contributions__c"
-            field-id="Secured_non_cash_contributions__c"
-            placeholder={income.Secured_non_cash_contributions__c} 
-            style-class={styleClass} 
-            options={incomeSecuredList} 
-            value={income.Secured_non_cash_contributions__c} 
-            onchange={handleOnChange} 
-            data-id={income.index}
-            data-field="Secured_non_cash_contributions__c"
-            name="Secured_non_cash_contributions__c"
-            disabled={disabled}>
-            </c-selectlist>
-          </div>
-              
-    </td> </template>  
 
     <template if:false={nhmfGrant}>
     <td data-label="Amount" 
