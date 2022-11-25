@@ -108,18 +108,10 @@ public inherited sharing class ProjectCostFormController {
       WHERE Id = :projectId
     ];
 
-    Boolean preventSaveForMemorial = false;
-    if (
-      project.RecordType.DeveloperName == MEMORIAL_RECORD_TYPE_NAME &&
-      project.Confirm_award_amount__c
-    ) {
-      preventSaveForMemorial = true;
-    }
 
     //for small grants and nhmf grants this logic is correct
     // need to verify same for medium
     // definitely differen tfor large
-    system.debug('prevent save' + preventSaveForMemorial);
     system.debug('project.confirm' + project.confirm_award_amount__c);
     system.debug('string fo total cost from backend' + project.total_cost__c);
     system.debug('string fo total cost from ui' + totalCost);
@@ -127,9 +119,8 @@ public inherited sharing class ProjectCostFormController {
     system.debug('grant requested from ui' + grantRequested);
     if (
       project.Confirm_award_amount__c &&
-      (preventSaveForMemorial ||
       ((String.valueOf(project.Total_Cost__c) != totalCost) ||
-      (String.valueOf(project.Grant_requested__c) != grantRequested)))
+      (String.valueOf(project.Grant_requested__c) != grantRequested))
     ) {
       //check that
       // the original grant percentage can't be less than the new one
@@ -139,16 +130,22 @@ public inherited sharing class ProjectCostFormController {
         System.Label.Budget_Management_Save_Error//;'The grant percentage and total costs cannot change after a decision is confirmed'
       ); //move this inside try
     } else {
+
+      system.debug('to remove cc'+removedCashContributions);
+      
+      system.debug('to remove pc'+removedProjectCosts);
+      deleteProjectCostsAndContributions(
+        removedCashContributions,
+        removedProjectCosts
+      );
+
       if (cashContributions.size() >= 1) {
         upsert cashContributions;
       }
       if (cashContributions.size() >= 1) {
         upsert projectCosts;
       }
-      deleteProjectCostsAndContributions(
-        removedCashContributions,
-        removedProjectCosts
-      );
+      
     }
 
     //} catch(Exception e){
@@ -265,6 +262,7 @@ public inherited sharing class ProjectCostFormController {
         Description_for_cash_contributions__c,
         Amount_you_have_received__c,
         Value__c,
+        Source_Of_Funding__c,
         RecordType.Name,
         Case__r.RecordType.DeveloperName
       FROM Project_Income__c
