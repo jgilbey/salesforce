@@ -129,7 +129,7 @@ export default class ProjectCostsForm extends LightningElement {
             this.nhmfGrant = true;
           }
 
-          console.log(JSON.stringify(this.project));
+        //  console.log(JSON.stringify(this.project));
 
       } else {
         console.log('error retrieving project')
@@ -354,7 +354,7 @@ export default class ProjectCostsForm extends LightningElement {
     preparedRow.RecordTypeName = this.getProjectCostRecordType();
     preparedRow.Vat__c = 0;
     preparedRow.Id = "";
-      console.log('before add', JSON.stringify(this.projectCosts));
+      //console.log('before add', JSON.stringify(this.projectCosts));
     this.projectCosts = [...this.projectCosts, preparedRow];
     
     console.log('after add', JSON.stringify(this.projectCosts));
@@ -418,13 +418,10 @@ export default class ProjectCostsForm extends LightningElement {
 
     
     handleRemoveIncome(e) {
-      console.log('in handle remove income', e.detail.id);
       this.deleteProjectIncome(e.detail.id, e.detail.index);
   }
 
     handleRemoveCost(e) {
-        console.log('in handle remove cost', e.detail.id);
-        console.log('in handle remove cost', e.detail.index);
         this.deleteCostProject(e.detail.id, e.detail.index);
     }
 
@@ -434,7 +431,6 @@ export default class ProjectCostsForm extends LightningElement {
         this.removedProjectCosts.push(this.projectCosts[projectIndex]);
       }
       this.projectCosts.splice(projectIndex, 1);
-      console.log('project costs', JSON.stringify(this.projectCosts));
       this.projectCosts = [...this.projectCosts];
       this.recalcIndexes(this.projectCosts);
       this.recalculateCostsSummary();
@@ -442,18 +438,13 @@ export default class ProjectCostsForm extends LightningElement {
     
     deleteProjectIncome(incomeId, incomeIndex){
       //delete controller method
-      console.log('in delete income the income id is ', incomeId);
-      
-      console.log('in delete income the index is ', incomeIndex);
       if(incomeId){
           this.removedContributions.push(this.cashContributions[incomeIndex]);
-          console.log('removed contributions are now', JSON.stringify(this.removedContributions));
           
       }
       this.cashContributions.splice(incomeIndex, 1);
       this.cashContributions = [...this.cashContributions];
       
-      console.log('cash contributions are now', JSON.stringify(this.cashContributions));
       this.recalcIndexes(this.cashContributions);
       this.recalculateCostsSummary();
       

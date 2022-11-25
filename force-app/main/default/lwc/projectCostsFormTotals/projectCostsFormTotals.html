@@ -8,7 +8,7 @@
                                     </a>
                                     <template if:true={smallGrant}> SMALL!</template>
                 <template if:true={mediumGrant}> MEDIUM!</template>
-                <template if:true={nhmfGrant}> Totals</template>
+                <template if:true={nhmfGrant}> NHMF!</template>
               </th>
 
               <!-- COL 2 EMPTY-->
@@ -45,7 +45,7 @@
                   &nbsp;    <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
                 </template>
                 <template if:true={nhmfGrant}> 
-                  &nbsp;    <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
+                  &nbsp;    <lightning-formatted-number value={project.Total_amount_cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
                 </template>
               </th>
             </tr>
