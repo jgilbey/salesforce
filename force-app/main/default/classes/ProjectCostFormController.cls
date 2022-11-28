@@ -108,7 +108,6 @@ public inherited sharing class ProjectCostFormController {
       WHERE Id = :projectId
     ];
 
-
     //for small grants and nhmf grants this logic is correct
     // need to verify same for medium
     // definitely differen tfor large
@@ -127,13 +126,12 @@ public inherited sharing class ProjectCostFormController {
       // the new total costs value can't be different to the old total costs
       //check that the grant award hasn't changed TODO
       throw new AuraHandledException(
-        System.Label.Budget_Management_Save_Error//;'The grant percentage and total costs cannot change after a decision is confirmed'
+        System.Label.Budget_Management_Save_Error //;'The grant percentage and total costs cannot change after a decision is confirmed'
       ); //move this inside try
     } else {
+      system.debug('to remove cc' + removedCashContributions);
 
-      system.debug('to remove cc'+removedCashContributions);
-      
-      system.debug('to remove pc'+removedProjectCosts);
+      system.debug('to remove pc' + removedProjectCosts);
       deleteProjectCostsAndContributions(
         removedCashContributions,
         removedProjectCosts
@@ -145,110 +143,12 @@ public inherited sharing class ProjectCostFormController {
       if (cashContributions.size() >= 1) {
         upsert projectCosts;
       }
-      
     }
 
     //} catch(Exception e){
 
     //}
   }
-
-  @AuraEnabled
-  public static void removeIncomeItem(
-    String projectId,
-    String projectIncomeToRemove,
-    String grantPercentage,
-    String totalCost
-  ) {
-    Case project = [
-      SELECT
-        Id,
-        Total_Cost__c,
-        Grant_Award__c,
-        Grant_requested__c,
-        Total_Development_Income__c,
-        NHMF_Total_cash_contributions__c,
-        Grant_Percentage__c,
-        payment_percentage__c,
-        Confirm_award_amount__c
-      FROM case
-      WHERE Id = :projectId
-    ];
-
-    //for small grants
-    if (
-      project.Confirm_award_amount__c &&
-      (String.valueOf(project.Grant_Percentage__c) != grantPercentage) &&
-      (String.valueOf(project.Total_Cost__c) != totalCost)
-    ) {
-      //check that
-      // the original grant percentage can't be less than the new one
-      // the new total costs value can't be different to the old total costs
-      throw new AuraHandledException(
-        'The grant percentage and total costs cannot change after a decision is confirmed'
-      ); //move this inside try
-    } else {
-      try {
-        Project_Income__c toDelete = [
-          SELECT Id
-          FROM Project_Income__c
-          WHERE Id = :projectIncomeToRemove
-        ];
-        delete toDelete;
-      } catch (Exception e) {
-        //do something
-        throw new AuraHandledException(
-          'There was a problem deleting the record'
-        ); //move this inside try
-      }
-    }
-  }
-
-  @AuraEnabled
-  public static void removeProjectCost(
-    String projectId,
-    String projectCostToRemove,
-    String grantPercentage,
-    String totalCost
-  ) {
-    Case project = [
-      SELECT
-        Id,
-        Total_Cost__c,
-        Grant_Award__c,
-        Grant_requested__c,
-        Total_Development_Income__c,
-        NHMF_Total_cash_contributions__c,
-        Grant_Percentage__c,
-        payment_percentage__c,
-        Confirm_award_amount__c
-      FROM case
-      WHERE Id = :projectId
-    ];
-
-    //for small projects
-    if (
-      project.Confirm_award_amount__c &&
-      (String.valueOf(project.Grant_Percentage__c) != grantPercentage) &&
-      (String.valueOf(project.Total_Cost__c) != totalCost)
-    ) {
-      throw new AuraHandledException(
-        'The grant percentage and total costs cannot change after a decision is confirmed'
-      );
-    } else {
-      try {
-        Project_Cost__c toDelete = [
-          SELECT Id
-          FROM Project_cost__c
-          WHERE Id = :projectCostToRemove
-        ];
-        delete toDelete;
-      } catch (Exception e) {
-        //do something
-      }
-    }
-  }
-
   @AuraEnabled(cacheable=true)
   public static List<Project_Income__c> getCashContributions(Id projectId) {
     List<Project_Income__c> existingContributions = new List<Project_Income__c>();
