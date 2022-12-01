@@ -338,10 +338,15 @@ export default class ProjectCostsForm extends LightningElement {
       this.totalVAT = newVATTotal;
       if(!this.nhmfGrant){
         this.project.Total_Cost__c = this.totalCosts;
+        console.log('new total cost', this.project.Total_Cost__c);
       } else {
         this.project.Total_amount_cost__c = this.totalCosts;
+        
+        console.log('new total amount cost', this.project.Total_amount_cost__c);
       }
       this.project.Total_project_VAT__c = this.totalVAT;
+      console.log('new total vat', this.project.Total_project_VAT__c)
+     
     }
 
 
