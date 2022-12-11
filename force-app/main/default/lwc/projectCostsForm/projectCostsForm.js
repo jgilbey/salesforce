@@ -473,7 +473,7 @@ export default class ProjectCostsForm extends LightningElement {
 
   calculateGrantPercentage(){
       if(this.project && this.project.Grant_requested__c && this.project.Total_Cost__c){
-        this.project.Grant_Percentage__c = Math.round((parseInt(this.project.Grant_requested__c)/parseInt(this.project.Total_Cost__c))*100)
+        this.project.Grant_Percentage__c = parseInt(this.project.Grant_requested__c)/parseInt(this.project.Total_Cost__c);
         console.log('the grant req',this.project.Grant_requested__c);
         
         console.log('the total cost ',this.project.Total_Cost__c);
