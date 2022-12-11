@@ -19,11 +19,12 @@
                   Total &nbsp;  
                   
               <template if:true={mediumGrant}>
-                  &nbsp;  <lightning-formatted-number value={projectMinusVAT} maximum-fraction-digits="2"></lightning-formatted-number> 
+                  &nbsp;  <lightning-formatted-number value={project.Total_amount_cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
               </template>
               
               <template if:true={nhmfGrant}>
-                  &nbsp; <lightning-formatted-number value={projectMinusVAT} maximum-fraction-digits="2"></lightning-formatted-number> 
+                <!-- the amount without vat-->
+                  &nbsp; <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
               </template>
               </th>
               <th>
@@ -44,6 +45,7 @@
                 <template if:true={mediumGrant}> 
                   &nbsp;    <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
                 </template>
+                <!-- amount with VAT -->
                 <template if:true={nhmfGrant}> 
                   &nbsp;    <lightning-formatted-number value={project.Total_amount_cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
                 </template>

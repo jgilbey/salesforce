@@ -48,10 +48,13 @@
                             </template>  
                             <template if:true={nhmfGrant}>
                             <td><b>NHMF Grant Percentage: </b> 
-                              {project.NHMF_Grant_Percentage__c}%</td>
+                              <lightning-formatted-number value={project.NHMF_Grant_Percentage__c} format-style="percent" maximum-fraction-digits="2">
+                              </lightning-formatted-number>
+                              </td>
                           </template>
                           <template if:false={nhmfGrant}>
-                            <td><b>Grant Percentage: </b> {project.Grant_Percentage__c}%</td>
+                            <td><b>Grant Percentage: </b> <lightning-formatted-number value={project.Grant_Percentage__c} format-style="percent" maximum-fraction-digits="2">
+                            </lightning-formatted-number></td>
                           </template>
                           <template if:true={mediumGrant}>
                           <td><b>Total VAT: </b>

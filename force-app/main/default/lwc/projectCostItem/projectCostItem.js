@@ -105,10 +105,9 @@ wiredRecord({ error,data }){
         this.visible = false;
       }
     
+      
       calculateTotalCost() {
-        if (this.cost.Vat__c) {
-          this.totalCost = Number(this.cost.Costs__c) + Number(this.cost.Vat__c);
-        }
+          this.totalCost = (parseInt(this.cost.Costs__c) || 0) + (parseInt(this.cost.Vat__c) || 0);
       }
     
       fireEvent({ eventName, details }) {

@@ -285,6 +285,10 @@ export default class ProjectCostsForm extends LightningElement {
       });
     }
 
+    renderedCallback(){
+      this.recalculateCostsSummary();
+    }
+
     @api
     handleIncomeChange(e){
       e.stopPropagation();
@@ -324,25 +328,32 @@ export default class ProjectCostsForm extends LightningElement {
       this.project.Total_Development_Income__c = this.totalCashContributions;
       this.project.NHMF_Total_cash_contributions__c = this.totalCashContributions;
     }
+    
 
     calculateCosts(){
       var newTotalCosts = 0;
       var newVATTotal = 0;
       for(var cost in this.projectCosts){
         if(parseInt(this.projectCosts[cost].Costs__c) )
-        newTotalCosts += ((parseInt(this.projectCosts[cost].Costs__c) || 0) + (parseInt(this.projectCosts[cost].Vat__c) || 0));
+        newTotalCosts += parseInt(this.projectCosts[cost].Costs__c) || 0;
         newVATTotal += parseInt(this.projectCosts[cost].Vat__c) || 0;
         
       }
       this.totalCosts = newTotalCosts;
       this.totalVAT = newVATTotal;
       if(!this.nhmfGrant){
-        this.project.Total_Cost__c = this.totalCosts;
+        this.project.Total_Cost__c = this.totalCosts + this.totalVAT;
         console.log('new total cost', this.project.Total_Cost__c);
-      } else {
-        this.project.Total_amount_cost__c = this.totalCosts;
+        this.project.Total_amount_cost__c = parseInt(this.newTotalCosts);
         
-        console.log('new total amount cost', this.project.Total_amount_cost__c);
+        console.log('new cost minus vat', this.project.Total_amount_cost__c);
+      } else {
+        this.project.Total_amount_cost__c = parseInt(this.totalCosts) + parseInt(this.totalVAT);
+        
+        this.project.Total_Cost__c = parseInt(this.totalCosts);
+        
+        console.log('new cost minus vat total_cost __c is ', this.project.Total_Cost__c);
+        console.log('new total amount cost with vat is ', this.project.Total_amount_cost__c);
       }
       this.project.Total_project_VAT__c = this.totalVAT;
       console.log('new total vat', this.project.Total_project_VAT__c)
@@ -476,8 +487,8 @@ export default class ProjectCostsForm extends LightningElement {
     console.log('calculating new NHMF grant percentage', this.project.NHMF_grant_request__c);
     
     console.log('divided by ', this.project.Total_amount_cost__c);
-      if(this.project && this.project.NHMF_grant_request__c && this.project.Total_Cost__c) {
-          this.project.NHMF_Grant_Percentage__c = Math.round(parseInt(this.project.NHMF_grant_request__c)/(parseInt(this.project.Total_amount_cost__c) + parseInt(this.project.Total_project_VAT__c))*100)
+      if(this.project && this.project.NHMF_grant_request__c && this.project.Total_amount_cost__c) {
+          this.project.NHMF_Grant_Percentage__c = parseInt(this.project.NHMF_grant_request__c)/parseInt(this.project.Total_amount_cost__c);
       } else {
           this.project.NHMF_Grant_Percentage__c = 0;
       }
@@ -492,7 +503,7 @@ export default class ProjectCostsForm extends LightningElement {
     
     console.log('the total amount cost is :  ', this.project.Total_amount_cost__c);
     console.log('minus this', this.project.NHMF_Total_cash_contributions__c);
-    this.project.NHMF_grant_request__c = (parseInt(this.project.Total_amount_cost__c) + parseInt(this.project.Total_project_VAT__c)) - parseInt(this.project.NHMF_Total_cash_contributions__c); //TODO fix total cash cont.. some issue
+    this.project.NHMF_grant_request__c = parseInt(this.project.Total_amount_cost__c) - parseInt(this.project.NHMF_Total_cash_contributions__c); //TODO fix total cash cont.. some issue
     console.log('the grant rquested is changed to now ', this.project.NHMF_grant_request__c)
   }
 
