@@ -100,6 +100,7 @@ public inherited sharing class ProjectCostFormController {
         Grant_requested__c,
         Total_Development_Income__c,
         NHMF_Total_cash_contributions__c,
+        NHMF_grant_request__c,
         Grant_Percentage__c,
         payment_percentage__c,
         Confirm_award_amount__c,
@@ -111,15 +112,25 @@ public inherited sharing class ProjectCostFormController {
     //for small grants and nhmf grants this logic is correct
     // need to verify same for medium
     // definitely differen tfor large
-    system.debug('project.confirm' + project.confirm_award_amount__c);
-    system.debug('string fo total cost from backend' + project.total_cost__c);
+    system.debug('project.confirm nhmf' + project.confirm_award_amount__c);
+    system.debug('string fo total cost from backend' + project.Total_Cost__c);
     system.debug('string fo total cost from ui' + totalCost);
     system.debug('grant requested from backend' + project.Grant_requested__c);
+
+    system.debug(
+      'grant requested from backend nhmf' + project.NHMF_grant_request__c
+    );
     system.debug('grant requested from ui' + grantRequested);
+    system.debug('is nhmf' + project.RecordType.DeveloperName);
+    Boolean isNHMF = project.RecordType.DeveloperName == 'Memorial';
+    system.debug('is nhmf' + isNHMF);
     if (
       project.Confirm_award_amount__c &&
-      ((String.valueOf(project.Total_Cost__c) != totalCost) ||
-      (String.valueOf(project.Grant_requested__c) != grantRequested))
+      ((project.Total_Cost__c != Decimal.valueOf(totalCost)) ||
+      (!isNHMF &&
+      project.Grant_requested__c != Decimal.valueOf(grantRequested)) ||
+      (isNHMF &&
+      project.NHMF_grant_request__c != Decimal.valueOf(grantRequested)))
     ) {
       //check that
       // the original grant percentage can't be less than the new one

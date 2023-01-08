@@ -202,8 +202,8 @@ export default class ProjectCostsForm extends LightningElement {
     getNewContributions() {
       return this.cashContributions.map((cont) => {
         let preparedContribution = {};
-        preparedContribution.Amount_you_have_received__c = parseInt(cont.Amount_you_have_received__c);
-        preparedContribution.Value__c = parseInt(cont.Value__c);
+        preparedContribution.Amount_you_have_received__c = parseFloat(cont.Amount_you_have_received__c);
+        preparedContribution.Value__c = parseFloat(cont.Value__c);
         preparedContribution.Secured__c = cont.Secured__c;
         preparedContribution.Evidence_for_secured_income__c = cont.Evidence_for_secured_income__c === true;
         preparedContribution.Source_Of_Funding__c = '';
@@ -227,20 +227,30 @@ export default class ProjectCostsForm extends LightningElement {
         let newCashContributions = this.getNewContributions();
     
       //  console.log("***********mmm**** before sending", newCashContributions);
-      console.log("***********mmm**** before sending", this.project.Grant_requested__c);
-      console.log("***********mmm**** before sending", this.totalCosts);
+      console.log("***********mmm**** before sending grant reeq ", this.project.Grant_requested__c);
+
+      console.log("***********mmm**** before sending total costs this ", this.totalCosts);
+      
+      console.log("***********mmm**** before sending total costs this ", this.project.Total_Cost__c);
+      
+      console.log("***********mmm**** before sending total costs this ", parseFloat(this.project.Total_amount_cost__c));
+      
       
         console.log("*************** before deleting", JSON.stringify(this.removedProjectCosts));
         
-        console.log("*************** before deleting", JSON.stringify(this.newProjectCosts));
+       console.log("*************** before deleting new project costs", JSON.stringify(newProjectCosts));
         
-
+        
+       console.log("*************** before deleting new project costs", JSON.stringify(newCashContributions));
+        
 //          totalCostAmount = this.project.Total_Cost__c;
-
+        var grantRequest = this.nhmfGrant ? this.project.NHMF_grant_request__c : this.project.Grant_requested__c;
+        var totalCost = this.smallGrant ? this.project.Total_Cost__c : this.project.Total_amount_cost__c;
+      console.log("***********mmm**** before sending", grantRequest);
         saveProjectCosts({
           projectId: this.project.Id,
-          totalCost: this.totalCosts,
-          grantRequested: this.project.Grant_requested__c,
+          totalCost: totalCost,
+          grantRequested: grantRequest,
           cashContributions: newCashContributions,
           projectCosts: newProjectCosts,
           removedCashContributions: this.removedContributions,
@@ -268,14 +278,17 @@ export default class ProjectCostsForm extends LightningElement {
             this.loading = false;
           });
       }
+
     getNewCosts() {
+      console.log('get new costs', JSON.stringify(this.projectCosts));
       return this.projectCosts.map((cost) => {
+        console.log('the cost', cost.Costs__c);
         let preparedCost = {};
-        preparedCost.Costs__c = parseInt(cost.Costs__c);
+        preparedCost.Costs__c = parseFloat(cost.Costs__c);
         preparedCost.Project_Cost_Description__c = cost.Project_Cost_Description__c;
         preparedCost.Cost_heading__c = cost.Cost_heading__c;
-        preparedCost.Vat__c = cost.Vat__c;
-        preparedCost.Total_Cost__c = cost.Total_Cost__c;
+        preparedCost.Vat__c = parseFloat(cost.Vat__c);
+        preparedCost.Total_Cost__c = parseFloat(cost.Total_Cost__c);
         if (cost.Id) {
           preparedCost.Id = cost.Id;
         }
@@ -300,8 +313,7 @@ export default class ProjectCostsForm extends LightningElement {
         //if the field was the amount - recalculate totals
         this.totalCashContributions = 0;
         this.project.Total_Development_Income__c = this.totalCashContributions;
-        
-        //this.project.Grant_requested__c = parseInt(this.totalCosts) - parseInt(this.totalCashContributions);
+        this.project.NHMF_Total_cash_contributions__c = this.totalCashContributions;
         this.recalculateCostsSummary();
         
     }
@@ -320,9 +332,9 @@ export default class ProjectCostsForm extends LightningElement {
       for(var cont in this.cashContributions){
         if(!this.nhmfGrant){
           
-          this.totalCashContributions += parseInt(this.cashContributions[cont].Amount_you_have_received__c) || 0;
+          this.totalCashContributions += parseFloat(this.cashContributions[cont].Amount_you_have_received__c) || 0;
         } else{
-          this.totalCashContributions += parseInt(this.cashContributions[cont].Value__c) || 0;
+          this.totalCashContributions += parseFloat(this.cashContributions[cont].Value__c) || 0;
         }
       }
       this.project.Total_Development_Income__c = this.totalCashContributions;
@@ -334,23 +346,23 @@ export default class ProjectCostsForm extends LightningElement {
       var newTotalCosts = 0;
       var newVATTotal = 0;
       for(var cost in this.projectCosts){
-        if(parseInt(this.projectCosts[cost].Costs__c) )
-        newTotalCosts += parseInt(this.projectCosts[cost].Costs__c) || 0;
-        newVATTotal += parseInt(this.projectCosts[cost].Vat__c) || 0;
+        if(parseFloat(this.projectCosts[cost].Costs__c) )
+        newTotalCosts += parseFloat(this.projectCosts[cost].Costs__c) || 0;
+        newVATTotal += parseFloat(this.projectCosts[cost].Vat__c) || 0;
         
       }
       this.totalCosts = newTotalCosts;
       this.totalVAT = newVATTotal;
       if(!this.nhmfGrant){
-        this.project.Total_Cost__c = this.totalCosts + this.totalVAT;
+        this.project.Total_Cost__c = parseFloat(this.totalCosts) + parseFloat(this.totalVAT);
         console.log('new total cost', this.project.Total_Cost__c);
-        this.project.Total_amount_cost__c = parseInt(this.newTotalCosts);
+        this.project.Total_amount_cost__c = parseFloat(this.totalCosts);
         
         console.log('new cost minus vat', this.project.Total_amount_cost__c);
       } else {
-        this.project.Total_amount_cost__c = parseInt(this.totalCosts) + parseInt(this.totalVAT);
+        this.project.Total_amount_cost__c = parseFloat(this.totalCosts) + parseFloat(this.totalVAT);
         
-        this.project.Total_Cost__c = parseInt(this.totalCosts);
+        this.project.Total_Cost__c = parseFloat(this.totalCosts);
         
         console.log('new cost minus vat total_cost __c is ', this.project.Total_Cost__c);
         console.log('new total amount cost with vat is ', this.project.Total_amount_cost__c);
@@ -473,7 +485,7 @@ export default class ProjectCostsForm extends LightningElement {
 
   calculateGrantPercentage(){
       if(this.project && this.project.Grant_requested__c && this.project.Total_Cost__c){
-        this.project.Grant_Percentage__c = parseInt(this.project.Grant_requested__c)/parseInt(this.project.Total_Cost__c);
+        this.project.Grant_Percentage__c = parseFloat(this.project.Grant_requested__c)/parseFloat(this.project.Total_Cost__c);
         console.log('the grant req',this.project.Grant_requested__c);
         
         console.log('the total cost ',this.project.Total_Cost__c);
@@ -488,7 +500,7 @@ export default class ProjectCostsForm extends LightningElement {
     
     console.log('divided by ', this.project.Total_amount_cost__c);
       if(this.project && this.project.NHMF_grant_request__c && this.project.Total_amount_cost__c) {
-          this.project.NHMF_Grant_Percentage__c = parseInt(this.project.NHMF_grant_request__c)/parseInt(this.project.Total_amount_cost__c);
+          this.project.NHMF_Grant_Percentage__c = parseFloat(this.project.NHMF_grant_request__c)/parseFloat(this.project.Total_amount_cost__c);
       } else {
           this.project.NHMF_Grant_Percentage__c = 0;
       }
@@ -496,14 +508,14 @@ export default class ProjectCostsForm extends LightningElement {
 
   calculateGrantAward(){
     console.log('the grant rquested is  ', this.project.Grant_requested__c)
-    this.project.Grant_requested__c = parseInt(this.project.Total_Cost__c) - parseInt(this.project.Total_Development_Income__c);
+    this.project.Grant_requested__c = parseFloat(this.project.Total_Cost__c) - parseFloat(this.project.Total_Development_Income__c);
     console.log('the grant rquested is now ', this.project.Grant_requested__c)
   }
   calculateNHMFGrantAward(){
     
     console.log('the total amount cost is :  ', this.project.Total_amount_cost__c);
     console.log('minus this', this.project.NHMF_Total_cash_contributions__c);
-    this.project.NHMF_grant_request__c = parseInt(this.project.Total_amount_cost__c) - parseInt(this.project.NHMF_Total_cash_contributions__c); //TODO fix total cash cont.. some issue
+    this.project.NHMF_grant_request__c = parseFloat(this.project.Total_amount_cost__c) - parseFloat(this.project.NHMF_Total_cash_contributions__c); //TODO fix total cash cont.. some issue
     console.log('the grant rquested is changed to now ', this.project.NHMF_grant_request__c)
   }
 
