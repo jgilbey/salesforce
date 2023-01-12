@@ -148,10 +148,14 @@ public inherited sharing class ProjectCostFormController {
         removedProjectCosts
       );
 
+      system.debug('to add cc' + cashContributions);
+
+      system.debug('to add' + projectCosts);
       if (cashContributions.size() >= 1) {
         upsert cashContributions;
       }
-      if (cashContributions.size() >= 1) {
+      if (projectCosts.size() >= 1) {
+        system.debug('project costs insert' + projectCosts);
         upsert projectCosts;
       }
     }
