@@ -1,8 +1,26 @@
 /**
 * PortalApplication class is to push the Application form from portal
-* @author      Methods
-* @version     1.0
-* @since       10/10/2019
+* @author      	Methods
+* @version     	1.0
+* @since       	10/10/2019
+*
+* @author      	Paul Trelease
+* @version	  	1.1
+* @since       	16/02/2023
+* @changes		in version 1.0 Account fields were always populated
+*				with charityNumber, companyNumber, county, mission
+*               type and organisationType.  But FFE may not capture these
+*               and so existing SF Account data could be cleared upon upsert.
+*				Changed so this only happens when the appropriate JSON
+*				value from Funding Frontend is valid.
+*				Also changed the upsert to Account to use Id (formerly FFE External ID).
+*				This is to prevent situations where small grants were not reusing
+* 				Account records with no FFE External ID.  Now, the Account code checks
+*				for a Salesforce_Account_Id passed from Funding Frontend - and if present
+*				it retrieves and updates that Account record using that Id.
+*				If no Salesforce_Account_Id is passed from Funding Frontend, then a new
+*				Account record is created, populated and upserted by Id.
+*
 */
 
 @RestResource(urlMapping='/PortalData/*')
@@ -84,70 +102,79 @@ global with sharing class PortalApplication
                 }
                 mapDynamicFields.put(mapping.Object__c,mapfieldList);
             }
+
             
+            // Account record code
+            Account acc; //initialise
             
-            // Create a new account 
-            Account acc=new Account();
-            //acc.Name =(String)application.get('organisationName');
+            String providedSalesforceAccountId = (String)application.get('organisationSalesforceAccountId');
+            if (String.isNotBlank(providedSalesforceAccountId)){
+                acc = [SELECT Name FROM Account WHERE Id = :providedSalesforceAccountId];
+            } else {
+                // Create a new account
+                acc = new Account();
+            }
+
+            // Hold all the picklist mappings for the Account Object in accountPicklistMappings
+            Map<String,List<Map<String,String>>> accountPicklistMappings = mapDynamicFields.get('Account');
+
+            // Set address strings
             Map<String, Object> organisationAddress = (Map<String, Object>)application.get('organisationAddress');
-            acc.BillingStreet =(String)organisationAddress.get('line1');
+            acc.BillingStreet =(String)organisationAddress.get('line1'); // FFE joins all lines to line1
             acc.Billingcity =(String)organisationAddress.get('townCity');
-            acc.BillingCountry =(String)organisationAddress.get('county');
             acc.BillingPostalCode =(String)organisationAddress.get('postcode');
-            
-            
-            if(mapDynamic.containskey('Account')){
-                Map<String,String> mapfields=mapDynamic.get('Account');
-                for(String sfField:mapfields.keySet()){
-                    if(sfField !='Organisation_s_Mission_and_Objectives__c'){
-                        acc.put(sfField,(String)application.get(mapfields.get(sfField)));
-                    }
-                }
+            // County is an optional fields in Funding Frontend. So only update if populated.
+            if (String.isNotBlank((String)organisationAddress.get('county'))){
+	            acc.BillingCountry =(String)organisationAddress.get('county');
             }
             
-            // Dynamic field mapping for picklist options
-            Map<String,Schema.SObjectField> mapAccountfields=Schema.sobjecttype.Account.fields.getMap();
-            if(mapDynamic.containskey('Account')){
-                Map<String,String> mapfields=mapDynamic.get('Account');            
-                for(String sfField:mapfields.keySet()){
-                    if(mapDynamicFields.containsKey('Account')){
-                        Map<String,List<Map<String,String>>> mapdynfields=mapDynamicFields.get('Account');
-                        if(mapdynfields.containskey(sfField)){
-                            List<Map<String,String>> lstpickMapping=mapdynfields.get(sfField);
-                            string picklistvalue='';
-                            for(integer i=0;i<lstpickMapping.size();i++){
-                                Map<String,String> mappickVal=lstpickMapping[i];
-                                if(sfField =='Organisation_s_Mission_and_Objectives__c'){
-                                    for(Object obj:(List<Object>)application.get(mapfields.get(sfField))){
-                                        if(mappickVal.containsKey((String)obj)){
-                                            picklistvalue +=mappickVal.get((String)obj) +';';
-                                            System.debug(picklistvalue);
-                                        }        
-                                    }
-                                }else{
-                                    if(mappickVal.containsKey((String)application.get(mapfields.get(sfField)))){
-                                        picklistvalue +=mappickVal.get((string)application.get(mapfields.get(sfField))) +';';
-                                    }
-                                }
-                                //System.debug(approvals.get(mapfields.get(sfField)));
-                            }
-                            System.debug(picklistvalue);
-                            picklistvalue =picklistvalue.removeEnd(';');
-                            acc.put(sfField,picklistvalue);
-                        }else{
-                            String fieldType=String.valueOf(mapAccountfields.get(sfField).getDescribe().getType());                    
-                            System.debug(application.get(mapfields.get(sfField)));
-                            acc.put(sfField,parseData(fieldType,application.get(mapfields.get(sfField))));
+            // Set simple string values
+            acc.Name =(String)application.get('organisationName');
+            acc.Account_External_ID__c = (String)application.get('organisationId');
+            
+            // Charity and Company Nos are optional fields in Funding Frontend. So only update if populated.
+            if (String.isNotBlank((String)application.get('charityNumber'))){
+	            acc.Charity_Number__c = (String)application.get('charityNumber');
+            }
+            if (String.isNotBlank((String)application.get('companyNumber'))){
+	            acc.Company_Number__c = (String)application.get('companyNumber');
+            }
+
+            // Set Organisation type, if present, and using picklist values.
+            // Hold all the mappings between Salesforce and Frontend org types in orgTypePicklistMappings
+            List<Map<String,String>> orgTypePicklistMappings = accountPicklistMappings.get('Organisation_Type__c');
+            
+            // Assign the appropriate org type picklist value to the Account record by looping over the list of maps
+            for(integer i=0;i<orgTypePicklistMappings.size();i++){
+                Map<String,String> orgTypeMap = orgTypePicklistMappings[i];
+
+                // Only updates if a matching key is found. Otherwise no update to org type is made.
+                if(orgTypeMap.containsKey((String)application.get('organisationType'))){
+                    acc.Organisation_Type__c = orgTypeMap.get((string)application.get('organisationType'));
+                }
+            }
+
+            // Set Missions and Objectives - Only updates the account if missions picked by frontend user
+            List<Map<String,String>> missionsPicklistMappings = accountPicklistMappings.get('Organisation_s_Mission_and_Objectives__c');
+            List<Object> pickedMissions = (List<Object>)application.get('organisationMission');
+            String pickedMappedMissions = ''; // initialise.  This will populate acc.  Holds picked missions mapped as SF values.
+
+            if (pickedMissions != null && !pickedMissions.isEmpty()) {
+                for(integer i=0;i<pickedMissions.size();i++){
+                    String pickedMission = (String)pickedMissions[i];
+                    for(integer j=0;j<missionsPicklistMappings.size();j++){
+                        Map<String,String> missionMap = missionsPicklistMappings[j];
+                        if(missionMap.containsKey(pickedMission)){
+                            pickedMappedMissions += missionMap.get(pickedMission) +';';
                         }
                     }
-                    
                 }
+                pickedMappedMissions = pickedMappedMissions.removeEnd(';');
+                acc.Organisation_s_Mission_and_Objectives__c = pickedMappedMissions;
             }
-            
-            
-            upsert acc Account_External_ID__c;
-            
-            
+
+            upsert acc Id;
+
             // Create new contact 
             List<Contact> lstcontact=new List<Contact>();
             contact con=new contact();
