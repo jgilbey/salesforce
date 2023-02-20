@@ -105,14 +105,48 @@ global with sharing class PortalApplication
 
             
             // Account record code
+
+            String providedSalesforceAccountId = (String)application.get('organisationSalesforceAccountId');
             Account acc; //initialise
             
-            String providedSalesforceAccountId = (String)application.get('organisationSalesforceAccountId');
             if (String.isNotBlank(providedSalesforceAccountId)){
-                acc = [SELECT Name FROM Account WHERE Id = :providedSalesforceAccountId];
+
+                try {
+	                acc = [SELECT Name FROM Account WHERE Id = :providedSalesforceAccountId];
+	                system.debug('Existing Salesforce Account found with Id ' + providedSalesforceAccountId);
+                } catch (Exception e) {
+
+                    // Create an error log to capture error detail.
+                    Error_Log__c log=new Error_Log__c();
+		            log.Project_Ref__c =(String)meta.get('applicationId');
+                    String errPrefix = 'Error finding Account for this application.  Exception: ';
+                    String errormessage= errPrefix + e.getMessage() + '-' + e.getStacktraceString();
+		            system.debug(errormessage);
+                    if(errormessage.length() > 200){
+                        errormessage = errormessage.subString(0,200);
+                    }
+		            log.Error__c = errormessage;
+                    insert log;
+
+                    acc = new Account();
+
+                    String erDbgMsg = string.format(
+                        'Error finding Account with providedSalesforceAccountId {0}. ' +
+                            'Creating a new Account for Funding Frontend Organisation.id {1}.',
+                        new string[]{
+                            providedSalesforceAccountId,
+                            (String)application.get('organisationId')
+                        }
+                    );
+
+		            system.debug(erDbgMsg);
+                }
+
             } else {
                 // Create a new account
                 acc = new Account();
+                system.debug('New Salesforce Account created for Funding Frontend Organisation.id ' +
+                    (String)application.get('organisationId'));
             }
 
             // Hold all the picklist mappings for the Account Object in accountPicklistMappings
@@ -149,7 +183,7 @@ global with sharing class PortalApplication
                 Map<String,String> orgTypeMap = orgTypePicklistMappings[i];
 
                 // Only updates if a matching key is found. Otherwise no update to org type is made.
-                if(orgTypeMap.containsKey((String)application.get('organisationType'))){
+            if(orgTypeMap.containsKey((String)application.get('organisationType'))){
                     acc.Organisation_Type__c = orgTypeMap.get((string)application.get('organisationType'));
                 }
             }
@@ -172,6 +206,16 @@ global with sharing class PortalApplication
                 pickedMappedMissions = pickedMappedMissions.removeEnd(';');
                 acc.Organisation_s_Mission_and_Objectives__c = pickedMappedMissions;
             }
+
+            String upsertMessage = string.format(
+                'Upserting Account for Funding Frontend Organisation Id {0} with Name {1}',
+                new string[]{
+                    (String)application.get('organisationId'),
+                    acc.Name
+                }
+            );
+
+            system.debug(upsertMessage);
 
             upsert acc Id;
 
