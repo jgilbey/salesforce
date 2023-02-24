@@ -1,7 +1,36 @@
-public inherited sharing class ProjectCostFormController {
+public with sharing class ProjectCostFormController {
   //TODO modify by to get by record type id
 
   private static final String MEMORIAL_RECORD_TYPE_NAME = 'Memorial';
+
+  @AuraEnabled
+  public static string getCostRecordTypeIdByDeveloperName(
+    String projectDeveloperName
+  ) {
+    try {
+      system.debug('the developer name' + projectDeveloperName);
+      String result = (String) Schema.SObjectType.Project_Cost__c.getRecordTypeInfosByDeveloperName()
+        .get(projectDeveloperName)
+        .getRecordTypeId();
+      return result;
+    } catch (Exception e) {
+      throw new AuraHandledException(e.getMessage());
+    }
+  }
+
+  @AuraEnabled
+  public static string getCashRecordTypeIdByDeveloperName(String projectDeveloperName){
+    try {
+      system.debug('the developer name' + projectDeveloperName);
+      String result = (String) Schema.SObjectType.Project_Income__c.getRecordTypeInfosByDeveloperName()
+        .get(projectDeveloperName)
+        .getRecordTypeId();
+      return result;
+    } catch (Exception e) {
+      throw new AuraHandledException(e.getMessage());
+    }
+  }
+
 
   @AuraEnabled(cacheable=true)
   public static Case getProject(Id projectId) {
@@ -20,12 +49,75 @@ public inherited sharing class ProjectCostFormController {
         NHMF_grant_request__c,
         Total_amount_cost__c,
         NHMF_Total_cash_contributions__c,
-        RecordType.DeveloperName
+        RecordType.DeveloperName,
+        Grant_requested_development_delivery__c,
+        Delivery_grant_request__c,
+        Total_development_costs_VAT__c,
+        Development_payment_percentage__c,
+        Delivery_payment_percentage__c,
+        Agreed_costs_development__c
       FROM case
       WHERE Id = :projectId
     ]; //changed
 
     return project;
+  }
+
+  @AuraEnabled(cacheable=true)
+  public static List<Project_Cost__c> getProjectCostsDevelopment(Id projectId) {
+    List<Project_Cost__c> existingCosts = new List<Project_Cost__c>();
+
+    List<Project_Cost__c> costs = [
+      SELECT
+        Id,
+        Cost_Type__c,
+        Cost_heading__c,
+        Total_Cost__c,
+        Costs__c,
+        Project_Cost_Description__c,
+        Vat__c,
+        RecordType.Name,
+        RecordType.DeveloperName,
+        RecordTypeId
+      FROM Project_Cost__c
+      WHERE
+        Case__c = :projectId
+        AND recordType.Name = 'Large Grants (Development)'
+      ORDER BY Costs__c DESC
+    ];
+
+    existingCosts.addAll(costs);
+
+    return existingCosts;
+  }
+
+  @AuraEnabled(cacheable=true)
+  public static List<Project_Cost__c> getProjectCostsPotentialDelivery(
+    Id projectId
+  ) {
+    List<Project_Cost__c> existingCosts = new List<Project_Cost__c>();
+
+    List<Project_Cost__c> costs = [
+      SELECT
+        Cost_Type__c,
+        Id,
+        Cost_heading__c,
+        Total_Cost__c,
+        Costs__c,
+        Project_Cost_Description__c,
+        Vat__c,
+        RecordType.Name,
+        RecordType.DeveloperName
+      FROM Project_Cost__c
+      WHERE
+        Case__c = :projectId
+        AND recordType.Name = 'Large Grants (Potential Delivery)'
+      ORDER BY Costs__c DESC
+    ];
+
+    existingCosts.addAll(costs);
+
+    return existingCosts;
   }
 
   @AuraEnabled(cacheable=true)
@@ -40,20 +132,15 @@ public inherited sharing class ProjectCostFormController {
         Costs__c,
         Project_Cost_Description__c,
         Vat__c,
-        RecordType.Name
+        RecordType.Name,
+        RecordType.DeveloperName,
+        RecordTypeId
       FROM Project_Cost__c
       WHERE Case__c = :projectId
       ORDER BY Costs__c DESC
     ];
 
-    /*  Project_Cost__c newCost = new Project_Cost__c(
-      Costs__c = 0.00,
-      Cost_heading__c = '',
-      Project_Cost_Description__c = ''
-    );
-*/
     existingCosts.addAll(costs);
-    //existingCosts.add(newCost);
 
     return existingCosts;
   }
@@ -121,7 +208,9 @@ public inherited sharing class ProjectCostFormController {
       'grant requested from backend nhmf' + project.NHMF_grant_request__c
     );
     system.debug('grant requested from ui' + grantRequested);
-    system.debug('is nhmf' + project.RecordType.DeveloperName);
+    system.debug(
+      '*** what is the record type name' + project.RecordType.DeveloperName
+    );
     Boolean isNHMF = project.RecordType.DeveloperName == 'Memorial';
     system.debug('is nhmf' + isNHMF);
     if (
@@ -155,7 +244,14 @@ public inherited sharing class ProjectCostFormController {
         upsert cashContributions;
       }
       if (projectCosts.size() >= 1) {
-        system.debug('project costs insert' + projectCosts);
+        for (project_cost__c pc : projectCosts) {
+          system.debug(
+            'project costs insert' +
+            pc.Cost_heading__c +
+            ' ' +
+            pc.RecordTypeId
+          );
+        }
         upsert projectCosts;
       }
     }
@@ -189,4 +285,78 @@ public inherited sharing class ProjectCostFormController {
 
     return existingContributions;
   }
+
+  @AuraEnabled(cacheable=true)
+  public static List<Project_Income__c> getCashContributionsDevelopment(
+    Id projectId
+  ) {
+    List<Project_Income__c> existingContributions = new List<Project_Income__c>();
+
+    List<Project_Income__c> conts = [
+      SELECT
+        Id,
+        Secured__c,
+        Secured_non_cash_contributions__c,
+        Evidence_for_secured_income__c,
+        Description_for_cash_contributions__c,
+        Amount_you_have_received__c,
+        Value__c,
+        Source_Of_Funding__c,
+        RecordType.Name,
+        RecordType.DeveloperName,
+        Case__r.RecordType.DeveloperName,
+        recordTypeId
+      FROM Project_Income__c
+      WHERE
+        Case__c = :projectId
+        AND RecordType.Name = 'Large Grants (Development)'
+      ORDER BY Amount_you_have_received__c DESC
+    ];
+
+    existingContributions.addAll(conts);
+
+    return existingContributions;
+  }
+
+  @AuraEnabled(cacheable=true)
+  public static List<Project_Income__c> getCashContributionsPotentialDelivery(
+    Id projectId
+  ) {
+    List<Project_Income__c> existingContributions = new List<Project_Income__c>();
+
+    List<Project_Income__c> conts = [
+      SELECT
+        Id,
+        Secured__c,
+        Secured_non_cash_contributions__c,
+        Evidence_for_secured_income__c,
+        Description_for_cash_contributions__c,
+        Amount_you_have_received__c,
+        Value__c,
+        Source_Of_Funding__c,
+        RecordType.Name,
+        RecordType.Id,
+        Case__r.RecordType.DeveloperName
+      FROM Project_Income__c
+      WHERE
+        Case__c = :projectId
+        AND RecordType.Name = 'Large Grants (Potential Delivery)'
+      ORDER BY Amount_you_have_received__c DESC
+    ];
+
+    existingContributions.addAll(conts);
+
+    return existingContributions;
+  }
+
+  /*  
+  public class RecordTypeMappingWrapper
+  {
+    @AuraEnabled
+    public String projectRecordTypeId;
+    @AuraEnabled
+    public String costRecordTypeId;
+    @AuraEnabled
+    public String cashRecordTypeId;
+  }*/
 }
