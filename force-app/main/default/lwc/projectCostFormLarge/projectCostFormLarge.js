@@ -402,18 +402,20 @@ wiredRecord({ error,data }){
     
       //  console.log("***********mmm**** before sending", newCashContributions);
       console.log("***********mmm**** before sending", this.project.Grant_requested__c);
-      console.log("***********mmm**** before sending", this.totalCosts);
+      
+      console.log("***********mmm**** before sending", this.project.Total_Cost__c);
       
         console.log("*************** before deleting", JSON.stringify(this.removedProjectCosts));
         
         console.log("*************** before deleting", JSON.stringify(this.newProjectCosts));
         
 
+
 //          totalCostAmount = this.project.Total_Cost__c;
 
         saveProjectCosts({
           projectId: this.project.Id,
-          totalCost: this.totalCosts,
+          totalCost: this.project.Total_Cost__c,
           grantRequested: this.project.Grant_requested__c,
           cashContributions: newCashContributions,
           projectCosts: newProjectCosts,

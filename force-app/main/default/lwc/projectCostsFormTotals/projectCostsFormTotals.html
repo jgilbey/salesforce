@@ -27,7 +27,7 @@
                   &nbsp; <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
               </template>
               <template if:true={largeGrantDev}>
-                  &nbsp; <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
+                  &nbsp; <lightning-formatted-number value={project.Agreed_costs_development__c} maximum-fraction-digits="2"></lightning-formatted-number> 
               </template>
               <template if:true={largeGrantDel}>
                 &nbsp; <lightning-formatted-number value={project.Total_amount_cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
@@ -65,7 +65,7 @@
                 </template>
                 
                 <template if:true={largeGrantDev}> 
-                  &nbsp;    <lightning-formatted-number value={project.Agreed_costs_development__c} maximum-fraction-digits="2"></lightning-formatted-number> 
+                  &nbsp;    <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
                 </template>
                 <template if:true={largeGrantDel}> 
                   &nbsp;    <lightning-formatted-number value={project.Total_amount_cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
