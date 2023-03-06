@@ -1,12 +1,12 @@
 import { LightningElement, api, wire, track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getProject from '@salesforce/apex/ProjectCostFormController.getProject';
-import getProjectCostsDevelopment from '@salesforce/apex/ProjectCostFormController.getProjectCostsDevelopment';
-import getProjectCostsPotentialDelivery from '@salesforce/apex/ProjectCostFormController.getProjectCostsPotentialDelivery';
-import getCashContributions from '@salesforce/apex/ProjectCostFormController.getCashContributionsDevelopment';
-import getCashContributionsPotentialDelivery from '@salesforce/apex/ProjectCostFormController.getCashContributionsPotentialDelivery';
-import getCostRecordTypeIdByDeveloperName from '@salesforce/apex/ProjectCostFormController.getCostRecordTypeIdByDeveloperName';
-import getCashRecordTypeIdByDeveloperName from '@salesforce/apex/ProjectCostFormController.getCashRecordTypeIdByDeveloperName';
+import getProjectCostsDevelopment from '@salesforce/apex/ProjectCostFormLargeController.getProjectCostsDevelopment';
+import getProjectCostsPotentialDelivery from '@salesforce/apex/ProjectCostFormLargeController.getProjectCostsPotentialDelivery';
+import getCashContributions from '@salesforce/apex/ProjectCostFormLargeController.getCashContributionsDevelopment';
+import getCashContributionsPotentialDelivery from '@salesforce/apex/ProjectCostFormLargeController.getCashContributionsPotentialDelivery';
+import getCostRecordTypeIdByDeveloperName from '@salesforce/apex/ProjectCostFormLargeController.getCostRecordTypeIdByDeveloperName';
+import getCashRecordTypeIdByDeveloperName from '@salesforce/apex/ProjectCostFormLargeController.getCashRecordTypeIdByDeveloperName';
 import saveProjectCosts from '@salesforce/apex/ProjectCostFormController.saveProjectCosts';
 import { refreshApex } from '@salesforce/apex';
 import SAVE_SUCCESSFUL from '@salesforce/label/c.Budget_Management_Save';
