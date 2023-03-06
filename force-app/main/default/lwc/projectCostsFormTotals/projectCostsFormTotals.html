@@ -26,9 +26,13 @@
               <template if:true={nhmfGrant}>
                   &nbsp; <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
               </template>
-              <template if:true={largeGrant}>
-                  &nbsp; <lightning-formatted-number value={project.Total_amount_cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
+              <template if:true={largeGrantDev}>
+                  &nbsp; <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
               </template>
+              <template if:true={largeGrantDel}>
+                &nbsp; <lightning-formatted-number value={project.Total_amount_cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
+            </template>
+
               </th>
               <th>
                 <template if:true={smallGrant}> 
@@ -42,9 +46,13 @@
                   &nbsp; 
                   <lightning-formatted-number value={project.Total_project_VAT__c} maximum-fraction-digits="2"></lightning-formatted-number>
                 </template>
-                <template if:true={largeGrant}> 
+                <template if:true={largeGrantDel}>
                   &nbsp; 
                   <lightning-formatted-number value={project.Total_project_VAT__c} maximum-fraction-digits="2"></lightning-formatted-number>
+                </template>
+                <template if:true={largeGrantDev}> 
+                  &nbsp; 
+                  <lightning-formatted-number value={project.Total_development_costs_VAT__c} maximum-fraction-digits="2"></lightning-formatted-number>
                 </template>
               </th>
               <th style="width:66.75rem" > </th>
@@ -56,8 +64,11 @@
                   &nbsp;    <lightning-formatted-number value={project.Total_amount_cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
                 </template>
                 
-                <template if:true={largeGrant}> 
+                <template if:true={largeGrantDev}> 
                   &nbsp;    <lightning-formatted-number value={project.Agreed_costs_development__c} maximum-fraction-digits="2"></lightning-formatted-number> 
+                </template>
+                <template if:true={largeGrantDel}> 
+                  &nbsp;    <lightning-formatted-number value={project.Total_amount_cost__c} maximum-fraction-digits="2"></lightning-formatted-number> 
                 </template>
                 
               </th>

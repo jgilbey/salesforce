@@ -39,6 +39,7 @@ export default class ProjectCostsFormLarge extends LightningElement {
   largeGrantDev = false;
   largeGrantDel = false;
   nhmfGrant = false;
+  decisionConfirmed = false;
 
   labels = {
     Saved,
@@ -193,7 +194,12 @@ wiredRecord({ error,data }){
             this.largeGrantDev = true;
             this.largeProject = true;
           }
+
+          if(this.project){
+            
+            this.decisionConfirmed = (this.project.Confirm_award_amount__c === "true" ||  this.project.Confirm_award_amount__c === true) ? true : false;
           
+          }
 
           //var projectRecordTypeDeveloperName = this.project.RecordType.DeveloperName;
           //this.recordTypeMapping = await getRecordTypeMappings({projectDeveloperName: projectRecordTypeDeveloperName}).then((result) => {
@@ -326,6 +332,7 @@ wiredRecord({ error,data }){
           retVal.Project_Cost_Description__c = cost.Project_Cost_Description__c;
           retVal.RecordTypeName = cost.RecordType.Name;
           retVal.Total_Cost__c = cost.Total_Cost__c;
+          retVal.Current_Phase_Cost__c = cost.Current_Phase_Cost__c;
           retVal.Vat__c = cost.Vat__c;
           retVal.Id = cost.Id;
           retVal.index = index;
@@ -389,7 +396,8 @@ wiredRecord({ error,data }){
       handleSaveProjectCosts() {
         this.loading = true;
         this.calculateCosts();
-        let newProjectCosts = this.getNewCosts();
+        this.calculateDeliveryCosts();
+        let newProjectCosts = this.getNewCosts(); //need to do for both dev and delivery
         let newCashContributions = this.getNewContributions();
     
       //  console.log("***********mmm**** before sending", newCashContributions);
@@ -437,7 +445,8 @@ wiredRecord({ error,data }){
           });
       }
     getNewCosts() {
-      return this.projectCosts.map((cost) => {
+
+      var newProjectCosts = this.projectCosts.map((cost) => {
         let preparedCost = {};
         preparedCost.Costs__c = parseInt(cost.Costs__c);
         preparedCost.Cost_Type__c = cost.Cost_Type__c;
@@ -453,6 +462,26 @@ wiredRecord({ error,data }){
         return preparedCost;
         // }
       });
+
+      var newProjectCostsDel = this.projectCostsPotentialDelivery.map((cost) => {
+        let preparedCost = {};
+        preparedCost.Costs__c = parseInt(cost.Costs__c);
+        preparedCost.Cost_Type__c = cost.Cost_Type__c;
+        preparedCost.Project_Cost_Description__c = cost.Project_Cost_Description__c;
+        preparedCost.Cost_heading__c = cost.Cost_heading__c;
+        preparedCost.Vat__c = cost.Vat__c;
+        preparedCost.Total_Cost__c = cost.Total_Cost__c;
+        preparedCost.RecordTypeId = cost.RecordTypeId;
+        if (cost.Id) {
+          preparedCost.Id = cost.Id;
+        }
+        preparedCost.Case__c = this.project.Id;
+        return preparedCost;
+        // }
+      });
+      
+      var allCosts = [... newProjectCostsDel, ...newProjectCosts];
+      return allCosts;;
     }
 
     renderedCallback(){
@@ -510,7 +539,7 @@ wiredRecord({ error,data }){
       //this.project.Total_Cost__c = this.totalCosts;
       this.recalculateCostsSummary();
     }
-
+    
     calculateContributions(){
       this.totalCashContributions = 0;
       for(var cont in this.cashContributions){
@@ -522,9 +551,20 @@ wiredRecord({ error,data }){
         }
       }
       this.project.Total_Development_Income__c = this.totalCashContributions;
-      this.project.NHMF_Total_cash_contributions__c = this.totalCashContributions;
     }
-    
+
+    calculateDeliveryContributions(){
+      this.totalCashContributions = 0;
+      for(var cont in this.cashContributionsPotentialDelivery){
+        this.totalCashContributions += parseFloat(this.cashContributionsPotentialDelivery[cont].Amount_you_have_received__c) || 0;
+        
+      }
+      this.project.Total_cash_contributions_for_delivery__c = this.totalCashContributions;
+      console.log('total dev income ', this.project.Total_Development_Income__c);
+      console.log('total del income ', this.project.Total_cash_contributions_for_delivery__c);
+      this.project.Total_contributions_for_dev_delivery__c = parseFloat(this.project.Total_cash_contributions_for_delivery__c) + parseFloat(this.project.Total_Development_Income__c);
+      //this.project.NHMF_Total_cash_contributions__c = this.totalCashContributions;
+    }
 
     calculateCosts(){
       var newTotalCosts = 0;
@@ -537,21 +577,69 @@ wiredRecord({ error,data }){
       }
       this.totalCosts = newTotalCosts;
       this.totalVAT = newVATTotal;
-      if(!this.nhmfGrant){
-        this.project.Total_Cost__c = parseFloat(this.totalCosts) + parseFloat(this.totalVAT);
-        console.log('new total cost', this.project.Total_Cost__c);
-        this.project.Total_amount_cost__c = parseFloat(newTotalCosts);
+      this.project.Total_Cost__c = parseFloat(this.totalCosts) + parseFloat(this.totalVAT);
+      console.log('new total cost', this.project.Total_Cost__c);
+      this.project.Total_amount_cost__c = parseFloat(newTotalCosts);
         
-        console.log('new cost minus vat', this.project.Total_amount_cost__c);
-      } else {
-        this.project.Total_amount_cost__c = parseFloat(this.totalCosts) + parseFloat(this.totalVAT);
+      console.log('new cost minus vat', this.project.Total_amount_cost__c);
+     // this.project.Total_costs_proposed_for_delivery__c = 0;
+      this.project.Agreed_costs_development__c = newTotalCosts;
+      this.project.Total_development_costs_VAT__c = this.totalVAT;
+      console.log('new total vat', this.project.Total_development_costs_VAT__c)
+     
+    }
+
+    
+    calculateDeliveryCosts(){
+
+      //calculate other costs - cost type = other
+      var newTotalCosts = 0;
+      var newVATTotal = 0;
+      var newOtherCostsTotal = 0;
+      var newActivityCostTotal = 0;
+      var newTotalsForPhase = 0;
+
+      for(var cost in this.projectCostsPotentialDelivery){
+        if(parseFloat(this.projectCostsPotentialDelivery[cost].Costs__c) ) {
+        newTotalCosts += parseFloat(this.projectCostsPotentialDelivery[cost].Costs__c) || 0;
+        }
+        newVATTotal += parseFloat(this.projectCostsPotentialDelivery[cost].Vat__c) || 0;
+
+        if(this.projectCostsPotentialDelivery[cost].Cost_Type__c == 'Other cost') {
+          newOtherCostsTotal += parseFloat(this.projectCostsPotentialDelivery[cost].Costs__c);
+        }
         
-        this.project.Total_Cost__c = parseFloat(this.totalCosts);
-        
-        console.log('new cost minus vat total_cost __c is ', this.project.Total_Cost__c);
-        console.log('new total amount cost with vat is ', this.project.Total_amount_cost__c);
+        if(this.projectCostsPotentialDelivery[cost].Cost_Type__c == 'Activity cost') {
+          newActivityCostTotal += parseFloat(this.projectCostsPotentialDelivery[cost].Costs__c);
+        }
+
+        console.log('the phase', this.projectCostsPotentialDelivery[cost].Current_Phase_Cost__c);
+        if(this.projectCostsPotentialDelivery[cost].Current_Phase_Cost__c == 'No'){
+          var costAndVAT = parseFloat(this.projectCostsPotentialDelivery[cost].Costs__c) +  parseFloat(this.projectCostsPotentialDelivery[cost].Vat__c); 
+          newTotalsForPhase += costAndVAT;
+        }
+
+        this.project.Total_amount_cost__c = newTotalCosts;
+
       }
-      this.project.Total_project_VAT__c = this.totalVAT;
+
+      
+      this.project.Total_costs_proposed_for_delivery__c = newTotalsForPhase;
+      console.log('totals for phase', newTotalsForPhase);
+      //this activity costs TODO
+      this.project.Total_other_costs__c	= newOtherCostsTotal;
+      this.project.Total_activity_costs__c = newActivityCostTotal;
+
+
+      console.log('*** the agreed cost dev ', this.project.Agreed_costs_development__c);
+     // this.project.Total_costs_proposed_for_delivery__c = parseFloat(newTotalCosts) + parseFloat(newVATTotal) + parseFloat(this.project.Agreed_costs_development__c); // probably chanfge this
+      
+    //  console.log('**** the total costs prop deli', this.project.Total_costs_proposed_for_delivery__c); // probably chanfge this
+      console.log('new total cost', this.project.Total_Cost__c);
+      this.project.Total_amount_cost__c = parseFloat(newTotalCosts); //todo change to delivery total
+      
+      console.log('new cost minus vat', this.project.Total_amount_cost__c);
+      this.project.Total_project_VAT__c = newVATTotal; //total change to vat delivery total
       console.log('new total vat', this.project.Total_project_VAT__c)
      
     }
@@ -686,6 +774,11 @@ wiredRecord({ error,data }){
         this.deleteCostProject(e.detail.id, e.detail.index);
     }
 
+    
+    handleRemoveCostDel(e) {
+      this.deleteCostProjectDel(e.detail.id, e.detail.index);
+  }
+
     deleteCostProject(projectCostId, projectIndex) {
       //delete controller method
       if (projectCostId) {
@@ -694,6 +787,17 @@ wiredRecord({ error,data }){
       this.projectCosts.splice(projectIndex, 1);
       this.projectCosts = [...this.projectCosts];
       this.recalcIndexes(this.projectCosts);
+      this.recalculateCostsSummary();
+    }
+
+    deleteCostProjectDel(projectCostId, projectIndex) {
+      //delete controller method
+      if (projectCostId) {
+        this.removedProjectCosts.push(this.projectCostsPotentialDelivery[projectIndex]);
+      }
+      this.projectCostsPotentialDelivery.splice(projectIndex, 1);
+      this.projectCostsPotentialDelivery = [...this.projectCostsPotentialDelivery];
+      this.recalcIndexes(this.projectCostsPotentialDelivery);
       this.recalculateCostsSummary();
     }
     
@@ -710,6 +814,8 @@ wiredRecord({ error,data }){
       this.recalculateCostsSummary();
       
   }
+
+  
 
   deleteProjectIncomeDel(incomeId, incomeIndex){
     //delete controller method
@@ -738,8 +844,9 @@ wiredRecord({ error,data }){
     var newADCVAT = 0;
       for(var cost in this.projectCosts){
         if(parseFloat(this.projectCosts[cost].Costs__c) && !(this.projectCosts[cost].Cost_heading__c == 'Non-cash contributions') && !(this.projectCosts[cost].Cost_heading__c == 'Volunteer time') )
-        newADCCost += parseFloat(this.projectCosts[cost].Costs__c) || 0;
+        { newADCCost += parseFloat(this.projectCosts[cost].Costs__c) || 0;
         newADCVAT += parseFloat(this.projectCosts[cost].Vat__c) || 0; 
+        }
       }
       this.project.Agreed_costs_development__c = parseFloat(newADCCost) + parseFloat(newADCVAT);
       console.log('new adc', this.project.Agreed_costs_development__c);
@@ -756,17 +863,8 @@ wiredRecord({ error,data }){
 
         this.project.Grant_Percentage__c = 0;
       }
-  }
 
-   calculateNHMFGrantPercentage(){
-    console.log('calculating new NHMF grant percentage', this.project.NHMF_grant_request__c);
-    
-    console.log('divided by ', this.project.Total_amount_cost__c);
-      if(this.project && this.project.NHMF_grant_request__c && this.project.Total_amount_cost__c) {
-          this.project.NHMF_Grant_Percentage__c = parseInt(this.project.NHMF_grant_request__c)/parseInt(this.project.Total_amount_cost__c);
-      } else {
-          this.project.NHMF_Grant_Percentage__c = 0;
-      }
+      
   }
 
   calculateGrantAward(){
@@ -774,22 +872,54 @@ wiredRecord({ error,data }){
     this.project.Grant_requested__c = parseInt(this.project.Total_Cost__c) - parseInt(this.project.Total_Development_Income__c);
     console.log('the grant rquested is now ', this.project.Grant_requested__c)
   }
-  calculateNHMFGrantAward(){
-    
-    console.log('the total amount cost is :  ', this.project.Total_amount_cost__c);
-    console.log('minus this', this.project.NHMF_Total_cash_contributions__c);
-    this.project.NHMF_grant_request__c = parseInt(this.project.Total_amount_cost__c) - parseInt(this.project.NHMF_Total_cash_contributions__c); //TODO fix total cash cont.. some issue
-    console.log('the grant rquested is changed to now ', this.project.NHMF_grant_request__c)
+
+ /* calculateCombinedCost(){
+
+    this.project.Grant_percentage_development_delivery__c = 0; //todo
+    this.project.Total_contributions_for_dev_delivery__c = 0; //todo
+    this.project.Grant_requested_development_delivery__c = 0; //todo
+
+  }*/
+
+  calculateGrantRequested(){
+    // add all cont, all amounts.
+  //  parseFloat(this.project.Total_cost_development_delivery__c) - parseFloat(this.project.Total_contributions_for_dev_delivery__c);
+    //this.project.Total_cost_development_delivery__c = parseFloat(this.project.tot)
+    this.project.Total_cost_development_delivery__c = this.project.Total_Cost__c + this.project.Total_costs_proposed_for_delivery__c;
+    var grant =  parseFloat(this.project.Total_cost_development_delivery__c) - parseFloat(this.project.Total_contributions_for_dev_delivery__c);
+    console.log('***total cost dev del', this.project.Total_cost_development_delivery__c);
+    console.log('total con', this.project.Total_contributions_for_dev_delivery__c);
+    console.log('request', grant);
+    this.project.Grant_requested_development_delivery__c = grant;
+  }
+
+  calculateGrantDevDelPercentage(){
+
+      /// Total_cost_development_delivery__c = Total_costs_proposed_for_delivery__c + total_cost__c
+      console.log('*Grant_requested_development_delivery__c', this.project.Grant_requested_development_delivery__c);
+      console.log('* Total_cost_development_delivery__c',  this.project.Total_cost_development_delivery__c);
+      this.project.Grant_percentage_development_delivery__c = parseFloat(this.project.Grant_requested_development_delivery__c) / parseFloat(this.project.Total_cost_development_delivery__c);
+
   }
 
   recalculateCostsSummary(){
+
+      //Grant_percentage_development_delivery__c
+      //calculate grant requested
+      //calculate total cost dev delivery
+      //Grant_requested_development_delivery__c / Total_cost_development_delivery__c
+      //calculate other costs - cost type = other
+
     this.calculateContributions();
     this.calculateCosts();
+    this.calculateDeliveryContributions();
+    this.calculateDeliveryCosts();
     this.calculateGrantAward();
-    this.calculateNHMFGrantAward();
-    this.calculateNHMFGrantPercentage();
     this.calculateGrantPercentage();
     this.calculateAgreedDevelopmentCosts();
+    this.calculateGrantRequested();
+    this.calculateGrantDevDelPercentage();
+    //this.calculateCombinedCost();
   }
 
 }

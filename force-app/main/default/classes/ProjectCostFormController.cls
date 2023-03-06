@@ -1,4 +1,4 @@
-public with sharing class ProjectCostFormController {
+public inherited sharing class ProjectCostFormController {
   //TODO modify by to get by record type id
 
   private static final String MEMORIAL_RECORD_TYPE_NAME = 'Memorial';
@@ -19,7 +19,9 @@ public with sharing class ProjectCostFormController {
   }
 
   @AuraEnabled
-  public static string getCashRecordTypeIdByDeveloperName(String projectDeveloperName){
+  public static string getCashRecordTypeIdByDeveloperName(
+    String projectDeveloperName
+  ) {
     try {
       system.debug('the developer name' + projectDeveloperName);
       String result = (String) Schema.SObjectType.Project_Income__c.getRecordTypeInfosByDeveloperName()
@@ -30,7 +32,6 @@ public with sharing class ProjectCostFormController {
       throw new AuraHandledException(e.getMessage());
     }
   }
-
 
   @AuraEnabled(cacheable=true)
   public static Case getProject(Id projectId) {
@@ -55,7 +56,15 @@ public with sharing class ProjectCostFormController {
         Total_development_costs_VAT__c,
         Development_payment_percentage__c,
         Delivery_payment_percentage__c,
-        Agreed_costs_development__c
+        Agreed_costs_development__c,
+        Total_contributions_for_dev_delivery__c,
+        Total_cash_contributions_for_delivery__c,
+        Grant_percentage_development_delivery__c,
+        Total_activity_costs__c,
+        Total_other_costs__c,
+        Total_cost_development_delivery__c,
+        Total_costs_proposed_for_delivery__c,
+        Confirm_award_amount__c
       FROM case
       WHERE Id = :projectId
     ]; //changed
@@ -78,7 +87,8 @@ public with sharing class ProjectCostFormController {
         Vat__c,
         RecordType.Name,
         RecordType.DeveloperName,
-        RecordTypeId
+        RecordTypeId,
+        Current_Phase_Cost__c
       FROM Project_Cost__c
       WHERE
         Case__c = :projectId
@@ -107,7 +117,8 @@ public with sharing class ProjectCostFormController {
         Project_Cost_Description__c,
         Vat__c,
         RecordType.Name,
-        RecordType.DeveloperName
+        RecordType.DeveloperName,
+        Current_Phase_Cost__c
       FROM Project_Cost__c
       WHERE
         Case__c = :projectId
