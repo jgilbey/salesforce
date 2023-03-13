@@ -7,6 +7,9 @@ export default class ProjectCostsFormTotals extends LightningElement {
     @api smallGrant;
     @api mediumGrant;
     @api nhmfGrant;
+    @api largeGrant;
+    @api largeGrantDev;
+    @api largeGrantDel;
 
 
 }

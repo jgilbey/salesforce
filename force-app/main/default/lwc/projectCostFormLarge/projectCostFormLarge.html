@@ -1,0 +1,306 @@
+<template>
+
+  <template if:true={largeProject}>
+    <template if:true={loading}>
+                    <lightning-spinner
+                     alternative-text="Loading"
+                      size="medium"
+                    ></lightning-spinner>
+    </template>
+    <article class="slds-card">
+
+    <!-- HEADER -->
+    <div class="slds-card__header">
+      
+      del {largeGrantDel} dev {largeGrantDev} the project confrimed {project.Confirm_award_amount__c}
+    <template if:true={project}>
+      <c-project-cost-form-header-large project={project} delivery={largeGrantDel} development={largeGrantDev}></c-project-cost-form-header-large>
+    </template>
+    </div>
+  
+  
+  <!--BODY -->
+  <div class="slds-media__body">
+
+    <!-- DEVELOPMENT ASSESSMENT-->
+  <template if:true={project}>
+    <div>
+      <lightning-accordion allow-multiple-sections-open
+                            onsectiontoggle={handleSectionToggle}
+                            active-section-name={activeSections}>
+           <lightning-accordion-section name="A" label="Development Costs">
+            <div class="slds-var-m-around_medium slds-clearfix">
+              <lightning-button variant="brand" 
+                     label="Add Project Cost"  
+                     onclick={handleAddProjectCost} 
+                     class="slds-float_right"></lightning-button>
+            </div>
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+      <thead>
+          <tr class="slds-line-height_reset">
+          <template for:each={columns} for:item="col">
+          
+            <th class="" scope="col" key={col.label}>
+              <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name={col.label}>
+                                  {col.label} </a>
+            </th>
+              
+          </template>
+              <th class="" scope="col">
+                <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Remove">
+                </a>
+            </th>
+           </tr>
+          </thead>
+          <tbody>
+            <template if:true={projectCosts}>
+              <template for:each={projectCosts} for:item="cost">
+                <tr class="slds-hint-parent" key={cost.index}>
+                  &nbsp;
+                  <c-project-cost-item key={cost.index} 
+                  cost={cost} 
+                  onremove={handleRemoveCost} 
+                  oncostchange={handleCostChange}
+                  small-grant={smallGrant}
+                  medium-grant={mediumGrant}
+                  large-grant-delivery={largeGrantDel}
+                  large-grant-development={largeGrantDev}>
+                  </c-project-cost-item>
+                </tr>
+              </template>
+            </template>
+          </tbody>
+      </table>
+      <template if:true={project}>
+      <c-project-costs-form-totals 
+      project={project} 
+      small-grant={smallGrant} 
+      medium-grant={mediumGrant} 
+      nhmf-grant={nhmfGrant}
+      large-grant={largeProject}
+      large-grant-dev={largeGrantDev}>
+    </c-project-costs-form-totals>
+    </template>
+      </lightning-accordion-section>
+  
+  </lightning-accordion>
+  </div> 
+  
+  </template>
+          
+          <template if:true={cashContributions}>
+                 <lightning-accordion allow-multiple-sections-open
+                         onsectiontoggle={handleSectionToggle}
+                         active-section-name={activeSections}>
+              <lightning-accordion-section name="B" label="Cash Contributions">
+                <div class="slds-var-m-around_medium slds-clearfix">
+                 <lightning-button variant="brand" 
+                  label="Add Cash Contribution"  
+                  onclick={handleAddCashContribution} 
+                  class="slds-float_right"></lightning-button>
+                </div>
+  
+            
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+              <thead>
+                <tr class="slds-line-height_reset">
+                  <template for:each={largeColsCashCont} for:item="col">
+                  
+                    <th class="" scope="col" key={col.label}>
+                      <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name={col.label}>
+                                          {col.label} </a>
+                    </th>
+                      
+                  </template>
+                      <th class="" scope="col">
+                        <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Remove">
+                        </a>
+                    </th>
+                   </tr>        
+              
+            </thead>
+             
+              <tbody>
+                <template if:true={cashContributions}>
+                  <template for:each={cashContributions} for:item="income">
+                <tr class="slds-hint-parent" key={income.index}>
+                  &nbsp;
+                  <c-project-income-item key={income.index} 
+                  income={income} 
+                  onremove={handleRemoveIncome} 
+                  onincomechange={handleIncomeChange} 
+                  small-grant={smallGrant}
+                  medium-grant={mediumGrant}
+                  nhmf-grant={nhmfGrant}
+                  large-grant={largeProject}>
+                  </c-project-income-item>
+                </tr>
+              </template>
+              
+            </template>
+          </tbody>
+          </table>
+          
+          <template if:true={project}>
+          <c-project-income-totals project={project} 
+          medium-grant={mediumGrant} 
+          nhmf-grant={nhmfGrant} 
+          small-grant={smallGrant} 
+          large-grant={largeProject}
+          is-dev="true">
+          </c-project-income-totals>
+           </template>
+           </lightning-accordion-section>
+  </lightning-accordion>
+    </template>  
+
+    <template if:false={project.Confirm_award_amount__c}>
+    <c-project-cost-form-header-large-section-two 
+    project={project} 
+    delivery={largeGrantDel} 
+    development={largeGrantDev}>
+    </c-project-cost-form-header-large-section-two>
+    
+        <template if:true={projectCostsPotentialDelivery}>
+          <div>
+            <lightning-accordion allow-multiple-sections-open
+                                  onsectiontoggle={handleSectionToggle}
+                                  active-section-name={activeSections}>
+                <lightning-accordion-section name="A" label="Potential Delivery Costs">
+                  <div class="slds-var-m-around_medium slds-clearfix">
+                    <lightning-button variant="brand" 
+                          label="Add Project Cost"  
+                          onclick={handleAddProjectCostDel} 
+                          class="slds-float_right"></lightning-button>
+                  </div>
+          <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+            <thead>
+                <tr class="slds-line-height_reset">
+                <template for:each={largeGrantDevPotDelColumns} for:item="col">
+                
+                  <th class="" scope="col" key={col.label}>
+                    <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name={col.label}>
+                                        {col.label} </a>
+                  </th>
+                    
+                </template>
+                    <th class="" scope="col">
+                      <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Remove">
+                      </a>
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+                  <template if:true={projectCostsPotentialDelivery}>
+                    <template for:each={projectCostsPotentialDelivery} for:item="cost">
+                      <tr class="slds-hint-parent" key={cost.index}>
+                        &nbsp;
+                        <c-project-cost-item key={cost.index} 
+                        cost={cost} 
+                        onremove={handleRemoveCostDel} 
+                        oncostchange={handleDelCostChange}
+                        small-grant={smallGrant}
+                        medium-grant={mediumGrant}
+                        large-grant-delivery="true"
+                        large-grant-development="false">
+                        </c-project-cost-item>
+                      </tr>
+                    </template>
+                  </template>
+                </tbody>
+            </table>
+            <template if:true={project}>
+            <c-project-costs-form-totals 
+            project={project} 
+            small-grant={smallGrant} 
+            medium-grant={mediumGrant} 
+            nhmf-grant={nhmfGrant}
+            large-grant={largeProject}
+            large-grant-del={largeGrantDev}>
+          </c-project-costs-form-totals>
+          </template>
+            </lightning-accordion-section>
+        
+        </lightning-accordion>
+        </div> 
+        </template>
+                
+                <template if:true={cashContributionsPotentialDelivery}>
+                      <lightning-accordion allow-multiple-sections-open
+                              onsectiontoggle={handleSectionToggle}
+                              active-section-name={activeSections}>
+                    <lightning-accordion-section name="B" label="Cash Contributions">
+                      <div class="slds-var-m-around_medium slds-clearfix">
+                      <lightning-button variant="brand" 
+                        label="Add Cash Contribution"  
+                        onclick={handleAddCashContributionDel} 
+                        class="slds-float_right"></lightning-button>
+                      </div>
+        
+                  
+                  <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+                    <thead>
+                      
+                    <tr class="slds-line-height_reset">
+                      <template for:each={largeColsCashCont} for:item="col">
+                      
+                        <th class="" scope="col" key={col.label}>
+                          <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name={col.label}>
+                                              {col.label} </a>
+                        </th>
+                          
+                      </template>
+                          <th class="" scope="col">
+                            <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0" onclick={sortRecs} name="Remove">
+                            </a>
+                        </th>
+                      </tr>        
+                  
+                  </thead>
+                  
+                    <tbody>
+                      <template if:true={cashContributionsPotentialDelivery}>
+                        <template for:each={cashContributionsPotentialDelivery} for:item="income">
+                      <tr class="slds-hint-parent" key={income.index}>
+                        &nbsp;
+                        <c-project-income-item key={income.index} 
+                        income={income} 
+                        onremove={handleRemoveIncomeDel} 
+                        onincomechange={handleDelIncomeChange} 
+                        small-grant={smallGrant}
+                        medium-grant={mediumGrant}
+                        nhmf-grant={nhmfGrant}
+                        large-grant={largeProject}>
+                        </c-project-income-item>
+                      </tr>
+                    </template>
+                    
+                  </template>
+                </tbody>
+                </table>
+                
+                <template if:true={project}>
+                <c-project-income-totals project={project}  
+                large-grant={largeProject}
+                is-del={largeGrantDev}
+                >
+                </c-project-income-totals>
+                </template>
+                </lightning-accordion-section>
+        </lightning-accordion>
+          </template>  
+      
+        <c-project-budget-large-grant-summary project={project} development={largeGrantDev}>
+        </c-project-budget-large-grant-summary>
+  </template>
+    <div class="slds-var-m-around_medium slds-clearfix">
+    <lightning-button variant="brand" 
+    label="Save"  
+    onclick={handleSaveProjectCosts} class="slds-float_right"></lightning-button>
+  </div>
+
+
+  </div>
+  </article>
+    </template>
+  </template>

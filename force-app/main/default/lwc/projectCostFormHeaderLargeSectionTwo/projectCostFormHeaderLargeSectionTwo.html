@@ -1,0 +1,156 @@
+<template>
+    <template if:true={project}>
+      <div class="slds-page-header">
+          <div class="slds-page-header__row">
+            <div class="slds-page-header__col-title">
+              <div class="slds-media">
+                <div class="slds-media__figure">
+                  <span class="slds-icon_container slds-icon-standard-account" title="account">
+                    <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+                      <use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#account"></use>
+                    </svg>
+                    <span class="slds-assistive-text">project</span>
+                  </span>
+                </div>
+                <div class="slds-media__body">
+                  <div class="slds-page-header__name">
+                    <div class="slds-page-header__name-title">
+                      <h1>
+                        <template if:true={development}>
+                        <span class="slds-page-header__title slds-truncate">Potential Delivery Budget</span>
+                        </template>
+                        
+                        <template if:true={delivery}>
+                            <span class="slds-page-header__title slds-truncate">Delivery Budget</span>
+                            </template>
+                      </h1>
+                    </div>
+                  </div>
+                  <table>
+                      <thead></thead>
+                      <tbody>
+                          <tr>
+                              <td>
+                                <template if:true={development}>
+                                    <b>Potnetial Total Delivery Costs: </b> 
+                                <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2">
+                                </lightning-formatted-number>
+                              </template>
+                              
+                              <template if:true={delivery}>
+                                <b>Total Delivery Costs:  </b> 
+                            <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2">
+                            </lightning-formatted-number>
+                          </template>
+                              </td>
+                              
+                              <td>
+                                <template if:true={development}>
+                                    <b>Potential Delivery Cash Contributions: </b> 
+                                <lightning-formatted-number value={project.Total_cash_contributions_for_delivery__c} maximum-fraction-digits="2">
+                                </lightning-formatted-number>
+                              </template>
+                              
+                              <template if:true={delivery}>
+                                <b>Total Delivery Costs: </b> 
+                            <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2">
+                            </lightning-formatted-number>
+                          </template>
+                              </td>
+                              
+                              <td>
+                                <template if:true={development}>
+                                    <b>Potential Total Capital Costs:</b> 
+                                <lightning-formatted-number value={project.Total_development_costs_VAT__c} maximum-fraction-digits="2">
+                                </lightning-formatted-number>
+                              </template>
+                              
+                              <template if:true={delivery}>
+                                <b>Total Delivery VAT: </b> 
+                            <lightning-formatted-number value={project.Total_delivery_costs_VAT__c} maximum-fraction-digits="2">
+                            </lightning-formatted-number>
+                          </template>
+                              </td>
+                              
+                              <td>
+                                <template if:true={development}>
+                                    <b>Potential Total Other: </b> 
+                                    
+                                <lightning-formatted-number value={project.Total_other_costs__c} maximum-fraction-digits="2">
+                                </lightning-formatted-number>
+                              </template>
+                              
+                              <template if:true={delivery}>
+                                <b>Total Delivery Costs: </b> 
+                                <lightning-formatted-number value={project.Grant_Percentage__c} format-style="percent" maximum-fraction-digits="2">
+                                </lightning-formatted-number>
+                            </lightning-formatted-number>
+                          </template>
+                              </td>
+                          </tr>
+                          <!-- row 2 -->
+                          
+                          <tr>
+                            <td>
+                              <template if:true={development}>
+                                  <b>Potential Delivery Grant Request:  </b> 
+                              <lightning-formatted-number value={project.Grant_requested_development_delivery__c} maximum-fraction-digits="2">
+                              </lightning-formatted-number>
+                            </template>
+                            
+                            <template if:true={delivery}>
+                              <b>Total Cash Contributions:  </b> 
+                          <lightning-formatted-number value={project.Delivery_grant_request__c} maximum-fraction-digits="2">
+                          </lightning-formatted-number>
+                        </template>
+                            </td>
+                            
+                            <td>
+                              <template if:true={development}>
+                               <span>   <b>Potential Delivery Grant Percentage:  </b> </span>
+                             <span> <lightning-formatted-number value={project.Grant_percentage_development_delivery__c} format-style="percent" maximum-fraction-digits="2">
+                              </lightning-formatted-number></span>
+                            </template>
+                            
+                            <template if:true={delivery}>
+                              <b>TODO </b> 
+                          <lightning-formatted-number value={project.Total_Development_Income__c} maximum-fraction-digits="2">
+                          </lightning-formatted-number>
+                        </template>
+                            </td>
+                            
+                            <td>
+                              <template if:true={development}>
+                                  <b>Potential Total Activity Costs: </b> 
+                              <lightning-formatted-number value={project.Total_activity_costs__c} maximum-fraction-digits="2">
+                              </lightning-formatted-number>
+                            </template>
+                            
+                            <template if:true={delivery}>
+                              <b>Total Delivery Costs: </b> 
+                          <lightning-formatted-number value={project.Delivery_payment_percentage__c} maximum-fraction-digits="2">
+                          </lightning-formatted-number>
+                        </template>
+                            </td>
+                            
+                            <td>
+                              <template if:true={development}>
+                                  
+                            </template>
+                            
+                            <template if:true={delivery}>
+                              <b>Total Delivery Costs: </b> 
+                          <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2">
+                          </lightning-formatted-number>
+                        </template>
+                            </td>
+                        </tr>
+                      </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>    
+      </template>
+  </template>
