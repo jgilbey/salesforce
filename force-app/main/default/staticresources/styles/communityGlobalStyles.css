@@ -1,0 +1,6 @@
+@import "./defaultStyles.css";
+
+@import './globalComponentsStyles/applicationForm.css';
+@import './globalComponentsStyles/projectEnquiryComponent.css';
+@import './globalComponentsStyles/permissionForm.css';
+@import './globalComponentsStyles/monitoringPage.css';

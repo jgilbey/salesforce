@@ -1,0 +1,17 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId">
+    
+    <aura:attribute name="filetype" type="List" default="['.jpg', '.doc', '.docx', '.pdf', '.xls', '.xlsx', '.ppt', '.pptx']" />
+    <aura:attribute name="multiple" type="Boolean" default="true" />
+    <aura:attribute name="disabled" type="Boolean" default="true" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="encryptedToken" type="String" />
+    
+    <lightning:fileUpload label="Attach supporting documents"
+        name="fileUploader"
+        multiple="true"
+        accept="{!v.filetype}"
+        recordId="{!v.recordId}"
+        fileFieldValue="{!v.encryptedToken}"
+        onuploadfinished="{!c.handleUploadFinished}" />
+    
+</aura:component>

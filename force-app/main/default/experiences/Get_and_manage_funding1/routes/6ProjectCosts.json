@@ -1,0 +1,11 @@
+{
+  "activeViewId" : "0d1ac9fa-7b21-4bc3-b833-15e8f7424a66",
+  "appPageId" : "9a06b659-cc86-48fa-a38d-0a6938d33ef8",
+  "configurationTags" : [ ],
+  "id" : "0a79e9c6-5f1e-429f-9f5a-cfd3f0290045",
+  "label" : "6. Project Costs",
+  "pageAccess" : "UseParent",
+  "routeType" : "custom-project-costs",
+  "type" : "route",
+  "urlPrefix" : "apply-development/project-costs"
+}

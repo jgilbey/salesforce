@@ -1,0 +1,11 @@
+{
+  "cmsSettings" : { },
+  "currentThemeId" : "e32288d9-f9ed-4edb-b5aa-519f61d1cbd3",
+  "headMarkup" : "<!--reCaptcha v2 Checkbox-->\n<script>\n    var verifyCallback = function(token) {\n        document.dispatchEvent(new CustomEvent('grecaptchaVerified', {'detail': {response: token}}));\n    };\n    var expireCallback = function() {\n        document.dispatchEvent(new Event('grecaptchaExpired'));\n    };\n    var errorCallback = function() {\n        document.dispatchEvent(new Event('grecaptchaError'));\n    };\n    document.addEventListener('grecaptchaRender', function(e) {\n        grecaptcha.render(e.detail.element, {\n            'sitekey': '6LduODEaAAAAAJoxAwgNhQQS24TJ9cWHvZHqpBv1',\n            'callback': verifyCallback,\n            'expired-callback': expireCallback,\n            'error-callback': errorCallback\n        });\n    });\n    document.addEventListener('grecaptchaReset', function() {\n        grecaptcha.reset();\n    }); \n</script>\n<script src='https://www.google.com/recaptcha/api.js?render=explicit' async defer></script>",
+  "id" : "2d3bc8c8-8dc6-4bd0-9cfa-19493739faa2",
+  "isLockerServiceEnabled" : true,
+  "isRelaxedCSPLevel" : true,
+  "label" : "main",
+  "templateName" : "Starter Template",
+  "type" : "appPage"
+}

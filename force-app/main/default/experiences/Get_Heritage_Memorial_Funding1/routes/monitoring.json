@@ -1,0 +1,11 @@
+{
+  "activeViewId" : "beca586b-7126-4c7f-9aff-6fb94db908e7",
+  "appPageId" : "2d3bc8c8-8dc6-4bd0-9cfa-19493739faa2",
+  "configurationTags" : [ ],
+  "id" : "b8603f31-c022-4875-8e1a-f6201edc1641",
+  "label" : "Monitoring",
+  "pageAccess" : "UseParent",
+  "routeType" : "custom-monitoring",
+  "type" : "route",
+  "urlPrefix" : "Monitoring"
+}

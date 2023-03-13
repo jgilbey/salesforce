@@ -1,0 +1,85 @@
+{
+  "meta": {
+    "form": "3-10k-grant",
+    "username": "info@routeshairlosssolutions.com",
+    "startedAt": "2021-07-08T10:13:06.221Z",
+    "applicationId": "03a7b5bf-dacf-489d-8754-7bdfee0ea7e4",
+    "schemaVersion": "v1.x"
+  },
+  "application": {
+    "projectName": "Wigs for victims of hair-loss ",
+    "keepInformed": false,
+    "projectCosts": [
+      {
+        "costId": "0d7c7aa2-308f-499a-9452-5b0dcd99c1fc",
+        "costType": "equipment-and-materials-including-learning-materials",
+        "costAmount": 10000,
+        "costDescription": "We do not want to ask for more than £10k at this stage as we are new we want to monitor the speed of applications and how quickly we can get wigs to those in need."
+      }
+    ],
+    "charityNumber": "1188614",
+    "isPartnership": false,
+    "organisationId": "048d4c33-d232-435f-96b3-6d3c7d15d9b9",
+    "projectAddress": {
+      "line1": "Routes, 354 Manchester Road, Deepcar",
+      "county": "South Yorkshire",
+      "townCity": "SHEFFIELD",
+      "projectPostcode": "S36 2RH"
+    },
+    "mainContactName": "Rachel Burgin ",
+    "projectOutcome1": "There are various hair loss forums and using our social media teamed with our community of hair loss specialist salons across the U.K. that currently purchase from our popular sister company we are sure that the word will be out very quickly indeed. ",
+    "projectOutcome6": "The wigs we will be giving out will be helping people become more confident and able to re-enter society without having to worry about their appearance. ",
+    "yourIdeaProject": "We want to be able to offer free wigs and hair loss integration units to people suffering with medical hair loss in the U.K. (such as cancer patients & alopecia sufferers). \r\n\r\nThe funding would make a huge difference to not only the beneficiaries looks but their entire mental health and well-being at the same time as taking away the financial strain that hair loss can create at an already very difficult time. Currently for adults in the U.K. a voucher to put towards a wig is provided that barely scratches the surface and will not cover the cost of long lasting natural looking wigs. Patients can be left needing to find hundreds sometimes thousands of pounds to pay for something that replicates how their natural hair used to look.\r\n\r\n",
+    "mainContactEmail": "info@routeshairlosssolutions.com",
+    "mainContactPhone": "07817696482",
+    "organisationName": " Routes hair loss solutions ",
+    "organisationType": "registered-charity",
+    "projectAvailable": "We will build repetition with this funding by showing the difference it makes to people’s lives and bolster public’s fundraising as they see many people receive wigs and how it positively impacts their lives. We do not want to ask for more than £10k at this stage as we are new we want to monitor the speed of applications and how quickly we can get wigs to those in need and how quickly the funding for this lasts and how it impacts on other funding coming in to continue the process. ",
+    "projectCommunity": "The more people we help the more we can talk to thousands of people in the hair industry of how vast this problem is and what a staggering change a wig can make. Of course we also want to talk about the stigma of hair loss and empower those that choose not to wear a wig to be bold and bald and help general society to understand what is and isn’t appropriate when meeting somone with hair loss. \r\n",
+    "projectDateRange": { "endDate": "2022-09-01", "startDate": "2021-09-01" },
+    "cashContributions": [],
+    "involveInResearch": true,
+    "projectDifference": "We want to help men and women who have lost their hair due to medical conditions, such as cancer and want to give them the confidence to be able to live their lives normally without having to suffer from the loss in confidence that losing their hair can bring. \r\n\r\n",
+    "projectVolunteers": [],
+    "mainContactAddress": {
+      "line1": "30 Miller Street, Deepcar",
+      "county": "South Yorkshire",
+      "postcode": "S36 2RP",
+      "townCity": "SHEFFIELD"
+    },
+    "projectCapitalWork": false,
+    "organisationAddress": {
+      "line1": "Routes, 354 Manchester Road, Deepcar",
+      "county": "South Yorkshire",
+      "postcode": "S36 2RH",
+      "townCity": "SHEFFIELD"
+    },
+    "organisationMission": ["female-led"],
+    "projectOrgBestPlace": "We aim to keep building strong relationships with the hair loss community giving people confidence and self esteem back. \r\n\r\nPeople living with medical hair loss live in all communities of the U.K. and are often not seen due to not wanting to go out or be seen and not feeling able to be part of their own community. This funding will help many people currently trapped to be a firm part of their own community without feeling like their illness or appearance is their identity.\r\n\r\nWe want to be the go to place for anyone who has lost their hair or who imminently are going to loose their hair to quickly, easily and discreetly get a realistic wig without shame or financial burden. ",
+    "nonCashContributions": [],
+    "mainContactDateOfBirth": "1982-01-20",
+    "projectNeedsPermission": "no",
+    "projectOutcome2Checked": false,
+    "projectOutcome3Checked": false,
+    "projectOutcome4Checked": false,
+    "projectOutcome5Checked": false,
+    "projectOutcome6Checked": true,
+    "projectOutcome7Checked": false,
+    "projectOutcome8Checked": false,
+    "projectOutcome9Checked": false,
+    "authorisedSignatoryOneDetails": {
+      "name": "Rachel Burgin ",
+      "role": "",
+      "email": "Info@routeshairlosssolutions.com",
+      "phone": "07817696482",
+      "isAlsoApplicant": true
+    },
+    "authorisedSignatoryTwoDetails": {
+      "name": "Victoria Hatch",
+      "role": "",
+      "email": "victoria@routeshair.com",
+      "phone": "0114 3273131",
+      "isAlsoApplicant": false
+    }
+  }
+}

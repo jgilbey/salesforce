@@ -1,0 +1,11 @@
+{
+  "activeViewId" : "aa250608-0c2e-4d99-b814-bbb0e2b666e0",
+  "appPageId" : "9a06b659-cc86-48fa-a38d-0a6938d33ef8",
+  "configurationTags" : [ ],
+  "id" : "d9438dac-e95a-4119-a807-86279696ae64",
+  "label" : "2. The Heritage - Delivery",
+  "pageAccess" : "UseParent",
+  "routeType" : "custom-the-heritage-delivery",
+  "type" : "route",
+  "urlPrefix" : "apply-delivery/the-heritage"
+}

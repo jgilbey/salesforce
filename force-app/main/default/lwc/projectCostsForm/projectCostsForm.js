@@ -127,6 +127,13 @@ export default class ProjectCostsForm extends LightningElement {
             this.mediumGrant = true;
           } else if(this.project.RecordType.DeveloperName === this.nhmfGrantProject){
             this.nhmfGrant = true;
+          } else if(this.project.RecordType.DeveloperName === this.largeGrantDeliveryProject){
+            this.largeGrantDel = true;
+            this.largeProject = true;
+          }
+          else if(this.project.RecordType.DeveloperName === this.largeGrantDevelopmentProject){
+            this.largeGrantDev = true;
+            this.largeProject = true;
           }
 
         //  console.log(JSON.stringify(this.project));

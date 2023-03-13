@@ -1,0 +1,31 @@
+<aura:component controller="ActionFramework" 
+                              implements="force:hasRecordId,force:lightningQuickActionWithoutHeader">
+    <aura:attribute name="recordId" type="Id" />
+    <aura:set attribute="partially" value="false"></aura:set>   
+    <aura:attribute name="error" type="String"/>
+    <aura:attribute name="isSuccess" type="Boolean" default="false"/>
+    <aura:attribute name="isProcessing" type="Boolean" default="false"/>
+    <aura:handler name="init" value="{!this}" action="{!c.apexExecute}"/>
+
+    <aura:if isTrue="{!empty(v.error) == false}">
+        <ui:message title="Error" severity="error" >
+            <p>{!v.error}</p>
+        </ui:message>
+    </aura:if>
+
+    <aura:if isTrue="{!v.isSuccess}">
+        <ui:message title="Success" severity="confirm" >
+            <p>Request is successfully submitted, please refresh the page after some time</p>
+        </ui:message>
+    </aura:if>
+
+    <aura:if isTrue="{!v.isProcessing}">
+    <div style="height: 6rem;">
+        <div role="status" class="slds-spinner slds-spinner_large slds-spinner_brand">
+            <span class="slds-assistive-text">Loading</span>
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+        </div>
+    </div>
+    </aura:if>
+</aura:component>

@@ -178,7 +178,10 @@ wiredRecord({ error,data }){
             this.project[field] = data[field];
           })
 
-          console.log('***** the record develper name', this.project.RecordType.DeveloperName );
+          
+
+          if(this.project){
+            console.log('***** the record develper name', this.project.RecordType.DeveloperName );
         
           if(this.project.RecordType.DeveloperName === this.smallGrantProject){
             this.smallGrant = true;
@@ -189,14 +192,10 @@ wiredRecord({ error,data }){
           }  else if(this.project.RecordType.DeveloperName === this.largeGrantDeliveryProject){
             this.largeGrantDel = true;
             this.largeProject = true;
-          }
-          else if(this.project.RecordType.DeveloperName === this.largeGrantDevelopmentProject){
+          } else if(this.project.RecordType.DeveloperName === this.largeGrantDevelopmentProject){
             this.largeGrantDev = true;
             this.largeProject = true;
           }
-
-          if(this.project){
-            
             this.decisionConfirmed = (this.project.Confirm_award_amount__c === "true" ||  this.project.Confirm_award_amount__c === true) ? true : false;
           
           }

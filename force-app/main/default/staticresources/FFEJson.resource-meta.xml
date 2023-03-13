@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Public</cacheControl>
+    <contentType>application/json</contentType>
+    <description>A static resource containing JSON for a 3-10k application. for PortalApplication_PushJsonCtrl will query for FFEJson and will convert the JSON into a Salesforce record.</description>
+</StaticResource>

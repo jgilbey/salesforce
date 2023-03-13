@@ -1,0 +1,40 @@
+c-project-enquiry-component .slds-form-element__label {
+    all: inherit;
+    padding: 0;
+  }
+  
+  c-project-enquiry-component h1 {
+    font-size: var(--lwc-fontSize8, 1.5rem);
+  }
+  
+  c-project-enquiry-component lightning-textarea textarea {
+    height: 200px;
+  }
+  
+  c-project-enquiry-component lightning-textarea .slds-form-element__label {
+    margin-bottom: 1rem;
+  }
+  
+  c-project-enquiry-component .label-margin .slds-form-element__label {
+    margin-bottom: 1rem;
+  }
+  
+  c-project-enquiry-component .checkbox-input p, c-project-enquiry-component .checkbox-input lightning-input {
+    display: inline-block;
+  }
+  
+  c-project-enquiry-component .checkbox-input span {
+    margin-right: 4px;
+  }
+  
+  c-project-enquiry-component .question__container {
+    position: relative;
+  }
+  
+  c-project-enquiry-component .question-numb {
+    position: absolute;
+    left: -20px;
+    top: 0;
+    font-weight: bold;
+  }
+  /*# sourceMappingURL=projectEnquiryComponent.css.map */

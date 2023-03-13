@@ -1,0 +1,11 @@
+{
+  "activeViewId" : "a5d8f6d7-e271-44a2-a68e-394f6c402503",
+  "appPageId" : "2d3bc8c8-8dc6-4bd0-9cfa-19493739faa2",
+  "configurationTags" : [ ],
+  "id" : "ba61af4f-5aca-4e28-85d7-2f73e1f30499",
+  "label" : "Form Page",
+  "pageAccess" : "RequiresLogin",
+  "routeType" : "custom-form-page",
+  "type" : "route",
+  "urlPrefix" : "form-page"
+}

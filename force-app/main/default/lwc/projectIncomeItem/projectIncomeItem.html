@@ -25,6 +25,31 @@
               </div>
                   
         </td> </template>  
+        
+      <template if:true={largeGrant}>
+        <td data-label="IncomeSec"
+            data-id={income.index}
+            data-field="Source_Of_Funding__c">
+           
+              <div class="picklistBlock"> 
+                <label class="slds-form-element__label"></label>
+                <c-selectlist
+                is-select={visible}
+                title="Source_Of_Funding__c"
+                field-id="Source_Of_Funding__c"
+                placeholder={income.Source_Of_Funding__c} 
+                style-class={styleClass} 
+                options={incomeSourceOfFunding} 
+                value={income.Source_Of_Funding__c} 
+                onchange={handleOnChange} 
+                data-id={income.index}
+                data-field="Source_Of_Funding__c"
+                name="Source_Of_Funding__c"
+                disabled={disabled}>
+                </c-selectlist>
+              </div>
+                  
+        </td> </template>  
 
     <td data-label="Description"
         data-id={income.index}
@@ -38,7 +63,32 @@
             
         </div>
     </td>   
-    <template if:false={nhmfGrant}>
+    <template if:true={smallGrant}>
+      <td data-label="IncomeSec"
+          data-id={income.index}
+          data-field="Secured_non_cash_contributions__c">
+         
+            <div class="picklistBlock"> 
+              <label class="slds-form-element__label"></label>
+              <c-selectlist
+              is-select={visible}
+              title="Secured_non_cash_contributions__c"
+              field-id="Secured_non_cash_contributions__c"
+              placeholder={income.Secured_non_cash_contributions__c} 
+              style-class={styleClass} 
+              options={incomeSecuredList} 
+              value={income.Secured_non_cash_contributions__c} 
+              onchange={handleOnChange} 
+              data-id={income.index}
+              data-field="Secured_non_cash_contributions__c"
+              name="Secured_non_cash_contributions__c"
+              disabled={disabled}>
+              </c-selectlist>
+            </div>
+                
+      </td> </template>  
+      
+    <template if:true={mediumGrant}>
       <td data-label="IncomeSec"
           data-id={income.index}
           data-field="Secured_non_cash_contributions__c">
@@ -76,7 +126,22 @@
           </lightning-input></div>
       </td>
     </template>
- <!--   <template if:true={nhmfGrant}>
+    <template if:true={largeGrant}>
+      <td>
+        <div class="slds-truncate">
+          
+          <label class="slds-form-element__label"></label>
+          <lightning-input type="checkbox" 
+                                    name="Secured__c" 
+                                    value={income.Secured__c}
+                                    data-id={income.index}
+                                    onchange={handleOnChange}
+                                    checked={income.Secured__c} >
+          </lightning-input></div>
+      </td>
+    </template>
+    
+    <template if:true={largeGrant}>
       <td>
         <div class="slds-truncate">
           
@@ -84,31 +149,13 @@
           <lightning-input type="checkbox" 
                                     name="Evidence_for_secured_income__c" 
                                     value={income.Evidence_for_secured_income__c}
-                                    checked={income.Evidence_for_secured_income__c}
                                     data-id={income.index}
-                                    onchange={handleOnChange} >
+                                    onchange={handleOnChange}
+                                    checked={income.Evidence_for_secured_income__c} >
           </lightning-input></div>
       </td>
-    </template>-->
+    </template>
 
-    <template if:false={nhmfGrant}>
-    <td data-label="Amount" 
-    data-id={income.index}
-    data-field="Amount_you_have_received__c"
-    class="">
-
-    <div class="slds-truncate">
-            <lightning-input type="number" 
-                             name="Amount_you_have_received__c" 
-                             value={income.Amount_you_have_received__c}
-                             data-id={income.index}
-                             onchange={handleOnChange}
-                             step="0.01">
-            </lightning-input>
-      </div> 
-    </td>
-  </template>
-  
   <template if:true={nhmfGrant}>
     <td data-label="Amount" 
     data-id={income.index}
@@ -126,6 +173,25 @@
       </div> 
     </td>
   </template>
+  <template if:false={nhmfGrant}>
+    <td data-label="Amount" 
+    data-id={income.index}
+    data-field="Amount_you_have_received__c"
+    class="">
+
+    <div class="slds-truncate">
+            <lightning-input type="number" 
+                             name="Amount_you_have_received__c" 
+                             value={income.Amount_you_have_received__c}
+                             data-id={income.index}
+                             onchange={handleOnChange}
+                             step="0.01">
+            </lightning-input>
+      </div> 
+    </td>
+  </template>
+  
+
     <td data-id={income.index}>
       <label class="slds-form-element__label"></label>
         <div class=”slds-cell-wrap”>

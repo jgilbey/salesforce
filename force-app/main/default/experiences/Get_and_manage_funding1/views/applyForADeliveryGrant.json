@@ -1,0 +1,38 @@
+{
+  "appPageId" : "9a06b659-cc86-48fa-a38d-0a6938d33ef8",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "6839ee5a-9f5b-4c0e-a787-dbd0bfe4bf44",
+  "label" : "Apply for a Delivery Grant",
+  "regions" : [ {
+    "id" : "46cd050f-d3d8-4c21-8818-2c73b81594aa",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "id" : "8215484b-6fc3-478d-bf0a-fd1507ba819f",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "a01758bf-befd-45bb-bcfa-d8e88f98f177",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Apply for a Delivery Grant"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "61c4bafd-4e3e-478b-8167-fc69594eca48",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "85551bd4-e1f7-4651-9b52-11fc86d0b5ef",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-apply-delivery"
+}

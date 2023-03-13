@@ -1,0 +1,46 @@
+{
+  "appPageId" : "9a06b659-cc86-48fa-a38d-0a6938d33ef8",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "f0a1b16f-286a-4537-8cf2-6b65689ae169",
+  "label" : "The Heritage - Development",
+  "regions" : [ {
+    "id" : "b62d5e41-001a-46ff-b1a4-4735d1907523",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "c:LrgDevGrants_02Heritage",
+      "id" : "fd585580-4b94-4a37-8864-9b533c1f630e",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "62139d70-e297-4151-b9f7-349ad68f8ab7",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "f4f110f7-8586-432e-986b-ee5c5cade330",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "The Heritage"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "cb70d1b3-7372-48ce-b273-ded2e42c7f72",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "670561b3-6e48-4999-9280-c4a5da0a6a4e",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-the-heritage"
+}

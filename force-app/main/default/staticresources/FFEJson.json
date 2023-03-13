@@ -1,0 +1,127 @@
+{
+  "meta": {
+    "form": "3-10k-grant",
+    "username": "editor@knocknews.net",
+    "startedAt": "2021-08-11T14:52:02.122Z",
+    "applicationId": "700e79d4-9a84-48b4-be1b-065e9b11f620",
+    "schemaVersion": "v1.x"
+  },
+  "application": {
+    "projectName": "The Best of Walks and Wonders",
+    "keepInformed": false,
+    "projectCosts": [
+      {
+        "costId": "0bb6eb08-3718-496d-b6ed-4342c076be43",
+        "costType": "professional-fees",
+        "costAmount": 2000,
+        "costDescription": "Professional fees to author and heritage professional."
+      },
+      {
+        "costId": "12d3afe7-9d60-4e14-a69a-057f72a81875",
+        "costType": "other",
+        "costAmount": 400,
+        "costDescription": "New laser printer for A3 size proofs; office consumables (paper, ink)"
+      },
+      {
+        "costId": "e7e66deb-43dc-43ff-9d6e-68f89eaea762",
+        "costType": "other",
+        "costAmount": 5100,
+        "costDescription": "Printing cost of book. "
+      },
+      {
+        "costId": "02dbbb19-1b29-4ad8-b851-33d312a2d30f",
+        "costType": "expenses-for-staff",
+        "costAmount": 2500,
+        "costDescription": "Staff wages and expenses."
+      }
+    ],
+    "companyNumber": "SC429829",
+    "isPartnership": false,
+    "organisationId": "a9b8e245-0feb-4e9c-b63b-bf62317e9cf1",
+    "projectAddress": {
+      "line1": "Morriston House, Knock",
+      "county": "Aberdeenshire",
+      "townCity": "HUNTLY",
+      "projectPostcode": "AB54 7LJ"
+    },
+    "mainContactName": "David Gordon",
+    "projectOutcome1": "Hitherto walking books have been aimed at already-committed walkers; history books have been aimed at people interested in history; nature books are aimed at naturalists.\r\nThe walks in this book project blend history, heritage and landscape, relating each to the other to bring together people with each different interest and allow understanding of how history affects landscape (and vice versa). Thus while involving particular interest groups (historians, naturalists, &c.) the book will bring each to a better understanding of the other.\r\nOf course not all people are necessarily interested in history or nature at all, nor in the great outdoors. But everyone is interested in his or her own locality. The book does not urge people to go outside: high production values and stunning pictures with accessible text will catch the imagination of the most sedentary armchair traveller. And perhaps even encourage the armchair traveller to make a taster expedition by trying one of the easier-graded walks.\r\nThe book will be available in nonspecialist retail outlets and venues where the non-walker will find it and be intrigued. By stunning photography and accessible text relating to well-known localities with unexpected points of interest. Nonspecialists will be encouraged to go out into their own local landscape.\r\nReading copies of the book will be lodged (free of charge) at particular organisations, locations and venues, for example: sports clubs, coffeeshops, Findhorn Foundation, British Legion, leisure centres, and social clubs outwith mainstream culture.\r\nAlready the monthly KN Magazine is lodged in many of these locations, where it is readily taken up and much appreciated as shown by positive feedback received by the editor. The book will benefit from its association with the KN brand.\r\n\r\n",
+    "projectOutcome2": "Heritage organisations will be identified, supported and promoted and will receive income from book sales. By publicising a little appreciated and seldom promoted heritage – in a region without a council museum service, a county archives or a county archaeologist – this publication will alert local people to what is there in their own locality, and also invite local people to add new information (even identify new sites) that can be added to the fund of information on a region not usually noticed (and never headlined) in academic or popular sources and publications relating to Scottish history, prehistory, sites monuments and landscapes. By expanding the number of people who are aware of local heritage through an accessible popular publication the heritage environment will be better protected, and archaeologists alerted to sites at risk and/or requiring emergency intervention or rescue excavation. This is not always happening at present because local people are unaware of what needs protecting. ",
+    "projectOutcome3": "The walks are written by an expert with original (and new) research tailored to the general reader and non-expert. This publication offers illustrated examples of local sites, monuments – and most especially heritage landscapes – many of which are not published or yet recorded by CANMORE.  The principal author Dr John R Barrett is a professional author, a qualified professional archivist and a professional archaeologist, with experience too of curatorial and conservation work in the museum sector, whose previous publications – both popular and academic – have described and explored history in the field in Moray and Banffshire with a special emphasis on a landscape archaeology approach. This has not hitherto been done to any extent for the area covered in the proposed Best of Walks and Wonders publication. The proposed book will be the first of its kind offering this kind of practical, intellectual guidance.",
+    "projectOutcome4": "Training of KN staff.\r\nAlerting readers to heritage in danger and the fragility of historic sites landscapes and natural environments. \r\nShowing readers how they too may engage in worthwhile historical research. Archaeological articles in the book will also introduce nonspecialist readers to basic archaeological techniques including site survey and excavation. With this introduction and encouragement readers are urged to go a step further with physical involvement outdoors in self-motivated self-organised fieldwork and fieldwalking, also by volunteering on research digs. The author will become personally accessible to local people through this publication, and will be available for the foreseeable future – for years to come even – as an advisor and mentor to local people in their own heritage endeavours and projects either as organised groups or a self-motivated individuals.\r\n",
+    "projectOutcome5": "Most historic sites and landscapes are not clearly identified in accessible sources. Many of the heritage sites and landscapes visited in the proposed book have not been described, analysed or published. The book will identify the importance of particular places and locations and give readers a valuable tool through which they may identify new and endangered sites and significant historical and natural landscapes for themselves.\r\nPeople will have greater wellbeing through engaging with a new approach to history/prehistory and heritage through experience of the past in outdoor environments rather than in the oppressive environment of the library or archive searchroom\r\nThis is an outdoor book that encourages moderate physical activity in natural environments leading to positive (physical and mental) health outcomes.\r\nThe book is intellectually stimulating (and occasionally challenging) leading to positive mental health outcomes.\r\nThe book is locality focused and so contributes to community cohesion. Exploration of local heritage reinforces communal identity. An increased awareness of the relationship between local history/landscape/ heritage and national narratives allows the local community to become confident in its own relevance, importance and agency.\r\n",
+    "projectOutcome6": "\r\nIt will support physical and mental wellbeing by encouraging outdoor activity, and promoting interest in the study and experience of local history and environment.\r\n",
+    "projectOutcome7": "Publication of the walks in this book will positively enhance the reputation of the author in his career as a historian of landscape.\r\nPublication of the book in association with the KN community magazine will enhance that publication's local reputation and cement its position at the heart of its reader community.\r\nThe relationship between KN and the funded organisation will be reinforced to the mutual advantage of both allowing KN to increase readership and social engagement with each funded organisation’s friends and members; and offering the funded organisation more access to KN as a platform for publication of research and more general promotion of activities.\r\n",
+    "projectOutcome8": "The book will bring the Moray/Banffshire area into sharp focus as a stimulating and healthy place in which to live, with a rich local culture. The book will highlight these aspects of the Moray/Banffshire environment to potential (and actual) visitors.\r\nIncreased visitor numbers will directly contribute to the local economy. \r\nBy increasing awareness of the richness of the Moray/Banffshire history, heritage, culture and natural environment, the book will encourage local people to become positively involved in conservation of fragile heritage. Increased interest and awareness will translate into increased sensitivity towards and conservation of a precious heritage, making Moray/Banffshire a more pleasant environment for visitors and local people – and reversing neglect of sites and landscapes and destruction of monuments that has occurred through innocent ignorance.\r\nThe educational outcomes of the book - to teachers, school children, university students and adult readers - will be through introducing readers to a new approach to history. Hands-on outdoor approaches to the past will make a dull subject into an exhilarating experience.\r\nThe local economy will be boosted\r\nEspecially the book will benefit the tourist economy.\r\nThe book will also encourage local people to take more interest in their own area, visit places not and support shops, restaurants, cafes, &c. not usually on their itineraries.\r\nThe book will create a modest amount of employment for staff involved in its production, and enhance the profile of KN Magazine, ensuring it can continue to serving its local community.\r\n",
+    "projectOutcome9": "The local economy will be boosted\r\nEspecially the book will benefit the tourist economy.\r\nThe book will also encourage local people to take more interest in their own area, visit places not and support shops, restaurants, cafes, &c. not usually on their itineraries.\r\nThe book will create a modest amount of employment for staff involved in its production, and enhance the profile of KN Magazine, ensuring it can continue to serving its local community.\r\n \r\n",
+    "yourIdeaProject": "The project is a published book.\r\nThe book, provisionally titled The Best of Walks & Wonders, is an invitation and guide to landscape, heritage and natural environment in the countryside of Moray and Banffshire in northeast Scotland. The book will also be subsequently created in digital format accessed through partner organisations websites and the principal tourism organisations.\r\nThis an accessible guide for visitors and local people of all ages and abilities, who wish to explore (in print and on the ground) history and heritage in countryside and townscape in Moray. \r\nThe book will be a community benefit encouraging healthy outdoor activity, walking and cycling, especially among those who are not accustomed to outdoor activity.\r\nThe book will be an educational resource, introducing history, prehistory, heritage and natural environment through active experience of sites, monuments, landscapes and built environment.\r\nThe book is researched by Dr John R Barrett, a professional archivist and landscape archaeologist – whose academic research is presented in accessible form.\r\nThe book will contribute to the local economy by attracting visitors to a little known region and enhancing the profile of Moray and Banffshire as an area of significant historical and heritage and landscape value.\r\nAll income from the sale of the book will be distributed to a group of partner organisations in the Moray museum sector. Partners identified to date include The Moray Society/Elgin Museum, Museum of Banff, Friends of the Falconer Museum in Forres. Partners will be entitled to sell the book through their own outlets; otherwise the book will be sold in local heritage outlets, who will profit from the sales.\r\n",
+    "mainContactEmail": "editor@knocknews.net",
+    "organisationName": "Knock News Ltd",
+    "organisationType": "registered-company-or-community-interest-company",
+    "projectAvailable": "Publication of these walks will ensure that a permanent resource is created – to be available to the local community and to visitors, on library shelves and in every heritage organisation’s library and tourism outlet.\r\nPublication will also mean that original historical research (which will otherwise be lost or published only inaccessibly or in ephemeral formats) is permanently preserved for academics and local researchers to use, critique and develop.\r\n\r\nThe book will provide a starting point for further investigation of the landscape, history and heritage of Moray and Banffshire  – suggesting avenues for additional or deeper research. Especially the book will encourage every member of the community to recognise history beneath her feet. And the book will empower the nonacademic, nonprofessional amateur (in the proper meaning of the word) to understand the changing landscape of his own locality and make his own positive contribution to the fund of local knowledge.\r\nThe training and practical experience gained by staff involved in the production of the book will enhance their CVs and open opportunities for career development.\r\n",
+    "projectCommunity": "There is a strong demand for this book in the local community.\r\nThe publication in a local magazine of several walks of the kind that will form this book has already generated significant interest in the local community - to the extent that Dr Barrett is frequently stopped when out in the field (or simply rambling for pleasure) by local people who ask, \"Are you going to write up this outing for publication?\" And it is further asked “Where can I get hold of previously published walks and wonders?” Publication of this book will answer that FAQ.\r\nCommunity interest in local history, heritage and landscape is already strong, but there is little in print identifying sites and landscapes of significance in Moray and Banffshire, nor connecting this region’s history to the national story.\r\nLocal people in Moray and Banffshire are intrigued by new research in archaeology and history, frequently complaining, \"Why wasn't I told that in school?\", or \"Why is everything always about Stonehenge and the Tudors and the ancient Egyptians? Why can't I find out about my own history?\" And local people are surprised to discover that they inhabit a region that is as rich in archaeological sites and historic landscapes as the well-rehearsed heritage destinations. Publication of this book of walks will benefit the community – and benefit historical research too – by encouraging local historians to recognise the value of their own region’s landscape, history and heritage, and to investigate more deeply neglected aspects of their region’s story.\r\nBy giving a higher profile to the history and heritage of this region, tourists will be attracted to the area, and/or encouraged to make return visits – which will benefit the local economy.\r\nThe profile of partner organisations will be enhanced by the publication, and the local community’s interest in the partner museums will be revitalised.\r\nThe publication will be a resource for schools, who may use it as a classroom resource and also an encouragement to physical activity in exploration of heritage in the landscape.\r\n\r\n\r\n\r\n",
+    "projectDateRange": { "endDate": "2022-01-31", "startDate": "2021-08-12" },
+    "cashContributions": [],
+    "involveInResearch": true,
+    "projectDifference": "The project will promote inclusion by inviting the widest range of people to become interested (and involved in) history, heritage and natural environment.\r\n\r\nIt will support physical and mental wellbeing by encouraging outdoor activity, and promoting interest in the study and experience of local history and environment.\r\n\r\nIt will improve the resilience of organisations working in heritage: by giving them an additional income; through the publicity they receive through their partnership in the project; by the relationship between the sites and monuments visited in the published walks to the artefacts conserved in their museum collections.\r\n\r\nThe project will provide work (and practical training) for staff and volunteers in involved in editing, photography, proofing, subediting, graphics, layout, digitisation and print production.\r\n\r\n\r\n",
+    "projectVolunteers": [
+      {
+        "hours": 500,
+        "description": "Archaeological consultant, office staff, distributions staff, planning of project. "
+      }
+    ],
+    "mainContactAddress": {
+      "line1": "Morriston House, Knock",
+      "county": "Aberdeenshire",
+      "postcode": "AB54 7LJ",
+      "townCity": "HUNTLY"
+    },
+    "projectCapitalWork": false,
+    "organisationAddress": {
+      "line1": "Morriston House, Knock",
+      "county": "Aberdeenshire",
+      "postcode": "AB54 7LJ",
+      "townCity": "HUNTLY"
+    },
+    "organisationMission": [
+      "black-or-minority-ethnic-led",
+      "disability-led",
+      "lgbt+-led",
+      "female-led",
+      "young-people-led",
+      "mainly-catholic-community-led",
+      "mainly-protestant-community-led"
+    ],
+    "projectOrgBestPlace": "Tell us why specifically your organisation should run this project. Demonstrate that you have made contact with relevant projects and organisations in your area.\r\nDr John Barrett, who is a regular contributor to KN Magazine, is a leading academic historian and landscape archaeologist with deep knowledge and experience of the history, heritage and natural environment of Moray – and is uniquely qualified to author the text of this book.\r\nDavid Gordon, editor of KN Magazine, is a professional photographer and hillwalker, based in Moray/Banffshire, and uniquely qualified to provide outstanding illustrations to the text.\r\nThe local authority has no resources available to promote history and heritage within its boundaries. It falls, therefore to private enterprise and voluntary organisations to undertake this work. \r\nKN Magazine is well placed to facilitate this project and bring it to a conclusion. The KN Magazine office and a suite of equipment is available for use in assembling text and pictures into print-ready layouts.\r\nDavid Gordon is qualified and willing to provide staff training and to supervise all aspects of the preparation of page layouts, photographic manipulation, proofing, &c.\r\nKN Magazine resources and contacts are available to be employed in negotiations for the printing of the book. KN Magazine distribution networks are available to ensure the wide dissemination of the book over and above allocations to partner organisations.\r\nDr Barrett and KN Magazine have both worked closely with the partner organisations in recent years: contributing research, publicising activities and publishing articles on their collections.\r\nThe project has been discussed in detail with – and has received encouragement from – Mr Laurie Piper of Moray Speyside Tourism. The proposed project has been welcomed by partner organisations: because it will contribute funding, enhance their profile both within the community and more widely, and complement their own work in preserving, researching and publicising the heritage, history and natural environment of Moray/Banffshire – all at no cost to their own limited funds.\r\n\r\n\r\n\r\n",
+    "nonCashContributions": [
+      {
+        "description": "Archaeological consultant £2000\r\nDistribution staff for distribution of the books £200\r\nMileage for research, distribution etc. £400\r\nVolunteered staff time £5000\r\nOffice overheads £500\r\n\r\n",
+        "estimatedValue": 8100
+      }
+    ],
+    "mainContactDateOfBirth": "1967-05-11",
+    "projectNeedsPermission": "no",
+    "projectOutcome2Checked": true,
+    "projectOutcome3Checked": true,
+    "projectOutcome4Checked": true,
+    "projectOutcome5Checked": true,
+    "projectOutcome6Checked": true,
+    "projectOutcome7Checked": true,
+    "projectOutcome8Checked": true,
+    "projectOutcome9Checked": true,
+    "authorisedSignatoryOneDetails": {
+      "name": "David Gordon",
+      "role": "",
+      "email": "editor@knocknews.net",
+      "phone": "01466771442",
+      "isAlsoApplicant": true
+    },
+    "authorisedSignatoryTwoDetails": {
+      "name": "David Gordon",
+      "role": "",
+      "email": "admin@knocknews.net",
+      "phone": "07941226430",
+      "isAlsoApplicant": false
+    }
+  }
+}

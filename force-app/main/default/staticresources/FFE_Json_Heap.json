@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "form": "3-10k-grant",
+    "username": "davidheap60@hotmail.co.uk",
+    "startedAt": "2021-09-22T16:57:44.670Z",
+    "applicationId": "a10aa01e-0502-4473-905a-c1924282baa2",
+    "schemaVersion": "v1.x"
+  },
+  "application": {
+    "projectName": "The Sir Learie Constantine Terrace",
+    "keepInformed": false,
+    "projectCosts": [
+      {
+        "costId": "1f79922a-5a79-4c86-b3fe-8efd32a89030",
+        "costType": "repair-and-conservation-work",
+        "costAmount": 8000,
+        "costDescription": "Repairs to terrace, building, landscaping, seat repairs and dedication information."
+      }
+    ],
+    "isPartnership": false,
+    "organisationId": "76121661-309f-4793-9a9d-ab595f6e2649",
+    "projectAddress": {
+      "line1": "Nelson Cricket & Bowling Club, Surrey Road",
+      "county": "Lancashire",
+      "townCity": "NELSON",
+      "projectPostcode": "BB9 7TY"
+    },
+    "mainContactName": "David Heap",
+    "projectOutcome1": "Nelson CC is based in an area of the Borough where access to sports facilities are limited. Any improvement on the ground will help attract more people from our ethnically diverse community.\r\nThe dedication of the project to GB's first black peer, an architect of the Race Relations Act and a local hero will certainly generate interest and civic pride.",
+    "projectOutcome2": "Structural repairs",
+    "projectOutcome3": "Local publicity of the project and provision of commemorative information on the terrace",
+    "projectOutcome7": "Allows us to provide better facilities",
+    "projectOutcome8": "See above",
+    "yourIdeaProject": "Nelson CC is a Lancashire League cricket club founded in 1861. We are a founder member of the league which was formed in 1892. We have played at our current Seedhill ground since 1878.\r\nSeedhill has changed greatly over the years to the point that there is only 1 part of the original ground remaining. This is a concrete tiered paddock containing seating from 1878.\r\nThe area has fallen into disrepair, the concrete is crumbling and the wooden seating has rotted. \r\nOur aim is to renovate the area and to dedicate it to our greatest resident professional Sir Learie Constantine who played for 7 seasons in the 1930's. He was the first black overseas professional to play for Nelson. He became the first black peer in The House of Lords and was central to the introduction of The Race Relations Act in Britain.\r\nWe want to repair the concrete terrace, build a rear retaining wall and landscape the area as well as renovate seating. We would like to dedicate individual benches on this terrace to other great professionals of previous seasons eg Steve Waugh, Kapil Devon, Sandra Nawaz, Devon Conway and Joe Scuderi. \r\nIn addition we would like to commemorate the project with a suitable image of the great man. In the 1930's thousands of people from Nelson and the surrounding towns would pack Seedhill to see him play.\r\n Nowadays spectators are sparse and the Leagues greatest years are behind it. Funds raised from gate receipts are meagre and the club's resources are stretched with priorities centred on maintaining our club house and playing facilities.\r\nWe hope with funding for this project we can provide a lasting testament to the Clubs great history.\r\nRecent estimates obtained indicate costs in the region of £7500.00.\r\n\r\n",
+    "mainContactEmail": "davidheap60@hotmail.co.uk",
+    "mainContactPhone": "07854941067",
+    "organisationName": "Nelson Cricket Club",
+    "organisationType": "other-org-type",
+    "projectAvailable": "The terrace will be in regular use and be accessible to all.\r\nThe image of Sir Learie along with the memorial plaque and the dedicated benches will provide a continuing reminder of the clubs heritage.\r\nOngoing maintenance will be provided by club volunteers.",
+    "projectCommunity": "Our community goes far beyond the club's hundred or so members. \r\nThe club is regarded fondly throughout the area. People who no longer come to games talk of the great times of years gone by when they visited the ground to watch the great professionals probably sitting on the seats we hope to preserve.\r\n",
+    "projectDateRange": { "endDate": "2022-03-31", "startDate": "2021-12-01" },
+    "cashContributions": [],
+    "involveInResearch": true,
+    "projectDifference": "Cricket has been played at Seedhiĺl for around 150 years. There is a very real liklihood that without essential restoration the only part of our original ground will be lost along with the memories of great past times.\r\nThe ground is very much a focal point of our community and it provides fond memories particularly to our older members, supporters and visitors. Our club house is full of pictures of the ground and its history but the terrace is the only real tangible part of that great history.\r\n",
+    "projectVolunteers": [
+      {
+        "hours": 50,
+        "description": "Players (senior and junior), members, supporters and friends of the club. "
+      }
+    ],
+    "mainContactAddress": {
+      "line1": "11 Hamilton Road, Barrowford",
+      "county": "Lancashire",
+      "postcode": "BB9 6DE",
+      "townCity": "NELSON"
+    },
+    "projectCapitalWork": true,
+    "organisationAddress": {
+      "line1": "Nelson Cricket & Bowling Club, Surrey Road",
+      "county": "Lancashire",
+      "postcode": "BB9 7TY",
+      "townCity": "NELSON"
+    },
+    "organisationMission": [],
+    "projectOrgBestPlace": "Nelson Cricket Club owns the long term lease on the ground and is therefore best placed to manage, deliver and sustain the project.\r\nThe project will be managed by the club Committee with grant funding used to engage local building contractors.\r\n",
+    "nonCashContributions": [],
+    "mainContactDateOfBirth": "1960-05-03",
+    "projectNeedsPermission": "no",
+    "projectOutcome2Checked": true,
+    "projectOutcome3Checked": true,
+    "projectOutcome4Checked": false,
+    "projectOutcome5Checked": false,
+    "projectOutcome6Checked": false,
+    "projectOutcome7Checked": true,
+    "projectOutcome8Checked": true,
+    "projectOutcome9Checked": false,
+    "authorisedSignatoryOneDetails": {
+      "name": "David Heap",
+      "role": "",
+      "email": "davidheap60@hotmail.co.uk",
+      "phone": "07854941067",
+      "isAlsoApplicant": true
+    },
+    "authorisedSignatoryTwoDetails": {
+      "name": "Colin Pemberton",
+      "role": "",
+      "email": "cdp7475@gmail.com",
+      "phone": "07702711308",
+      "isAlsoApplicant": false
+    }
+  }
+}

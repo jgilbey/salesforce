@@ -1,0 +1,3 @@
+<apex:page standardController="Forms__c" docType="html-5.0" title="Webmerge Case: {!Forms__c.Name}">
+    <webm:WebmergeWizard record="{!Forms__c}" browserPreview="true" />
+</apex:page>

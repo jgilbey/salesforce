@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Private</cacheControl>
+    <contentType>application/json</contentType>
+    <description>On this 3-10k application, applicant added a suffix to the charity number and prefix to the company number.  Removed these and resubmitted 9th August 2021</description>
+</StaticResource>

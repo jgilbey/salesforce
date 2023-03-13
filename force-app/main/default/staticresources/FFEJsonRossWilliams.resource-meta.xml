@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Private</cacheControl>
+    <contentType>application/json</contentType>
+    <description>3-10K that failed as the email on the sig has a different case to the email for the applicant - so isAlsoApplicant not populated for Salesforce.  Fixed now in production.</description>
+</StaticResource>

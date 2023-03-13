@@ -1,0 +1,46 @@
+{
+  "appPageId" : "2d3bc8c8-8dc6-4bd0-9cfa-19493739faa2",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "6bc13313-40f1-44de-b0f0-d52fb0f19959",
+  "label" : "PersonalInformation",
+  "regions" : [ {
+    "id" : "8b0eb05a-fbb9-46da-abcd-3e22506ba5c1",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "c:personalInformationComponent",
+      "id" : "57705a21-eda4-4b49-aad3-2f4d02249103",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "29dfe2a1-e029-451b-8f61-02a7f24d40c4",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "001eddf9-1e99-415c-922b-5bf0f80ddb21",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Personal Information"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "532c7032-b28c-4ef5-b861-eeab09a605b4",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "dc7cdda6-84c7-40eb-a818-d5bcb25ffc50",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "1cX0S1bSqgrTgdAnT9u3op0Su7ycwP",
+  "type" : "view",
+  "viewType" : "custom-personalinformation"
+}

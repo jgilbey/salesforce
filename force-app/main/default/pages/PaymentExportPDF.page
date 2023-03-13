@@ -1,0 +1,72 @@
+<apex:page controller="CSVExport_ExportHelper" showHeader="false" applyHtmlTag="false" applyBodyTag="false" language="en" renderAs="pdf">
+    <!--<apex:page controller="CSVExport_ExportHelper" showHeader="false" applyHtmlTag="false" applyBodyTag="false" language="en" renderAs="pdf" >-->
+    <head>
+        <style>
+            @page{
+                size: A4 landscape;
+            
+            	@bottom-center {
+                    content: "Page " counter(page) " of " counter(pages);
+                }
+            }
+            body {
+                font-family: 'Arial Unicode MS';
+            	font-size:65%;
+            }
+            table {
+              width: 100%;
+              border-collapse: collapse;
+            }
+            th{
+              padding: 5px;
+              border-bottom: 1px solid black;
+              border-collapse: collapse;
+              font-weight:bolder;
+            }
+            td{
+              padding: 0px 5px;
+            }
+        </style>
+    </head>
+    
+    <h1>
+        IMS Payment Export - {!NOW()}
+    </h1>
+    
+    <table >
+            <thead >
+                <tr >
+                    <th>Export Reference</th>
+                    <th>Project Reference</th>
+                    <th>Project Title</th>
+                    <th>Organisation Name</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Bank Account Name</th>
+                    <th>Bank Account Number</th>
+                    <th>Sort Code</th>
+                    <th>Roll Number</th>
+                    <th>Payment Reference</th>
+                </tr>
+            </thead>
+            <tbody>
+                <apex:repeat value="{!PaymentRecords}" var="record">
+                    <tr>
+                        <td>{!record.Name}</td>
+                        <td>{!record.Case__r.Project_Reference_Number__c}</td>
+                        <td>{!record.Case__r.Project_Title__c}</td>
+                        <td>{!record.Case__r.Account.Name}</td>
+                        <td>{!record.Grant_Type__c}</td>
+                        <td>{!record.Amount_Authorised__c}</td>
+                        <td>{!record.Bank_Account__r.Account_Name__c}</td>
+                        <td>{!record.Bank_Account__r.Account_Number__c}</td>
+                        <td>{!record.Bank_Account__r.Sort_Code__c}</td>
+                        <td>{!record.Bank_Account__r.Building_Society_Roll_Numbe__c}</td>
+                        <td>{!record.Payment_Reference_number__c}</td>
+                    </tr>
+                </apex:repeat>
+        	</tbody>
+    </table>
+        
+    
+</apex:page>

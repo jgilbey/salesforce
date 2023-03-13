@@ -1,0 +1,11 @@
+{
+  "activeViewId" : "08fe375c-9ad0-4fa3-b850-e408b8df2588",
+  "appPageId" : "9a06b659-cc86-48fa-a38d-0a6938d33ef8",
+  "configurationTags" : [ ],
+  "id" : "f12a8920-6a33-4c64-ba17-0fa563b5efda",
+  "label" : "9. Declaration",
+  "pageAccess" : "UseParent",
+  "routeType" : "custom-declaration",
+  "type" : "route",
+  "urlPrefix" : "apply-development/declaration"
+}

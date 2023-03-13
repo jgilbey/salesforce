@@ -1,0 +1,9 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global">
+    <div>
+        <aura:unescapedHtml value="{!$Label.c.AccessibilityPage_Part_1}" />
+        <aura:unescapedHtml value="{!$Label.c.AccessibilityPage_Part_2}" />
+        <aura:unescapedHtml value="{!$Label.c.AccessibilityPage_Part_3}" />
+        <aura:unescapedHtml value="{!$Label.c.AccessibilityPage_Part_4}" />
+        <aura:unescapedHtml value="{!$Label.c.AccessibilityPage_Part_5}" />
+    </div>
+</aura:component>

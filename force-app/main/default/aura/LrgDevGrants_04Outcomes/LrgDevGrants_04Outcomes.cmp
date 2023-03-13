@@ -1,0 +1,96 @@
+<aura:component implements="force:hasRecordId,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:appHostable" 
+                access="global" 
+                controller="LrgDevGrantCtrl">
+
+    <c:Util_LrgDevGrants aura:id="Utils"/>
+       
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="readOnly" type="boolean" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="govuk-main-wrapper">
+        <div class="tabHeader">
+            <h1 class="govuk-heading-l">{!$Label.c.LrgDevGrant_4}</h1>
+        </div>
+    
+        <lightning:recordEditForm recordId="{!v.recordId}" objectApiName="Case" onsuccess="{!c.onSuccess}" >
+            <lightning:messages />
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_4_1_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_4_1_0}" fieldName="Outcome_Wide_range_of_people__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_4_2_1}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_4_2_1}" fieldName="Heritage_will_be_in_better_condition__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_4_2_2}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_4_2_2}" fieldName="Outcome_Heritage_in_better_condition__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_4_2_3}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_4_2_3}" fieldName="Identified_and_better_explained__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_4_2_4}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_4_2_4}" fieldName="Outcome_Heritage_identified_explained__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_4_2_5}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_4_2_5}" fieldName="People_will_have_developed_skills__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_4_2_6}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_4_2_6}" fieldName="Outcome_Developed_Skills__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_4_2_7}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_4_2_7}" fieldName="People_will_have_learned_about_heritage__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_4_2_8}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_4_2_8}" fieldName="Outcome_Learning_about_heritage__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_4_2_9}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_4_2_9}" fieldName="People_will_have_greater_wellbeing__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_4_2_10}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_4_2_10}" fieldName="Outcome_Greater_well_being__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_4_2_11}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_4_2_11}" fieldName="The_organisation_will_be_more_resilient__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_4_2_12}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_4_2_12}" fieldName="Outcome_Resilient_organisation__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_4_2_13}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_4_2_13}" fieldName="A_better_place_to_live_work_or_visit__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_4_2_14}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_4_2_14}" fieldName="Outcome_Better_place_to_live__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_4_2_15}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_4_2_15}" fieldName="The_local_economy_will_be_boosted__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_4_2_16}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_4_2_16}" fieldName="Outcome_Boosted_Economy__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+
+            <aura:if isTrue="{!v.readOnly}">
+                <div >
+                    <div class="col2-1">
+                        <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.back}" label="{!$Label.c.Back}" />
+                    </div>
+                    <div class="col2-2">
+                        <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.next}" label="{!$Label.c.Continue}"/>
+                    </div>
+                </div>
+                
+                <aura:set attribute="else">
+                    <div >
+                        <div class="col2-1">
+                            <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.back}" label="{!$Label.c.Back}" />
+                        </div>
+                        <div class="col2-2">
+                            <lightning:button class="govuk-button btn-col2" variant="brand" type="submit" name="update" label="{!$Label.c.SaveAndContinue}"/>
+                        </div>
+                    </div>
+                
+                </aura:set>
+                
+            </aura:if>
+        </lightning:recordEditForm>
+    </div>    
+</aura:component>

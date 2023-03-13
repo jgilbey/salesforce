@@ -1,0 +1,52 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,force:lightningQuickActionWithoutHeader" controller="NotifyApplicantComponentController" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:attribute name="status" type="String" default="none"/>
+    <aura:attribute name="disableSendEmail" type="Boolean" default="False"/>
+    <aura:attribute name="notify" type="Boolean"/>
+    <aura:attribute name="contactName" type="String"/>
+
+    <aura:html tag="style">
+        .cuf-content {
+            padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+            padding: 0rem !important;
+        }    
+        .slds-modal__content{
+        overflow-y:hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        };
+    </aura:html>
+
+    <div class="slds-col modal-header slds-modal__header">
+        <h2 class="slds-text-heading_medium">{!$Label.c.Notify_Applicant}</h2>
+    </div>
+    
+    <aura:if isTrue="{!v.notify}">
+
+        <div class="slds-text-body_regular slds-m-top_large slds-m-bottom_large slds-align_absolute-center">
+            <h3 class="slds-text-heading_small">{!$Label.c.Project_status}:&nbsp;{!v.status}</h3>
+        </div>
+        <div class="slds-text-body_regular slds-m-top_large slds-m-bottom_large slds-align_absolute-center">
+            <h3 class="slds-text-heading_small">{!$Label.c.Are_you_sure_to_notify}&nbsp;{!v.contactName}&nbsp;{!$Label.c.by_email}</h3>
+        </div>
+
+        <div class="slds-col modal-footer slds-modal__footer">
+            <lightning:button variant="Brand" class="slds-button" label="{!$Label.c.Send_email}" onclick="{!c.sendEmail}" disabled="{!v.disableSendEmail}"/>
+            <lightning:button variant="Neutral" class="slds-button" label="{!$Label.c.Close}" onclick="{!c.handleExit}"/>
+        </div>
+
+        <aura:set attribute="else">
+            <div class="slds-text-body_regular slds-m-top_large slds-m-bottom_large slds-align_absolute-center">
+                <h3 class="slds-text-heading_small">{!$Label.c.Cannot_Notify_Applicant}</h3>
+            </div>
+            <div class="slds-col modal-footer slds-modal__footer">
+                <lightning:button variant="Neutral" class="slds-button" label="{!$Label.c.Close}" onclick="{!c.handleExit}"/>
+            </div>
+        </aura:set>
+
+    </aura:if>
+
+</aura:component>

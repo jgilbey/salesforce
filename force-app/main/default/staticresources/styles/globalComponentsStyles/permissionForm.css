@@ -1,0 +1,6 @@
+c-permission-form .slds-form-element__label{
+    all: inherit;
+}
+c-permission-form .label-margin .slds-form-element__label{
+    margin-bottom: 1rem;
+}

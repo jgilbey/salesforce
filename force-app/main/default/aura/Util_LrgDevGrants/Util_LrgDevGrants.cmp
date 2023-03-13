@@ -1,0 +1,12 @@
+<aura:component controller="LrgDevGrantCtrl" implements="force:hasRecordId,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:appHostable" 
+                access="global" >
+    <link rel="stylesheet" href="{!$Resource.gov_style}"/>
+    
+	<aura:method name="getProject" action="{!c.init}">
+        <aura:attribute name="projId" type="String" />
+        <aura:attribute name="component" type="Aura.Component"/>
+        <aura:attribute name="successFunction" type="Function" />
+        
+    </aura:method>
+    
+</aura:component>

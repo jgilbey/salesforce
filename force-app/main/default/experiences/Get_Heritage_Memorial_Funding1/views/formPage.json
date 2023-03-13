@@ -1,0 +1,80 @@
+{
+  "appPageId" : "2d3bc8c8-8dc6-4bd0-9cfa-19493739faa2",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "a5d8f6d7-e271-44a2-a68e-394f6c402503",
+  "label" : "Form Page",
+  "regions" : [ {
+    "id" : "9e609f32-637f-40b2-a44b-e5b257dd1761",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "formId" : "{!formId}"
+      },
+      "componentName" : "c:requestPage",
+      "id" : "17470a23-d548-4f3c-b80f-15b852b7f00c",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "ec04501c-40d1-4cb1-96e0-7d258af6377d",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "73c3fb3a-d9a5-4fbd-8a74-aea3b5f04e47",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Form Page"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "3e33b68e-579c-417f-9f6d-48d954b924e6",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "94d69f00-5a91-4876-b337-42a4b0d6e617",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "context" : "RECORD",
+        "recordId" : "{!formId}",
+        "width" : "MEDIUM"
+      },
+      "componentName" : "forceCommunity:feedPublisher",
+      "id" : "900bd757-6439-4ab5-a4a4-1d328b90fdaa",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "canChangeSorting" : true,
+        "defaultFilter" : "",
+        "defaultSortOrderHomeFeed" : "Relevance",
+        "defaultSortOrderTopicsFeed" : "Relevance",
+        "feedDesign" : "DEFAULT",
+        "hasFeedSearch" : true,
+        "subjectId" : "{!formId}",
+        "type" : "Record"
+      },
+      "componentName" : "forceCommunity:forceCommunityFeed",
+      "id" : "2a58abf4-2d85-44da-a998-748dddc3a7f6",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "7f604d2b-b464-4a2d-9a08-4634be86e853",
+    "regionName" : "sidebar",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "1cX0S1bSqgrTgdAnT9u3op0Su7ycwP",
+  "type" : "view",
+  "viewType" : "custom-form-page"
+}

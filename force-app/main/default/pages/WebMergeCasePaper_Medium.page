@@ -1,0 +1,5 @@
+<apex:page standardController="Case_Papers__c" docType="html-5.0" title="Webmerge Certificate: {!Case_Papers__c.Name}">
+    <apex:slds />
+        <webm:WebmergeWizard record="{!Case_Papers__c}" mappingId="a0N4J000004WlEZUA0"/>
+    
+</apex:page>

@@ -1,0 +1,15 @@
+{
+  "defaultCode" : "en_US",
+  "defaultLabel" : "English (US)",
+  "id" : "75d1cbd1-f14b-480b-9b16-879938c16340",
+  "languages" : [ {
+    "countryCode" : "",
+    "fallbackLanguageId" : null,
+    "id" : "c61fd326-d041-4abd-a8af-d116933b2dd1",
+    "isActive" : true,
+    "label" : "Welsh",
+    "languageCode" : "cy",
+    "type" : "language"
+  } ],
+  "type" : "languageContainer"
+}

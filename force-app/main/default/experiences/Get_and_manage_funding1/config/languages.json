@@ -1,0 +1,15 @@
+{
+  "defaultCode" : "en_US",
+  "defaultLabel" : "English (US)",
+  "id" : "d9400409-be51-46b3-aeea-fcad56b0f6aa",
+  "languages" : [ {
+    "countryCode" : "",
+    "fallbackLanguageId" : null,
+    "id" : "85b46858-ed80-41fd-ab7c-d6bd9694f03b",
+    "isActive" : true,
+    "label" : "Cymraeg",
+    "languageCode" : "cy",
+    "type" : "language"
+  } ],
+  "type" : "languageContainer"
+}

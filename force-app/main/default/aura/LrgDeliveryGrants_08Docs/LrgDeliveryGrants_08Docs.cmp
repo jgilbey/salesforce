@@ -1,0 +1,158 @@
+<aura:component implements="force:hasRecordId,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:appHostable" 
+                access="global" 
+                controller="LrgDevGrant_DocsCtrl">
+
+    <c:Util_LrgDeliveryGrants aura:id="Utils"/>
+       
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="readOnly" type="boolean" />
+    <aura:attribute name="uploadedDocs" type="list" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="govuk-main-wrapper">
+        <div class="tabHeader">
+            <h1 class="govuk-heading-l">{!$Label.c.LrgDevGrant_8}</h1>
+        </div>
+    
+        <form class="gem-c-govspeak govuk-govspeak " >
+            
+            <p>{!$Label.c.LrgDevGrant_8_1}</p>
+            
+            <p>{!$Label.c.LrgDevGrant_8_7}</p>        
+                    
+            <table class="slds-table slds-table--bordered slds-table--cell-buffer slds-table--striped slds-max-medium-table--stacked-horizontal"
+                role="grid">
+                <thead>
+                    <tr class="govuk-label">
+                        <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                            {!$Label.c.LrgDevGrant_8_Tbl1_Col_Name}
+                        </th>
+                        <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                            {!$Label.c.LrgDevGrant_8_Tbl1_Col_Type}
+                        </th>
+                        <aura:if isTrue="{!!v.readOnly}">
+                            <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                                {!$Label.c.Delete}
+                            </th>
+                        </aura:if>
+                    </tr>
+                </thead>
+                <tbody>
+                    <aura:iteration var="item" items="{!v.uploadedDocs}">
+                        <tr class="">
+                            <td role="gridcell" class="slds-cell-wrap" data-label="{!$Label.c.LrgDevGrant_8_Tbl1_Col_Name}">
+                                <div class="">
+                                    {!item.ContentDocument.Title}
+                                </div>
+                            </td>
+                            <td role="gridcell" class="slds-cell-wrap" data-label="{!$Label.c.LrgDevGrant_8_Tbl1_Col_Type}">
+                                <div class="">
+                                    {!item.ContentDocument.FileType}
+                                </div>
+                            </td>
+                            <aura:if isTrue="{!!v.readOnly}">
+                                <td role="gridcell" class="slds-cell-wrap" data-label="{!$Label.c.Delete}">
+                                    <div class="" data-selected-id="{!item.ContentDocument.Id}">
+                                        <lightning:button class="" variant="Neutral" onclick="{!c.deleteDoc}" label="{!$Label.c.Delete}" />
+                                    </div>
+                                </td>
+                            </aura:if>
+                        </tr>
+                    </aura:iteration>
+                    <aura:if isTrue="{!empty(v.uploadedDocs)}">
+                            <tr class="">
+                                <td colspan="3" >
+                                    <p>{!$Label.c.LrgDevGrant_8_Tbl1_NoRows}</p>
+                                </td>
+                            </tr>
+                    </aura:if>
+                </tbody>
+            </table>
+            
+            <div style="margin-top:25px;">
+                
+                <p>{!$Label.c.Supported_file_types}: .jpg, .doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx</p>
+                
+                <aura:if isTrue="{!and(not(empty(v.recordId)),!v.readOnly)}">
+                    <c:FileUpload recordId="{#v.recordId}" />
+                </aura:if>         
+            </div>
+
+            <div class="button-container">
+                <lightning:button class="govuk-button" variant="brand" onclick="{!c.refreshDocList}" label="{!$Label.c.Refresh}" />
+            </div>
+            
+            <!-- List of Supporting documents -->
+            <h2 class="govuk-heading-m">{!$Label.c.LrgDevGrant_8_8}</h2>
+            
+            <h3 class="govuk-heading-s">1. {!$Label.c.LrgDevGrant_8_Delivery1}</h3>
+            
+            <h3 class="govuk-heading-s">2. {!$Label.c.LrgDevGrant_8_Delivery2}</h3>
+            <p>{!$Label.c.LrgDevGrant_8_Delivery2_desc}</p>   
+            
+            <h3 class="govuk-heading-s">3. {!$Label.c.LrgDevGrant_8_Delivery3}</h3>
+            <p>{!$Label.c.LrgDevGrant_8_Delivery3_desc}</p>
+            
+            <h3 class="govuk-heading-s">4. {!$Label.c.LrgDevGrant_8_Delivery4}</h3>
+            
+            <h3 class="govuk-heading-s">5. {!$Label.c.LrgDevGrant_8_Delivery5}</h3>
+            <p>{!$Label.c.LrgDevGrant_8_Delivery5_desc}</p>
+            
+            <h3 class="govuk-heading-s"> 6. {!$Label.c.LrgDevGrant_8_Delivery6} </h3>
+            <p>{!$Label.c.LrgDevGrant_8_Delivery6_desc}</p>
+        
+            <h3 class="govuk-heading-s">7. {!$Label.c.LrgDevGrant_8_Delivery7}</h3>
+            <p>{!$Label.c.LrgDevGrant_8_Delivery7_desc}</p>
+            
+            <h3 class="govuk-heading-s">8. {!$Label.c.LrgDevGrant_8_Delivery8}</h3>
+            <p>{!$Label.c.LrgDevGrant_8_Delivery8_desc}</p>
+            
+            <h3 class="govuk-heading-s">9. {!$Label.c.LrgDevGrant_8_Delivery9}</h3>
+            <p>{!$Label.c.LrgDevGrant_8_Delivery9_desc}</p>
+            
+            <h3 class="govuk-heading-s">10. {!$Label.c.LrgDevGrant_8_Delivery10}</h3>
+            <p>{!$Label.c.LrgDevGrant_8_Delivery10_desc}</p> 
+            
+            <h3 class="govuk-heading-s">11. {!$Label.c.LrgDevGrant_8_Delivery11}</h3>
+            <p>{!$Label.c.LrgDevGrant_8_Delivery11_desc}</p>
+                
+            <h3 class="govuk-heading-s">12.{!$Label.c.LrgDevGrant_8_Delivery12}</h3>
+            <p>{!$Label.c.LrgDevGrant_8_Delivery12_desc}</p>
+                
+            <h3 class="govuk-heading-s">13.{!$Label.c.LrgDevGrant_8_Delivery13}</h3>
+            <p>{!$Label.c.LrgDevGrant_8_Delivery13_desc}</p>
+            
+            <h3 class="govuk-heading-s">14.{!$Label.c.LrgDevGrant_8_Delivery14}</h3>
+            
+            <h3 class="govuk-heading-s">15. {!$Label.c.LrgDevGrant_8_Delivery15}</h3>
+            
+            <h3 class="govuk-heading-s">16. {!$Label.c.LrgDevGrant_8_Delivery16}</h3>
+            
+            <h3 class="govuk-heading-s">17. {!$Label.c.LrgDevGrant_8_Delivery17}</h3>
+            
+            <h3 class="govuk-heading-s">18. {!$Label.c.LrgDevGrant_8_Delivery18}</h3>
+
+            <h3 class="govuk-heading-s">19. {!$Label.c.LrgDevGrant_8_Delivery19}</h3>
+            <p>{!$Label.c.LrgDevGrant_8_Delivery19_desc}</p>
+
+            <h3 class="govuk-heading-s">20. {!$Label.c.LrgDevGrant_8_Delivery20}</h3>
+            <p>{!$Label.c.LrgDevGrant_8_Delivery20_desc}</p>
+                
+            <h3 class="govuk-heading-s">21. {!$Label.c.LrgDevGrant_8_Delivery21}</h3>
+            <p>{!$Label.c.LrgDevGrant_8_Delivery21_desc}</p>
+                    
+            <div class="slds-form" aura:id="btnNav"> 
+                <div >
+                    <div class="col2-1">
+                        <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.back}" label="{!$Label.c.Back}" />
+                    </div>
+                    <div class="col2-2">
+                        <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.next}" label="{!$Label.c.SaveAndContinue}"/>
+                    </div>
+                </div>      
+            </div>
+        </form>
+    </div>
+    
+</aura:component>

@@ -1,0 +1,5 @@
+<apex:component >
+    <apex:attribute name="recordObject" description="This is the value for the component."
+        type="sObject" required="true"/>
+    <webm:WebmergeWizard record="{!recordObject}" nameField="CaseNumber" />
+</apex:component>

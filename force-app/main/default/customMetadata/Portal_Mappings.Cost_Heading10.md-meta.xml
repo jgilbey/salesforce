@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Cost Heading10</label>
+    <protected>false</protected>
+    <values>
+        <field>FieldName__c</field>
+        <value xsi:type="xsd:string">Cost_heading__c</value>
+    </values>
+    <values>
+        <field>Object__c</field>
+        <value xsi:type="xsd:string">Project_Cost__c</value>
+    </values>
+    <values>
+        <field>Portal_Value__c</field>
+        <value xsi:type="xsd:string">travel-for-staff</value>
+    </values>
+    <values>
+        <field>Task_Category_Value__c</field>
+        <value xsi:type="xsd:string">Travel for staff</value>
+    </values>
+</CustomMetadata>

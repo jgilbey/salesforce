@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Private</cacheControl>
+    <contentType>application/json</contentType>
+    <description>FFE to SF link broke down on 21st June.  This 3-10k came in at that time.  Resubmitted.</description>
+</StaticResource>

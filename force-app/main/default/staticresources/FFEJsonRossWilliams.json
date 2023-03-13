@@ -1,0 +1,95 @@
+{
+  "meta": {
+    "form": "3-10k-grant",
+    "username": "rossw1989@outlook.com",
+    "startedAt": "2021-06-25T20:27:53.840Z",
+    "applicationId": "766c8069-d387-415f-a676-38317f242da5",
+    "schemaVersion": "v1.x"
+  },
+  "application": {
+    "projectName": "Pub refurbishment",
+    "keepInformed": false,
+    "projectCosts": [
+      {
+        "costId": "74ff4db9-8173-4abe-a4fe-9fa6ed0bc856",
+        "costType": "repair-and-conservation-work",
+        "costAmount": 10000,
+        "costDescription": "New rood tiles\r\n6x wood sash windows\r\nNew front wall rendering\r\nNew front wall and slabs. "
+      }
+    ],
+    "isPartnership": false,
+    "organisationId": "8491f176-9447-4d77-8305-815178714d7b",
+    "projectAddress": {
+      "line1": "The Lantern, Cambrian House, Bethesda Street",
+      "county": "Mid Glamorgan",
+      "townCity": "MERTHYR TYDFIL",
+      "projectPostcode": "CF47 8LN"
+    },
+    "mainContactName": "Ross williams",
+    "projectOutcome1": "We have reached out to local tradesman to help us refurbish the building from local carpenters, electricians, plumbers and local authority.\r\n\r\nThis will help their businesses grow by putting their mark on our building by helping us bring it back to its former state and by enjoying the facilities we have to offer. ",
+    "projectOutcome2": "Building will be like new and have up to date facilities. ",
+    "projectOutcome6": "They will enjoy the outcome of what the building has become after we have brought it up to date with the modern world. ",
+    "projectOutcome8": "People will visit us time again and enjoy the options and variety of food and drinks we have to offer ",
+    "projectOutcome9": "Currently there are alot of public houses in merthyr which look very dated, we hope to stand out by being a up to date modern public house but with heritage characteristics that show the history of our local area. ",
+    "yourIdeaProject": "This building is built next to a grade 2 listed building in a heritage conservation area.\r\nThe building is very old and in need of a refurbishment on the outside of the building. \r\n\r\nNew sash windows\r\nNew roof tiles\r\nNew rendering.\r\n\r\nWe are looking for help in funding the project to replace old for new with like for like items so we can bring it back to its former glory. ",
+    "mainContactEmail": "rossw1989@outlook.com",
+    "mainContactPhone": "07557418201",
+    "organisationName": "The lantern",
+    "organisationType": "private-owner-of-heritage",
+    "projectAvailable": "This will be a fully functioning public house for food and drink to the local community.\r\n\r\nIt will be family run and maintained for many years to come for the local town to visit and enjoy as it sits in a heritage area next to the taff trail and cottages which date back to the early 1800s plus.\r\n\r\nMy maintaining this building we hope many will come visit and enjoy what we have to offer as this is a new project for us as a family and any help would be greatful to help us achieve our goal. ",
+    "projectCommunity": "This is a very popular building for the local community, this building used to have catering facilities but sadly over the years they have not been able to use those facilities as it had decayed through wear and tear.\r\nWe are in the process of bringing that side of the building back and bringing the character of the building back by completely renewing the outside of it back to how it once was as a new build. ",
+    "projectDateRange": {
+      "endDate": "2021-11-01",
+      "startDate": "2021-07-15"
+    },
+    "cashContributions": [],
+    "involveInResearch": false,
+    "projectDifference": "Currently the building looks old and worn, our plans are to bring it back to its former self so people appreciate the building once more.\r\n\r\nThe building has been left to decay over the years it has passed from owner to owner and we are the first ones who have just purchased the building who want to make a real difference. ",
+    "projectVolunteers": [
+      {
+        "hours": 5,
+        "description": "No volunteer, all run by family"
+      }
+    ],
+    "mainContactAddress": {
+      "line1": "20 Llwyncelyn Close",
+      "county": "Mid Glamorgan",
+      "postcode": "CF48 1AH",
+      "townCity": "MERTHYR TYDFIL"
+    },
+    "projectCapitalWork": false,
+    "organisationAddress": {
+      "line1": "The Lantern, Cambrian House, Bethesda Street",
+      "county": "Mid Glamorgan",
+      "postcode": "CF47 8LN",
+      "townCity": "MERTHYR TYDFIL"
+    },
+    "organisationMission": [],
+    "projectOrgBestPlace": "We have all the tools ready to operate this facility from local suppliers, epos tills, local entertainment and creating jobs I. The community.\r\nWe hope to grow this business as a family and improve the quality of life in the area by creating a local public house the town can be proud of. ",
+    "nonCashContributions": [],
+    "mainContactDateOfBirth": "1989-10-12",
+    "projectNeedsPermission": "no",
+    "projectOutcome2Checked": true,
+    "projectOutcome3Checked": false,
+    "projectOutcome4Checked": false,
+    "projectOutcome5Checked": false,
+    "projectOutcome6Checked": true,
+    "projectOutcome7Checked": false,
+    "projectOutcome8Checked": true,
+    "projectOutcome9Checked": true,
+    "authorisedSignatoryOneDetails": {
+      "name": "Lee ingram",
+      "role": "",
+      "email": "rossw1989@outlook.com",
+      "phone": "07557418201",
+      "isAlsoApplicant": true
+    },
+    "authorisedSignatoryTwoDetails": {
+      "name": "Ross williams",
+      "role": "",
+      "email": "Rossdaboss06@hotmail.co.uk",
+      "phone": "07557418201",
+      "isAlsoApplicant": false
+    }
+  }
+}

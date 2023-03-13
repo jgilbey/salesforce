@@ -1,0 +1,45 @@
+<apex:page controller="CSVExport_ExportHelper" cache="true" contenttype="application/x-excel#IMSPaymentExport.xls" showheader="false">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+</head>
+    <h1>
+        IMS Payment Export - {!NOW()}
+    </h1>
+	<form>
+        <table >
+                <thead >
+                    <tr >
+                        <th>Export Reference</th>
+                        <th>Project Reference</th>
+                        <th>Project Title</th>
+                        <th>Organisation Name</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Bank Account Name</th>
+                        <th>Bank Account Number</th>
+                        <th>Sort Code</th>
+                        <th>Roll Number</th>
+                        <th>Payment Reference</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <apex:repeat value="{!PaymentRecords}" var="record">
+                        <tr>
+                            <td  style="vnd.ms-excel.numberformat:@">{!record.Name}</td>
+                            <td  style="vnd.ms-excel.numberformat:@">{!record.Case__r.Project_Reference_Number__c}</td>
+                            <td  style="vnd.ms-excel.numberformat:@">{!record.Case__r.Project_Title__c}</td>
+                            <td  style="vnd.ms-excel.numberformat:@">{!record.Case__r.Account.Name}</td>
+                            <td  style="vnd.ms-excel.numberformat:@">{!record.Grant_Type__c}</td>
+                            <td  style="vnd.ms-excel.numberformat:@">{!record.Amount_Authorised__c}</td>
+                            <td  style="vnd.ms-excel.numberformat:@">{!record.Bank_Account__r.Account_Name__c}</td>
+                            <td  style="vnd.ms-excel.numberformat:@">{!record.Bank_Account__r.Account_Number__c}</td>
+                            <td  style="vnd.ms-excel.numberformat:@">{!record.Bank_Account__r.Sort_Code__c}</td>
+                            <td  style="vnd.ms-excel.numberformat:@">{!record.Bank_Account__r.Building_Society_Roll_Numbe__c}</td>
+                            <td  style="vnd.ms-excel.numberformat:@">{!record.Payment_Reference_number__c}</td>
+                        </tr>
+                    </apex:repeat>
+                </tbody>
+        </table>
+    </form>       
+    
+</apex:page>

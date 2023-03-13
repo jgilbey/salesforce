@@ -1,6 +1,34 @@
 <template>
   <template if:true={cost}>
     <template if:false={deleted}>
+
+    <template if:true={largeGrantDelivery}>
+
+      <td data-label="Cost Type"
+      data-id={cost.index}
+      data-field="Cost_Type__c">
+  
+      <div class="picklistBlock"> 
+        <label class="slds-form-element__label"></label>
+        <c-selectlist
+        placeholder={cost.Cost_Type__c}
+        is-select={visible}
+        title="Cost_Type__c"
+        style-class={styleClass} 
+        options={costTypeList} 
+        value={cost.Cost_Type__c} 
+        onchange={handleOnChange} 
+        data-id={cost.index}
+        field-id={cost.Cost_Type__c}
+        data-field="Cost_Type__c"
+        name="Cost_Type__c"
+        disabled={disabled}>
+        </c-selectlist>
+      </div>
+  </td>   
+ 
+
+    </template>      
     <td data-label="Heading"
         data-id={cost.index}
         data-field="Cost_heading__c">

@@ -1,0 +1,110 @@
+<aura:component implements="forceCommunity:themeLayout" access="global" description="Theme Layout Full Width"
+    controller="ProfileMenuController">
+
+    <aura:attribute name="searchOpened" type="Boolean" default="false" />
+
+    <aura:attribute name="search" type="Aura.Component[]" required="false" />
+    <aura:attribute name="profileMenu" type="Aura.Component[]" required="false" />
+    <aura:attribute name="language" type="Aura.Component[]" required="false" />
+    <aura:attribute name="username" type="String" default="" />
+    <aura:attribute name="usernameId" type="Boolean" default="true" />
+    <aura:attribute name="path" type="String" default="/s/" />
+    <aura:attribute name="navOpened" type="Boolean" default="false" />
+    <aura:attribute name="pageReference" type="Object" default="{}" />
+
+    <aura:attribute name="newHeader" type="Aura.Component[]" required="false" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.pageReference}" action="{!c.updateUrl}" />
+    <aura:handler event="forceCommunity:routeChange" action="{!c.updateUrl}" />
+
+    <aura:attribute name="currentUser" type="Object" />
+    <aura:attribute name="currentUserRecord" type="Object" />
+    <aura:attribute name="userId" type="Id" />
+    <aura:attribute name="isGeneric" type="Boolean" default="true" />
+    <aura:attribute name="showMonitoring" type="Boolean" default="false" />
+
+    <ltng:require styles="{!$Resource.styles+'/communityGlobalStyles.css'}"/>
+
+    <!-- <aura:if isTrue="{!v.userId != null}">
+        <force:recordData aura:id="recordLoader" recordId="{!v.userId}" fields="Name,SmallPhotoUrl"
+        targetFields="{!v.currentUserRecord}" />
+    </aura:if> -->
+
+    <lightning:navigation aura:id="navService" />
+
+    <!--
+    <aura:attribute name="navBar" type="Aura.Component[]" required="false"/>
+ -->
+
+
+    <div aura:id="theme">
+        <div class="theme-main">
+            <div class="header-panel slds-container--fluid">
+
+                <div class="header-overlay">
+
+                    <div
+                        class="header-line main-header slds-is-relative slds-grid slds-grid--vertical-align-center slds-grid_align-spread">
+                        <div class="branding-profile">
+                            <div class="branding-logo" onclick="{!c.navigateToHome}">
+                                <img src="/getheritagememorialfunding/s/nhmf-logo.png" alt="National Heritage Memorial Fund Logo" title="National Heritage Memorial Fund Logo" />
+                                <span class="assistiveText">PublicSite</span>
+                            </div>
+                        </div>
+                        <div class="{!'nav-hamburger' + if(v.navOpened, ' openedNav', '')}" onclick="{!c.toggleNav}">
+                            <span></span>
+                        </div>
+                        <div class="{!'navigation' + if(v.navOpened, ' opened', '')}">
+                            <ul class="navigation-list" role="navigation">
+                                <li class="nav-item">
+                                    <!-- href="/s/"     -->
+                                    <div tabindex="0" onclick="{!c.navigateToHome}" target="home" path="/s/"
+                                        class="{! 'nav-link' + if(v.path == '/s/', ' nav-active', '')}">
+                                        {!$Label.c.Home}
+                                    </div>
+                                </li>
+                                <aura:if isTrue="{!v.showMonitoring}">
+                                    <li class="nav-item">
+                                        <div tabindex="0" onclick="{!c.navigateToMonitoring}" target="Monitoring" path="/s/Monitoring"
+                                            class="{! 'nav-link' + if(v.path == '/s/Monitoring', ' nav-active', '')}">
+                                            {!$Label.c.Monitoring}
+                                        </div>
+                                    </li>
+                                </aura:if>
+                            </ul>
+                        </div>
+                        <div>
+                            <ui:menu class="profile-dropdown">
+                                <ui:menuTriggerLink aura:id="trigger">
+                                    <div class="slds-grid slds-grid--vertical slds-grid_vertical-align-center">
+                                        <div class="slds-grid slds-grid_vertical-align-center">
+                                            <div class="img-wrap">
+                                                <img alt="" src="{!v.currentUserRecord.SmallPhotoUrl}" />
+                                            </div>
+                                            <p class="username">{!v.currentUserRecord.Name}</p>
+                                        </div>
+                                    </div>
+                                </ui:menuTriggerLink>
+                                <ui:menuList class="actionMenu" aura:id="actionMenu" menuSelect="{!c.handleMenuClick}">
+                                    <ui:actionMenuItem label="{!$Label.c.Personal_Info}" />
+                                    <ui:actionMenuItem label="{!$Label.c.Contact_Us}" />
+                                    <ui:actionMenuItem label="{!$Label.c.Logout}" />
+                                </ui:menuList>
+                            </ui:menu>
+                        </div>
+                        <div class="new-header-wrap" style="width:80px">{!v.newHeader}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="{! 'mainContentArea ' + if( !!v.usernameId , '' ,'login-visible')}">
+                {!v.body}
+            </div>
+        </div>
+        <!-- <div class="footer">
+            <p class="footer-text">
+                Copyright © 2020, National Heritage Memorial Fund
+            </p>
+        </div> -->
+    </div>
+</aura:component>

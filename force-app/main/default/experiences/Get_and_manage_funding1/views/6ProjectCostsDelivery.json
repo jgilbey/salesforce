@@ -1,0 +1,46 @@
+{
+  "appPageId" : "9a06b659-cc86-48fa-a38d-0a6938d33ef8",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "68abfa28-02d4-4d05-b8d8-3258ed1ff674",
+  "label" : "6. Project Costs - Delivery",
+  "regions" : [ {
+    "id" : "ab0dc326-d6d7-4199-8759-ee21ddd37417",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "c:LrgDeliveryGrants_06Costs",
+      "id" : "e5ff563c-71c7-404c-aff2-62c96ee90e59",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "09c81876-fa8e-4245-9b7a-573e754fe266",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "0fc51aee-b8ba-42e3-b9da-32dcee10b840",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Project Costs"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "272d65fd-c4df-4409-a980-a9a410b0d45f",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "b7bade2c-7b69-4fe5-88f8-12d229ad3c10",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-project-costs-1"
+}

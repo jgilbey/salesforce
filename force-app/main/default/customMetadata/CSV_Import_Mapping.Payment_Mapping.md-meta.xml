@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Payment Mapping</label>
+    <protected>false</protected>
+    <values>
+        <field>Allow_re_imports__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>CSV_Import_RecordType__c</field>
+        <value xsi:type="xsd:string">Payment</value>
+    </values>
+    <values>
+        <field>Filter_Type__c</field>
+        <value xsi:type="xsd:string">AND</value>
+    </values>
+    <values>
+        <field>Import_Object__c</field>
+        <value xsi:type="xsd:string">Forms__c</value>
+    </values>
+    <values>
+        <field>Mapping_Field__c</field>
+        <value xsi:type="xsd:string">CSV_Export__c</value>
+    </values>
+</CustomMetadata>

@@ -1,0 +1,33 @@
+<aura:component implements="force:hasRecordId,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:appHostable" 
+    access="global" >
+
+    <link rel="stylesheet" href="{!$Resource.gov_style}"/>
+
+    <div class="govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-9">
+        <h1 class="govuk-panel__title">
+            Application for delivery phase submitted
+        </h1>
+    </div>
+
+    <p class="govuk-caption-l">
+        We have sent you a confirmation email.
+    </p>
+
+    <br/>
+
+    <h2 class="govuk-heading-l">What happens next:</h2>
+
+    <div>
+        <p>
+            We will review your application and be in touch if we have any questions.
+            <br/>
+
+            <p><a  href="https://www.heritagefund.org.uk/funding/national-lottery-grants-heritage-250k-5m/deadlines"> Application deadlines and dates for when you can expect to hear about a decision  </a>are on our website.</p>
+        </p>
+
+        <p>
+            Contact your Investment Manager if you have any questions or need more information.
+        </p>
+    </div>
+
+</aura:component>

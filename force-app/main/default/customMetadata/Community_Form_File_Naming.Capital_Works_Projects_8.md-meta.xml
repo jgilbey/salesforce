@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Capital Works Projects 8</label>
+    <protected>false</protected>
+    <values>
+        <field>Document_Question__c</field>
+        <value xsi:type="xsd:string">Copies of your agreements with project partners, signed by everyone involved, setting out how the project will be managed.</value>
+    </values>
+    <values>
+        <field>Question_Alias__c</field>
+        <value xsi:type="xsd:string">agreements</value>
+    </values>
+</CustomMetadata>

@@ -1,0 +1,68 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,force:lightningQuickActionWithoutHeader" controller="CreateCaseComponentController" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="createCase" type="Boolean" default="true"/>
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:attribute name="contactName" type="String"/>
+    <aura:attribute name="disableSubmit" type="Boolean" default="False"/>
+    <aura:attribute name="encouraged" type="Boolean" default="True"/>
+
+    <aura:html tag="style">
+        .cuf-content {
+            padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+            padding: 0rem !important;
+        }    
+        .slds-modal__content{
+        overflow-y:hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        };
+    </aura:html>
+
+    <div class="slds-col modal-header slds-modal__header">
+        <h2 class="slds-text-heading_medium">{!$Label.c.Create_Case}</h2>
+    </div>
+
+    <aura:if isTrue="{!v.encouraged}">
+
+        <aura:if isTrue="{!v.createCase}">
+
+            <div class="slds-text-body_regular slds-m-around_large slds-align_absolute-center">
+                <h3 class="slds-text-heading_small">{!$Label.c.Case_will_be_created}&nbsp;{!$Label.c.and}&nbsp;{!v.contactName}&nbsp;{!$Label.c.will_be_notified_by_email}</h3>
+            </div>
+            <div class="slds-text-body_regular slds-m-top_large slds-m-bottom_large slds-align_absolute-center">
+                <h3 class="slds-text-heading_small">{!$Label.c.Are_you_sure_to_do_this}</h3>
+            </div>
+    
+            <div class="slds-col modal-footer slds-modal__footer">
+                <lightning:button variant="Brand" class="slds-button" label="{!$Label.c.Submit}" onclick="{!c.handleSubmit}" disabled="{!v.disableSubmit}"/>
+                <lightning:button variant="Neutral" class="slds-button" label="{!$Label.c.Close}" onclick="{!c.handleExit}"/>
+            </div>
+    
+            <aura:set attribute="else">
+                <div class="slds-text-body_regular slds-m-top_large slds-m-bottom_large slds-align_absolute-center">
+                    <h3 class="slds-text-heading_small">{!$Label.c.Cannot_Create_Case}</h3>
+                </div>
+                <div class="slds-col modal-footer slds-modal__footer">
+                    <lightning:button variant="Neutral" class="slds-button" label="{!$Label.c.Close}" onclick="{!c.handleExit}"/>
+                </div>
+            </aura:set>
+    
+        </aura:if>
+
+        <aura:set attribute="else">
+            <div class="slds-text-body_regular slds-m-top_large slds-m-bottom_large slds-align_absolute-center">
+                <h3 class="slds-text-heading_small">{!$Label.c.Project_Enquiry_not_encouraged}</h3>
+            </div>
+            <div class="slds-col modal-footer slds-modal__footer">
+                <lightning:button variant="Neutral" class="slds-button" label="{!$Label.c.Close}" onclick="{!c.handleExit}"/>
+            </div>
+        </aura:set>
+
+    </aura:if>
+
+    
+
+
+</aura:component>

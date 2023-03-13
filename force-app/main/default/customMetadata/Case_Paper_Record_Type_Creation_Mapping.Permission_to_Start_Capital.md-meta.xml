@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Permission to Start &apos;Capital&apos;</label>
+    <protected>false</protected>
+    <values>
+        <field>Case_Paper_record_type__c</field>
+        <value xsi:type="xsd:string">NHMF_Permission_to_Start_Capital</value>
+    </values>
+    <values>
+        <field>Case_picklist_value__c</field>
+        <value xsi:type="xsd:string">Permission to Start &apos;Capital&apos;</value>
+    </values>
+</CustomMetadata>

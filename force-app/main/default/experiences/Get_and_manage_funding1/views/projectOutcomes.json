@@ -1,0 +1,46 @@
+{
+  "appPageId" : "9a06b659-cc86-48fa-a38d-0a6938d33ef8",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "69d6d1c2-86c7-4036-8542-4942688a9406",
+  "label" : "Project Outcomes",
+  "regions" : [ {
+    "id" : "41b4f588-3d0a-493d-a9b7-e8ec3ca809e3",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "c:LrgDevGrants_04Outcomes",
+      "id" : "1a831b7a-12c5-44b6-a984-0154ce2777de",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "75d94323-13bf-4f64-a0b9-2665ca164ab6",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "feed7b6c-3d22-4eab-8632-504ca84859ea",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Project Outcomes"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "7a64ad16-2821-4b40-b0ae-590a4905bfc3",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "b37c13dd-58fc-4d61-ae2b-978afe91d7dc",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-project-outcomes"
+}

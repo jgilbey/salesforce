@@ -1,0 +1,57 @@
+c-monitoring-page .monitoring__container{
+    display: grid;
+    height: 75vh;
+    grid-template-columns: 40% 60%;
+    font-size: 14px;
+    padding: 0.5rem;
+    border-top: solid 3px #f2f2f2;
+    border-bottom: solid 3px #f2f2f2;
+}
+
+c-monitoring-page c-monitoring-page-cases{
+    overflow: auto;
+    padding-right: 0.5rem;
+}
+
+/* c-monitoring-page .monitoring__container c-monitoring-page-case:not(:last-child) .case__container, */
+c-monitoring-page .monitoring__container c-monitoring-page-form:not(:last-child) .monitoring__form{
+    margin-bottom: 1rem;
+}
+
+c-monitoring-page .monitoring__container .case__container{
+    border-radius: var(--sds-c-button-radius-border, var(--lwc-buttonBorderRadius,0.25rem));
+    padding: 0.5rem;
+}
+c-monitoring-page .monitoring__container .case__container.selected{
+    background-color: #d6d6d6;
+}
+
+c-monitoring-page .monitoring__container .case__container{
+    cursor: pointer;
+}
+c-monitoring-page .monitoring__container .case__container:not(.selected):hover{
+    background-color: #f2f2f2;
+}
+
+/* c-monitoring-page .monitoring__container .case__container > div:not(:last-child) {
+    margin-bottom: 0.5rem;
+} */
+
+c-monitoring-page .monitoring__container .case__title{
+    font-weight: bold;
+    display: inline-block;
+    width: 105px;
+}
+
+c-monitoring-page .monitoring__container .monitoring__form{
+    display: grid;
+    grid-template-columns: repeat(2,auto) max-content;
+}
+
+c-monitoring-page .projects__title{
+    color: var(--lwc-tableColorTextHeader,#696969);
+    padding: var(--lwc-tableCellSpacing,0.5rem);
+    font-weight: var(--lwc-fontWeightBold,700);
+    line-height: normal;
+}
+

@@ -1,0 +1,303 @@
+<aura:component implements="force:hasRecordId,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:appHostable" 
+                access="global" 
+                controller="LrgDevGrantCtrl">
+    
+    <c:Util_LrgDeliveryGrants aura:id="Utils"/>
+    
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="readOnly" type="boolean" />
+    
+    <!--Facilitate GOV-UK Radio/Checkboxes-->
+    <aura:attribute name="isConsideredRisk" type="boolean" />
+    <aura:attribute name="hasCapitalWork" type="boolean" />
+    <aura:attribute name="capitalOwner" type="String" />
+    <aura:attribute name="hasLegalRestictions" type="boolean" />
+    <aura:attribute name="hasBuildingAcquisition" type="String" />
+    <aura:attribute name="heritage" type="List"/>
+    <aura:attribute name="heritageAnswer" type="String"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+
+    <div class="govuk-main-wrapper">
+        <div class="tabHeader">
+            <h1 class="govuk-heading-l">{!$Label.c.LrgDevGrant_2}</h1>
+        </div>
+    
+        <lightning:recordEditForm recordId="{!v.recordId}" objectApiName="Case" onsuccess="{!c.onSuccess}" >
+            <div class="govuk-heading-m pad">{!$Label.c.LrgDevGrant_2_1_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_1_0}" fieldName="Heritage_in_your_project_and_importance__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}"/>
+            
+            <div class="govuk-heading-m pad">{!$Label.c.LrgDevGrant_2_2_1}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_2_1}" fieldName="Heritage_Type__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange=""/>
+            
+            <div class="govuk-heading-m pad">{!$Label.c.LrgDevGrant_2_2_2}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_2_2}" fieldName="Heritage_area_subcategory__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange=""/>
+            
+            <!-- <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_3_1}</div>-->
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_3_1}" value="{!v.isConsideredRisk}" fieldName="Heritage_considered_to_be_at_risk__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" style="display:none;" />
+
+            <fieldset class="govuk-fieldset ">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m pad">
+                  <h2 class="govuk-fieldset__heading pad">
+                        {!$Label.c.LrgDevGrant_2_3_1}
+                  </h2>
+                </legend>
+                <div class="govuk-radios">
+                    <div class="govuk-radios__item">
+                      <input checked="{!v.isConsideredRisk}" disabled="{!v.readOnly}" class="govuk-radios__input" id="considered-risk-yes" data-selected-id="isConsideredRisk" name="is-considered-risk" type="radio" value="Yes" onchange="{!c.checkToBoolean}"/>
+                    <label class="govuk-label  govuk-radios__label" for="considered-risk-yes">
+                      {!$Label.c.YesNo_Yes}
+                    </label>
+                  </div>
+                  <div class="govuk-radios__item">
+                      <input checked="{!not(v.isConsideredRisk)}" disabled="{!v.readOnly}" class="govuk-radios__input" id="considered-risk-no" data-selected-id="isConsideredRisk" name="is-considered-risk" type="radio" value="No" onchange="{!c.checkToBoolean}"/>
+                    <label class="govuk-label  govuk-radios__label" for="considered-risk-no">
+                      {!$Label.c.YesNo_No}
+                    </label>
+                  </div>
+                </div>
+            </fieldset>
+
+            <aura:if isTrue="{!$Locale.language=='en'}">
+            	<div class="govuk-label pad pad">If yes,</div>
+            </aura:if>
+            
+            <div class="govuk-label pad pad">{!$Label.c.LrgDevGrant_2_3_2}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_3_2}" fieldName="Details_heritage_risk__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}"/>
+            
+            <!--<div class="govuk-heading-m pad">{!$Label.c.LrgDevGrant_2_4_1}</div>-->
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_4_1}" value="{!v.heritageAnswer}" fieldName="Heritage_Formal_designation__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" style="display:none;" />
+            
+            <fieldset class="govuk-fieldset" aria-describedby="{!$Label.c.LrgDevGrant_2_4_0}">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m pad">
+                    <h1 class="govuk-fieldset__heading pad">
+                        {!$Label.c.LrgDevGrant_2_4_0}
+                    </h1>
+                </legend>
+                <div id="waste-hint" class="govuk-hint">
+                    {!$Label.c.LrgDevGrant_2_4_1}
+                </div>
+                <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                    
+                    <aura:if isTrue="{!not(empty(v.heritage))}" >
+                        
+                        <aura:iteration items="{!v.heritage}" var="item" indexVar="key">
+                            
+                            <div class="govuk-checkboxes__item">
+                                <input  checked="{!item.value}" disabled="{!v.readOnly}" class="govuk-checkboxes__input" data-selected-id="heritage" onchange="{!c.checkboxToMultiPicklist}" id="{!item.key}" name="heritage designation" type="checkbox" value="{!item.key}"/>
+                                <label class="govuk-label govuk-checkboxes__label" for="{!item.key}">
+                                    <aura:if isTrue="{!$Locale.language=='cy'}">
+                                        <!-- Cannot be translated with Custom Labels or Translation workbench-->
+                                        {!if(item.key=='DCMS funded Museum, Library, Gallery or Archive','Amgueddfa, Llyfrgell, Oriel neu Archif a ariennir gan yr Adran dros Dechnoleg Ddigidol, Diwylliant, y Cyfryngau a Chwaraeon','')}
+                                        {!if(item.key=='World Heritage Site','Safle Treftadaeth y Byd','')}
+                                        {!if(item.key=='Grade I or Grade A Listed Building','Adeilad Rhestredig Gradd I neu Radd A.','')}
+                                        {!if(item.key=='Grade II* or Grade B listed Building','Adeilad rhestredig Gradd II * neu Radd B.','')}
+                                        {!if(item.key=='Grade II* listed Park or Garden','Parc neu Ardd restredig Gradd II *','')}
+                                        {!if(item.key=='Grade II, Grade C or Grade C(S) Listed Building','Adeilad Rhestredig Gradd II, Gradd C neu Radd C (S)','')}
+                                        {!if(item.key=='Local List','Rhestr Leol','')}
+                                        {!if(item.key=='Scheduled Ancient Monument','Heneb Gofrestredig','')}
+                                        {!if(item.key=='Registered Historic ship','Llong Hanesyddol Gofrestredig','')}
+                                        {!if(item.key=='Registered Battlefield','Maes Brwydr Cofrestredig','')}
+                                        {!if(item.key=='National Park','Parc Cenedlaethol','')}
+                                        {!if(item.key=='Ramsar Site','Safle Ramsar','')}
+                                        {!if(item.key=='Registered Park or Garden','Parc neu Ardd Gofrestredig','')}
+                                        {!if(item.key=='Grade I listed Park or Garden','Parc neu Ardd restredig Gradd I.','')}
+                                        {!if(item.key=='Grade II listed Park or Garden','Parc neu Ardd restredig Gradd II','')}
+                                        {!if(item.key=='Protected Wreck Site','Safle Llongddrylliad Gwarchodedig','')}
+                                        {!if(item.key=='National Historic Organ Register','Cofrestr Organau Hanesyddol Cenedlaethol','')}
+                                        {!if(item.key=='Site of Special Scientific Interest','Safle o Ddiddordeb Gwyddonol Arbennig','')}
+                                        {!if(item.key=='Other (please specify)','Arall (nodwch)','')}
+                                        <aura:set attribute="else">
+                                            {!item.key}
+                                        </aura:set>
+                                    </aura:if>
+                                </label>
+                            </div>
+                            
+                        </aura:iteration>
+                    </aura:if>
+                    
+                </div>
+            </fieldset>
+            
+            <div class="govuk-label pad">{!$Label.c.LrgDevGrant_2_4_2}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_4_2}" fieldName="Grade_I_or_A_buildings__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange=""/>
+            
+            <div class="govuk-label pad">{!$Label.c.LrgDevGrant_2_4_3}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_4_3}" fieldName="Grade_II_or_B_buildings__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange=""/>
+            
+            <div class="govuk-label pad">{!$Label.c.LrgDevGrant_2_4_4}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_4_4}" fieldName="Grade_II_or_C_buildings__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange=""/>
+            
+            <div class="govuk-label pad">{!$Label.c.LrgDevGrant_2_4_5}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_4_5}" fieldName="Local_List__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange=""/>
+            
+            <div class="govuk-label pad">{!$Label.c.LrgDevGrant_2_4_6}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_4_6}" fieldName="Scheduled_Ancient_Monument__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange=""/>
+            
+            <div class="govuk-label pad">{!$Label.c.LrgDevGrant_2_4_7}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_4_7}" fieldName="Registered_Historic_ship_Certificate_no__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen255}"/>
+            
+            <div class="govuk-label pad">{!$Label.c.LrgDevGrant_2_4_8}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_4_8}" fieldName="Grade_I_listed_park_or_garden_Inventory__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen255}"/>
+            
+            <div class="govuk-label pad">{!$Label.c.LrgDevGrant_2_4_9}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_4_9}" fieldName="Grade_II_listed_parkgarden_Inventory_ast__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen255}"/>
+            
+            <div class="govuk-label pad">{!$Label.c.LrgDevGrant_2_4_10}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_4_10}" fieldName="Grade_II_listed_park_or_garden_Inventory__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen255}"/>
+            
+            <div class="govuk-label pad">{!$Label.c.LrgDevGrant_2_4_11}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_4_11}" fieldName="Other_Formal_Designation__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen255}"/>
+            
+            <!-- <div class="govuk-heading-m pad">{!$Label.c.LrgDevGrant_2_5_1}</div>-->
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_5_1}" value="{!v.hasCapitalWork}" fieldName="Any_capital_work_as_part_of_this__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" style="display:none;" /> 
+
+            <fieldset class="govuk-fieldset pad">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                  <h2 class="govuk-fieldset__heading pad">
+                        {!$Label.c.LrgDevGrant_2_5_0} 
+                  </h2>
+                </legend>
+                <div class="govuk-radios">
+                    <div class="govuk-radios__item">
+                      <input checked="{!v.hasCapitalWork}" disabled="{!v.readOnly}" class="govuk-radios__input" id="has-capital-work-yes" data-selected-id="hasCapitalWork" name="has-capital-work" type="radio" value="Yes" onchange="{!c.checkToBoolean}"/>
+                    <label class="govuk-label  govuk-radios__label" for="has-capital-work-yes">
+                      {!$Label.c.YesNo_Yes}
+                    </label>
+                  </div>
+                  <div class="govuk-radios__item">
+                      <input checked="{!not(v.hasCapitalWork)}" disabled="{!v.readOnly}" class="govuk-radios__input" id="has-capital-work-no" data-selected-id="hasCapitalWork" name="has-capital-work" type="radio" value="No" onchange="{!c.checkToBoolean}"/>
+                    <label class="govuk-label  govuk-radios__label" for="has-capital-work-no">
+                      {!$Label.c.YesNo_No}
+                    </label>
+                  </div>
+                </div>
+            </fieldset>
+            
+            <div class="govuk-label pad">{!$Label.c.LrgDevGrant_2_5_2}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_5_2}" fieldName="Capital_work_details__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}"/>
+            
+            <!-- <div class="govuk-label pad">{!$Label.c.LrgDevGrant_2_6_1}</div>-->
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_6_1}" value="{!v.capitalOwner}" fieldName="Capital_work_owner__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" style="display:none;" />
+
+            <fieldset class="govuk-fieldset pad">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                  <h2 class="govuk-fieldset__heading pad">
+                        {!$Label.c.LrgDevGrant_2_6_0}
+                  </h2>
+                </legend>
+                <div class="govuk-radios">
+                    <div class="govuk-radios__item">
+                        <input checked="{!v.capitalOwner=='Your organisation'}" disabled="{!v.readOnly}" class="govuk-radios__input" id="capital-owner" data-selected-id="capitalOwner" name="capital-owner" type="radio" value="Your organisation" onchange="{!c.checkToPicklist}"/>
+                      <label class="govuk-label  govuk-radios__label" for="capital-owner">
+                          {!$Label.c.LrgDevGrant_2_6_1_YourOrg}
+                      </label>
+                    </div>
+                    <div class="govuk-radios__item">
+                        <input checked="{!v.capitalOwner=='Project Partner'}" disabled="{!v.readOnly}" class="govuk-radios__input" id="capital-owner" data-selected-id="capitalOwner" name="capital-owner" type="radio" value="Project Partner" onchange="{!c.checkToPicklist}"/>
+                      <label class="govuk-label  govuk-radios__label" for="capital-owner">
+                          {!$Label.c.LrgDevGrant_2_6_1_ProjectPartner}
+                      </label>
+                    </div>
+                    <div class="govuk-radios__item">
+                      <input checked="{!v.capitalOwner=='Neither'}" disabled="{!v.readOnly}" class="govuk-radios__input" id="capital-owner" data-selected-id="capitalOwner" name="capital-owner" type="radio" value="Neither" onchange="{!c.checkToPicklist}"/>
+                    <label class="govuk-label  govuk-radios__label" for="capital-owner">
+                        {!$Label.c.LrgDevGrant_2_6_1_Neither}
+                    </label>
+                  	</div>
+                    <div class="govuk-radios__item">
+                        <input checked="{!v.capitalOwner=='N/A'}" disabled="{!v.readOnly}" class="govuk-radios__input" id="capital-owner" data-selected-id="capitalOwner" name="capital-owner" type="radio" value="N/A" onchange="{!c.checkToPicklist}"/>
+                      <label class="govuk-label  govuk-radios__label" for="capital-owner">
+                          {!$Label.c.LrgDevGrant_2_6_1_NotApplicable}
+                      </label>
+                    </div>
+                </div>
+            </fieldset>
+            
+            <div class="govuk-label pad">{!$Label.c.LrgDevGrant_2_6_2}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_6_2}" fieldName="Capital_work_owner_details__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}"/>
+            
+            <!-- <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_6_3}</div>-->
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_6_3}" value="{!v.hasLegalRestictions}" fieldName="Any_legal_restriction_which_may_impact__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" style="display:none;"/>
+            
+            <fieldset class="govuk-fieldset pad">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                  <h2 class="govuk-fieldset__heading pad">
+                        {!$Label.c.LrgDevGrant_2_6_3} 
+                  </h2>
+                </legend>
+                <div class="govuk-radios">
+                    <div class="govuk-radios__item">
+                      <input checked="{!v.hasLegalRestictions}" disabled="{!v.readOnly}" class="govuk-radios__input" id="has-legal-restictions-yes" data-selected-id="hasLegalRestictions" name="has-legal-restrictions" type="radio" value="Yes" onchange="{!c.checkToBoolean}"/>
+                    <label class="govuk-label  govuk-radios__label" for="has-legal-restictions-yes">
+                      {!$Label.c.YesNo_Yes}
+                    </label>
+                  </div>
+                  <div class="govuk-radios__item">
+                      <input checked="{!not(v.hasLegalRestictions)}" disabled="{!v.readOnly}" class="govuk-radios__input" id="has-legal-restictions-no" data-selected-id="hasLegalRestictions" name="has-legal-restrictions" type="radio" value="No" onchange="{!c.checkToBoolean}"/>
+                    <label class="govuk-label  govuk-radios__label" for="has-legal-restictions-no">
+                      {!$Label.c.YesNo_No}
+                    </label>
+                  </div>
+                </div>
+            </fieldset>
+            
+            <div class="govuk-label pad">{!$Label.c.LrgDevGrant_2_6_4}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_6_4}" fieldName="Detail_of_legal_restriction__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}"/>
+            
+            <!-- <div class="govuk-heading-m pad">{!$Label.c.LrgDevGrant_2_7_0}</div>-->
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_7_0}" value="{!v.hasBuildingAcquisition}" fieldName="Project_involved_acquisition_picklist__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" style="display:none;" />
+
+            <fieldset class="govuk-fieldset pad">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                  <h2 class="govuk-fieldset__heading pad">
+                        {!$Label.c.LrgDevGrant_2_7_0}
+                  </h2>
+                </legend>
+                <div class="govuk-radios">
+                    <div class="govuk-radios__item">
+                      <input checked="{!v.hasBuildingAcquisition=='Yes'}" disabled="{!v.readOnly}" class="govuk-radios__input" id="has-building-acquisition-yes" data-selected-id="hasBuildingAcquisition" name="has-building-acquisition" type="radio" value="Yes" onchange="{!c.checkToPicklist}"/>
+                    <label class="govuk-label  govuk-radios__label" for="has-building-acquisition-yes">
+                        {!$Label.c.YesNo_Yes}
+                    </label>
+                  </div>
+                  <div class="govuk-radios__item">
+                      <input checked="{!v.hasBuildingAcquisition=='No'}" disabled="{!v.readOnly}" class="govuk-radios__input" id="has-building-acquisition-no" data-selected-id="hasBuildingAcquisition" name="has-building-acquisition" type="radio" value="No" onchange="{!c.checkToPicklist}"/>
+                    <label class="govuk-label  govuk-radios__label" for="has-building-acquisition-no">
+                        {!$Label.c.YesNo_No}
+                    </label>
+                  </div>
+                </div>
+            </fieldset>
+            
+            <aura:if isTrue="{!!v.readOnly}">
+                <div class="slds-col--padded contentRegion comm-layout-column"> 
+                    <div >
+                        <div class="col2-1">
+                            <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.back}" label="{!$Label.c.Back}" />
+                        </div>
+                        <div class="col2-2">
+                            <lightning:button class="govuk-button btn-col2" variant="brand" type="submit" label="{!$Label.c.SaveAndContinue}"/>
+                        </div>
+                    </div>
+                </div>
+                
+                <aura:set attribute="else">
+                    <div class="slds-col--padded contentRegion comm-layout-column" > 
+                        <div > 
+                            <div class="col2-1">
+                                <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.back}" label="{!$Label.c.Back}" />
+                            </div>
+                            <div class="col2-2">
+                                <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.next}" label="{!$Label.c.Continue}"/>
+                            </div>
+                        </div>
+                    </div>
+                </aura:set>
+            </aura:if>
+        </lightning:recordEditForm>
+    </div>
+
+</aura:component>

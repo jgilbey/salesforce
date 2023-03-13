@@ -1,0 +1,11 @@
+{
+  "activeViewId" : "f058160b-5b43-4649-a876-aee65af61e52",
+  "appPageId" : "9a06b659-cc86-48fa-a38d-0a6938d33ef8",
+  "configurationTags" : [ ],
+  "id" : "b311ccec-3bb4-4b15-8e90-43cbe4cf0da5",
+  "label" : "9. Declaration - Delivery",
+  "pageAccess" : "UseParent",
+  "routeType" : "custom-declaration-1",
+  "type" : "route",
+  "urlPrefix" : "apply-delivery/declaration"
+}

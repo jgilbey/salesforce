@@ -13,6 +13,7 @@ Date                Version     Developer                  Comments
 20/09/2022          1.0.3       Rakesh                     Creating methods for all recordtypes of Grants
 22/09/2022			1.0.4		Rakesh					   Creating Methods for Project Cost and Project Income
 /**********************************************************************************************************************/
+@isTest
 public class TestDataFactory {
     public static Account testAccount;
     public static Contact testContact;  
@@ -158,6 +159,7 @@ public class TestDataFactory {
       }
       return cs;
     }
+    
     //Creating project cost for given project and number of project costs to be created 
     public static List<Project_Cost__c> createProjectCost(id projectId , integer noOfProjCosts)
     {
@@ -175,6 +177,7 @@ public class TestDataFactory {
         
          
     }
+    
     ////Creating project Cash contribution for given project and number of project cash contribution to be created
     public static List<Project_Income__c> createProjectIncome(id projectId , integer noOfProjIncome)
     {
@@ -199,8 +202,8 @@ public class TestDataFactory {
       Case cs= New Case(Description = 'Test Case Large Grant',                             
                                 Status = 'New',
                                 RecordTypeId= recordTypeId,
-                                ContactId = testContact.id,
-                                AccountId = testAccount.id,
+                                //ContactId = testContact.id,
+                                //AccountId = testAccount.id,
                                 Project_Post_Code__c = 'BR12345',
                                 Grant_Expiry_Date__c = Date.today().AddDays(5)
                                 );
@@ -247,8 +250,8 @@ public class TestDataFactory {
       Case cs= New Case(Description = 'Test Case Large',                             
                                 Status = 'New',
                                 RecordTypeId= recordTypeId,
-                                ContactId = testContact.id,
-                                AccountId = testAccount.id,
+                                //ContactId = testContact.id,
+                                //AccountId = testAccount.id,
                                 Project_Post_Code__c = 'BR12345',
                                 Grant_Expiry_Date__c = Date.today().AddDays(5)
                                 );

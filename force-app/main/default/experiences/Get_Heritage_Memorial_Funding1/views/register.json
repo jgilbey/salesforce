@@ -1,0 +1,65 @@
+{
+  "appPageId" : "bde2244f-c8c9-47fb-baa6-65ed14c2f932",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "d7c5262d-cba7-41b9-b4c0-e742aca12bc8",
+  "label" : "Register",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "c:CommunityLogoComponent",
+      "id" : "4f7cc16c-46b3-4455-b574-fe1e15c64d56",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "confirmPasswordLabel" : "Confirm Password",
+        "emailLabel" : "Email",
+        "extraFieldsFieldSet" : "",
+        "firstnameLabel" : "First Name",
+        "includePasswordField" : false,
+        "lastnameLabel" : "Last Name",
+        "passwordLabel" : "Create Password",
+        "regConfirmUrl" : "./CheckPasswordResetEmail",
+        "startUrl" : "",
+        "submitButtonLabel" : "Sign Up"
+      },
+      "componentName" : "c:selfRegisterComponent",
+      "id" : "3e55e3ca-3ef2-4141-a340-17d0e7c40b45",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "richTextValue" : "<p style=\"text-align: center;\"><a href=\"./\" rel=\"noopener noreferrer\" target=\"null\" style=\"color: rgb(0, 71, 178);\">Already Have an Account?</a></p>"
+      },
+      "componentName" : "forceCommunity:richTextInline",
+      "id" : "addf1603-bb63-45aa-9273-24e198e090c4",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "b95ead8f-6cdd-4a68-a4d7-a3f1d0ed2b2f",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Register"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "c6aecdcd-a3b7-47ce-ae64-717fdd506c3d",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "394881c1-5e58-4446-b205-e76d57e6d04c",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Login",
+  "type" : "view",
+  "viewType" : "self-register"
+}

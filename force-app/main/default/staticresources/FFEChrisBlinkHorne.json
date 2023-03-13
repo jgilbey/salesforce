@@ -1,0 +1,110 @@
+{
+  "meta": {
+    "form": "3-10k-grant",
+    "username": "chris.blinkhorne@sdworx.com",
+    "startedAt": "2021-06-17T21:25:07.181Z",
+    "applicationId": "b6493f78-adb2-46aa-9567-90a42af04ae0",
+    "schemaVersion": "v1.x"
+  },
+  "application": {
+    "projectName": "Roots of Growth: Growing a community",
+    "keepInformed": false,
+    "projectCosts": [
+      {
+        "costId": "7ef0e639-42da-4ebd-afb3-ce125531666c",
+        "costType": "other",
+        "costAmount": 2250,
+        "costDescription": "expenses for materials to make the play items, the benches etc. to make safe the area and re-furbish the portacabins"
+      },
+      {
+        "costId": "2e91d5f3-9c3b-4147-bded-04279cfbd624",
+        "costType": "professional-fees",
+        "costAmount": 2500,
+        "costDescription": "for student liaison, budget and financial control, general admin etc. (3 separate people)"
+      },
+      {
+        "costId": "a77789fe-bf0c-4de0-9b52-43d5741ebaf4",
+        "costType": "repair-and-conservation-work",
+        "costAmount": 1250,
+        "costDescription": "repair and conservation of the area to make it safe and private "
+      },
+      {
+        "costId": "a1bdff06-1cc2-4f26-baed-cb1ac2f609c1",
+        "costType": "equipment-and-materials-including-learning-materials",
+        "costAmount": 4000,
+        "costDescription": "4000 for creation of mini beast trail and wilderness section"
+      }
+    ],
+    "isPartnership": false,
+    "organisationId": "975e1c98-a27c-4d50-a9d1-8e23e6cd5e59",
+    "projectAddress": {
+      "line1": "Park Lane Park , Recreation Ground",
+      "county": "Essex",
+      "townCity": "HORNCHURCH",
+      "projectPostcode": "RM11 1EG"
+    },
+    "mainContactName": "chris blinkhorne",
+    "projectOutcome1": "\r\nTherefore we felt we should include you in our Borough to Borough partnership that we have created to support tool trade students. No other park in Havering has acheived this before via a friends group .\r\nWe have established a student learner programme with B&D college. Students learners during covid found placement and work experience difficulty. Tool trade students found apprenticeship,  on the job work experience  and building site were not always accessible. Student learners in tool trades have decreased due to the ability to find work. \r\n We needed our park revitalised and accessible for all to enjoy.  The park has no funding and had been left for many years therefore needs updating.  \r\nAfter several meetings with B&D college we created a project. Our local councillors have been working with us to ensure that we can create a better community space.  Havering Council park team are working alongside us. The project will enable students to achieve their accreditation,  on the job training, placement,  meet work experience hours,  gain transferable skills ,develop professional attitude and build confidence. \r\nWe would like to share our project with you and introduce you to the students. \r\nThe students first project will be \"buildibg a path\". We hope you can come over to the park and be included in our pathway of leaning to create a more inclusive green space.  as we grow we will include other skills from the college, art & design, painting & decorating, horticultural etc.\r\n",
+    "projectOutcome4": "the liaison with college will give the students real life experiences and ultimately a place of pride to show off their work and achievements",
+    "projectOutcome6": "as stated previously, mental health and wellbeing when outdoors is proven benefit to all, as is exercise in relation to obesity in both adults and children",
+    "projectOutcome7": "as stated previously",
+    "projectOutcome8": "the park will be all inclusive and provide places for all ",
+    "projectOutcome9": "people will want to live in the area",
+    "yourIdeaProject": "Having spoken to local community groups, nurseries, primary schools, special groups etc.  and shared our initial plans with them, they have confirmed that they would be happy to arrange educational visits to a minibeast wilderness section in the park and use the park as a place for their general outdoor activity support/education.\r\nTo enable us to create this, we have estimated the following costs to cover its creation, including planting of several trees and shrubs to create the overgrown effect and to attract wildlife, birds’ insects, and bees, etc.  Installation of a type of privacy fencing behind the wilderness section and to protect from onlookers from Tesco & B&Q petrol station/car parks.  Together with bushes that are already established (1.5m high) so that the section can be opened September.  We have plans to create educational information sheets and characters hidden within the wilderness, together with seating areas etc.  to create a direct link to books so that the schools can continue reference when they return from their trip to the park. \r\n\r\nTo enable full access to all we are looking to create a ‘community room’ and also ‘changing rooms/storage’ for our resident football team.\r\nWe have managed to acquire four old portacabins which will need cutting and joining and complete redecoration inside and out (some of this activity will also be worked as part of the next cohort of students).\r\nTwo of these portacabins will be connected to an existing one that we already have on site, in order to create changing rooms, storage & a toilet facility for our resident football team (will approach the FA for some funding towards this jointly).  In addition, the changing rooms can be used for school trips to store bags etc whilst they go on the minibeast hunt or partake in their sports day etc.\r\nThe other two will be joined to create our “Community room”; this will aim to provide an area for refreshments but more importantly a place for people to sit and think, we would like to hold “huddles” there once or twice a week for groups of like minded people, (eg, local pregnant & new mums to talk together and potentially with an invited specialist (e.g., midwife).  These two portacabins will also require a surrounding decking area outside to support the wheelchair access, teacher/parent observations etc.  The full rationale is available if required.\r\nWe would not need drainage or a water supply as we understand this would be major works, but we do need advice and suggestions as to what is best.  It is hard to establish what is best when looking at other park areas and what they have, however we are looking for an effective, realistically priced, and relatively quick solution.\r\nWe have approximate costs and breakdown of what we would require for each section above and are happy to share that should anyone be interested.\r\n   \r\n",
+    "mainContactEmail": "chris.blinkhorne@sdworx.com",
+    "mainContactPhone": "07767887441",
+    "organisationName": "Friends of Park Lane Park",
+    "organisationType": "community-or-voluntary-group",
+    "projectAvailable": "ongoing education field trips, football teams for ages 4 to 13, a busy full inclusive fun local safe place for people to go to enjoy and learn.",
+    "projectCommunity": "its educational, its inclusive and its innovative, it has the backing of several hundred people all who live surrounding the park area",
+    "projectDateRange": { "endDate": "2022-12-31", "startDate": "2021-09-01" },
+    "cashContributions": [],
+    "involveInResearch": true,
+    "projectDifference": "We work alongside our local councillors and parks management team to improve our park/recreation area. The new and improved  homes will entice different residents to the area  which in turn will mean the park will need to be more inclusive. We are addressing various problems that local residents have requested we look into. H&S is our first priority. Park view was built approximately 10 years ago. The fence surrounding Park view  and the park is not adequate and has raised many H&S issues. Therefor local residents have raised similar issues in regard to how your development will be maintained, built, start date, traffic issues, parking, demolition of maygreen, dust, sustainability, environmental issues, vermin and pest control. There are many issues surrounding Maygreen Crescent that the local residents have not been informed of. \r\n We are reaching out to you as we  would like an opportunity to meet with yourselves and work with you and our residents. As a friends group we work with the local community, council, MPs and councillors to keep our green space usable.\r\nCovid reduced maintenance  of all parks, green space and recreation areas. During lock down we approached a local construction college who where finding student placements, work experience a struggle. We have now built a work placement learning programme using the park as a learning platform. The students will be able to achieve professional qualifications through contributing to build permanent visible structures in the park. The programme has been set for 3 phases, however this  programme could continue up to 5 years and become a learning platform that collaborates borough to borough learning recourses. Hands on trade skills that incorporates on the job training, classroom literature  that is incorporated into a real learning environment. The park project will provide valuable learning assignments,  tasks, H&S, Risk assessments, public  and commercial working as opposed to  domestic working requirements, licences. Students will be able to build their CVs, gather evidence of the projects they take part in,  acknowledge how to work with different tool trades, learn the importance of transferable skills.\r\n",
+    "projectVolunteers": [],
+    "mainContactAddress": {
+      "line1": "36 Cheviot Road",
+      "county": "Essex",
+      "postcode": "RM11 1LP",
+      "townCity": "HORNCHURCH"
+    },
+    "projectCapitalWork": false,
+    "organisationAddress": {
+      "line1": "121 Park Lane",
+      "county": "Essex",
+      "postcode": "RM11 1EQ",
+      "townCity": "HORNCHURCH"
+    },
+    "organisationMission": [
+      "black-or-minority-ethnic-led",
+      "disability-led",
+      "lgbt+-led",
+      "female-led",
+      "young-people-led"
+    ],
+    "projectOrgBestPlace": "We are Friends of Park Lane Park and we live and breathe the project",
+    "nonCashContributions": [
+      {
+        "description": "at the moment this is unknown, however substances for the students, food, travel etc will be provided by the college and the portacabins we have sourced free of charge",
+        "estimatedValue": 150
+      }
+    ],
+    "mainContactDateOfBirth": "1966-12-05",
+    "projectNeedsPermission": "no",
+    "projectOutcome2Checked": false,
+    "projectOutcome3Checked": false,
+    "projectOutcome4Checked": true,
+    "projectOutcome5Checked": false,
+    "projectOutcome6Checked": true,
+    "projectOutcome7Checked": true,
+    "projectOutcome8Checked": true,
+    "projectOutcome9Checked": true,
+    "authorisedSignatoryOneDetails": {
+      "name": "Lisa Gunther",
+      "role": "",
+      "email": "lisa-cheryl@hotmail.com",
+      "phone": "07525791505",
+      "isAlsoApplicant": false
+    }
+  }
+}

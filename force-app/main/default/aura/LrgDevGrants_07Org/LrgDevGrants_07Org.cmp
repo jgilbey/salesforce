@@ -1,0 +1,84 @@
+<aura:component implements="force:hasRecordId,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:appHostable" 
+                access="global" 
+                controller="LrgDevGrantCtrl">
+
+    <c:Util_LrgDevGrants aura:id="Utils"/>
+       
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="readOnly" type="boolean" />
+    <aura:attribute name="orgId" type="String" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="govuk-main-wrapper">
+        <div class="tabHeader">
+            <h1 class="govuk-heading-l">{!$Label.c.LrgDevGrant_7} </h1>
+        </div>
+    
+        <lightning:recordEditForm recordId="{!v.orgId}" objectApiName="Account" onsuccess="{!c.saveSection}" >
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_7_3_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_7_3_0}" fieldName="Organisation_s_Main_Purpose_Activities__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_7_4_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_7_4_0}" fieldName="NumberOfEmployees" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_7_7_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_7_7_0}" fieldName="Number_Of_Board_members_or_Trustees__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_7_8_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_7_8_0}" fieldName="Amount_spent_in_the_last_financial_year__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_7_9_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_7_9_0}"  fieldName="level_of_unrestricted_funds__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_7_12_1}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_7_12_1}" fieldName="Are_you_VAT_registered_picklist__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_7_12_2}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_7_12_2}" fieldName="VAT_number__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_7_13_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_7_13_0}" fieldName="Organisation_s_Mission_and_Objectives__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_7_18_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_7_18_0}" fieldName="Social_Media__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+
+            <aura:if isTrue="{!!v.readOnly}">
+                <div class="button-container">
+                    <lightning:button class="govuk-button" variant="brand" type="submit" name="update" label="{!$Label.c.LrgDevGrant_7_1_btn}" />
+                </div>
+            </aura:if>
+        </lightning:recordEditForm>
+        
+        <lightning:recordEditForm recordId="{!v.recordId}" objectApiName="Case" onsuccess="{!c.saveSection}" >
+            
+            <h2 class="govuk-heading-m">{!$Label.c.LrgDevGrant_7_5_0}</h2>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_7_5_1}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_7_5_1}" fieldName="Review__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}"/>
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_7_6_1}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_7_6_1}" fieldName="Undertaking_Governance_review__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_7_6_2}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_7_6_2}" fieldName="When_do_you_intend_undertaking_this_rev__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}"/>
+
+            <aura:if isTrue="{!!v.readOnly}">
+                <div class="button-container">
+                    <lightning:button class="govuk-button" variant="brand" type="submit" name="update" label="{!$Label.c.LrgDevGrant_7_3_btn}" />
+                </div>
+            </aura:if>
+        </lightning:recordEditForm>
+        
+        <div class="slds-form" > 
+            <div >
+                <div class="col2-1">
+                    <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.back}" label="{!$Label.c.Back}" />
+                </div>
+                <div class="col2-2">
+                    <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.next}" label="{!$Label.c.Continue}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+</aura:component>

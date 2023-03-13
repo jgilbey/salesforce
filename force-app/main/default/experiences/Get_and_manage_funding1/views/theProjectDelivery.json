@@ -1,0 +1,46 @@
+{
+  "appPageId" : "9a06b659-cc86-48fa-a38d-0a6938d33ef8",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "1330c107-1940-48c4-90b1-0a2fbc977bc3",
+  "label" : "The Project - Delivery",
+  "regions" : [ {
+    "id" : "8c7518e8-4adc-4e27-a74a-e5b29274946b",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "c:LrgDeliveryGrants_01Project",
+      "id" : "ac142470-7bd8-4c80-affd-b1caaa683ba5",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "b6ee9397-cf56-494e-8d1b-8ca0156f750a",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "23fe562d-6865-40e0-a90c-81eceab04169",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "The Project"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "75c4afed-4df1-4578-99a6-32cd90eacb8c",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "3ffa4359-e6b0-4ffe-b7c2-f63829d77c9a",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-the-project-delivery"
+}

@@ -1,0 +1,119 @@
+<aura:component implements="force:hasRecordId,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:appHostable" 
+                access="global" 
+                controller="LrgDevGrantCtrl">
+    
+    <c:Util_LrgDevGrants aura:id="Utils"/>
+    
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="readOnly" type="boolean" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+
+    <div class="govuk-main-wrapper">
+        <div class="tabHeader">
+            <h1 class="govuk-heading-l">{!$Label.c.LrgDevGrant_2}</h1>
+        </div>
+    
+        <lightning:recordEditForm recordId="{!v.recordId}" objectApiName="Case" onsuccess="{!c.onSuccess}" >
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_1_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_1_0}" fieldName="Heritage_in_your_project_and_importance__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}"/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_2_1}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_2_1}" fieldName="Heritage_Type__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange=""/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_2_2}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_2_2}" fieldName="Heritage_Sub_Type__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange=""/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_3_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_3_0}" fieldName="Heritage_considered_to_be_at_risk__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange=""/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_3_2}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_3_2}" fieldName="Details_heritage_risk__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}"/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_8_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_8_0}" fieldName="Survey_in_last_5_years__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" />
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_4_1}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_4_1}" fieldName="Heritage_Formal_designation__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange=""/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_4_2}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_4_2}" fieldName="Grade_I_or_A_buildings__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange=""/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_4_3}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_4_3}" fieldName="Grade_II_or_B_buildings__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange=""/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_4_4}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_4_4}" fieldName="Grade_II_or_C_buildings__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange=""/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_4_5}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_4_5}" fieldName="Local_List__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange=""/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_4_6}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_4_6}" fieldName="Scheduled_Ancient_Monument__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange=""/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_4_7}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_4_7}" fieldName="Registered_Historic_ship_Certificate_no__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen255}"/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_4_8}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_4_8}" fieldName="Grade_I_listed_park_or_garden_Inventory__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen255}"/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_4_9}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_4_9}" fieldName="Grade_II_listed_parkgarden_Inventory_ast__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen255}"/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_4_10}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_4_10}" fieldName="Grade_II_listed_park_or_garden_Inventory__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen255}"/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_4_11}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_4_11}" fieldName="Other_Formal_Designation__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen255}"/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_5_1}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_5_1}" fieldName="Any_capital_work_as_part_of_this__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange=""/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_5_2}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_5_2}" fieldName="Capital_work_details__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}"/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_6_1}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_6_1}" fieldName="Capital_work_owner__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange=""/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_6_2}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_6_2}" fieldName="Capital_work_owner_details__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}"/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_6_3}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_6_3}" fieldName="Any_legal_restriction_which_may_impact__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange=""/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_6_4}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_6_4}" fieldName="Detail_of_legal_restriction__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}"/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_2_7_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_7_0}" fieldName="Project_involved_acquisition_picklist__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange=""/>
+            
+            <aura:if isTrue="{!!v.readOnly}">
+                <div class="slds-col--padded contentRegion comm-layout-column"> 
+                    <div >
+                        <div class="col2-1">
+                            <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.back}" label="{!$Label.c.Back}" />
+                        </div>
+                        <div class="col2-2">
+                            <lightning:button class="govuk-button btn-col2" variant="brand" type="submit" label="{!$Label.c.SaveAndContinue}"/>
+                        </div>
+                    </div>
+                </div>
+                
+                <aura:set attribute="else">
+                    <div class="slds-col--padded contentRegion comm-layout-column" > 
+                        <div > 
+                            <div class="col2-1">
+                                <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.back}" label="{!$Label.c.Back}" />
+                            </div>
+                            <div class="col2-2">
+                                <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.next}" label="{!$Label.c.Continue}"/>
+                            </div>
+                        </div>
+                    </div>
+                </aura:set>
+            </aura:if>
+        </lightning:recordEditForm>
+    </div>
+
+</aura:component>

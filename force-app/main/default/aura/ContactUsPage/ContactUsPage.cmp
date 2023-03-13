@@ -1,0 +1,7 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global">
+    <div>
+
+        <aura:unescapedHtml value="{!$Label.c.ContactUsPage}" />
+
+    </div>
+</aura:component>

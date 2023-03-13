@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Payment Type</label>
+    <protected>false</protected>
+    <values>
+        <field>CSV_Export_File__c</field>
+        <value xsi:type="xsd:string">Payment_Export</value>
+    </values>
+    <values>
+        <field>Line__c</field>
+        <value xsi:type="xsd:double">1.0</value>
+    </values>
+    <values>
+        <field>Order__c</field>
+        <value xsi:type="xsd:double">5.0</value>
+    </values>
+    <values>
+        <field>Output_Field_API_Name__c</field>
+        <value xsi:type="xsd:string">Grant_Type__c</value>
+    </values>
+</CustomMetadata>

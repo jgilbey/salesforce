@@ -1,0 +1,133 @@
+{
+  "meta": {
+    "form": "3-10k-grant",
+    "username": "irendall@btinternet.com",
+    "startedAt": "2021-05-25T05:48:15.156Z",
+    "applicationId": "5dd6ca48-330e-4b3e-9316-ff51d75ed08e",
+    "schemaVersion": "v1.x"
+  },
+  "application": {
+    "projectName": "PHASE 2 - RENOVATION OF CHURCH",
+    "keepInformed": false,
+    "projectCosts": [
+      {
+        "costId": "d229252e-d605-4720-99a6-e6134c182703",
+        "costType": "evaluation",
+        "costAmount": 500,
+        "costDescription": "Evaluation for building work by architect.\r\nDementia UK will help us to evaluate new work with disabled people.\r\nReport to Diocese sent to Diocese on our work with young people and disabled and older persons is also necessary."
+      },
+      {
+        "costId": "3f8f68ad-b361-40ef-b389-b37a6dc79bc8",
+        "costType": "repair-and-conservation-work",
+        "costAmount": 13824,
+        "costDescription": "to remove steel struts in basement, fix waterproof membrane, infill basement with cement "
+      }
+    ],
+    "isPartnership": false,
+    "organisationId": "a0046c0d-af9a-4d60-887d-69835900a96d",
+    "projectAddress": {
+      "line1": "Weetslade Gardens, Weetslade Road, Dudley",
+      "county": "Northumberland",
+      "townCity": "CRAMLINGTON",
+      "projectPostcode": "NE23 7LH"
+    },
+    "mainContactName": "susan rendall",
+    "projectOutcome1": "As we move into new areas of work with a broader range of adult disability such as those suffering from Dementia we are broadening the range of new people we can serve. We have ensured we have the required environment and will ensure appropriate  training. We have consulted in regard to the kind of equipment needed. We consulted with Dementia UK  who  advised the kind of stimulation activites we should provide.  For example one of our church members has already made activity boards - they contain objects that represent various previous employment so that people with Dementia can relate to their past- we have obtained advice on colours for our spaces - calming colours. Also we have built up art and craft materials - particularly for men with disabilites  as they present as a group  whose needs require careful thinking and  support.  We have had success in running support groups for carers and now with less COVID restrictions we have planned a meeting to discuss how we should proceed when meeting in person.  We aim to extend our services to more disabled people and also build up once more our summer activites for  younger children. In the past we have had up to 25 young people; under age 10 in both our weekly groups and summer activites have attracted parents willing to help; those who would not normally engage with heritage. We have seen relationships grow and flourish through fun and engagement. These activities have always been open to anyone and people from different backgrounds have found friendship and mutual support. Our volunteers have remained committed and we have now recruited a younger  volunteer from our area  to join us once DBS and specialist training has been arranged. ",
+    "projectOutcome2": "through better facilities, already added and  completing renovation\r\nof basement to ensure safety of the building. ",
+    "projectOutcome4": "Our groups will aim to develop confidence and new skills as well as helping those with Dementia to identify their past skills and feel more supported. This group will also cater for the support needs of carers - through sharing and information giving, enhancing mutual support.\r\nOur school groups do activites that build up skills such as team working, co-ordination through exercise- developing more autonomy and self relaince through achievement and praise.",
+    "projectOutcome6": "We have learnt through monitoring past activities that people do feel greater well being when they can come together as valued individulas. They are able to meet others who may suffer the same disability and distress - the relationships they build combat isolation and develop friendships that have lasted. We aim to engage and help those with Dementia and Carers recognising and learning together how best support can be gained. The group will decide together their goals- the timing  content of meetings- we can be flexible in time and our volunteers are enthusiastic  and willing to learn. We will have oversight from experienced agencies and they too will be able to arrange input that is required. ",
+    "projectOutcome7": "By completing both Phase One and Two the church premises will be safe and the church itself will be able to carry on with the work we have committed to. This means the building will be secure for future generations  and initatives that may develop -",
+    "projectOutcome8": "We aim to work with other organisations that  also seek to make our locality a better place to live. This is because we are not a closed church but open knowing people need a safe place to be themselves. We  will provide a place for enjoyment and mutual support- bringing  the community together for celebrations and providing advice - to point those in need to resources that can help both statutory and voluntary. Because of our long standing in the community we are trusted. We know this  through past experience and the sucessful responses to what we provide now and in the past.",
+    "yourIdeaProject": "Weetslade  Parish has two churches; Church of Good Shepherd and Saint Paul's. We have re -opened our space to  community groups at St Paul's  we served before covid 19 and creating space for 2 new groups; one at St Paul's and one at Good Shepherd. Over past year, by digital means, we have worked with North Tyneside Council Carers Support Service to support  a group of 10carers. Now we aim to establish a space for our carers group to meet and focus on those caring and suffering from Dementia. Good Shepherd  has completed  facilites for disabled  people ie phase one of project but Phase Two of renovation concentrates on making building safe by repairs to  basement of the church. This will be done according to architect recommendations. We have raised some funding; however without the repair to the basement,for safety reasons, we are unable to proceed with opening our new groups at Good Shepherd  although we can  re -establish our previous community groups at St Paul's where we are working  with young people from  the local school. We cannot work at  Good Shepherd, inside the church until our premises are made secure.We have run after school activites for young people  for over ten years. We  have been able to re-open our group for older disabled people  running it from our sister church, However many from Good Shepherd area  are  unable to attend. Good Shepherd church is over 100 years old and  much valued by the local community. Many friends  have helped to raise funds  by hosting events especially for equipment that is required for people with disabilites and those with Dementia. The ambition is to make us an up to date facility that serves identified community  needs.We are  acutely aware that people with health difficulties such as Dementia and their carers have suffered disproportionally because of  Covid 19. Having established a strong connection over the past year using zoom meetings with carers we want to extend and serve  those most affected by the pandemic. We are working with AGE UK  and North Tyneside  Council Carers Support  Team to support zoom groups for Carers. Both Churches are supporting us financially to open a gardening group for people with disabilites  which both commuites  in our Parish are taking part in. Our aim however is to extend the gardening group to other sites in the villages where people are interested. This includes young people from the schools we serve. The  gardening part of our project is well underway but in order to continue come winter we are looking for further funding in order to secure and renovate  Good Shepherd premises.  Our ability to continue and open our planned new groups depends on completing the basement renovation. We need also to provide more storage space for the various groups - such as our local choir who plan to return when it is possible and AGE UK want to continue using the premises for groups they have run in the past and want to re-open",
+    "mainContactEmail": "irendall@btinternet.com",
+    "mainContactPhone": "07842955241",
+    "organisationName": "CHURCH OF GOOD SHEPHERD",
+    "organisationType": "faith-based-or-church-organisation",
+    "projectAvailable": "Our groups have always been open to everyone in our localities both older and younger people. We have in the past published activities through posters  and  we will be publising our new  groups through our usual leaflet drop, through the Parish Magazine, and  posters in local shops etc. We have a budget for publishing and a active team of 8 volunteers who represent both church members and friends of the Parish. Our volunteers are all checked through the Diocese - they attend safeguarding training run by the Diocese and 2 volunteers  have completed Dementia trianing. We are working with North Tyneside Council who have agreed to provide further training. We regard our initiatives as long term and are not planning for the group projects to end although we will monitor through consultation with participants and change when necessary. We are open to honestly monitoring and feedback is  usually  verbally given or  through questionnaires. The outcomes will be maintained because we will review. We are committed to work with our participants to  ensure that we are aiming to provide  what people want and need. Our volunteers have sucessfully run  our children/young people groups now for over ten years and we cover two primary schools in the Parish. We have also run regular entertainment for our older residents on a monthly basis and we have a weekly drop in coffee club. The heritage of  Good Shepherd Church, when fully  renovated, will continue to serve our local people as a much required resurce for social interaction, friendship and community well being.",
+    "projectCommunity": "Our project is not included in a formal development plan but is part of our recent Mission plan. We have in the past,consulted with local people in the Parish who indicated they need more help for older disabled people; so we opened a entertainment session once a month and our coffee mornings at both churches. Our zoom meetings  set up  over the past 6 months, in partnership with  North Tyneside Carers Support  were initiated through consultation that indicated a lack of services for carers in this part of the council area. This led to consultaion with carers themselves about their needs for support and most significantly support for those who have suffered because of covid and a lack of  statutory service provision. We already have links with local care homes and have kept in contact during the last year and both care home residents and older disabled people in the community have attended our well suported coffee and entertainment  groups in the past and want to resume their meetings now they are able to. Also our local two primary schools have indicated they see our groups for young children as an asset as this involves parents and children being together- having fun through the monthly activities we provide - this enhances parent /child relationships. Over the years of running our clubs quite a few of the young people  have returned and volunteered to help out in the summer groups we run and they also benefit by being involved. We recognise the importance of community input and do not impose our values as Christians. Instead we offer a space for friendships and regular social contact. We  take our mission to our neighbours seriously and for many years  have engaged  and consulted to provide what our communities identify as their needs. This encourages ownership of the groups content and ethos,enhances engagement. The positive  community response we have had in the past  expalins  the value placed by the community for what we are able to offer and  we have winessed the community  committment that has benefited their well- being.",
+    "projectDateRange": { "endDate": "2021-09-15", "startDate": "2021-08-31" },
+    "cashContributions": [
+      {
+        "id": "a6c03240-d63e-4a3b-a806-a93cf349f14c",
+        "amount": 4000,
+        "secured": "yes-with-evidence",
+        "description": "we have raised funding from Bernard Sunley £43000\r\nAll Churches Trust £2250\r\nNewcastle partners in Community Action £3,000 and another £3000 when renovation is nearing the end.\r\n"
+      },
+      {
+        "id": "417d2bff-a90b-4f8a-b0f9-9f0679496782",
+        "amount": 2250,
+        "secured": "yes-with-evidence",
+        "description": "All Churches Trust 2250"
+      },
+      {
+        "id": "d9bb42f5-b361-4ca2-86a9-72c7b04aed68",
+        "amount": 3000,
+        "secured": "yes-no-evidence-yet",
+        "description": "we have a confirmed grant of 3000 from Newcastle Partners in Action but don't have evidence yet"
+      }
+    ],
+    "involveInResearch": false,
+    "projectDifference": "By completing the renovation we will be preserving a much valued community church of considrable age which is well used and loved in our ex-mining village. Our locality suffers from considerable deprivation because  of a lack of employment opportunities and community spaces. We have a range of housing including  two post war estates where more poverty is prevalent.2. By ensurung safety for all our groups, including our new planned activities for Carers and Dementia sufferers we will be extending our out reach and widening participation. 3. We will be preserving the church building for the community  groups we served before the pandemic and open new activity groups for people with disabilities including Dementia.  We are at present running a community garden project at  Saint  Paul's and want to extend this to people in the Church of the Good Shepherd locality 4. Completing the renovation will make the premises sustainable for the future in terms of ensuring a much needed  community and local resource. 5 re opening  our  weekly after school groups has proved limited so far  but  being able to run from Good Shepherd, if renovations can be completed, means we can continue the work that adds  self confidence and resilience for those young people who attend 6.  We can continue working with our partnerships; AGE UK and North Tyneside council and be open to other relevant partnerships. Our emphasis on nature with the gardening group will not only allow participants to develop new skills but will also have an impact on the environment by creating an outside space for observing nature and also provide the benefits of  home grown food. ",
+    "projectVolunteers": [
+      { "hours": 5, "description": "church member" },
+      { "hours": 3, "description": "community friend " },
+      { "hours": 5, "description": "church member" },
+      { "hours": 5, "description": "one church secretary" },
+      { "hours": 5, "description": "one member of church" },
+      {
+        "hours": 5,
+        "description": "we have 1volunteer at present willing to work with new groups for disabled people including those suffering from dementia and their carers "
+      }
+    ],
+    "mainContactAddress": {
+      "line1": "16Pine Avenue",
+      "county": "Tyne and Wear",
+      "postcode": "NE3 2AJ",
+      "townCity": "NEWCASTLE UPON TYNE"
+    },
+    "projectCapitalWork": true,
+    "organisationAddress": {
+      "line1": "Weetslade Gardens, Weetslade Road, Dudley",
+      "county": "Northumberland",
+      "postcode": "NE23 7LH",
+      "townCity": "CRAMLINGTON"
+    },
+    "organisationMission": [
+      "disability-led",
+      "young-people-led",
+      "mainly-protestant-community-led"
+    ],
+    "projectOrgBestPlace": "Because the Good Shepherd Church is placed in the center  of the village adjacent to local school, transport links and shops it has grown through many years to be known as a kind of village hub. As a church with mission  out reach is our main priority and we have sucessfully run services for children/ young people and older persons  for many years. We are open to partnerships recognising this enhances our work and extends our knowledge and can only benefit  those in need. As previously stated we engage with North Tyneside Council- AGE UK and from working alongside agencies  community involement has grown. We have regular meetings with other churches from other denominations recognising we cannot meet all needs in our locality. We have a tried and tested team of volunteers from both the church and local people  who are active and committed.",
+    "nonCashContributions": [
+      {
+        "description": "grants received 4,000 Bernard Sunley\r\nAll Churches Trust 2.250\r\nTogether Newcastle Partners in Community 3000",
+        "estimatedValue": 9250
+      }
+    ],
+    "mainContactDateOfBirth": "1949-03-16",
+    "projectNeedsPermission": "yes",
+    "projectOutcome2Checked": true,
+    "projectOutcome3Checked": false,
+    "projectOutcome4Checked": true,
+    "projectOutcome5Checked": false,
+    "projectOutcome6Checked": true,
+    "projectOutcome7Checked": true,
+    "projectOutcome8Checked": true,
+    "projectOutcome9Checked": false,
+    "authorisedSignatoryOneDetails": {
+      "name": "Eileen Rickeard",
+      "role": "",
+      "email": "eileenrickeard65@gmail.com",
+      "phone": "07732162927",
+      "isAlsoApplicant": false
+    },
+    "authorisedSignatoryTwoDetails": {
+      "name": "Angela Maughan",
+      "role": "",
+      "email": "angmaughan@aol.com",
+      "phone": "07971856027",
+      "isAlsoApplicant": false
+    },
+    "projectNeedsPermissionDetails": "As a church we require Diocese permission to make any changes to  a church building. A faculty for the work is granted and is current. The permission ie faculty includes both phases of the project. ie installing disabled toilet,(completed). Phase Two making safe basement by infilling with cement and installing linings. Also creation of storage space in vestry space"
+  }
+}

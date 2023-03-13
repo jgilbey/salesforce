@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>All Projects Question 6</label>
+    <protected>false</protected>
+    <values>
+        <field>Document_Question__c</field>
+        <value xsi:type="xsd:string">A small selection of images that help illustrate your project. If your project involves land, please provide a location map and, if applicable, a simple site map or plan. It would be helpful if these are in digital format. We will use these images to present your project to decision makers.</value>
+    </values>
+    <values>
+        <field>Question_Alias__c</field>
+        <value xsi:type="xsd:string">imagesSelection</value>
+    </values>
+</CustomMetadata>

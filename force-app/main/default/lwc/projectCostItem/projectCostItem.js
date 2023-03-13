@@ -1,5 +1,6 @@
 import { LightningElement, track, api, wire } from 'lwc';
 import COST_HEADING from "@salesforce/schema/Project_Cost__c.Cost_heading__c";
+import COST_TYPE from "@salesforce/schema/Project_Cost__c.Cost_Type__c";
 import PROJECT_COST_OBJECT from "@salesforce/schema/Project_Cost__c";
 import { getObjectInfo, getPicklistValues } from "lightning/uiObjectInfoApi";
 export default class ProjectCostItem extends LightningElement {
@@ -10,6 +11,7 @@ export default class ProjectCostItem extends LightningElement {
     @track visible = true;
     @track disabled = false;
     @track costHeadingList;
+    @track costTypeList;
     @api styleClass; //= "slds-popover";
     @api objectApiName;
     @track costRecordTypeId;
@@ -18,13 +20,15 @@ export default class ProjectCostItem extends LightningElement {
     @api smallGrant;
     @api mediumGrant;
     @api nhmfGrant;
+    @api largeGrantDevelopment;
+    @api largeGrantDelivery;
+    
     
 @wire(getObjectInfo, { objectApiName: PROJECT_COST_OBJECT })
 wiredRecord({ error,data }){
     if (data) {
 
                 if(data.recordTypeInfos) {
-                    console.log('the reti',JSON.stringify(data.recordTypeInfos));
                     this.costRecordTypeId = Object.values(data.recordTypeInfos).find(
                       (item) => item.name === this.cost.RecordTypeName
                     )?.recordTypeId;
@@ -49,28 +53,27 @@ wiredRecord({ error,data }){
     )
     costHeadingList({ error, data }) {
         if (data) {
-        console.log('this is the data', data);
         this.costHeadingList = data.values;
         } else  {
         console.log('error getting picklist values', error);
         }
     }
 
-   /*handleOnChange(e) {
-        e.stopPropagation();
-        //myList[i][e.target.name] = e.target.value;
-        console.log('handling in child');
-        //console.log(e.target.name); //... Field API Name
-        console.log('dataset value ',e.target.value); //... value
-        console.log('dataset id',JSON.stringify(e.target.dataset.id)); //...Record Id
-        //console.log(JSON.stringify(e.target)); //...Record Id
-        console.log('name',e.target.name);
-        this.dispatchEvent(
-            new CustomEvent('costchange', { detail: { name: e.target.name, value: e.target.value, id: e.target.dataset.id } })
-            );
-            
-        this.calculateTotalCost();
-    }*/
+    @wire(
+      getPicklistValues,
+
+      {
+          recordTypeId: '$costRecordTypeId',
+
+          fieldApiName: COST_TYPE
+      }
+  )
+  costTypeList({ error, data }) {
+      if (data) {
+      this.costTypeList = data.values;
+      } else  {
+      }
+  }
 
     handleOnChange(e) {
         e.stopPropagation();
@@ -81,6 +84,7 @@ wiredRecord({ error,data }){
         console.log("dataset id", JSON.stringify(e.target.dataset.id)); //...Record Id
         //console.log(JSON.stringify(e.target)); //...Record Id
         console.log("name", e.target.name);
+        console.log("dataset id", JSON.stringify(e.target.name)); //...Record Id
         this.dispatchEvent(
           new CustomEvent("costchange", {
             detail: {

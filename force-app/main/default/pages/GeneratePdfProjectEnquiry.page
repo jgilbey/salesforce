@@ -1,0 +1,3 @@
+<apex:page standardController="EOI_Project_Enquiry__c" docType="html-5.0" title="Webmerge Certificate: {!EOI_Project_Enquiry__c.Project_Title__c}">
+    <webm:WebmergeWizard record="{!EOI_Project_Enquiry__c}" browserPreview="true"/>
+</apex:page>

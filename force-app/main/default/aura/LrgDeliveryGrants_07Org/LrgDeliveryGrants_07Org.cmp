@@ -1,0 +1,182 @@
+<aura:component implements="force:hasRecordId,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:appHostable" 
+                access="global" 
+                controller="LrgDevGrantCtrl">
+
+    <c:Util_LrgDeliveryGrants aura:id="Utils"/>
+       
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="readOnly" type="boolean" />
+    <aura:attribute name="orgId" type="String" />
+    
+    <!--Facilitate GOV-UK Radio/Checkboxes-->
+    <aura:attribute name="isVatRegistered" type="String" />
+    <aura:attribute name="hasReview" type="boolean" />
+    <aura:attribute name="mission" type="List"/>
+    <aura:attribute name="missionAnswer" type="String"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="govuk-main-wrapper">
+        <div class="tabHeader">
+            <h1 class="govuk-heading-l">{!$Label.c.LrgDevGrant_7 } </h1>
+        </div>
+    
+        <lightning:recordEditForm recordId="{!v.orgId}" objectApiName="Account" onsuccess="{!c.saveSection}" >
+            
+            <div class="govuk-heading-m pad">{!$Label.c.LrgDevGrant_7_3_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_7_3_0}" fieldName="Organisation_s_Main_Purpose_Activities__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+            
+            <div class="govuk-heading-m pad">{!$Label.c.LrgDevGrant_7_4_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_7_4_0}" fieldName="NumberOfEmployees" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+            
+            <div class="govuk-heading-m pad">{!$Label.c.LrgDevGrant_7_7_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_7_7_0}" fieldName="Number_Of_Board_members_or_Trustees__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+            
+            <div class="govuk-heading-m pad">{!$Label.c.LrgDevGrant_7_8_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_7_8_0}" fieldName="Amount_spent_in_the_last_financial_year__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+            
+            <div class="govuk-heading-m pad">{!$Label.c.LrgDevGrant_7_9_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_7_9_0}"  fieldName="level_of_unrestricted_funds__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+            
+            <!-- <div class="govuk-heading-m pad">{!$Label.c.LrgDevGrant_7_12_1}</div>-->
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_7_12_1}" value="{!v.isVatRegistered}" fieldName="Are_you_VAT_registered_picklist__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" style="display:none;"/>
+
+            <fieldset class="govuk-fieldset pad">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                  <h2 class="govuk-fieldset__heading pad">
+                        {!$Label.c.LrgDevGrant_7_12_0}
+                  </h2>
+                </legend>
+                <div class="govuk-radios">
+                    <div class="govuk-radios__item">
+                      <input checked="{!v.isVatRegistered=='Yes'}" disabled="{!v.readOnly}" class="govuk-radios__input" id="is-vat-registered-yes" data-selected-id="isVatRegistered" name="is-vat-registered" type="radio" value="Yes" onchange="{!c.checkToPicklist}"/>
+                    <label class="govuk-label govuk-radios__label" for="is-vat-registered-yes">
+                      {!$Label.c.YesNo_Yes}
+                    </label>
+                  </div>
+                  <div class="govuk-radios__item">
+                      <input checked="{!v.isVatRegistered=='No'}" disabled="{!v.readOnly}" class="govuk-radios__input" id="is-vat-registered-no" data-selected-id="isVatRegistered" name="is-vat-registered" type="radio" value="No" onchange="{!c.checkToPicklist}"/>
+                    <label class="govuk-label govuk-radios__label" for="is-vat-registered-no">
+                      {!$Label.c.YesNo_No}
+                    </label>
+                  </div>
+                </div>
+            </fieldset>
+
+            <aura:if isTrue="{!$Locale.language=='en'}">
+            	<div class="govuk-label pad pad">If yes,</div>
+            </aura:if>
+            <div class="govuk-label pad">{!$Label.c.LrgDevGrant_7_12_2}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_7_12_2}" fieldName="VAT_number__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+            
+             <!--Hidden checkboc input field-->
+             <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_2_4_1}" value="{!v.missionAnswer}" fieldName="Organisation_s_Mission_and_Objectives__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" style="display:none;" />
+
+            <fieldset class="govuk-fieldset" aria-describedby="waste-hint">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m pad">
+                    <h1 class="govuk-fieldset__heading pad">
+                        {!$Label.c.LrgDevGrant_7_13_0 }
+                    </h1>
+                </legend>
+                <div id="waste-hint" class="govuk-hint">
+                    {!$Label.c.SelectAllThatApply}
+                </div>
+                <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                    
+                    <aura:if isTrue="{!not(empty(v.mission))}" >
+                        
+                        <aura:iteration items="{!v.mission}" var="item" indexVar="key">
+                            
+                            <div class="govuk-checkboxes__item">
+                                <input  checked="{!item.value}" disabled="{!v.readOnly}" class="govuk-checkboxes__input" data-selected-id="mission" onchange="{!c.checkboxToMultiPicklist}" id="{!item.key}" name="mission and objectives" type="checkbox" value="{!item.key}"/>
+                                <label class="govuk-label govuk-checkboxes__label" for="{!item.key}">
+                                    <aura:if isTrue="{!$Locale.language=='cy'}">
+                                        <!-- Cannot be translated with Custom Labels or Translation workbench-->
+                                        {!if(item.key=='Black or minority ethnic-led','Du neu leiafrifoedd ethnig dan arweiniad ethnig','')}
+                                        {!if(item.key=='Disability-led','Dan arweiniad anabledd','')}
+                                        {!if(item.key=='LGBT+-led','LGBT + -led','')}
+                                        {!if(item.key=='Female-led','Dan arweiniad menywod','')}
+                                        {!if(item.key=='Young people-led','Arweinir gan bobl ifanc','')}
+                                        {!if(item.key=='Mainly led by people from Catholic communities','Arweinir yn bennaf gan bobl o gymunedau Catholig','')}
+                                        {!if(item.key=='Mainly led by people from Protestant communities','Arweinir yn bennaf gan bobl o gymunedau Protestannaidd','')}
+                                        {!if(item.key=='None of the above','Ddim un o’r uchod','')}
+                                        <aura:set attribute="else">
+                                            {!item.key}
+                                        </aura:set>
+                                    </aura:if>
+                                </label>
+                            </div>
+                            
+                        </aura:iteration>
+                    </aura:if>
+                    
+                </div>
+            </fieldset>
+            
+            <div class="govuk-heading-m pad">{!$Label.c.LrgDevGrant_7_18_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_7_18_0}" fieldName="Social_Media__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+
+            <aura:if isTrue="{!!v.readOnly}">
+                <div class="button-container">
+                    <lightning:button class="govuk-button" variant="brand" type="submit" name="update" label="{!$Label.c.LrgDevGrant_7_1_btn}" />
+                </div>
+            </aura:if>
+        </lightning:recordEditForm>
+        
+        <lightning:recordEditForm recordId="{!v.recordId}" objectApiName="Case" onsuccess="{!c.saveSection}" >
+            
+            <h2 class="govuk-heading-l">{!$Label.c.LrgDevGrant_7_5_0}</h2>
+            
+            <div class="govuk-heading-m pad">{!$Label.c.LrgDevGrant_7_5_1}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_7_5_1}" fieldName="Review__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}"/>
+            <!--<div class="govuk-heading-m pad">{!$Label.c.LrgDevGrant_7_6_1}</div>-->
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_7_6_1}" value="{!v.hasReview}" fieldName="Undertaking_Governance_review__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" style="display:none;"/>
+            
+            <fieldset class="govuk-fieldset pad">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                  <h2 class="govuk-fieldset__heading pad">
+                        {!$Label.c.LrgDevGrant_7_6_0}
+                  </h2>
+                </legend>
+                <div class="govuk-radios">
+                    <div class="govuk-radios__item">
+                      <input checked="{!v.hasReview}" disabled="{!v.readOnly}" class="govuk-radios__input" id="has-review-yes" data-selected-id="hasReview" name="has-review" type="radio" value="Yes" onchange="{!c.checkToBoolean}"/>
+                    <label class="govuk-label govuk-radios__label" for="has-review-yes">
+                      {!$Label.c.YesNo_Yes}
+                    </label>
+                  </div>
+                  <div class="govuk-radios__item">
+                      <input checked="{!not(v.hasReview)}" disabled="{!v.readOnly}" class="govuk-radios__input" id="has-review-no" data-selected-id="hasReview" name="has-review" type="radio" value="No" onchange="{!c.checkToBoolean}"/>
+                    <label class="govuk-label govuk-radios__label" for="has-review-no">
+                      {!$Label.c.YesNo_No}
+                    </label>
+                  </div>
+                </div>
+            </fieldset>
+            
+            <aura:if isTrue="{!$Locale.language=='en'}">
+            	<div class="govuk-label pad pad">If yes,</div>
+            </aura:if>
+            <div class="govuk-label pad">{!$Label.c.LrgDevGrant_7_6_2}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_7_6_2}" fieldName="When_do_you_intend_undertaking_this_rev__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}"/>
+
+            <aura:if isTrue="{!!v.readOnly}">
+                <div class="button-container">
+                    <lightning:button class="govuk-button" variant="brand" type="submit" name="update" label="{!$Label.c.LrgDevGrant_7_3_btn}" />
+                </div>
+            </aura:if>
+        </lightning:recordEditForm>
+        
+        <div class="slds-form" > 
+            <div >
+                <div class="col2-1">
+                    <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.back}" label="{!$Label.c.Back}" />
+                </div>
+                <div class="col2-2">
+                    <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.next}" label="{!$Label.c.Continue}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+</aura:component>

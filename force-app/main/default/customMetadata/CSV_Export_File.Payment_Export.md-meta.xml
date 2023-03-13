@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Payment Export</label>
+    <protected>false</protected>
+    <values>
+        <field>CSV_Export_RecordType_Name__c</field>
+        <value xsi:type="xsd:string">Payment</value>
+    </values>
+    <values>
+        <field>CSV_Header__c</field>
+        <value xsi:type="xsd:string">Export Reference,Project Reference,Project Title,Organisation Name,Type,Amount,Bank Account Name,Bank Account Number,Sort Code,Roll Number,Payment Reference</value>
+    </values>
+    <values>
+        <field>Export_Object__c</field>
+        <value xsi:type="xsd:string">Forms__c</value>
+    </values>
+    <values>
+        <field>Export_Related_Field__c</field>
+        <value xsi:type="xsd:string">CSV_Export__c</value>
+    </values>
+    <values>
+        <field>FileName__c</field>
+        <value xsi:type="xsd:string">Payment Export</value>
+    </values>
+    <values>
+        <field>Use_Versioning__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+</CustomMetadata>

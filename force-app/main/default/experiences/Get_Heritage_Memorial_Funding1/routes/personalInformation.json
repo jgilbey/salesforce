@@ -1,0 +1,11 @@
+{
+  "activeViewId" : "6bc13313-40f1-44de-b0f0-d52fb0f19959",
+  "appPageId" : "2d3bc8c8-8dc6-4bd0-9cfa-19493739faa2",
+  "configurationTags" : [ ],
+  "id" : "d2641b1e-b085-407f-a2bf-8aa448cd395f",
+  "label" : "Personal Information",
+  "pageAccess" : "RequiresLogin",
+  "routeType" : "custom-personalinformation",
+  "type" : "route",
+  "urlPrefix" : "personalinformation"
+}

@@ -1,0 +1,83 @@
+<aura:component implements="force:hasRecordId,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:appHostable" 
+                access="global" 
+                controller="LrgDevGrantCtrl">
+       
+    <c:Util_LrgDevGrants aura:id="Utils"/>
+    
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="readOnly" type="boolean" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="govuk-main-wrapper">
+        <div class="tabHeader">
+            <h1 class="govuk-heading-l">{!$Label.c.LrgDevGrant_3}</h1>
+        </div>
+    
+        <lightning:recordEditForm recordId="{!v.recordId}" objectApiName="Case" onsuccess="{!c.onSuccess}" >
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_3_1_1}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_3_1_1}" fieldName="Project_of_scale_in_the_last_5_yrs__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_3_1_2}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_3_1_2}" fieldName="Detail_of_this_scale_project_in_5_yrs__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_3_2_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_3_2_0}" fieldName="Why_this_project__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+            
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_3_3_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_3_3_0}" fieldName="Details_of_Capacity_building_activity__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_3_4_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_3_4_0}" fieldName="Details_of_Jobs_will_be_created__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_3_5_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_3_5_0}" fieldName="Work_during_development_phase__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_3_6_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_3_6_0}" fieldName="People_responsible_during_Dev_phase__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_3_9_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_3_9_0}" fieldName="People_responsible_during_Delivery_phase__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_3_10_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_3_10_0}" fieldName="Work_during_delivery_phase__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_3_11_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_3_11_0}" fieldName="Cash_flow_plan_during_delivery_phase__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_3_14_1}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_3_14_1}" fieldName="Project_Start_Date__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_3_14_2}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_3_14_2}" fieldName="Project_End_Date__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+
+            <div class="govuk-heading-s pad">{!$Label.c.LrgDevGrant_3_15_1}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_3_15_1}" fieldName="Deadlines_that_will_restrict_project__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+            
+            <aura:if isTrue="{!v.readOnly}">
+                <div >
+                    <div class="col2-1">
+                        <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.back}" label="{!$Label.c.Back}" />
+                    </div>
+                    <div class="col2-2">
+                        <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.next}" label="{!$Label.c.Continue}"/>
+                    </div>
+                </div>
+                
+                <aura:set attribute="else">
+                    <div >
+                        <div class="col2-1">
+                            <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.back}" label="{!$Label.c.Back}" />
+                        </div>
+                        <div class="col2-2">
+                            <lightning:button class="govuk-button btn-col2" variant="brand" type="submit" name="update" label="{!$Label.c.SaveAndContinue}"/>
+                        </div>
+                    </div>
+                
+                </aura:set>
+                
+            </aura:if>
+        </lightning:recordEditForm>
+    </div>
+</aura:component>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Acquisition Projects 1</label>
+    <protected>false</protected>
+    <values>
+        <field>Document_Question__c</field>
+        <value xsi:type="xsd:string">A copy of your acquisitions and disposals policy</value>
+    </values>
+    <values>
+        <field>Question_Alias__c</field>
+        <value xsi:type="xsd:string">acquisitionsCopy</value>
+    </values>
+</CustomMetadata>

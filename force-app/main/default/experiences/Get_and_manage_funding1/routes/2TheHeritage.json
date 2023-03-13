@@ -1,0 +1,11 @@
+{
+  "activeViewId" : "8c09d0bb-2f55-433f-9814-9d37c98b4d27",
+  "appPageId" : "9a06b659-cc86-48fa-a38d-0a6938d33ef8",
+  "configurationTags" : [ ],
+  "id" : "4a899f93-4116-4741-9bfc-be9a04ccc749",
+  "label" : "2. The Heritage",
+  "pageAccess" : "UseParent",
+  "routeType" : "custom-the-heritage",
+  "type" : "route",
+  "urlPrefix" : "apply-development/the-heritage"
+}

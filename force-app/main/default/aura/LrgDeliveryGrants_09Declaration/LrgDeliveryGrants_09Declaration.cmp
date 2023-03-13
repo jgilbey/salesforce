@@ -1,0 +1,80 @@
+<aura:component implements="force:hasRecordId,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:appHostable" 
+                access="global" 
+                controller="LrgDevGrantCtrl">
+
+    <c:Util_LrgDeliveryGrants aura:id="Utils"/>
+       
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="readOnly" type="boolean" />
+    <aura:attribute name="acceptedTsCs" type="boolean" default="false"/>
+
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="govuk-main-wrapper">
+        <div class="tabHeader">
+            <h1 class="govuk-heading-l">Confirm declaration</h1>
+        </div>
+    
+        <lightning:recordEditForm recordId="{!v.recordId}" objectApiName="Case" onsuccess="{!c.submit}" >
+
+            <h2 class="govuk-heading-m">{!$Label.c.LrgDevGrant_9_a}</h2>
+            <p>{!$Label.c.LrgDevGrant_9_a_Body}</p>
+            <p>
+            <a href="https://www.heritagefund.org.uk/funding/national-lottery-grants-heritage-250k-5m/terms" target="_blank" rel="noopener noreferrer">{!$Label.c.LrgDevGrant_9_a_link}</a>
+            </p>
+            <h2 class="govuk-heading-m">{!$Label.c.LrgDevGrant_9_b}</h2>
+            <p>{!$Label.c.LrgDevGrant_9_b_Body_i}</p>
+            <p>{!$Label.c.LrgDevGrant_9_b_Body_ii}</p>
+            <p>{!$Label.c.LrgDevGrant_9_b_Body_iii}</p>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_9_b}" fieldName="Information_not_publically_available__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+            <p>{!$Label.c.LrgDevGrant_9_b_Body_iv}</p>
+            <p>
+                <ul class="slds-list_dotted">
+                    <li>{!$Label.c.LrgDevGrant_9_b_Body_v}</li>
+                    <li>{!$Label.c.LrgDevGrant_9_b_Body_vi}</li>
+                    <li>{!$Label.c.LrgDevGrant_9_b_Body_vii}</li>
+                    <li>{!$Label.c.LrgDevGrant_9_b_Body_viii}</li>
+                    <li>{!$Label.c.LrgDevGrant_9_b_Body_ix}</li>
+                    <li>{!$Label.c.LrgDevGrant_9_b_Body_x}</li>
+                </ul>
+            </p>
+            <p>{!$Label.c.LrgDevGrant_9_b_Body_xi}</p>
+            <p>
+                <ul class="slds-list_dotted">
+                    <li>{!$Label.c.LrgDevGrant_9_b_Body_xii}</li>
+                    <li>{!$Label.c.LrgDevGrant_9_b_Body_xiii}</li>
+                    <li>{!$Label.c.LrgDevGrant_9_b_Body_xiv}</li>
+                    <li>{!$Label.c.LrgDevGrant_9_b_Body_xv}</li>
+                    <li>{!$Label.c.LrgDevGrant_9_b_Body_xvi}</li>
+                </ul>
+            </p>
+            <h3 class="govuk-heading-s">{!$Label.c.LrgDevGrant_9_b_iv}</h3>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_9_b_iv}" fieldName="Agreed_to_Declaration__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.toggleTsCs}"/>
+            <h3 class="govuk-heading-s">{!$Label.c.LrgDevGrant_9_b_i}</h3>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_9_b_i}" fieldName="Involve_in_research__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+            <h3 class="govuk-heading-s">{!$Label.c.LrgDevGrant_9_b_ii}</h3>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_9_b_ii}" fieldName="Keep_Informed__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput"/>
+
+                <aura:if isTrue="{!v.readOnly}">
+                    <div class="button-container">
+                        <lightning:button class="govuk-button" variant="brand" onclick="{!c.back}" label="{!$Label.c.Back}" />
+                    </div>
+                    
+                    <aura:set attribute="else">
+                        <div >
+                            <div class="col2-1">
+                                <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.back}" label="{!$Label.c.Back}" />
+                            </div>
+                            <div class="col2-2">
+                                <lightning:button class="govuk-button btn-col2" disabled="{!not(v.acceptedTsCs)}" variant="brand" type="submit" label="{!$Label.c.SubmitApplication}"/>
+                            </div>
+                        </div>
+                        <br/>
+                    </aura:set>
+                </aura:if>
+
+        </lightning:recordEditForm>
+    </div>    
+    
+</aura:component>

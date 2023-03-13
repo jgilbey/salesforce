@@ -1,0 +1,110 @@
+.bold-text{
+    font-weight: bold;
+}
+
+.header-text{
+    font-size: var(--lwc-fontSize8,1.5rem);
+}
+
+.check-box__container lightning-input{
+    display: inline-block;
+}
+.check-box__container span{
+    padding-right: 4px;
+}
+
+.spinner__container{
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 999;
+}
+
+c-multiline-input textarea{
+    resize: auto;
+    height: initial;
+}
+c-multiline-input .multiline-textarea textarea{
+    resize: auto;
+}
+c-multiline-input .multiline-textarea {
+    z-index: 15;
+}
+c-multiline-input .multiline-input {
+    bottom: 0.5rem;
+}
+c-multiline-input .multiline-input .slds-textarea{
+    resize: none;
+}
+c-multiline-input .multiline-input .textarea-container{
+    height: 100%;
+}
+c-multiline-input .multiline-input textarea{
+    height: 100%!important;
+    width: 100%!important;
+    padding-bottom: 0;
+    padding-top: 0;
+    line-height: var(--lwc-heightInput,1.875rem);
+    overflow: hidden;
+}
+
+.project-costs-table .slds-form-element__label,
+c-table-generator .slds-form-element__label,
+c-risks-table table .slds-form-element__label,
+.partnership-funding-table .slds-form-element__label{
+    display: none;
+}
+
+c-payment-request-form-component .slds-spinner_container,
+c-progress-report-form-steps .slds-spinner_container,
+c-permission-form .slds-spinner_container,
+c-monitoring-page .slds-spinner_container,
+c-application-form-component .slds-spinner_container,
+c-completion-report-form .slds-spinner_container {
+    position: fixed;
+}
+
+textarea:not(c-multiline-input textarea, c-custom-data-table textarea) {
+    min-height: 200px !important;
+}
+.slds-modal .slds-form-element__label {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.slds-modal .slds-checkbox__label {
+    display: flex;
+    flex-flow: column-reverse;
+}
+.slds-modal .slds-checkbox_faux {
+    display: block;
+    margin-top: 10px;
+}
+
+c-custom-data-table lightning-primitive-cell-factory .slds-grid .slds-truncate,
+c-custom-data-table lightning-primitive-cell-factory lightning-formatted-number {
+    width: 100%;
+}
+lightning-file-upload .slds-form-element__label:empty {
+    display: none;
+}
+
+.slds-listbox {
+    max-height: 180px;
+}
+
+.slds-listbox .slds-listbox__option .slds-truncate {
+    white-space: normal;
+}
+.theme-main .slds-checkbox [type=checkbox]+.slds-checkbox__label .slds-checkbox_faux{
+    transform: scale(1.5);
+    border-color: #000;
+    margin: 0 10px;
+}
+.theme-main table .slds-checkbox__label {
+    line-height: 2.5;
+}

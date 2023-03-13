@@ -1,0 +1,54 @@
+<aura:component implements="force:hasRecordId,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:appHostable" 
+                access="global" 
+                controller="LrgDevGrantCtrl">
+
+    <c:Util_LrgDeliveryGrants aura:id="Utils"/>
+       
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="readOnly" type="boolean" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="govuk-main-wrapper">
+        <div class="tabHeader">
+            <h1 class="govuk-heading-l">{!$Label.c.LrgDevGrant_5}</h1>
+        </div>
+    
+        <lightning:recordEditForm recordId="{!v.recordId}" objectApiName="Case" onsuccess="{!c.onSuccess}" >
+        
+            <div class="govuk-heading-m pad">{!$Label.c.LrgDevGrant_5_1_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_5_1_0}" fieldName="Maintaining_outcomes_and_running_costs__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+
+            <div class="govuk-heading-m pad">{!$Label.c.LrgDevGrant_5_3_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_5_3_0}" fieldName="Knowledge_skill_after_the_project_ends__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}" />
+
+            <div class="govuk-heading-m pad">{!$Label.c.LrgDevGrant_5_4_0}</div>
+            <lightning:inputField ariaLabel="{!$Label.c.LrgDevGrant_5_4_0}" fieldName="How_will_you_evaluate_your_project__c" variant="label-hidden" disabled="{!v.readOnly}" class="formInput" onchange="{!c.maxLen5000}"/>
+
+            <aura:if isTrue="{!v.readOnly}">
+                <div >
+                    <div class="col2-1">
+                        <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.back}" label="{!$Label.c.Back}" />
+                    </div>
+                    <div class="col2-2">
+                        <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.next}" label="{!$Label.c.Continue}"/>
+                    </div>
+                </div>
+                
+                <aura:set attribute="else">
+                    <div >
+                        <div class="col2-1">
+                            <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.back}" label="{!$Label.c.Back}" />
+                        </div>
+                        <div class="col2-2">
+                            <lightning:button class="govuk-button btn-col2" variant="brand" type="submit" name="update" label="{!$Label.c.SaveAndContinue}"/>
+                        </div>
+                    </div>
+                
+                </aura:set>
+                
+            </aura:if>
+        </lightning:recordEditForm>
+    </div>
+    
+</aura:component>

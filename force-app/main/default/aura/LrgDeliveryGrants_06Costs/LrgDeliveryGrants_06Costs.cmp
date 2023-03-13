@@ -1,0 +1,306 @@
+<aura:component implements="force:hasRecordId,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:appHostable" 
+                access="global" 
+                controller="LrgDevGrant_CostsCtrl">
+
+    <c:Util_LrgDeliveryGrants aura:id="Utils"/>
+       
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="readOnly" type="boolean" />
+
+	<aura:attribute name="delCostList" type="String[]" default="false"/>
+	<aura:attribute name="delIncomeList" type="String[]" default="false"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"  />
+    
+    <div class="govuk-main-wrapper">
+        <div class="tabHeader">
+            <h1 class="govuk-heading-l">{!$Label.c.LrgDevGrant_6} </h1>
+        </div>
+
+        <lightning:recordViewForm aura:id="Summary" recordId="{!v.recordId}" objectApiName="case">
+            <h2 class="govuk-heading-m">{!$Label.c.LrgDevGrant_6_Summary}</h2>
+            
+            <table class="slds-table slds-table--bordered slds-table--cell-buffer slds-table--striped slds-max-medium-table--stacked-horizontal"
+                role="grid">
+                <thead>
+                    <tr class="govuk-body">
+                        <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                            {!$Label.c.LrgDevGrant_6_Tbl3_Col_Costs}
+                        </th>
+                        <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                            {!$Label.c.LrgDevGrant_6_Tbl3_Col_Income}
+                        </th>
+                        <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                            {!$Label.c.LrgDevGrant_6_Tbl3_Col_Grant}
+                        </th>
+                        <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                            {!$Label.c.LrgDevGrant_6_Tbl3_Col_GrantPC}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="govuk-body">
+                        <td role="gridcell" class="slds-cell-wrap" data-label="{!$Label.c.LrgDevGrant_6_Tbl3_Col_Costs}">
+                            <div class="">
+                                <lightning:outputField fieldName="Total_actual_delivery_costs__c" />
+                            </div>
+                        </td>
+                        <td role="gridcell" class="" data-label="{!$Label.c.LrgDevGrant_6_Tbl3_Col_Income}">
+                            <div class="">
+                                <lightning:outputField fieldName="Total_actual_delivery_cash_contributions__c" />
+                            </div>
+                        </td>
+                        <td role="gridcell" class="slds-cell-wrap" data-label="{!$Label.c.LrgDevGrant_6_Tbl3_Col_Grant}">
+                            <div class="">
+                                <lightning:outputField fieldName="Delivery_grant_request__c" />
+                            </div>
+                        </td>
+                        <td role="gridcell" class="" data-label="{!$Label.c.LrgDevGrant_6_Tbl3_Col_GrantPC}">
+                            <div class="">
+                                <lightning:outputField fieldName="Delivery_grant_percentage__c" />
+                            </div>
+                        </td>
+                    </tr>
+                   
+                </tbody>
+            </table>
+            
+            <aura:if isTrue="{!!v.readOnly}">
+                <div class="button-container">
+                    <lightning:button class="govuk-button" variant="brand" onclick="{!c.refresh}" label="{!$Label.c.LrgDevGrant_6_RefreshTotals}" />
+                </div>
+            </aura:if>
+            
+        </lightning:recordViewForm>
+        
+        <br/><br/>
+                
+        <div class="slds-form" aura:id="DeliveryCosts">
+                    
+            <h2 class="govuk-heading-m">{!$Label.c.LrgDevGrant_6_4_0}</h2>
+                
+            <table class="slds-table slds-table--bordered slds-table--cell-buffer slds-table--striped slds-max-medium-table--stacked-horizontal"
+                role="grid">
+                <thead>
+                    <tr class="govuk-body">
+                        <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                            {!$Label.c.LrgDevGrant_6_Tbl1_Col_Type}
+                        </th>
+                        <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                            {!$Label.c.LrgDevGrant_6_Tbl1_Col_Heading}
+                        </th>
+                        <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                            {!$Label.c.LrgDevGrant_6_Tbl1_Col_Desc}
+                        </th>
+                        <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                            {!$Label.c.LrgDevGrant_6_Tbl1_Col_Cost}
+                        </th>
+                        <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                            {!$Label.c.LrgDevGrant_6_Tbl1_Col_VAT}
+                        </th>
+                        <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                            {!$Label.c.LrgDevGrant_6_Tbl1_Col_Total}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <aura:iteration var="cCost" items="{!v.delCostList}">
+                        <tr class="govuk-body">
+                            <aura:if isTrue="{!$Locale.language=='cy'}">
+                                   <td role="gridcell" class="slds-cell-wrap" data-label="{!$Label.c.LrgDevGrant_6_Tbl1_Col_Heading}">
+                                        <div class="">
+                                        	<b>
+                                                {!if(cCost.Cost_Type__c=='Capital cost','Cost cyfalaf','')}
+                                                {!if(cCost.Cost_Type__c=='Activity cost','Cost gweithgaredd','')}
+                                                {!if(cCost.Cost_Type__c=='Other cost','Cost arall','')}
+                                            </b>
+                                        </div>
+                                    </td>
+                                    <td role="gridcell" class="slds-cell-wrap" data-label="{!$Label.c.LrgDevGrant_6_Tbl1_Col_Heading}">
+                                        <div class=""><!-- Cannot be translated with Custom Labels or Translation workbench-->
+                                            {!if(cCost.Cost_heading__c=='Purchase price of heritage items','Pris prynu eitemau treftadaeth','')}
+                                            {!if(cCost.Cost_heading__c=='Preliminary works (e.g scaffolding, preliminaries, pre-construction archaeology)','Gwaith rhagarweiniol (ee sgaffaldiau, rhagofynion, archeoleg cyn-adeiladu)','')}
+                                            {!if(cCost.Cost_heading__c=='Repair and conservation work','Gwaith atgyweirio a chadwraeth','')}
+                                            {!if(cCost.Cost_heading__c=='New building work','Gwaith adeiladu newydd','')}
+                                            {!if(cCost.Cost_heading__c=='Other capital work','Gwaith cyfalaf arall','')}
+                                            {!if(cCost.Cost_heading__c=='Digital outputs','Allbynnau digidol','')}
+                                            {!if(cCost.Cost_heading__c=='Equipment and materials (capital)','Offer a deunyddiau (cyfalaf)','')}
+                                            {!if(cCost.Cost_heading__c=='Other costs (capital)','Costau eraill (cyfalaf)','')}
+                                            {!if(cCost.Cost_heading__c=='Professional fees (capital)','Ffioedd proffesiynol (cyfalaf)','')}
+                                            {!if(cCost.Cost_heading__c=='New staff','Staff newydd','')}
+                                            {!if(cCost.Cost_heading__c=='Training for staff','Hyfforddiant i staff','')}
+                                            {!if(cCost.Cost_heading__c=='Paid training placements','Lleoliadau hyfforddi â thâl','')}
+                                            {!if(cCost.Cost_heading__c=='Training for volunteers','Hyfforddiant i wirfoddolwyr','')}
+                                            {!if(cCost.Cost_heading__c=='Travel and expenses for staff','Teithio a threuliau i staff','')}
+                                            {!if(cCost.Cost_heading__c=='Travel and expenses for volunteers','Teithio a threuliau gwirfoddolwyr','')}
+                                            {!if(cCost.Cost_heading__c=='Event Costs','Costau Digwyddiad','')}
+                                            {!if(cCost.Cost_heading__c=='Equipment and materials (activity)','Offer a deunyddiau (gweithgaredd)','')}
+                                            {!if(cCost.Cost_heading__c=='Other costs (activity)','Costau eraill (gweithgaredd)','')}
+                                            {!if(cCost.Cost_heading__c=='Professional fees (activity)','Ffioedd proffesiynol (gweithgaredd)','')}
+                                            {!if(cCost.Cost_heading__c=='Recruitment','Recriwtio','')}
+                                            {!if(cCost.Cost_heading__c=='Publicity and promotion','Cyhoeddusrwydd a hyrwyddo','')}
+                                            {!if(cCost.Cost_heading__c=='Evaluation','Gwerthuso','')}
+                                            {!if(cCost.Cost_heading__c=='Other','Arall','')}
+                                            {!if(cCost.Cost_heading__c=='Full Cost Recovery','Adennill Costau Llawn','')}
+                                            {!if(cCost.Cost_heading__c=='Community grants','Grantiau cymunedol','')}
+                                            {!if(cCost.Cost_heading__c=='Contingency','Arian wrth gefn','')}
+                                            {!if(cCost.Cost_heading__c=='Inflation','Chwyddiant','')}
+                                            {!if(cCost.Cost_heading__c=='Increased management and maintenance costs (maximum five years)','Costau rheoli a chynnal a chadw uwch (pum mlynedd ar y mwyaf)','')}
+                                            {!if(cCost.Cost_heading__c=='Non-cash contributions','Cyfraniadau heblaw arian parod','')}
+                                            {!if(cCost.Cost_heading__c=='Volunteer time','Amser gwirfoddolwr','')}
+                                        </div>
+                                    </td>
+                                <aura:set attribute="else">
+                                    <td role="gridcell" class="slds-cell-wrap" data-label="{!$Label.c.LrgDevGrant_6_Tbl1_Col_Heading}">
+                                        <div class="">
+                                            <b>{!cCost.Cost_Type__c}</b>
+                                        </div>
+                                    </td>
+                                    <td role="gridcell" class="slds-cell-wrap" data-label="{!$Label.c.LrgDevGrant_6_Tbl1_Col_Heading}">
+                                        <div class="">
+                                            {!cCost.Cost_heading__c}
+                                        </div>
+                                    </td>
+                                </aura:set>
+                            </aura:if>       
+                            
+                            <td role="gridcell" class="slds-cell-wrap" data-label="{!$Label.c.LrgDevGrant_6_Tbl1_Col_Desc}">
+                                <div class="tbl-center-contents">
+                                    <!--<ui:inputText class="field" value="{!cCost.Project_Cost_Description__c}"  disabled="{!v.readOnly}"/>-->
+                                    <lightning:input class="field" value="{!cCost.Project_Cost_Description__c}"  disabled="{!v.readOnly}" onchange="{!c.maxLen5000}" />
+                                    <label for="input-160" class="hiddenLabel" > {!$Label.c.LrgDevGrant_6_Tbl1_Col_Desc} </label>
+                                </div>
+                            </td>
+                            <td role="gridcell" class="" data-label="{!$Label.c.LrgDevGrant_6_Tbl1_Col_Cost}">
+                                <div class="">
+                                    <ui:inputCurrency class="field" value="{!cCost.Costs__c}" format="£##,##,###,###" disabled="{!v.readOnly}" />
+                                    <label for="input-160" class="hiddenLabel" > {!$Label.c.LrgDevGrant_6_Tbl1_Col_Cost} </label>
+                                </div>
+                            </td>
+                            <td role="gridcell" class="slds-cell-wrap" data-label="{!$Label.c.LrgDevGrant_6_Tbl1_Col_VAT}">
+                                <div class="">
+                                    <ui:inputCurrency class="field" value="{!cCost.Vat__c}" format="£##,##,###,###" disabled="{!v.readOnly}" />
+                                    <label for="input-160" class="hiddenLabel" > {!$Label.c.LrgDevGrant_6_Tbl1_Col_VAT} </label>
+                                </div>
+                            </td>
+                            <td role="gridcell" class="" data-label="{!$Label.c.LrgDevGrant_6_Tbl1_Col_Total}">
+                                <div class="">
+                                    <ui:outputCurrency value="{!cCost.Total_Cost__c}" format="£##,##,###,###" />
+                                    <label for="input-160" class="hiddenLabel" > {!$Label.c.LrgDevGrant_6_Tbl1_Col_Total} </label>
+                                </div>
+                            </td>
+                        </tr>
+                    </aura:iteration>
+                </tbody>
+            </table>
+        
+            <aura:if isTrue="{!!v.readOnly}">
+                <div class="button-container">
+                    <lightning:button class="govuk-button" variant="brand" onclick="{!c.saveDelCosts}" label="{!$Label.c.LrgDevGrant_6_4_btn}" />
+                </div>
+            </aura:if>
+        </div>
+        
+        <div class="slds-form" aura:id="DeliveryIncome">
+                    
+            <h2 class="govuk-heading-m">{!$Label.c.LrgDevGrant_6_7_0}</h2>
+                
+            <table class="slds-table slds-table--bordered slds-table--cell-buffer slds-table--striped slds-max-medium-table--stacked-horizontal"
+                role="grid">
+                <thead>
+                    <tr class="govuk-body">
+                        <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                            {!$Label.c.LrgDevGrant_6_Tbl1_Col_Type}
+                        </th>
+                        <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                            {!$Label.c.LrgDevGrant_6_Tbl2_Col_Desc}
+                        </th>
+                        <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                            {!$Label.c.LrgDevGrant_6_Tbl2_Col_Secured}
+                        </th>
+                        <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                            {!$Label.c.LrgDevGrant_6_Tbl2_Col_Evidence}
+                        </th>
+                        <th class="slds-is-sortable slds-cell-wrap" scope="col">
+                            {!$Label.c.LrgDevGrant_6_Tbl2_Col_Amount}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <aura:iteration var="iIncome" items="{!v.delIncomeList}">
+                        <tr class="govuk-body">
+                            <td role="gridcell" class="slds-cell-wrap" data-label="{!$Label.c.LrgDevGrant_6_Tbl1_Col_Type}">
+                                <div class="">
+                                    <aura:if isTrue="{!$Locale.language=='cy'}">
+                                        <!-- Cannot be translated with Custom Labels or Translation workbench-->
+                                        {!if(iIncome.Source_Of_Funding__c=='Local authority','Awdurdod lleol','')}
+                                        {!if(iIncome.Source_Of_Funding__c=='Other public sector','Sector cyhoeddus arall','')}
+                                        {!if(iIncome.Source_Of_Funding__c=='Central government','Llywodraeth ganolog','')}
+                                        {!if(iIncome.Source_Of_Funding__c=='Private donation - Individual','Rhodd breifat - Unigolyn','')}
+                                        {!if(iIncome.Source_Of_Funding__c=='Private donation - Trusts/Charities/Foundations','Rhodd preifat - Ymddiriedolaethau / Elusennau / Sefydliadau','')}
+                                        {!if(iIncome.Source_Of_Funding__c=='Private donations - corporate','Rhodd preifat - corfforaethol','')}
+                                        {!if(iIncome.Source_Of_Funding__c=='Commercial/business','Masnachol / busnes','')}
+                                        {!if(iIncome.Source_Of_Funding__c=='Own reserves','Cronfeydd wrth gefn eich hun','')}
+                                        {!if(iIncome.Source_Of_Funding__c=='Other Fundraising','Dulliau Codi Arian Eraill','')}
+                                        {!if(iIncome.Source_Of_Funding__c=='Loan/Finance','Benthyciad / Cyllid','')}
+                                        {!if(iIncome.Source_Of_Funding__c=='Increased management and maintenance costs (maximum five years)','Costau rheoli a chynnal a chadw uwch (pum mlynedd ar y mwyaf)','')}
+                                        {!if(iIncome.Source_Of_Funding__c=='Non-cash contributions','Cyfraniadau heblaw arian parod','')}
+                                        {!if(iIncome.Source_Of_Funding__c=='Volunteer Time','Amser Gwirfoddoli','')}
+                                        <aura:set attribute="else">
+                                            {!iIncome.Source_Of_Funding__c}
+                                        </aura:set>
+                                    </aura:if>
+                                </div>
+                            </td>
+                            <td role="gridcell" class="slds-cell-wrap" data-label="{!$Label.c.LrgDevGrant_6_Tbl2_Col_Desc}">
+                                <div class="tbl-center-contents">
+                                    <!--<ui:inputText class="field" value="{!iIncome.Description_for_cash_contributions__c}" disabled="{!v.readOnly}" />-->
+                                    <lightning:input class="field" value="{!iIncome.Description_for_cash_contributions__c}"  disabled="{!v.readOnly}" onchange="{!c.maxLen5000}" />
+                                    <label for="input-160" class="hiddenLabel" > {!$Label.c.LrgDevGrant_6_Tbl2_Col_Desc} </label>
+                                </div>
+                            </td>
+                            <td role="gridcell" class="" data-label="{!$Label.c.LrgDevGrant_6_Tbl2_Col_Secured}">
+                                <div class="">
+                                    <ui:inputCheckbox class="field" value="{!iIncome.Secured__c}"  disabled="{!v.readOnly}" />
+                                    <label for="input-160" class="hiddenLabel" > {!$Label.c.LrgDevGrant_6_Tbl2_Col_Secured} </label>
+                                </div>
+                            </td>
+                            <td role="gridcell" class="" data-label="{!$Label.c.LrgDevGrant_6_Tbl2_Col_Evidence}">
+                                <div class="">
+                                    <ui:inputCheckbox class="field" value="{!iIncome.Evidence_for_secured_income__c}" disabled="{!v.readOnly}" />
+                                    <label for="input-160" class="hiddenLabel" > {!$Label.c.LrgDevGrant_6_Tbl2_Col_Evidence} </label>
+                                </div>
+                            </td>
+                            <td role="gridcell" class="" data-label="{!$Label.c.LrgDevGrant_6_Tbl2_Col_Amount}">
+                                <div class="">
+                                    <ui:inputCurrency value="{!iIncome.Amount_you_have_received__c}" format="£##,##,###,###" disabled="{!v.readOnly}" />
+                                    <label for="input-160" class="hiddenLabel" > {!$Label.c.LrgDevGrant_6_Tbl2_Col_Amount} </label>
+                                </div>
+                            </td>
+                        </tr>
+                    </aura:iteration>
+                </tbody>
+            </table>
+        
+            <!--edit buttons-->
+            <aura:if isTrue="{!!v.readOnly}">
+                <div class="button-container">
+                    <lightning:button class="govuk-button" variant="brand" onclick="{!c.saveDelIncome}" label="{!$Label.c.LrgDevGrant_6_7_btn}" />
+                </div>
+            </aura:if>
+
+        </div>
+        
+        <div class="slds-form" aura:id="btnNav"> 
+            <div >
+                <div class="col2-1">
+                    <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.back}" label="{!$Label.c.Back}" />
+                </div>
+                <div class="col2-2">
+                    <lightning:button class="govuk-button btn-col2" variant="brand" onclick="{!c.next}" label="{!$Label.c.Continue}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</aura:component>

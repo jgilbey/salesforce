@@ -1,0 +1,11 @@
+{
+  "activeViewId" : "0d61d3ea-80f9-4195-8e9d-b3ca55a1cd64",
+  "appPageId" : "9a06b659-cc86-48fa-a38d-0a6938d33ef8",
+  "configurationTags" : [ ],
+  "id" : "52b8dd78-2361-4559-9d0a-8e4d77b8b1cd",
+  "label" : "Start Page",
+  "pageAccess" : "UseParent",
+  "routeType" : "custom-start-page",
+  "type" : "route",
+  "urlPrefix" : "apply-delivery/start-page"
+}

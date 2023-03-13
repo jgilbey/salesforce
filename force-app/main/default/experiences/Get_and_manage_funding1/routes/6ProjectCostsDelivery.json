@@ -1,0 +1,11 @@
+{
+  "activeViewId" : "68abfa28-02d4-4d05-b8d8-3258ed1ff674",
+  "appPageId" : "9a06b659-cc86-48fa-a38d-0a6938d33ef8",
+  "configurationTags" : [ ],
+  "id" : "ab94c9f9-0404-4c5f-af15-fb94d34f4064",
+  "label" : "6. Project Costs - Delivery",
+  "pageAccess" : "UseParent",
+  "routeType" : "custom-project-costs-1",
+  "type" : "route",
+  "urlPrefix" : "apply-delivery/project-costs"
+}

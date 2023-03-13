@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Capital Works Projects 7</label>
+    <protected>false</protected>
+    <values>
+        <field>Document_Question__c</field>
+        <value xsi:type="xsd:string">Copies of deeds, leases, mortgages or other proof of ownership if your project involves work to land, buildings or heritage items.</value>
+    </values>
+    <values>
+        <field>Question_Alias__c</field>
+        <value xsi:type="xsd:string">proofCopies</value>
+    </values>
+</CustomMetadata>

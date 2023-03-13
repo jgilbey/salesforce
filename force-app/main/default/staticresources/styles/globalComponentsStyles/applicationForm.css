@@ -1,0 +1,68 @@
+c-application-form-stages lightning-formatted-rich-text p,
+c-application-form-stages .lgc-bg p{
+    position: relative;
+}
+
+c-application-form-stages lightning-formatted-rich-text p b,
+c-application-form-stages .lgc-bg p .question-numb{
+    position: absolute;
+    left: -20px;
+    top: 0;
+}
+
+c-application-form-stages .slds-form-element__label {
+    all: inherit;
+    padding: 0;
+}
+
+c-application-form-stages .checkbox-input p,
+c-application-form-stages .checkbox-input lightning-input{
+    display: inline-block;
+}
+
+c-application-form-stages .checkbox-input span{
+    margin-right: 4px;
+}
+
+c-application-form-stages h1 {
+    font-size: var(--lwc-fontSize8,1.5rem);
+}
+
+c-application-form-stages lightning-textarea textarea{
+    height: 200px;
+}
+
+c-application-form-stages ul:not(.slds-listbox) {
+    margin-left: 16px;
+}
+
+c-application-form-stages .required-without-label {
+    display: flex;
+    flex-wrap: wrap;
+}
+c-application-form-stages .required-without-label .slds-form-element__control{
+    flex: 1;
+}
+c-application-form-stages .required-without-label .slds-form-element__help{
+    width: 100%;
+}
+
+c-application-form-stages .label-hidden label {
+    display: none;
+}
+
+c-application-form-stages .slds-table th,
+c-application-form-stages .slds-table .slds-checkbox{
+   text-align: center;
+}
+c-application-form-stages .table-4-col td{
+   width: 25%;
+}
+c-application-form-stages .table-5-col td{
+   width: 20%;
+}
+
+
+c-application-form-stages lightning-base-combobox lightning-base-combobox-item .slds-truncate{
+    white-space: break-spaces;
+}

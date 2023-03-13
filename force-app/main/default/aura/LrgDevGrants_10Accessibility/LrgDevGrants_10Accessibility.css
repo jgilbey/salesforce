@@ -1,0 +1,33 @@
+.THIS h1 {
+    font-size: 225%;
+}
+
+.THIS h2 {
+    font-size: 200%;
+}
+
+.THIS h3 {
+    font-size: 175%;
+}
+
+.THIS h4 {
+    font-size: 150%;
+}
+
+.THIS h1, .THIS h2, .THIS h3, .THIS h4 {
+    padding-bottom: 1.5%;
+}
+
+.THIS p, .THIS ul {
+    font-size: 125%;
+    padding-bottom: 1%;
+}
+
+.THIS ul {
+    list-style-type: disc;
+    padding-left: 2.5%;
+}
+
+.THIS ul li {
+    padding-bottom: 1%;
+}

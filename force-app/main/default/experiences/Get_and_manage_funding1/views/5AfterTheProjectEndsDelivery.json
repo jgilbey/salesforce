@@ -1,0 +1,46 @@
+{
+  "appPageId" : "9a06b659-cc86-48fa-a38d-0a6938d33ef8",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "b9a3ef2c-a885-4621-b368-e2bd4bd1c30a",
+  "label" : "5. After the Project Ends - Delivery",
+  "regions" : [ {
+    "id" : "c908dda9-9930-48f2-a250-d8ed4bb320f7",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "c:LrgDeliveryGrants_05Ends",
+      "id" : "d87f490d-fa30-48f2-bb0e-b2d45b5a31f9",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "8e4d6748-2257-4cd4-a02c-f374371023be",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "0fed66af-2b75-4f5c-93bf-b1516a0ec22d",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "After the Project Ends"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "4992e5fc-21bf-4b1d-aacb-36b3ebac03b5",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "159abef4-d55a-4360-a1f1-1f785201c888",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-after-the-project-ends-1"
+}

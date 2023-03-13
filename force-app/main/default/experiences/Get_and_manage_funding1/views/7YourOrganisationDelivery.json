@@ -1,0 +1,46 @@
+{
+  "appPageId" : "9a06b659-cc86-48fa-a38d-0a6938d33ef8",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "43862769-ea3e-4a68-8608-d4d8f5ab669a",
+  "label" : "7. Your Organisation - Delivery",
+  "regions" : [ {
+    "id" : "d29e8735-f029-401b-b32a-3e757f8d25ba",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "c:LrgDeliveryGrants_07Org",
+      "id" : "f8c94731-943d-4c65-852d-76f1c7638804",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "d2364259-cd01-489a-8473-be1590372c8d",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "199f174f-20e0-45ae-bbc6-9f31c00ba4d9",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Your Organisation"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "ebc73434-c7d4-4b1c-877f-85d9c0788bba",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "cf7ec2e3-9d1a-4700-a634-7c4f670986ad",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-your-organisation-1"
+}

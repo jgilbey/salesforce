@@ -1,0 +1,46 @@
+{
+  "appPageId" : "2d3bc8c8-8dc6-4bd0-9cfa-19493739faa2",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "beca586b-7126-4c7f-9aff-6fb94db908e7",
+  "label" : "Monitoring",
+  "regions" : [ {
+    "id" : "283b485e-87cd-4216-a317-a8838b5c784c",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "c:monitoringPage",
+      "id" : "ac3b4802-14d4-4a31-81d1-d7747afe766c",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "1d1dd44a-02be-4b78-b6b0-7e95b3dda74e",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "e35419c8-e5ab-49a8-907e-44c110706643",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Monitoring"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "94d4485e-068d-4534-97f1-b2594706daa6",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "77f92d67-17ca-453e-b0ac-3062585fe558",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "1cX0S1bSqgrTgdAnT9u3op0Su7ycwP",
+  "type" : "view",
+  "viewType" : "custom-monitoring"
+}

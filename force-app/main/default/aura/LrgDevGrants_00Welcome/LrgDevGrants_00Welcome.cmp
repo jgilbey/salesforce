@@ -1,0 +1,89 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" 
+                access="global" 
+                controller="LrgDevGrantCtrl">
+    
+    <link rel="stylesheet" href="{!$Resource.gov_style}"/>
+
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="readOnly" type="boolean" />
+    <aura:attribute name="ProjectList_Development" type="String[]" />
+    <aura:attribute name="ProjectList_Delivery" type="String[]" />
+    <aura:attribute name="ProjectList_Awarded" type="String[]" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <form>
+        <div class="govuk-main-wrapper" id="main-content" role="main">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    
+                    <h1 class="govuk-heading-l">
+                        Your heritage projects
+                    </h1>
+                    <h2 class="govuk-heading-m">
+                        Your funding applications
+                    </h2>
+                    
+                    <aura:if isTrue="{!and(empty(v.ProjectList_Development), empty(v.ProjectList_Delivery) ) }">
+                    	<p>No applications found.</p>  
+                    </aura:if>
+                        
+                    <aura:if isTrue="{!not(empty(v.ProjectList_Development))}">
+                        <h3 class="govuk-heading-s">
+                            Development phase
+                        </h3>
+                        <ul class="govuk-list govuk-list--number nlhf-list nlhf-list--links govuk-!-margin-bottom-8">
+                            <aura:iteration var="developmentProject" items="{!v.ProjectList_Development}">
+                                <li class="nlhf-list__item nlhf-task__item">
+                                    <span data-selected-id="{!developmentProject.Id}">
+                                        <lightning:button variant="Base" onclick="{!c.goToProject}" label="{!developmentProject.Project_Title__c}" />
+                                    </span>
+                                    <aura:if isTrue="{!developmentProject.Application_Submitted__c}">
+                                    	<strong class="nlhf-task-tag govuk-tag govuk-tag--grey" style="float:right;">Submitted</strong>
+                                        <aura:set attribute="else">
+                                            <strong class="nlhf-task-tag govuk-tag govuk-tag--blue" style="float:right;">Applying</strong>
+                                        </aura:set>
+                                    </aura:if>
+                                </li>
+                            </aura:iteration>
+                        </ul>
+                    </aura:if>
+                    
+                    <aura:if isTrue="{!not(empty(v.ProjectList_Delivery))}">
+                        <h3 class="govuk-heading-s">
+                            Delivery phase
+                        </h3>
+                        <ul class="govuk-list govuk-list--number nlhf-list nlhf-list--links govuk-!-margin-bottom-8">
+                            <aura:iteration var="deliveryProject" items="{!v.ProjectList_Delivery}">
+                                <li class="nlhf-list__item nlhf-task__item">
+                                    <span data-selected-id="{!deliveryProject.Id}">
+                                        <lightning:button variant="Base" onclick="{!c.goToDeliveryProject}" label="{!deliveryProject.Project_Title__c}" />
+                                    </span>
+                                    <aura:if isTrue="{!deliveryProject.Application_Submitted__c}">
+                                    	<strong class="nlhf-task-tag govuk-tag govuk-tag--grey" style="float:right;">Submitted</strong>
+                                        <aura:set attribute="else">
+                                            <strong class="nlhf-task-tag govuk-tag govuk-tag--blue" style="float:right;">Applying</strong>
+                                        </aura:set>
+                                    </aura:if>
+                                </li>
+                            </aura:iteration>
+                        </ul>
+                    </aura:if>
+
+                </div>
+                <div class="govuk-grid-column-one-third">
+                    <h3 class="govuk-heading-s">
+                    	Related Links
+                    </h3>
+                    <p class="govuk-body govuk-!-margin-bottom-0">
+                        <a  href="https://funding.heritagefund.org.uk/">Start an Expression of Interest</a>
+                    </p>
+                    <p cclass="govuk-body govuk-!-margin-bottom-0">
+                        <a href="/accessibility-statement">Accessibility Statement</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+   </form>
+	
+</aura:component>

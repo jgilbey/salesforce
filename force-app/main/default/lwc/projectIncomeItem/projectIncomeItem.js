@@ -15,6 +15,7 @@ export default class ProjectIncomeItem extends LightningElement {
     @api smallGrant;
     @api mediumGrant;
     @api nhmfGrant;
+    @api largeGrant;
     @track incomeSecuredList;
     @track incomeSourceOfFunding;
 
@@ -45,7 +46,6 @@ export default class ProjectIncomeItem extends LightningElement {
     )
     incomeSecuredList({ error, data }) {
         if (data) {
-        console.log('this is the data', data);
         this.incomeSecuredList = data.values;
         } else  {
         console.log('error getting picklist values', error);
@@ -63,7 +63,6 @@ export default class ProjectIncomeItem extends LightningElement {
     )
     incomeSourceOfFunding({ error, data }) {
         if (data) {
-        console.log('this is the data for source of funding', data);
         this.incomeSourceOfFunding = data.values;
         } else  {
         console.log('error getting picklist values', error);

@@ -1,0 +1,38 @@
+{
+  "appPageId" : "9a06b659-cc86-48fa-a38d-0a6938d33ef8",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "3c10006d-52d9-41d7-9b3b-dc1e59829e72",
+  "label" : "Apply for a Development Grant",
+  "regions" : [ {
+    "id" : "568d7e59-cd5a-44f3-a515-7ce86ed9d236",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "id" : "fb2cd192-81c5-4e51-8d5f-3b6f9b82cae2",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "2ba797b5-15eb-44fd-98eb-c3ef62bb15d8",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Apply for a Development Grant"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "347c3f6f-d765-46bd-9dfa-00866e7650bc",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "68e97512-0b45-4ca2-a333-d5dbba126cec",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-apply-development"
+}

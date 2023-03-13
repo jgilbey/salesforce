@@ -1,0 +1,46 @@
+{
+  "appPageId" : "9a06b659-cc86-48fa-a38d-0a6938d33ef8",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "039ffbed-8f90-4858-b58e-34be31882653",
+  "label" : "Managing Your Project",
+  "regions" : [ {
+    "id" : "30ab907c-9e2d-424c-8951-4e7eb24fe83f",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "c:LrgDevGrants_03Managing",
+      "id" : "b6cde627-4a26-43e8-9500-d077123550d8",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "b7daf26a-dbe2-474b-bbd3-bea88490917f",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "ecbcbed9-7757-4f1b-8556-4961d234ce4d",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Managing Your Project"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "269731f4-9b92-4f7a-a210-90afb6fe82ce",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "78885ef1-6b86-49f3-9a7f-a7dcdf7b1a33",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-managing-your-project"
+}

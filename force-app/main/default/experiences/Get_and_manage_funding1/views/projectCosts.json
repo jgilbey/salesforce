@@ -1,0 +1,46 @@
+{
+  "appPageId" : "9a06b659-cc86-48fa-a38d-0a6938d33ef8",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "0d1ac9fa-7b21-4bc3-b833-15e8f7424a66",
+  "label" : "Project Costs",
+  "regions" : [ {
+    "id" : "8adf7a38-7b8d-4f46-b351-60f1e93a15a6",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "c:LrgDevGrants_06Costs",
+      "id" : "5b87890e-898c-4084-950f-8c868cf6274b",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "f918b302-46a9-4d98-a890-a33d68abc549",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "c0745dcd-1fc6-40d2-8375-916e3482e6b3",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Project Costs"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "3899be1d-cfa4-4c43-91b9-61c18d165039",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "d4a5c3b7-4347-4b84-b733-eec0568f9a30",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-project-costs"
+}

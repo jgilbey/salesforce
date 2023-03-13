@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExperienceBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Get Heritage Memorial Funding</label>
+    <type>ChatterNetworkPicasso</type>
+    <urlPathPrefix>getheritagememorialfunding/s</urlPathPrefix>
+</ExperienceBundle>

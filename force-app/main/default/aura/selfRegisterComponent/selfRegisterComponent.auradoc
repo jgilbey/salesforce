@@ -1,0 +1,6 @@
+<aura:documentation>
+	<aura:description>Custom selfreigstration page</aura:description>
+	<aura:example name="SelfRegistrationCompoent" ref="exampleComponentName" label="Self registration compoent">
+		Example Description
+	</aura:example>
+</aura:documentation>
