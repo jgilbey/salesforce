@@ -1,0 +1,106 @@
+<template>
+    <template if:true={loading}>
+                    <lightning-spinner
+                     alternative-text="Loading"
+                      size="medium"
+                    ></lightning-spinner>
+    </template>
+    <article class="slds-card">
+      
+        <!-- HEADER -->
+        <div class="slds-card__header">
+            <template if:true={project}>
+                <c-project-cost-form-header project={project} small-grant={smalLGrant} medium-grant={mediumGrant} nhmf-grant={nhmfGrant}></c-project-cost-form-header>
+            </template>
+        </div>
+
+        <!--BODY -->
+        <div class="slds-media__body">
+            <template if:true={project}>
+                <div if:true={showSpinner}>
+                    <lightning-spinner
+                        alternative-text="Loading..." variant="brand">
+                    </lightning-spinner>
+                </div>
+                <template if:true={projectCosts}>
+                    <div>
+                        <lightning-card  variant="Narrow"  title="Project Costs" class="cardSpinner">
+                            
+
+                            <div class="slds-var-m-around_medium slds-clearfix">
+                                <lightning-button variant="brand" 
+                                    label="Add Project Cost"  
+                                    onclick={handleAddProjectCost} 
+                                    class="slds-float_right"></lightning-button>
+                            </div>
+
+                            <div class="slds-var-p-around_small">
+                                <template if:true={projectCostsTotalRow.length}>
+                                    <c-project-budget-datatable
+                                        key-field="Id"
+                                        data={projectCosts} 
+                                        columns={columns} 
+                                        onsave={handleCostSave}
+                                        draft-values={costsDraftValues}
+                                        oncancel={handleCostCancel}
+                                        onrowaction={handleCostRowAction}
+                                        hide-checkbox-column
+                                        resize-column-disabled>
+                                    </c-project-budget-datatable>
+                                    <lightning-datatable
+                                        hide-table-header
+                                        key-field="Id"
+                                        data={projectCostsTotalRow}
+                                        columns={totalColumns}
+                                        hide-checkbox-column>
+                                    </lightning-datatable>
+                                </template>
+                            </div>
+                        </lightning-card>
+                    </div>
+                </template>
+                <br><br>
+                <template if:true={projectCosts}>
+                    <div>
+                        <lightning-card  variant="Narrow"  title="Cash Contributions" class="cardSpinner">
+                            <!--div if:true={showSpinner}>
+                                <lightning-spinner
+                                    alternative-text="Loading..." variant="brand">
+                                </lightning-spinner>
+                            </div-->
+                            <div class="slds-var-m-around_medium slds-clearfix">
+                                <lightning-button variant="brand" 
+                                    label="Add Cash Contribution"  
+                                    onclick={handleAddCashContributions} 
+                                    class="slds-float_right"></lightning-button>
+                            </div>
+
+                            <div class="slds-var-p-around_small">
+                                <template if:true={cashContributionsTotalRow.length}>
+                                    <c-project-budget-datatable
+                                        key-field="Id"
+                                        data={cashContributions} 
+                                        columns={cashColumns} 
+                                        onsave={handleCashSave}
+                                        draft-values={cashContributionsDraftValues}
+                                        oncancel={handleCashCancel}
+                                        onrowaction={handleCashRowAction}
+                                        hide-checkbox-column
+                                        resize-column-disabled>
+                                    </c-project-budget-datatable>
+                                    <lightning-datatable
+                                        hide-table-header
+                                        key-field="Id"
+                                        data={cashContributionsTotalRow}
+                                        columns={totalCashColumns}
+                                        hide-checkbox-column>
+                                    </lightning-datatable>
+                                </template>
+                            </div>
+                        </lightning-card>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </article>
+</template>
