@@ -67,28 +67,6 @@ public inherited sharing class ProjectCostFormController {
     return existingCosts;
   }
 
-  
-
-  @AuraEnabled
-  public static String deleteCash(Object cashToDelete)
-  {
-    List<Project_Income__c> cashContributionsToDelete = (List<Project_Income__c>)JSON.deserialize(JSON.serialize(cashToDelete), List<Project_Income__c>.class);
-
-    if(cashContributionsToDelete.isEmpty() == false)
-    {
-      try
-      {
-        Database.delete(cashContributionsToDelete);
-        return 'Successfully deleted cash contributions.';
-      }
-      catch (Exception e)
-      {
-        throw new AuraHandledException('Failed to delete Cash Contributions: ' + e.getMessage());
-      }
-    }
-    return 'Failed to delete cash contributions.';
-  }
-
   @AuraEnabled
   public static void deleteProjectCostsAndContributions(
     List<Project_Income__c> cashContributions,
@@ -233,40 +211,72 @@ public inherited sharing class ProjectCostFormController {
   
 
   @AuraEnabled
-  public static RecordTypeMappingWrapper getRecordTypeMapping(
-    String projectDeveloperName
-  ) {
-    try {
-      List<Project_Budget_Record_Type_Mapping__mdt> rtms = Project_Budget_Record_Type_Mapping__mdt.getAll()
-        .values();
+  public static string saveCosts(Object draftCosts, Object existingCostsValues, Object cashContributions, String projectId)
+  {
+    List<Project_Cost__c> costsToInsert = new List<Project_Cost__c>();
+    List<Project_Cost__c> costsToUpdate = new List<Project_Cost__c>();
 
-      for (Project_Budget_Record_Type_Mapping__mdt rtm : rtms) {
-        if (rtm.Project_Record_Type_Developer_Name__c == projectDeveloperName) {
-          RecordTypeMappingWrapper recordTypeMapping = new RecordTypeMappingWrapper();
-          recordTypeMapping.projectRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName()
-            .get(rtm.Project_Record_Type_Developer_Name__c)
-            .getRecordTypeId();
-          recordTypeMapping.costRecordTypeId = Schema.SObjectType.Project_Cost__c.getRecordTypeInfosByDeveloperName()
-            .get(rtm.Project_Cost_Record_Type_Developer_Name__c)
-            .getRecordTypeId();
-          recordTypeMapping.cashRecordTypeId = Schema.SObjectType.Project_Income__c.getRecordTypeInfosByDeveloperName()
-            .get(rtm.Cash_Contribu_Record_Type_Developer_Name__c)
-            .getRecordTypeId();
-          return recordTypeMapping;
+    List<Project_Cost__c> draftCostValues = (List<Project_Cost__c>)JSON.deserialize(JSON.serialize(draftCosts), List<Project_Cost__c>.class);
+    List<Project_Cost__c> existingCostValues = (List<Project_Cost__c>)JSON.deserialize(JSON.serialize(existingCostsValues), List<Project_Cost__c>.class);
+    List<Project_Income__c> cashContributionValues = (List<Project_Income__c>)JSON.deserialize(JSON.serialize(cashContributions), List<Project_Income__c>.class);
+
+    if(validateCostSave(existingCostValues, draftCostValues, cashContributionValues, projectId) == false)
+    {
+      throw new AuraHandledException(System.Label.Budget_Management_Save_Error);
+    }
+    
+    for(Project_Cost__c draftCost : draftCostValues)
+    {
+      for(Project_Cost__c existingCost : existingCostValues)
+      {
+        //For new Costs only. Maps pre-set fields to draft copy.
+        if(draftCost.Id == existingCost.Id && String.valueOf(draftCost.Id).length() != 18)
+        {
+          Map<String, Object> draftCostsMap = draftCost.getPopulatedFieldsAsMap();
+          Map<String, Object> existingCostsMap = existingCost.getPopulatedFieldsAsMap();
+
+          for(String field : existingCostsMap.keySet())
+          {
+            //Required as .put cannot set non-rewritable parent (Case__c).
+            if(field == 'Case__c')
+            {
+              String draftCostJson = JSON.serialize(draftCost);
+              draftCostJson = draftCostJson.removeEnd('}') + ',"' + field + '":"' + existingCostsMap.get(field) + '"}';
+              draftcost = (Project_Cost__c)JSON.deserialize(draftCostJson, Project_Cost__c.class);
+            }
+            //Do not overwrite draft field with default unless draft does not have a value.
+            else if(draftCostsMap.keySet().contains(field) == false)
+            {
+              draftCost.put(field, existingCostsMap.get(field));
+            }
+          }
         }
       }
-    } catch (Exception e) {
-      System.debug(
-        LoggingLevel.ERROR,
-        'Error retrieving Record Type Mappings in Apex at line: ' +
-        e.getLineNumber() +
-        e.getMessage()
-      );
+      
+      if(String.valueOf(draftCost.Id).length() == 18 && draftCost.Id.getSObjectType() == Schema.Project_Cost__c.SObjectType)
+      {
+        costsToUpdate.add(draftCost);
+      }
+      else
+      {
+        draftCost.Id = null;
+        costsToInsert.add(draftCost);
+      }
     }
-    return null;
+
+    try 
+    {
+      update costsToUpdate;
+      insert costsToInsert;
+      return 'Successfully upserted Costs.';
+    } 
+    catch (Exception e) 
+    {
+      throw new AuraHandledException('Failed to upsert Costs: ' + e.getMessage());
+      //return 'Failed to upsert Costs: ' + e.getMessage();
+    }
   }
 
-  
   @AuraEnabled
   public static string saveCashContributions(Object draftCash, Object existingCash, Object existingCosts, String projectId)
   {
@@ -334,7 +344,6 @@ public inherited sharing class ProjectCostFormController {
     }
   }
 
-  
   @AuraEnabled
   public static String deleteCosts(Object pCostsToDelete)
   {
@@ -356,162 +365,103 @@ public inherited sharing class ProjectCostFormController {
   }
 
   @AuraEnabled
-  public static string saveCosts(
-    Object draftCosts,
-    Object existingCostsValues,
-    Object cashContributions,
-    String projectId
-  ) {
-    List<Project_Cost__c> costsToInsert = new List<Project_Cost__c>();
-    List<Project_Cost__c> costsToUpdate = new List<Project_Cost__c>();
+  public static String deleteCash(Object cashToDelete)
+  {
+    List<Project_Income__c> cashContributionsToDelete = (List<Project_Income__c>)JSON.deserialize(JSON.serialize(cashToDelete), List<Project_Income__c>.class);
 
-    List<Project_Cost__c> draftCostValues = (List<Project_Cost__c>) JSON.deserialize(
-      JSON.serialize(draftCosts),
-      List<Project_Cost__c>.class
-    );
-    List<Project_Cost__c> existingCostValues = (List<Project_Cost__c>) JSON.deserialize(
-      JSON.serialize(existingCostsValues),
-      List<Project_Cost__c>.class
-    );
-    List<Project_Income__c> cashContributionValues = (List<Project_Income__c>) JSON.deserialize(
-      JSON.serialize(cashContributions),
-      List<Project_Income__c>.class
-    );
-
-    if (
-      validateCostSave(
-        existingCostValues,
-        draftCostValues,
-        cashContributionValues,
-        projectId
-      ) == false
-    ) {
-      throw new AuraHandledException(System.Label.Budget_Management_Save_Error);
-    }
-
-    for (Project_Cost__c draftCost : draftCostValues) {
-      for (Project_Cost__c existingCost : existingCostValues) {
-        //For new Costs only. Maps pre-set fields to draft copy.
-        if (
-          draftCost.Id == existingCost.Id &&
-          String.valueOf(draftCost.Id).length() != 18
-        ) {
-          Map<String, Object> draftCostsMap = draftCost.getPopulatedFieldsAsMap();
-          Map<String, Object> existingCostsMap = existingCost.getPopulatedFieldsAsMap();
-
-          for (String field : existingCostsMap.keySet()) {
-            //Required as .put cannot set non-rewritable parent (Case__c).
-            if (field == 'Case__c') {
-              String draftCostJson = JSON.serialize(draftCost);
-              draftCostJson =
-                draftCostJson.removeEnd('}') +
-                ',"' +
-                field +
-                '":"' +
-                existingCostsMap.get(field) +
-                '"}';
-              draftcost = (Project_Cost__c) JSON.deserialize(
-                draftCostJson,
-                Project_Cost__c.class
-              );
-            } else if (draftCostsMap.keySet().contains(field) == false) {
-              //Do not overwrite draft field with default unless draft does not have a value.
-              draftCost.put(field, existingCostsMap.get(field));
-            }
-          }
-        }
+    if(cashContributionsToDelete.isEmpty() == false)
+    {
+      try
+      {
+        Database.delete(cashContributionsToDelete);
+        return 'Successfully deleted cash contributions.';
       }
-
-      if (
-        String.valueOf(draftCost.Id).length() == 18 &&
-        draftCost.Id.getSObjectType() == Schema.Project_Cost__c.SObjectType
-      ) {
-        costsToUpdate.add(draftCost);
-      } else {
-        draftCost.Id = null;
-        costsToInsert.add(draftCost);
+      catch (Exception e)
+      {
+        throw new AuraHandledException('Failed to delete Cash Contributions: ' + e.getMessage());
       }
     }
-
-    try {
-      update costsToUpdate;
-      insert costsToInsert;
-      return 'Successfully upserted Costs.';
-    } catch (Exception e) {
-      throw new AuraHandledException(
-        'Failed to upsert Costs: ' + e.getMessage()
-      );
-      //return 'Failed to upsert Costs: ' + e.getMessage();
-    }
+    return 'Failed to delete cash contributions.';
   }
 
-  public static Boolean validateCostSave(
-    List<Project_Cost__c> existingCostValues,
-    List<Project_Cost__c> draftCostValues,
-    List<Project_Income__c> cashContributionValues,
-    String projectId
-  ) {
-    Case project = [
-      SELECT
-        Id,
-        Confirm_award_amount__c,
-        Total_Cost__c,
-        Grant_requested__c,
-        NHMF_grant_request__c,
-        RecordType.DeveloperName
-      FROM Case
-      WHERE Id = :projectId
-    ];
+  @AuraEnabled
+  public static RecordTypeMappingWrapper getRecordTypeMapping(String projectDeveloperName)
+  {
+    try 
+    {
+      List<Project_Budget_Record_Type_Mapping__mdt> rtms = Project_Budget_Record_Type_Mapping__mdt.getAll().values();
 
-    Map<String, Project_Cost__c> existingCostsMap = new Map<String, Project_Cost__c>(
-      existingCostValues
-    );
-    Map<String, Project_Cost__c> draftCostsMap = new Map<String, Project_Cost__c>(
-      draftCostValues
-    );
+      for(Project_Budget_Record_Type_Mapping__mdt rtm : rtms)
+      {
+        if(rtm.Project_Record_Type_Developer_Name__c == projectDeveloperName)
+        {
+          RecordTypeMappingWrapper recordTypeMapping = new RecordTypeMappingWrapper();
+          recordTypeMapping.projectRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(rtm.Project_Record_Type_Developer_Name__c).getRecordTypeId();
+          recordTypeMapping.costRecordTypeId = Schema.SObjectType.Project_Cost__c.getRecordTypeInfosByDeveloperName().get(rtm.Project_Cost_Record_Type_Developer_Name__c).getRecordTypeId();
+          recordTypeMapping.cashRecordTypeId = Schema.SObjectType.Project_Income__c.getRecordTypeInfosByDeveloperName().get(rtm.Cash_Contribu_Record_Type_Developer_Name__c).getRecordTypeId();
+          return recordTypeMapping;
+        }
+      }
+    } 
+    catch (Exception e) 
+    {
+      System.debug(LoggingLevel.ERROR, 'Error retrieving Record Type Mappings in Apex at line: ' + e.getLineNumber() + e.getMessage());
+    }
+    return null;
+  }
 
-    if (project.Confirm_award_amount__c == true) {
+  public static Boolean validateCostSave(List<Project_Cost__c> existingCostValues, List<Project_Cost__c> draftCostValues, List<Project_Income__c> cashContributionValues, String projectId)
+  {
+    Case project = [SELECT Id, Confirm_award_amount__c, Total_Cost__c, Grant_requested__c, NHMF_grant_request__c, RecordType.DeveloperName
+                      FROM Case WHERE Id =: projectId];
+
+    Map<String, Project_Cost__c> existingCostsMap = new Map<String, Project_Cost__c>(existingCostValues);
+    Map<String, Project_Cost__c> draftCostsMap = new Map<String, Project_Cost__c>(draftCostValues);
+    
+    if(project.Confirm_award_amount__c == true)
+    {
       //Replace existing values with draft values where relevant.
-      for (String draftCostId : draftCostsMap.keySet()) {
-        if (existingCostsMap.containsKey(draftCostId)) {
-          Map<String, Object> draftCostsPopulatedFieldsMap = draftCostsMap.get(
-              draftCostId
-            )
-            .getPopulatedFieldsAsMap();
+      for(String draftCostId : draftCostsMap.keySet())
+      {
+        if(existingCostsMap.containsKey(draftCostId))
+        {
+          Map<String, Object> draftCostsPopulatedFieldsMap = draftCostsMap.get(draftCostId).getPopulatedFieldsAsMap();
 
-          for (String field : draftCostsPopulatedFieldsMap.keySet()) {
-            existingCostsMap.get(draftCostId)
-              .put(field, draftCostsPopulatedFieldsMap.get(field));
+          for(String field : draftCostsPopulatedFieldsMap.keySet())
+          {
+            existingCostsMap.get(draftCostId).put(field, draftCostsPopulatedFieldsMap.get(field));
           }
         }
       }
-
+    
       //Calculate total costs and grant requested.
       Decimal totalCost = 0.0;
       Decimal grantRequested = 0.0;
 
-      for (Project_Cost__c cost : existingCostsMap.values()) {
+      for(Project_Cost__c cost : existingCostsMap.values())
+      {
         totalCost += cost.Costs__c;
         totalCost += cost.Vat__c;
       }
 
-      for (Project_Income__c cash : cashContributionValues) {
-        if (project.RecordType.DeveloperName == 'Memorial') {
+      for(Project_Income__c cash : cashContributionValues)
+      {
+        if(project.RecordType.DeveloperName == 'Memorial')
+        {
           grantRequested += cash.Value__c;
-        } else {
-          grantRequested += cash.Amount_current_phase__c;
         }
+        else 
+        {
+          grantRequested += cash.Amount_current_phase__c;
+        } 
       }
 
       grantRequested = totalCost - grantRequested;
 
-      if (
-        project.Total_Cost__c != totalCost ||
-        (project.RecordType.DeveloperName != 'Memorial' &&
-        project.Grant_requested__c != grantRequested) ||
-        (project.RecordType.DeveloperName == 'Memorial' &&
-        project.NHMF_grant_request__c != grantRequested)
-      ) {
+      if(project.Total_Cost__c != totalCost ||
+        (project.RecordType.DeveloperName != 'Memorial' && project.Grant_requested__c != grantRequested) ||
+        (project.RecordType.DeveloperName == 'Memorial' && project.NHMF_grant_request__c != grantRequested))
+      {
         return false;
       }
     }
@@ -519,73 +469,58 @@ public inherited sharing class ProjectCostFormController {
     return true;
   }
 
-  public static Boolean validateCashSave(
-    List<Project_Income__c> existingCashValues,
-    List<Project_Income__c> draftCashValues,
-    List<Project_Cost__c> projectCostValues,
-    String projectId
-  ) {
-    Case project = [
-      SELECT
-        Id,
-        Confirm_award_amount__c,
-        Total_Cost__c,
-        Grant_requested__c,
-        NHMF_grant_request__c,
-        RecordType.DeveloperName
-      FROM Case
-      WHERE Id = :projectId
-    ];
+  public static Boolean validateCashSave(List<Project_Income__c> existingCashValues, List<Project_Income__c> draftCashValues, List<Project_Cost__c> projectCostValues, String projectId)
+  {
+    Case project = [SELECT Id, Confirm_award_amount__c, Total_Cost__c, Grant_requested__c, NHMF_grant_request__c, RecordType.DeveloperName
+                      FROM Case WHERE Id =: projectId];
 
-    Map<String, Project_Income__c> existingCashMap = new Map<String, Project_Income__c>(
-      existingCashValues
-    );
-    Map<String, Project_Income__c> draftCashMap = new Map<String, Project_Income__c>(
-      draftCashValues
-    );
-
-    if (project.Confirm_award_amount__c == true) {
+    Map<String, Project_Income__c> existingCashMap = new Map<String, Project_Income__c>(existingCashValues);
+    Map<String, Project_Income__c> draftCashMap = new Map<String, Project_Income__c>(draftCashValues);
+    
+    if(project.Confirm_award_amount__c == true)
+    {
       //Replace existing values with draft values where relevant.
-      for (String draftCashId : draftCashMap.keySet()) {
-        if (existingCashMap.containsKey(draftCashId)) {
-          Map<String, Object> draftCashPopulatedFieldsMap = draftCashMap.get(
-              draftCashId
-            )
-            .getPopulatedFieldsAsMap();
+      for(String draftCashId : draftCashMap.keySet())
+      {
+        if(existingCashMap.containsKey(draftCashId))
+        {
+          Map<String, Object> draftCashPopulatedFieldsMap = draftCashMap.get(draftCashId).getPopulatedFieldsAsMap();
 
-          for (String field : draftCashPopulatedFieldsMap.keySet()) {
-            existingCashMap.get(draftCashId)
-              .put(field, draftCashPopulatedFieldsMap.get(field));
+          for(String field : draftCashPopulatedFieldsMap.keySet())
+          {
+            existingCashMap.get(draftCashId).put(field, draftCashPopulatedFieldsMap.get(field));
           }
         }
       }
-
+    
       //Calculate total values and grant requested.
       Decimal totalCost = 0.0;
       Decimal grantRequested = 0.0;
 
-      for (Project_Cost__c cost : projectCostValues) {
+      for(Project_Cost__c cost : projectCostValues)
+      {
         totalCost += cost.Costs__c;
         totalCost += cost.Vat__c;
       }
 
-      for (Project_Income__c cash : existingCashMap.values()) {
-        if (project.RecordType.DeveloperName == 'Memorial') {
+      for(Project_Income__c cash : existingCashMap.values())
+      {
+        if(project.RecordType.DeveloperName == 'Memorial')
+        {
           grantRequested += cash.Value__c;
-        } else {
+        }
+        else 
+        {
           grantRequested += cash.Amount_you_have_received__c;
         }
       }
 
       grantRequested = totalCost - grantRequested;
 
-      if (
-        project.Total_Cost__c != totalCost ||
-        (project.RecordType.DeveloperName != 'Memorial' &&
-        project.Grant_requested__c != grantRequested) ||
-        (project.RecordType.DeveloperName == 'Memorial' &&
-        project.NHMF_grant_request__c != grantRequested)
-      ) {
+      if(project.Total_Cost__c != totalCost ||
+        (project.RecordType.DeveloperName != 'Memorial' && project.Grant_requested__c != grantRequested) ||
+        (project.RecordType.DeveloperName == 'Memorial' && project.NHMF_grant_request__c != grantRequested))
+      {
         return false;
       }
     }
@@ -593,7 +528,8 @@ public inherited sharing class ProjectCostFormController {
     return true;
   }
 
-  public class RecordTypeMappingWrapper {
+  public class RecordTypeMappingWrapper
+  {
     @AuraEnabled
     public String projectRecordTypeId;
     @AuraEnabled
