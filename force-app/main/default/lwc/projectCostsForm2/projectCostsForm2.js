@@ -7,11 +7,11 @@ import { refreshApex } from '@salesforce/apex';
 import getProject from '@salesforce/apex/ProjectCostFormController.getProject';
 import getRecordTypeMappings from '@salesforce/apex/ProjectCostFormController.getRecordTypeMapping';
 
-import getProjectCosts from '@salesforce/apex/ProjectCostFormController.getProjectCosts';
+import getProjectCosts2 from '@salesforce/apex/ProjectCostFormController.getProjectCosts2';
 import saveCosts from '@salesforce/apex/ProjectCostFormController.saveCosts';
 import deleteCosts from '@salesforce/apex/ProjectCostFormController.deleteCosts';
 
-import getCashContributions from '@salesforce/apex/ProjectCostFormController.getCashContributions';
+import getCashContributions2 from '@salesforce/apex/ProjectCostFormController.getCashContributions2';
 import saveCashContributions from '@salesforce/apex/ProjectCostFormController.saveCashContributions';
 import deleteCashContributions from '@salesforce/apex/ProjectCostFormController.deleteCash';
 
@@ -26,25 +26,20 @@ import INCOME_SECURED from "@salesforce/schema/Project_Income__c.Secured_non_cas
 import INCOME_FUNDING_SOURCE from "@salesforce/schema/Project_Income__c.Source_Of_Funding__c";
 import PROJECT_INCOME_OBJECT from "@salesforce/schema/Project_Income__c";
 
-var actions = [
-    { label: 'Delete', name: 'delete', disabled: false }
-];
-
-
-/*const columns = [
-    {label: 'Cost Heading', editable: true, fieldName: 'Cost_heading__c', type: 'picklistColumn', 
-        typeAttributes: 
-        {
-            placeholder: 'Cost Heading', options: { fieldName: 'costHeadingOptions' }, 
-            value: { fieldName: 'Cost_heading__c' },
-            context: { fieldName: 'Id' }
-        }
-    },
-    {label: 'Project Description', editable: true, fieldName: 'Project_Cost_Description__c'},
-    {label: 'Amount', editable: true, fieldName: 'Costs__c'},
-    {label: 'VAT', editable: true, fieldName: 'VAT__C'},
-    {label: 'Total Cost', editable: true, fieldName: ''},
-];*/
+import {
+    smallColumns,
+    smallTotalColumns,
+    mediumColumns,
+    mediumTotalColumns,
+    largeColumns,
+    largeTotalColumns,
+    contributionColumns,
+    totalContributionColumns,
+    largeContributionColumns,
+    largeTotalContributionColumns,
+    nhmfContributionColumns,
+    nhmfTotalContributionColumns
+} from './columnDefinitions';
 
 export default class ProjectCostsForm2 extends LightningElement 
 {
@@ -62,7 +57,7 @@ export default class ProjectCostsForm2 extends LightningElement
     showSpinner = false;
 
     @api recordId;
-    @api objectApiName
+    @api variation;
 
     project;
     projectResult;
@@ -90,25 +85,29 @@ export default class ProjectCostsForm2 extends LightningElement
     cashContributionsAmountTotal = 0;
     cashContributionsTotalRow = [];
 
-    /*get columns()
+    get costCardTitle()
     {
-        if (this.project && this.project.RecordType) 
-        {console.log('JAG: ' + this.isEditable);
-            switch (this.project.RecordType.DeveloperName) 
-            {
-                case this.smallGrantProject:
-                    return this.smallCols;
-                case this.mediumGrantProject:
-                    return this.mediumColumns;
-                case this.nhmfGrantProject:
-                    return this.mediumColumns;
-                case this.largeGrantDevelopmentProject:
-                    return this.mediumColumns;
-                case this.largeGrantDeliveryProject:
-                    return this.mediumColumns;
-            }
+        if(this.variation == 'Large_Development_Delivery')
+        {
+            return 'Potential Delivery Costs';
         }
-    }*/
+        else
+        {
+            return 'Project Costs';
+        }
+    }
+
+    get cashCardTitle()
+    {
+        if(this.variation == 'Large_Development_Delivery')
+        {
+            return 'Potential Delivery Cash Contributions';
+        }
+        else
+        {
+            return 'Cash Contributions';
+        }
+    }
 
     get totalColumns()
     {
@@ -117,38 +116,18 @@ export default class ProjectCostsForm2 extends LightningElement
             switch (this.project.RecordType.DeveloperName) 
             {
                 case this.smallGrantProject:
-                    return this.smallTotalCols;
+                    return smallTotalColumns;
                 case this.mediumGrantProject:
-                    return this.mediumTotalColumns;
+                    return mediumTotalColumns;
                 case this.nhmfGrantProject:
-                    return this.mediumTotalColumns;
+                    return mediumTotalColumns;
                 case this.largeGrantDevelopmentProject:
-                    return this.mediumTotalColumns;
+                    return largeTotalColumns;
                 case this.largeGrantDeliveryProject:
-                    return this.mediumTotalColumns;
+                    return largeTotalColumns;
             }
         }
     }
-
-    /*get cashColumns()
-    {
-        if (this.project && this.project.RecordType) 
-        {
-            switch (this.project.RecordType.DeveloperName) 
-            {
-                case this.smallGrantProject:
-                    return this.contributionColumns;
-                case this.mediumGrantProject:
-                    return this.contributionColumns;
-                case this.nhmfGrantProject:
-                    return this.nhmfContributionColumns;
-                case this.largeGrantDevelopmentProject:
-                    return this.contributionColumns;
-                case this.largeGrantDeliveryProject:
-                    return this.contributionColumns;
-            }
-        }
-    }*/
 
     get totalCashColumns()
     {
@@ -157,245 +136,18 @@ export default class ProjectCostsForm2 extends LightningElement
             switch (this.project.RecordType.DeveloperName) 
             {
                 case this.smallGrantProject:
-                    return this.totalContributionColumns;
+                    return totalContributionColumns;
                 case this.mediumGrantProject:
-                    return this.totalContributionColumns;
+                    return totalContributionColumns;
                 case this.nhmfGrantProject:
-                    return this.totalNhmfContributionColumns;
+                    return nhmfTotalContributionColumns;
                 case this.largeGrantDevelopmentProject:
-                    return this.totalContributionColumns;
+                    return largeTotalContributionColumns;
                 case this.largeGrantDeliveryProject:
-                    return this.totalContributionColumns;
+                    return largeTotalContributionColumns;
             }
         }
     }
-
-    smallCols = [
-        {type: 'action',
-            typeAttributes: 
-            { 
-                rowActions: actions, menuAlignment: 'left' 
-            } 
-        },
-        {label: 'Cost Heading', editable: true, fieldName: 'Cost_heading__c', type: 'picklistColumn', hideDefaultActions: true,
-            typeAttributes: 
-                {
-                    placeholder: 'Cost Heading', options: { fieldName: 'costHeadingOptions' }, 
-                    value: { fieldName: 'Cost_heading__c' },
-                    context: { fieldName: 'Id' }
-                }
-        },
-        {label: 'Description', editable: true, fieldName: 'Project_Cost_Description__c', type: 'textAreaColumn', hideDefaultActions: true,
-            typeAttributes: 
-                {
-                    placeholder: 'description', 
-                    value: { fieldName: 'Project_Cost_Description__c' },
-                    context: { fieldName: 'Id' }
-                }
-        },
-        {label: 'Amount', editable: true, fieldName: 'Costs__c', type: 'currency',cellAttributes: {alignment: 'left'}, typeAttributes: {maximumFractionDigits: 0}, hideDefaultActions: true},
-    ];
-
-
-    smallTotalCols = [
-        {label: 'firstCol', initialWidth: 52, editable: false, fieldName: 'firstCol', type: 'text',
-        cellAttributes:{
-            class: 'slds-theme_shade'
-        },},
-        {label: 'secondCol', initialWidth: 50, editable: false, fieldName: 'secondCol', type: 'text',
-        cellAttributes:{
-            class: 'slds-theme_shade'
-        },},
-        {label: 'Cost Heading', editable: false, fieldName: 'costHeadingOptions', type: 'text',
-        cellAttributes:{
-            class: 'slds-theme_shade'
-        },},
-        {label: 'Description', editable: false, fieldName: 'Project_Cost_Description__c', type: 'text',
-        cellAttributes:{
-            class: 'slds-theme_shade'
-        },},
-        {label: 'Amount Total', editable: false, fieldName: 'amounttotal', type: 'currency', typeAttributes: {maximumFractionDigits: 0},
-        cellAttributes:{
-            class: 'slds-theme_shade', alignment: 'left'
-        },}
-    ];
-
-    mediumColumns = [
-        {type: 'action',
-            typeAttributes: 
-            { 
-                rowActions: actions, menuAlignment: 'left' 
-            } 
-        },
-        {label: 'Cost Heading', editable: true, fieldName: 'Cost_heading__c', type: 'picklistColumn', hideDefaultActions: true,
-            typeAttributes: 
-                {
-                    placeholder: 'Cost Heading', options: { fieldName: 'costHeadingOptions' }, 
-                    value: { fieldName: 'Cost_heading__c' },
-                    context: { fieldName: 'Id' }
-                }
-        },
-        {label: 'Description', editable: true, fieldName: 'Project_Cost_Description__c', type: 'textAreaColumn', hideDefaultActions: true,
-            typeAttributes: 
-                {
-                    placeholder: 'description', 
-                    value: { fieldName: 'Project_Cost_Description__c' },
-                    context: { fieldName: 'Id' }
-                }
-        },
-        {label: 'Amount', editable: true, fieldName: 'Costs__c', type: 'currency', sortable: true, cellAttributes: {alignment: 'left'}, typeAttributes: {maximumFractionDigits: 0}, hideDefaultActions: true},
-        {label: 'VAT', editable: true, fieldName: 'Vat__c', type: 'currency', cellAttributes: {alignment: 'left'}, typeAttributes: {maximumFractionDigits: 0}, hideDefaultActions: true},
-        {label: 'Total Cost', editable: false, fieldName: 'Total_Cost__c', type: 'currency', cellAttributes: {alignment: 'left'}, hideDefaultActions: true}
-        /*{type: "button", 
-            typeAttributes: 
-            {  
-                label: 'Delete',  
-                name: 'Delete',  
-                title: 'Delete',  
-                disabled: false,  
-                value: 'Delete',  
-                iconPosition: 'left'  
-            }   
-        },*/
-    ];
-
-    mediumTotalColumns = [
-
-        {label: 'firstCol', initialWidth: 52, editable: false, fieldName: 'firstCol', type: 'text',
-        cellAttributes:{
-            class: 'slds-theme_shade'
-        },},
-        {label: 'secondCol', initialWidth: 50, editable: false, fieldName: 'secondCol', type: 'text',
-        cellAttributes:{
-            class: 'slds-theme_shade'
-        },},
-        {label: 'Cost Heading', editable: false, fieldName: 'costHeadingOptions', type: 'text',
-        cellAttributes:{
-            class: 'slds-theme_shade'
-        },},
-        {label: 'Description', editable: false, fieldName: 'Project_Cost_Description__c', type: 'text',
-        cellAttributes:{
-            class: 'slds-theme_shade'
-        },},
-        {label: 'Amount Total', editable: false, fieldName: 'amounttotal', type: 'currency', typeAttributes: {maximumFractionDigits: 0},
-        cellAttributes:{
-            class: 'slds-theme_shade',alignment: 'left'
-        },},
-        {label: 'VAT Total', editable: false, fieldName: 'vattotal', type: 'currency', typeAttributes: {maximumFractionDigits: 0},
-        cellAttributes:{
-            class: 'slds-theme_shade',alignment: 'left'
-        },},
-        {label: 'Total Cost Total', editable: false, fieldName: 'totalcosttotal', type: 'currency',
-        cellAttributes:{
-            class: 'slds-theme_shade',alignment: 'left'
-        },}
-    ];
-    
-    contributionColumns = [
-        {type: 'action',
-            typeAttributes: 
-            { 
-                rowActions: actions, menuAlignment: 'left' 
-            } 
-        },
-        {label: 'Description', editable: true, fieldName: 'Description_for_cash_contributions__c', type: 'textAreaColumn',  hideDefaultActions: true,
-            typeAttributes: 
-                {
-                    placeholder: 'description', 
-                    value: { fieldName: 'Description_for_cash_contributions__c' },
-                    context: { fieldName: 'Id' }
-                }
-        },
-        {label: 'Secured', editable: true, fieldName: 'Secured_non_cash_contributions__c', type: 'picklistColumn', hideDefaultActions: true,
-            typeAttributes: 
-                {
-                    options: { fieldName: 'securedOptions' }, 
-                    value: { fieldName: 'Secured_non_cash_contributions__c' },
-                    context: { fieldName: 'Id' }
-                }
-        },
-        {label: 'Amount', editable: true, fieldName: 'Amount_you_have_received__c', type: 'currency', cellAttributes: {alignment: 'left'}, typeAttributes: {maximumFractionDigits: 0}, hideDefaultActions: true}
-        
-    ];
-
-    totalContributionColumns = [
-
-        {label: 'firstCol', initialWidth: 52, editable: false, fieldName: 'firstCol', type: 'text',
-        cellAttributes:{
-            class: 'slds-theme_shade'
-        },},
-        {label: 'secondCol', initialWidth: 50, editable: false, fieldName: 'secondCol', type: 'text',
-        cellAttributes:{
-            class: 'slds-theme_shade'
-        },},
-        {label: 'Description', editable: false, fieldName: 'Description_for_cash_contributions__c', type: 'text',
-        cellAttributes:{
-            class: 'slds-theme_shade'
-        },},
-        {label: 'Secured', editable: false, fieldName: 'Secured_non_cash_contributions__c', type: 'text',
-        cellAttributes:{
-            class: 'slds-theme_shade'
-        },},
-        {label: 'Amount Total', editable: false, fieldName: 'amounttotal', type: 'currency', typeAttributes: {maximumFractionDigits: 0},
-        cellAttributes:{
-            class: 'slds-theme_shade',alignment: 'left'
-        },}
-    ];
-
-    nhmfContributionColumns = [
-        {type: 'action',
-            typeAttributes: 
-            { 
-                rowActions: actions, menuAlignment: 'left' 
-            } 
-        },
-        {label: 'Source of Funding', editable: true, fieldName: 'Source_Of_Funding__c', type: 'picklistColumn', hideDefaultActions: true,
-            typeAttributes: 
-                {
-                    options: { fieldName: 'fundingSourceOptions' }, 
-                    value: { fieldName: 'Source_Of_Funding__c' },
-                    context: { fieldName: 'Id' }
-                }
-        }, 
-        {label: 'Description', editable: true, fieldName: 'Description_for_cash_contributions__c', type: 'textAreaColumn', hideDefaultActions: true,
-            typeAttributes: 
-                {
-                    placeholder: 'description', 
-                    value: { fieldName: 'Description_for_cash_contributions__c' },
-                    context: { fieldName: 'Id' }
-                }
-        },  
-        {label: 'Secured', editable: true, fieldName: 'Secured__c', type: 'boolean'}, 
-        {label: 'Amount', editable: true, fieldName: 'Value__c', type: 'currency', cellAttributes: {alignment: 'left'}, typeAttributes: {maximumFractionDigits: 0}, hideDefaultActions: true} 
-    ];
-
-    totalNhmfContributionColumns = [
-
-        {label: 'firstCol', initialWidth: 52, editable: false, fieldName: 'firstCol', type: 'text',
-        cellAttributes:{
-            class: 'slds-theme_shade'
-        },},
-        {label: 'secondCol', initialWidth: 50, editable: false, fieldName: 'secondCol', type: 'text',
-        cellAttributes:{
-            class: 'slds-theme_shade'
-        },},
-        {label: 'Source of Funding', editable: false, fieldName: 'Source_Of_Funding__c', type: 'text',
-        cellAttributes:{
-            class: 'slds-theme_shade'
-        },},
-        {label: 'Description', editable: false, fieldName: 'Description_for_cash_contributions__c', type: 'text',
-        cellAttributes:{
-            class: 'slds-theme_shade'
-        },},
-        {label: 'Secured', editable: false, fieldName: 'Secured__c', type: 'boolean',
-        cellAttributes:{
-            class: 'slds-theme_shade'
-        },},
-        {label: 'Amount Total', editable: false, fieldName: 'amounttotal', type: 'currency', typeAttributes: {maximumFractionDigits: 0},
-        cellAttributes:{
-            class: 'slds-theme_shade',alignment: 'left'
-        },}
-    ];
 
     @wire(getObjectInfo, { objectApiName: PROJECT_COST_OBJECT })
     objectInfo;
@@ -413,20 +165,26 @@ export default class ProjectCostsForm2 extends LightningElement
             if(this.project.RecordType.DeveloperName === this.smallGrantProject)
             {
                 this.smallGrant = true;
-                this.columns = this.smallCols;
-                this.cashColumns = this.contributionColumns;
+                this.columns = smallColumns;
+                this.cashColumns = contributionColumns;
             } 
             else if(this.project.RecordType.DeveloperName === this.mediumGrantProject)
             {
                 this.mediumGrant = true;
-                this.columns = this.mediumColumns;
-                this.cashColumns = this.contributionColumns;
+                this.columns = mediumColumns;
+                this.cashColumns = contributionColumns;
+            } 
+            else if(this.project.RecordType.DeveloperName === this.largeGrantDevelopmentProject || this.project.RecordType.DeveloperName === this.largeGrantDeliveryProject)
+            {
+                this.largeGrant = true;
+                this.columns = largeColumns;
+                this.cashColumns = largeContributionColumns;
             } 
             else if(this.project.RecordType.DeveloperName === this.nhmfGrantProject)
             {
                 this.nhmfGrant = true;
-                this.columns = this.mediumColumns;
-                this.cashColumns = this.nhmfContributionColumns;
+                this.columns = mediumColumns;
+                this.cashColumns = nhmfContributionColumns;
             }
 
             //Set currency columns as not-editable if Award Amount confirmed.
@@ -475,7 +233,7 @@ export default class ProjectCostsForm2 extends LightningElement
             this.projectRecordTypeDeveloperName = this.project.RecordType.DeveloperName;
 
             //Get Record type mapping custom metadata.
-            this.recordTypeMapping = await getRecordTypeMappings({projectDeveloperName: this.projectRecordTypeDeveloperName});
+            this.recordTypeMapping = await getRecordTypeMappings({projectDeveloperName: this.projectRecordTypeDeveloperName, variation: this.variation});
         }
         else if (result.error)
         {
@@ -552,7 +310,7 @@ export default class ProjectCostsForm2 extends LightningElement
         }
     }
 
-    @wire(getProjectCosts, {projectId: '$recordId', recordTypeMapping: '$recordTypeMapping'})
+    @wire(getProjectCosts2, {projectId: '$recordId', recordType: '$recordTypeMapping.costRecordTypeId'})
     costs(result)
     {
         if(result.data)
@@ -608,6 +366,28 @@ export default class ProjectCostsForm2 extends LightningElement
                     totalcosttotal: projectCostsTotal
                 });
             }
+            else if(this.largeGrant == true)
+            {
+                this.projectCosts.forEach(ele => 
+                {
+                    ele.costHeadingOptions = this.costHeadingOptions;;
+
+                    projectCostsAmountTotal = projectCostsAmountTotal + Number(ele.Costs__c);
+                    projectCostsVatTotal = projectCostsVatTotal + Number(ele.Vat__c);
+                    projectCostsTotal = projectCostsTotal + Number(ele.Total_Cost__c);
+                });
+
+                this.projectCostsTotalRow.push({
+                    Id: 'totalRow',
+                    firstCol: ' ',
+                    secondCol: '',
+                    costHeadingOptions: '',
+                    Project_Cost_Description__c: '',
+                    amounttotal: projectCostsAmountTotal,
+                    vattotal: projectCostsVatTotal,
+                    totalcosttotal: projectCostsTotal
+                });
+            }
         }
         else if (result.error)
         {
@@ -615,7 +395,7 @@ export default class ProjectCostsForm2 extends LightningElement
         }
     }
 
-    @wire(getCashContributions, {projectId: '$recordId'})
+    @wire(getCashContributions2, {projectId: '$recordId', recordType: '$recordTypeMapping.cashRecordTypeId'})
     contributions(result)
     {
         if(result.data)
@@ -628,31 +408,56 @@ export default class ProjectCostsForm2 extends LightningElement
             this.cashContributionsResult = result;
             this.cashContributions = JSON.parse(JSON.stringify(this.cashContributionsResult.data));
 
-            this.cashContributions.forEach(ele => 
+            if(this.largeGrant == true)
             {
-                ele.securedOptions = this.securedOptions;
-                ele.fundingSourceOptions = this.fundingSourceOptions;
-                
-                if(this.nhmfGrant == true)
+                this.cashContributions.forEach(ele => 
                 {
-                    cashContributionsAmountTotal = cashContributionsAmountTotal + Number(ele.Value__c);
-                }
-                else
-                {
-                    cashContributionsAmountTotal = cashContributionsAmountTotal + Number(ele.Amount_you_have_received__c);
-                }
-                
-            })
+                    ele.securedOptions = this.securedOptions;
+                    ele.fundingSourceOptions = this.fundingSourceOptions;;
 
-            this.cashContributionsTotalRow.push(
+                    cashContributionsAmountTotal = cashContributionsAmountTotal + Number(ele.Amount_you_have_received__c);
+                });
+
+                this.cashContributionsTotalRow.push(
+                {
+                    Id: 'totalRow',
+                    firstCol: '',
+                    secondCol: '',
+                    Source_Of_Funding__c: '',
+                    Description_for_cash_contributions__c: '',
+                    Secured__c: false,
+                    Evidence_for_secured_income__c: false,
+                    amounttotal: cashContributionsAmountTotal
+                });
+            } 
+            else
             {
-                Id: 'totalRow',
-                firstCol: ' ',
-                secondCol: '',
-                Description_for_cash_contributions__c: '',
-                Secured_non_cash_contributions__c: '',
-                amounttotal: cashContributionsAmountTotal
-            });
+                this.cashContributions.forEach(ele => 
+                {
+                    ele.securedOptions = this.securedOptions;
+                    ele.fundingSourceOptions = this.fundingSourceOptions;
+                    
+                    if(this.nhmfGrant == true)
+                    {
+                        cashContributionsAmountTotal = cashContributionsAmountTotal + Number(ele.Value__c);
+                    }
+                    else
+                    {
+                        cashContributionsAmountTotal = cashContributionsAmountTotal + Number(ele.Amount_you_have_received__c);
+                    }
+                    
+                })
+
+                this.cashContributionsTotalRow.push(
+                {
+                    Id: 'totalRow',
+                    firstCol: ' ',
+                    secondCol: '',
+                    Description_for_cash_contributions__c: '',
+                    Secured_non_cash_contributions__c: '',
+                    amounttotal: cashContributionsAmountTotal
+                });
+            }
         }
         else if (result.error)
         {

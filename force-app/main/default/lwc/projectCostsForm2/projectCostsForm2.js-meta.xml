@@ -6,4 +6,10 @@
     <targets>
         <target>lightning__RecordPage</target>
     </targets>
+
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <property name="variation" type="String" label="Variation" description="Define the variation used if not the only usage of the component on this page"/>
+        </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>

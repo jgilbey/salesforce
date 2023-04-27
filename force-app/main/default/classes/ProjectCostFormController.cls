@@ -67,6 +67,32 @@ public inherited sharing class ProjectCostFormController {
     return existingCosts;
   }
 
+  @AuraEnabled(cacheable=true)
+  public static List<Project_Cost__c> getProjectCosts2(Id projectId, Id recordType) 
+  {
+    List<Project_Cost__c> existingCosts = new List<Project_Cost__c>();
+
+    List<Project_Cost__c> costs = [
+      SELECT
+        Id,
+        Cost_heading__c,
+        Total_Cost__c,
+        Costs__c,
+        Project_Cost_Description__c,
+        Vat__c,
+        RecordType.Name,
+        RecordType.DeveloperName,
+        RecordTypeId
+      FROM Project_Cost__c
+      WHERE Case__c = :projectId AND RecordTypeId =: recordType
+      ORDER BY Costs__c DESC
+    ];
+
+    existingCosts.addAll(costs);
+
+    return existingCosts;
+  }
+
   @AuraEnabled
   public static void deleteProjectCostsAndContributions(
     List<Project_Income__c> cashContributions,
@@ -208,7 +234,31 @@ public inherited sharing class ProjectCostFormController {
     return existingContributions;
   }
 
-  
+  @AuraEnabled(cacheable=true)
+  public static List<Project_Income__c> getCashContributions2(Id projectId, Id recordType) {
+    List<Project_Income__c> existingContributions = new List<Project_Income__c>();
+
+    List<Project_Income__c> conts = [
+      SELECT
+        Id,
+        Secured__c,
+        Secured_non_cash_contributions__c,
+        Evidence_for_secured_income__c,
+        Description_for_cash_contributions__c,
+        Amount_you_have_received__c,
+        Value__c,
+        Source_Of_Funding__c,
+        RecordType.Name,
+        Case__r.RecordType.DeveloperName
+      FROM Project_Income__c
+      WHERE Case__c = :projectId AND RecordTypeId =: recordType
+      ORDER BY Amount_you_have_received__c DESC
+    ];
+
+    existingContributions.addAll(conts);
+
+    return existingContributions;
+  }
 
   @AuraEnabled
   public static string saveCosts(Object draftCosts, Object existingCostsValues, Object cashContributions, String projectId)
@@ -385,7 +435,7 @@ public inherited sharing class ProjectCostFormController {
   }
 
   @AuraEnabled
-  public static RecordTypeMappingWrapper getRecordTypeMapping(String projectDeveloperName)
+  public static RecordTypeMappingWrapper getRecordTypeMapping(String projectDeveloperName, String variation)
   {
     try 
     {
@@ -393,7 +443,15 @@ public inherited sharing class ProjectCostFormController {
 
       for(Project_Budget_Record_Type_Mapping__mdt rtm : rtms)
       {
-        if(rtm.Project_Record_Type_Developer_Name__c == projectDeveloperName)
+        if(variation != null && rtm.DeveloperName == variation && rtm.Variation__c == true)//Check against variation property first.
+        {
+          RecordTypeMappingWrapper recordTypeMapping = new RecordTypeMappingWrapper();
+          recordTypeMapping.projectRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(rtm.Project_Record_Type_Developer_Name__c).getRecordTypeId();
+          recordTypeMapping.costRecordTypeId = Schema.SObjectType.Project_Cost__c.getRecordTypeInfosByDeveloperName().get(rtm.Project_Cost_Record_Type_Developer_Name__c).getRecordTypeId();
+          recordTypeMapping.cashRecordTypeId = Schema.SObjectType.Project_Income__c.getRecordTypeInfosByDeveloperName().get(rtm.Cash_Contribu_Record_Type_Developer_Name__c).getRecordTypeId();
+          return recordTypeMapping;
+        }
+        else if(rtm.Project_Record_Type_Developer_Name__c == projectDeveloperName && rtm.Variation__c == false)
         {
           RecordTypeMappingWrapper recordTypeMapping = new RecordTypeMappingWrapper();
           recordTypeMapping.projectRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(rtm.Project_Record_Type_Developer_Name__c).getRecordTypeId();

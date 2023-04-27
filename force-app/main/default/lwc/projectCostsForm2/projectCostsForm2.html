@@ -24,7 +24,7 @@
                 </div>
                 <template if:true={projectCosts}>
                     <div>
-                        <lightning-card  variant="Narrow"  title="Project Costs" class="cardSpinner">
+                        <lightning-card  variant="Narrow"  title={costCardTitle} class="cardSpinner">
                             
 
                             <div class="slds-var-m-around_medium slds-clearfix">
@@ -62,7 +62,7 @@
                 <br><br>
                 <template if:true={projectCosts}>
                     <div>
-                        <lightning-card  variant="Narrow"  title="Cash Contributions" class="cardSpinner">
+                        <lightning-card  variant="Narrow"  title={cashCardTitle} class="cardSpinner">
                             <!--div if:true={showSpinner}>
                                 <lightning-spinner
                                     alternative-text="Loading..." variant="brand">
