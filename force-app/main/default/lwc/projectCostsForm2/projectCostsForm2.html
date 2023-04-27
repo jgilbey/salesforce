@@ -9,8 +9,8 @@
       
         <!-- HEADER -->
         <div class="slds-card__header">
-            <template if:true={project}>
-                <c-project-cost-form-header project={project} small-grant={smalLGrant} medium-grant={mediumGrant} nhmf-grant={nhmfGrant}></c-project-cost-form-header>
+            <template if:true={recordTypeMapping}>
+                <c-project-budget-form-summary-header project={project} small-grant={smallGrant} medium-grant={mediumGrant} nhmf-grant={nhmfGrant} large-grant={largeGrant} variation={variation}></c-project-budget-form-summary-header>
             </template>
         </div>
 
@@ -25,8 +25,6 @@
                 <template if:true={projectCosts}>
                     <div>
                         <lightning-card  variant="Narrow"  title={costCardTitle} class="cardSpinner">
-                            
-
                             <div class="slds-var-m-around_medium slds-clearfix">
                                 <lightning-button variant="brand" 
                                     label="Add Project Cost"  

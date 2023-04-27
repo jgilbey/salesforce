@@ -1,0 +1,109 @@
+<template>
+    <template if:true={project}>
+      <div class="slds-page-header">
+          <div class="slds-page-header__row">
+            <div class="slds-page-header__col-title">
+              <div class="slds-media">
+                <div class="slds-media__figure">
+                  <span class="slds-icon_container slds-icon-standard-account" title="account">
+                    <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+                      <use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#account"></use>
+                    </svg>
+                    <span class="slds-assistive-text">project</span>
+                  </span>
+                </div>
+                <div class="slds-media__body">
+                  <div class="slds-page-header__name">
+                    <div class="slds-page-header__name-title">
+                      <h1>
+                        <span class="slds-page-header__title slds-truncate">{headerTitle}</span>
+                      </h1>
+                    </div>
+                  </div>
+                  <table>
+                      <thead></thead>
+                      <tbody>
+                        <tr>
+                            <td><b>Total Cost: </b> 
+                                <template if:false={nhmfGrant}>
+                                    <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2">
+                                </lightning-formatted-number>
+                                </template>
+                                <template if:true={nhmfGrant}>
+                                    <lightning-formatted-number value={project.Total_amount_cost__c} maximum-fraction-digits="2">
+                                    </lightning-formatted-number>
+                                </template>
+                            </td>
+                                
+                            <template if:false={nhmfGrant}>
+                                <td><b>Grant Award: </b> 
+                                    <lightning-formatted-number value={project.Grant_Award__c} maximum-fraction-digits="2">
+                                    </lightning-formatted-number></lightning-formatted-number>
+                                </td>
+                            </template>
+                            <template if:true={nhmfGrant}>
+                                <td><b>NHMF Grant Award: </b> 
+                                    <lightning-formatted-number value={project.NHMF_grant_award__c} maximum-fraction-digits="2">
+                                    </lightning-formatted-number>
+                                </td>
+                            </template>  
+                            <template if:true={nhmfGrant}>
+                                <td><b>NHMF Grant Percentage: </b> 
+                                    <lightning-formatted-number value={project.NHMF_Grant_Percentage__c} format-style="percent" maximum-fraction-digits="2">
+                                    </lightning-formatted-number>
+                                </td>
+                            </template>
+                            <template if:false={nhmfGrant}>
+                                <td><b>Grant Percentage: </b> <lightning-formatted-number value={project.Grant_Percentage__c} format-style="percent" maximum-fraction-digits="2">
+                                </lightning-formatted-number></td>
+                            </template>
+                            <template if:true={mediumGrant}>
+                                <td><b>Total VAT: </b>
+                                    <template if:false={nhmfGrant}>
+                                        <lightning-formatted-number value={project.Total_project_VAT__c} maximum-fraction-digits="2">
+                                        </lightning-formatted-number>
+                                    </template>
+                                    <template if:true={nhmfGrant}>
+                                        <lightning-formatted-number value={project.Total_project_VAT__c} maximum-fraction-digits="2">
+                                        </lightning-formatted-number>
+                                    </template>
+                                </td>
+                            </template>
+                        </tr>
+                          
+                        <tr>
+                            <template if:false={nhmfGrant}>
+                                <td><b>Grant Requested: </b> 
+                                    <lightning-formatted-number value={project.Grant_requested__c} maximum-fraction-digits="2">
+                                    </lightning-formatted-number>
+                                </td>
+                            </template>
+                            <template if:true={nhmfGrant}>
+                                <td><b>NHMF Grant Request: </b> 
+                                    <lightning-formatted-number value={project.NHMF_grant_request__c} maximum-fraction-digits="2">
+                                    </lightning-formatted-number>
+                                </td>
+                            </template>
+                            <template if:false={nhmfGrant}>
+                                <td><b>Total Cash Contributions: </b> 
+                                    <lightning-formatted-number value={project.Total_Development_Income__c} maximum-fraction-digits="2">
+                                    </lightning-formatted-number>
+                                </td>
+                            </template>
+                            <template if:true={nhmfGrant}>
+                                <td><b>NHMF Total Cash Contributions: </b>
+                                    <lightning-formatted-number value={project.NHMF_Total_cash_contributions__c} maximum-fraction-digits="2">
+                                    </lightning-formatted-number>
+                                </td>
+                            </template>
+                              <td><b>Payment Percentage:</b> {project.payment_percentage__c}%</td>
+                          </tr>
+                      </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>    
+      </template>
+  </template>

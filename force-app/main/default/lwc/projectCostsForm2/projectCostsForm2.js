@@ -91,6 +91,14 @@ export default class ProjectCostsForm2 extends LightningElement
         {
             return 'Potential Delivery Costs';
         }
+        else if(this.project.RecordType.DeveloperName === this.largeGrantDevelopmentProject)
+        {
+            return 'Development Costs'
+        }
+        else if(this.project.RecordType.DeveloperName === this.largeGrantDeliveryProject)
+        {
+            return 'Delivery Costs'
+        }
         else
         {
             return 'Project Costs';
@@ -102,6 +110,14 @@ export default class ProjectCostsForm2 extends LightningElement
         if(this.variation == 'Large_Development_Delivery')
         {
             return 'Potential Delivery Cash Contributions';
+        }
+        else if(this.project.RecordType.DeveloperName === this.largeGrantDevelopmentProject)
+        {
+            return 'Development Cash Contributions'
+        }
+        else if(this.project.RecordType.DeveloperName === this.largeGrantDeliveryProject)
+        {
+            return 'Potential Delivery Cash Contributions'
         }
         else
         {
