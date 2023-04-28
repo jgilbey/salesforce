@@ -6,7 +6,8 @@ export default class ProjectBugetFormSummaryHeader extends LightningElement {
     @api smallGrant;
     @api mediumGrant;
     @api nhmfGrant;
-    @api largeGrant;
+    @api largeGrantDevelopment;
+    @api largeGrantDelivery;
     @api variation;
 
     get headerTitle()
@@ -15,13 +16,21 @@ export default class ProjectBugetFormSummaryHeader extends LightningElement {
         {
             return 'Potential Delivery Budget';
         }
-        else if (this.largeGrant == true)
+        else if (this.largeGrantDevelopment == true)
         {
             return 'Development Budget';
         }
         else
         {
             return 'Project Budget';
+        }
+    }
+
+    get variationIsDelivery()
+    {
+        if(this.variation == 'Large_Development_Delivery')
+        {
+            return true;
         }
     }
 }

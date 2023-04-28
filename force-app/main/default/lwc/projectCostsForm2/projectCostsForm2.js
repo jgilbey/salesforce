@@ -53,6 +53,8 @@ export default class ProjectCostsForm2 extends LightningElement
     smallGrant = false;
     mediumGrant = false;
     largeGrant = false;
+    largeGrantDevelopment = false;
+    largeGrantDelivery = false;
     nhmfGrant = false;
     showSpinner = false;
 
@@ -190,12 +192,20 @@ export default class ProjectCostsForm2 extends LightningElement
                 this.columns = mediumColumns;
                 this.cashColumns = contributionColumns;
             } 
-            else if(this.project.RecordType.DeveloperName === this.largeGrantDevelopmentProject || this.project.RecordType.DeveloperName === this.largeGrantDeliveryProject)
+            else if(this.project.RecordType.DeveloperName === this.largeGrantDevelopmentProject)
             {
                 this.largeGrant = true;
+                this.largeGrantDevelopment = true;
                 this.columns = largeColumns;
                 this.cashColumns = largeContributionColumns;
-            } 
+            }
+            else if(this.project.RecordType.DeveloperName === this.largeGrantDeliveryProject)
+            {
+                this.largeGrant = true;
+                this.largeGrantDelivery = true;
+                this.columns = largeColumns;
+                this.cashColumns = largeContributionColumns;
+            }
             else if(this.project.RecordType.DeveloperName === this.nhmfGrantProject)
             {
                 this.nhmfGrant = true;

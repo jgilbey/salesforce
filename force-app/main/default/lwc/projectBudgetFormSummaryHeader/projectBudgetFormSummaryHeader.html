@@ -24,40 +24,103 @@
                       <thead></thead>
                       <tbody>
                         <tr>
-                            <td><b>Total Cost: </b> 
-                                <template if:false={nhmfGrant}>
-                                    <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2">
-                                </lightning-formatted-number>
+                            <td>
+                                <template lwc:if={largeGrantDevelopment}>
+                                    <template lwc:if={variationIsDelivery}>
+                                        <b>Potential Total Delivery Costs: </b>
+                                        <lightning-formatted-number value={project.Total_costs_proposed_for_delivery__c} maximum-fraction-digits="2"></lightning-formatted-number>
+                                    </template>
+                                    <template lwc:else>
+                                        <b>Total Cost: </b>
+                                        <lightning-formatted-number value={project.Total_Costs_Large_Development__c} maximum-fraction-digits="2"></lightning-formatted-number>
+                                    </template>
                                 </template>
-                                <template if:true={nhmfGrant}>
-                                    <lightning-formatted-number value={project.Total_amount_cost__c} maximum-fraction-digits="2">
-                                    </lightning-formatted-number>
+                                <template lwc:elseif={largeGrantDelivery}>
+                                    <b>Total Cost: </b>
+                                    <lightning-formatted-number value={project.Total_actual_delivery_costs__c} maximum-fraction-digits="2"></lightning-formatted-number>
+                                </template>
+                                <template lwc:elseif={nhmfGrant}>
+                                    <b>Total Cost: </b>
+                                    <lightning-formatted-number value={project.Total_amount_cost__c} maximum-fraction-digits="2"></lightning-formatted-number>
+                                </template>
+                                <template lwc:else>
+                                    <b>Total Cost: </b>
+                                    <lightning-formatted-number value={project.Total_Cost__c} maximum-fraction-digits="2"></lightning-formatted-number>
                                 </template>
                             </td>
                                 
-                            <template if:false={nhmfGrant}>
-                                <td><b>Grant Award: </b> 
-                                    <lightning-formatted-number value={project.Grant_Award__c} maximum-fraction-digits="2">
-                                    </lightning-formatted-number></lightning-formatted-number>
-                                </td>
-                            </template>
-                            <template if:true={nhmfGrant}>
-                                <td><b>NHMF Grant Award: </b> 
-                                    <lightning-formatted-number value={project.NHMF_grant_award__c} maximum-fraction-digits="2">
-                                    </lightning-formatted-number>
-                                </td>
-                            </template>  
-                            <template if:true={nhmfGrant}>
-                                <td><b>NHMF Grant Percentage: </b> 
-                                    <lightning-formatted-number value={project.NHMF_Grant_Percentage__c} format-style="percent" maximum-fraction-digits="2">
-                                    </lightning-formatted-number>
-                                </td>
-                            </template>
-                            <template if:false={nhmfGrant}>
-                                <td><b>Grant Percentage: </b> <lightning-formatted-number value={project.Grant_Percentage__c} format-style="percent" maximum-fraction-digits="2">
-                                </lightning-formatted-number></td>
-                            </template>
-                            <template if:true={mediumGrant}>
+                            <td>
+                                <template lwc:if={largeGrantDevelopment}>
+                                    <template lwc:if={variationIsDelivery}>
+                                        <b>Potential Delivery Cash Contributions: </b>
+                                        <lightning-formatted-number value={project.Total_cash_contributions_for_delivery__c} maximum-fraction-digits="2"></lightning-formatted-number>
+                                    </template>
+                                    <template lwc:else>
+                                        <b>Development Grant Award: </b>
+                                        <lightning-formatted-number value={project.Development_grant_award__c} maximum-fraction-digits="2"></lightning-formatted-number>
+                                    </template>
+                                </template>
+                                <template lwc:elseif={largeGrantDelivery}>
+                                    <b>Grant Award: </b> 
+                                    <lightning-formatted-number value={project.Delivery_grant_award__c} maximum-fraction-digits="2"></lightning-formatted-number>
+                                </template>
+                                <template lwc:elseif={nhmfGrant}>
+                                    <b>NHMF Grant Award: </b> 
+                                    <lightning-formatted-number value={project.NHMF_grant_award__c} maximum-fraction-digits="2"></lightning-formatted-number>
+                                </template>
+                                <template lwc:else>
+                                    <b>Grant Award: </b> 
+                                        <lightning-formatted-number value={project.Grant_Award__c} maximum-fraction-digits="2"></lightning-formatted-number>
+                                </template>
+                            </td>
+                            
+                            <td>
+                                <template lwc:if={largeGrantDevelopment}>
+                                    <template lwc:if={variationIsDelivery}>
+                                        <b>Potential Total Capital Costs: </b>
+                                        <lightning-formatted-number value={project.Total_capital_costs__c} maximum-fraction-digits="2"></lightning-formatted-number>
+                                    </template>
+                                    <template lwc:else>
+                                        <b>Total Development VAT: </b>
+                                        <lightning-formatted-number value={project.Total_development_costs_VAT__c} maximum-fraction-digits="2"></lightning-formatted-number>
+                                    </template>
+                                </template>
+                                <template lwc:elseif={largeGrantDelivery}>
+                                    <b>Total Capital Costs: </b> 
+                                    <lightning-formatted-number value={project.Total_actual_capital_costs__c} maximum-fraction-digits="2"></lightning-formatted-number>
+                                </template>
+                                <template lwc:elseif={nhmfGrant}>
+                                    <b>NHMF Grant Percentage: </b> 
+                                    <lightning-formatted-number value={project.NHMF_Grant_Percentage__c} format-style="percent" maximum-fraction-digits="2"></lightning-formatted-number>
+                                </template>
+                                <template lwc:else>
+                                    <b>Grant Percentage: </b>
+                                    <lightning-formatted-number value={project.Grant_Percentage__c} format-style="percent" maximum-fraction-digits="2"></lightning-formatted-number>
+                                </template>
+                            </td>
+
+                            <td>
+                                <template lwc:if={largeGrantDevelopment}>
+                                    <template lwc:if={variationIsDelivery}>
+                                        <b>Potential Total Other Costs: </b>
+                                        <lightning-formatted-number value={project.Total_other_costs__c} maximum-fraction-digits="2"></lightning-formatted-number>
+                                    </template>
+                                    <template lwc:else>
+                                        <b>Grant Percentage: </b>
+                                        <lightning-formatted-number value={project.Grant_Percentage__c} maximum-fraction-digits="2"></lightning-formatted-number>
+                                    </template>
+                                </template>
+                                <template lwc:elseif={largeGrantDelivery}>
+                                    <b>Grant Percentage: </b> 
+                                    <lightning-formatted-number value={project.Grant_Percentage__c} maximum-fraction-digits="2"></lightning-formatted-number>
+                                </template>
+                                <template lwc:elseif={mediumGrant}>
+                                    <b>Total VAT: </b> 
+                                    <lightning-formatted-number value={project.Total_project_VAT__c} format-style="percent" maximum-fraction-digits="2"></lightning-formatted-number>
+                                </template>
+                            </td>
+
+                            <!--template if:true={mediumGrant}>
                                 <td><b>Total VAT: </b>
                                     <template if:false={nhmfGrant}>
                                         <lightning-formatted-number value={project.Total_project_VAT__c} maximum-fraction-digits="2">
@@ -68,7 +131,7 @@
                                         </lightning-formatted-number>
                                     </template>
                                 </td>
-                            </template>
+                            </template-->
                         </tr>
                           
                         <tr>
@@ -97,6 +160,10 @@
                                 </td>
                             </template>
                               <td><b>Payment Percentage:</b> {project.payment_percentage__c}%</td>
+                            <template lwc:if={largeGrantDevelopment}>
+                                <td><b>Agreed Costs (Development):</b>
+                                </td>
+                            </template>
                           </tr>
                       </tbody>
                   </table>
