@@ -40,7 +40,10 @@ public inherited sharing class ProjectCostFormController {
         Delivery_grant_award__c,
         Development_grant_award__c,
         Total_capital_costs__c,
-        Total_actual_capital_costs__c
+        Total_actual_capital_costs__c,
+        Grant_request_proposed_for_delivery__c,
+        Total_actual_activity_costs__c,
+        Delivery_grant_percentage__c
       FROM case
       WHERE Id = :projectId
     ]; //changed
