@@ -733,6 +733,10 @@ export default class ProjectCostsForm2 extends LightningElement
     async handleCostDelete()
     {
         this.showSpinner = true;
+
+        //Clear all draft values in the datatable
+        this.costsDraftValues = [];
+
         try
         {
             this.costsRowsToDelete.forEach(function (item, index)
@@ -782,6 +786,10 @@ export default class ProjectCostsForm2 extends LightningElement
     async handleCashDelete()
     {
         this.showSpinner = true;
+
+        //Clear all draft values in the datatable
+        this.cashContributionsDraftValues = [];
+        
         try
         {
             this.cashContributionRowsToDelete.forEach(function (item, index)
