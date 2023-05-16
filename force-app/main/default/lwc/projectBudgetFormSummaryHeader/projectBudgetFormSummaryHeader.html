@@ -91,11 +91,11 @@
                                 </template>
                                 <template lwc:elseif={nhmfGrant}>
                                     <b>NHMF Grant Percentage: </b> 
-                                    <lightning-formatted-number value={project.NHMF_Grant_Percentage__c} format-style="percent" maximum-fraction-digits="2"></lightning-formatted-number>
+                                    <lightning-formatted-number value={project.NHMF_Grant_Percentage__c} format-style="percent-fixed" maximum-fraction-digits="2"></lightning-formatted-number>
                                 </template>
                                 <template lwc:else>
                                     <b>Grant Percentage: </b>
-                                    <lightning-formatted-number value={project.Grant_Percentage__c} format-style="percent" maximum-fraction-digits="2"></lightning-formatted-number>
+                                    <lightning-formatted-number value={project.Grant_Percentage__c} format-style="percent-fixed" maximum-fraction-digits="2"></lightning-formatted-number>
                                 </template>
                             </td>
 
@@ -107,7 +107,7 @@
                                     </template>
                                     <template lwc:else>
                                         <b>Grant Percentage: </b>
-                                        <lightning-formatted-number value={project.Grant_Percentage__c} format-style="percent" maximum-fraction-digits="2"></lightning-formatted-number>
+                                        <lightning-formatted-number value={project.Grant_Percentage__c} format-style="percent-fixed" maximum-fraction-digits="2"></lightning-formatted-number>
                                     </template>
                                 </template>
                                 <template lwc:elseif={largeGrantDelivery}>
@@ -164,7 +164,7 @@
                                 <template lwc:if={largeGrantDevelopment}>
                                     <template lwc:if={variationIsDelivery}>
                                         <b>Potential Delivery Grant Percentage: </b>
-                                        <lightning-formatted-number value={project.Delivery_grant_percentage__c} format-style="percent" maximum-fraction-digits="2"></lightning-formatted-number>
+                                        <lightning-formatted-number value={project.Delivery_grant_percentage__c} format-style="percent-fixed" maximum-fraction-digits="2"></lightning-formatted-number>
                                     </template>
                                     <template lwc:else>
                                         <b>Total Cash Contributions: </b>
@@ -173,7 +173,7 @@
                                 </template>
                                 <template lwc:elseif={largeGrantDelivery}>
                                     <b>Delivery Grant Percentage: </b> 
-                                    <lightning-formatted-number value={project.Delivery_grant_percentage__c} format-style="percent" maximum-fraction-digits="2"></lightning-formatted-number>
+                                    <lightning-formatted-number value={project.Delivery_grant_percentage__c} format-style="percent-fixed" maximum-fraction-digits="2"></lightning-formatted-number>
                                 </template>
                                 <template lwc:elseif={nhmfGrant}>
                                     <b>NHMF Total Cash Contributions: </b> 
@@ -193,7 +193,7 @@
                                     </template>
                                     <template lwc:else>
                                         <b>Development Payment Percentage: </b>
-                                        <lightning-formatted-number value={project.Development_payment_percentage__c} format-style="percent" maximum-fraction-digits="2"></lightning-formatted-number>
+                                        <lightning-formatted-number value={project.Development_payment_percentage__c} format-style="percent-fixed" maximum-fraction-digits="2"></lightning-formatted-number>
                                     </template>
                                 </template>
                                 <template lwc:elseif={largeGrantDelivery}>
@@ -206,7 +206,7 @@
                                 </template>
                                 <template lwc:else>
                                     <b>Payment Percentage: </b>
-                                    <lightning-formatted-number value={project.payment_percentage__c} maximum-fraction-digits="2"></lightning-formatted-number>
+                                    <lightning-formatted-number value={project.payment_percentage__c} format-style="percent-fixed" maximum-fraction-digits="2"></lightning-formatted-number>
                                 </template>
                             </td>
 

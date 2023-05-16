@@ -3,6 +3,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { getRecordNotifyChange } from 'lightning/uiRecordApi';
 import { getObjectInfo, getPicklistValues } from "lightning/uiObjectInfoApi";
 import { refreshApex } from '@salesforce/apex';
+import LightningConfirm from 'lightning/confirm';
 
 import getProject from '@salesforce/apex/ProjectCostFormController.getProject';
 import getRecordTypeMappings from '@salesforce/apex/ProjectCostFormController.getRecordTypeMapping';
@@ -21,6 +22,7 @@ import Success from "@salesforce/label/c.Success";
 import Error from "@salesforce/label/c.Error";
 
 import COST_HEADING from "@salesforce/schema/Project_Cost__c.Cost_heading__c";
+import COST_TYPE from "@salesforce/schema/Project_Cost__c.Cost_Type__c";
 import PROJECT_COST_OBJECT from "@salesforce/schema/Project_Cost__c";
 import INCOME_SECURED from "@salesforce/schema/Project_Income__c.Secured_non_cash_contributions__c";
 import INCOME_FUNDING_SOURCE from "@salesforce/schema/Project_Income__c.Source_Of_Funding__c";
@@ -32,7 +34,9 @@ import {
     mediumColumns,
     mediumTotalColumns,
     largeColumns,
+    largeColumnsDelivery,
     largeTotalColumns,
+    largeTotalColumnsDelivery,
     contributionColumns,
     totalContributionColumns,
     largeContributionColumns,
@@ -59,7 +63,7 @@ export default class ProjectCostsForm2 extends LightningElement
     showSpinner = false;
 
     @api recordId;
-    @api variation;
+    @api variation = '';
 
     project;
     projectResult;
@@ -68,6 +72,7 @@ export default class ProjectCostsForm2 extends LightningElement
 
     projectCosts = [];
     costHeadingOptions;
+    costTypeOptions;
     projectsCostsResult;
     costsDraftValues = [];
     costsRowsToDelete = [];
@@ -140,9 +145,16 @@ export default class ProjectCostsForm2 extends LightningElement
                 case this.nhmfGrantProject:
                     return mediumTotalColumns;
                 case this.largeGrantDevelopmentProject:
-                    return largeTotalColumns;
+                    if(this.variation == 'Large_Development_Delivery')
+                    {
+                        return largeTotalColumnsDelivery;
+                    }
+                    else
+                    {
+                        return largeTotalColumns;
+                    }
                 case this.largeGrantDeliveryProject:
-                    return largeTotalColumns;
+                    return largeTotalColumnsDelivery;
             }
         }
     }
@@ -196,14 +208,38 @@ export default class ProjectCostsForm2 extends LightningElement
             {
                 this.largeGrant = true;
                 this.largeGrantDevelopment = true;
-                this.columns = largeColumns;
+
+                if(this.variation == 'Large_Development_Delivery')
+                {
+                    this.columns = largeColumnsDelivery;
+                }
+                else
+                {
+                    this.columns = largeColumns;
+                }
+
                 this.cashColumns = largeContributionColumns;
+
+                /*if(this.variation == null) //This affects all instances of the component for some reason.
+                {
+                    
+                    var columnsChange = this.columns;
+
+                    for(var column in columnsChange){
+                        if(columnsChange[column].label=='Cost Type')
+                        {
+                            columnsChange.splice(column,1);
+                            break;
+                        }
+                    }
+                    this.columns = columnsChange;
+                }*/
             }
             else if(this.project.RecordType.DeveloperName === this.largeGrantDeliveryProject)
             {
                 this.largeGrant = true;
                 this.largeGrantDelivery = true;
-                this.columns = largeColumns;
+                this.columns = largeColumnsDelivery;
                 this.cashColumns = largeContributionColumns;
             }
             else if(this.project.RecordType.DeveloperName === this.nhmfGrantProject)
@@ -289,6 +325,29 @@ export default class ProjectCostsForm2 extends LightningElement
             console.log('Error retrieving cost headings: ' + result.error);
         }
     }
+    
+    //Get Project Cost Type PL values.
+    @wire(getPicklistValues, 
+    {
+        recordTypeId: "$recordTypeMapping.costRecordTypeId",
+        fieldApiName: COST_TYPE
+    })
+    costTypes(result) 
+    {
+        if (result.data) 
+        {
+            this.costTypeOptions = result.data.values;
+            console.log('Cost Types: ' + JSON.stringify(result.data.values));
+
+            this.projectCosts.forEach(ele => {
+                ele.costTypeOptions = this.costTypeOptions;
+            })
+        } 
+        else if (result.error) 
+        {
+            console.log('Error retrieving cost types: ' + result.error);
+        }
+    }
 
     //Get Cash Contribution Secured PL values.
     @wire(getPicklistValues, 
@@ -336,7 +395,7 @@ export default class ProjectCostsForm2 extends LightningElement
         }
     }
 
-    @wire(getProjectCosts2, {projectId: '$recordId', recordType: '$recordTypeMapping.costRecordTypeId'})
+    @wire(getProjectCosts2, {projectId: '$recordId', recordType: '$recordTypeMapping.costRecordTypeId', variation: '$variation'})
     costs(result)
     {
         if(result.data)
@@ -356,6 +415,7 @@ export default class ProjectCostsForm2 extends LightningElement
                 this.projectCosts.forEach(ele => 
                 {
                     ele.costHeadingOptions = this.costHeadingOptions;
+                    ele.costTypeOptions = this.costTypeOptions;
 
                     projectCostsAmountTotal = projectCostsAmountTotal + Number(ele.Costs__c);
                 })
@@ -366,6 +426,7 @@ export default class ProjectCostsForm2 extends LightningElement
                     firstCol: ' ',
                     secondCol: '',
                     costHeadingOptions: '',
+                    costTypeOptions: '',
                     Project_Cost_Description__c: '',
                     amounttotal: projectCostsAmountTotal,
                 });
@@ -375,6 +436,7 @@ export default class ProjectCostsForm2 extends LightningElement
                 this.projectCosts.forEach(ele => 
                 {
                     ele.costHeadingOptions = this.costHeadingOptions;
+                    ele.costTypeOptions = this.costTypeOptions;
 
                     projectCostsAmountTotal = projectCostsAmountTotal + Number(ele.Costs__c);
                     projectCostsVatTotal = projectCostsVatTotal + Number(ele.Vat__c);
@@ -386,6 +448,7 @@ export default class ProjectCostsForm2 extends LightningElement
                     firstCol: ' ',
                     secondCol: '',
                     costHeadingOptions: '',
+                    costTypeOptions: '',
                     Project_Cost_Description__c: '',
                     amounttotal: projectCostsAmountTotal,
                     vattotal: projectCostsVatTotal,
@@ -396,7 +459,8 @@ export default class ProjectCostsForm2 extends LightningElement
             {
                 this.projectCosts.forEach(ele => 
                 {
-                    ele.costHeadingOptions = this.costHeadingOptions;;
+                    ele.costHeadingOptions = this.costHeadingOptions;
+                    ele.costTypeOptions = this.costTypeOptions;
 
                     projectCostsAmountTotal = projectCostsAmountTotal + Number(ele.Costs__c);
                     projectCostsVatTotal = projectCostsVatTotal + Number(ele.Vat__c);
@@ -408,6 +472,7 @@ export default class ProjectCostsForm2 extends LightningElement
                     firstCol: ' ',
                     secondCol: '',
                     costHeadingOptions: '',
+                    costTypeOptions: '',
                     Project_Cost_Description__c: '',
                     amounttotal: projectCostsAmountTotal,
                     vattotal: projectCostsVatTotal,
@@ -605,8 +670,8 @@ export default class ProjectCostsForm2 extends LightningElement
         this.cashContributionsDraftValues = [];
     }
 
-    //Handle row level actions e.g, delete.
-     handleCostRowAction(event)
+    //Handle row level actions e.g. delete.
+    async handleCostRowAction(event)
     {
         const action = event.detail.action;
         const row = event.detail.row;
@@ -614,37 +679,52 @@ export default class ProjectCostsForm2 extends LightningElement
         switch(action.name)
         {
             case 'delete':
-                const rows = [...this.projectCosts];
-                const rowIndex = rows.findIndex(function(element) {return element.Id == row.Id});
-
-                //Check we are looking at an existing record, if not just remove from table.
-                if(rows[rowIndex].Id.length == 18)
+                const result = await LightningConfirm.open(
                 {
-                    if(this.project.Confirm_award_amount__c == true)
+                    label: 'Unsaved changes will be reverted',
+                    message: 'Save your work in the table before deleting any rows.',
+                    theme: 'warning'
+                });
+
+                if(result == true)
+                {
+                    const rows = [...this.projectCosts];
+                    const rowIndex = rows.findIndex(function(element) {return element.Id == row.Id});
+
+                    //Check we are looking at an existing record, if not just remove from table.
+                    if(rows[rowIndex].Id.length == 18)
                     {
-                        var doNotDelete = false;
-                        var mymap = new Map(Object.entries(row));
-
-                        for(const ele of this.columns) 
+                        if(this.project.Confirm_award_amount__c == true)
                         {
-                            if(ele.type == 'currency')
-                            {
+                            var doNotDelete = false;
+                            var mymap = new Map(Object.entries(row));
 
-                                if(mymap.get(ele.fieldName) != 0)
+                            for(const ele of this.columns) 
+                            {
+                                if(ele.type == 'currency')
                                 {
-                                    this.dispatchEvent(
-                                        new ShowToastEvent({
-                                            title: 'Error deleting project cost',
-                                            message: 'The grant percentage and total costs cannot change after a decision is confirmed. Please redistribute currency values before deleting.',
-                                            variant: 'error'
-                                        })
-                                    );
-                                    doNotDelete = true;
-                                    break;
+
+                                    if(mymap.get(ele.fieldName) != 0)
+                                    {
+                                        this.dispatchEvent(
+                                            new ShowToastEvent({
+                                                title: 'Error deleting project cost',
+                                                message: 'The grant percentage and total costs cannot change after a decision is confirmed. Please redistribute currency values before deleting.',
+                                                variant: 'error'
+                                            })
+                                        );
+                                        doNotDelete = true;
+                                        break;
+                                    }
                                 }
                             }
+                            if(doNotDelete == false)
+                            {
+                                this.costsRowsToDelete.push(row);
+                                this.handleCostDelete();
+                            }
                         }
-                        if(doNotDelete == false)
+                        else
                         {
                             this.costsRowsToDelete.push(row);
                             this.handleCostDelete();
@@ -652,16 +732,11 @@ export default class ProjectCostsForm2 extends LightningElement
                     }
                     else
                     {
-                        this.costsRowsToDelete.push(row);
-                        this.handleCostDelete();
+                        rows.splice(rowIndex, 1);
+                        this.projectCosts = rows;
                     }
-                }
-                else
-                {
-                    rows.splice(rowIndex, 1);
-                    this.projectCosts = rows;
-                }
-            break;
+                    break;
+                }   
         }
     }
 
@@ -675,58 +750,67 @@ export default class ProjectCostsForm2 extends LightningElement
         switch(action.name)
         {
             case 'delete':
-                const rows = [...this.cashContributions];
-                const rowIndex = rows.findIndex(function(element) {return element.Id == row.Id});
-
-                //Check we are looking at an existing record, if not just remove from table.
-                if(rows[rowIndex].Id.length == 18)
+                const result = await LightningConfirm.open(
                 {
-                    if(this.project.Confirm_award_amount__c == true)
+                    label: 'Unsaved changes will be reverted',
+                    message: 'Save your work in the table before deleting any rows.',
+                    theme: 'warning'
+                });
+    
+                if(result == true)
+                {
+                    const rows = [...this.cashContributions];
+                    const rowIndex = rows.findIndex(function(element) {return element.Id == row.Id});
+
+                    //Check we are looking at an existing record, if not just remove from table.
+                    if(rows[rowIndex].Id.length == 18)
                     {
                         if(this.project.Confirm_award_amount__c == true)
                         {
-                            var doNotDelete = false;
-                            var mymap = new Map(Object.entries(row));
-
-                            for(const ele of this.cashColumns) 
+                            if(this.project.Confirm_award_amount__c == true)
                             {
-                                if(ele.type == 'currency')
-                                {
+                                var doNotDelete = false;
+                                var mymap = new Map(Object.entries(row));
 
-                                    if(mymap.get(ele.fieldName) != 0)
+                                for(const ele of this.cashColumns) 
+                                {
+                                    if(ele.type == 'currency')
                                     {
-                                        this.dispatchEvent(
-                                            new ShowToastEvent({
-                                                title: 'Error deleting cash contribution',
-                                                message: 'The grant percentage and total costs cannot change after a decision is confirmed. Please redistribute currency values before deleting.',
-                                                variant: 'error'
-                                            })
-                                        );
-                                        doNotDelete = true;
-                                        break;
+
+                                        if(mymap.get(ele.fieldName) != 0)
+                                        {
+                                            this.dispatchEvent(
+                                                new ShowToastEvent({
+                                                    title: 'Error deleting cash contribution',
+                                                    message: 'The grant percentage and total costs cannot change after a decision is confirmed. Please redistribute currency values before deleting.',
+                                                    variant: 'error'
+                                                })
+                                            );
+                                            doNotDelete = true;
+                                            break;
+                                        }
                                     }
                                 }
-                            }
-                            if(doNotDelete == false)
-                            {
-                                this.cashContributionRowsToDelete.push(row);
-                                this.handleCashDelete();
+                                if(doNotDelete == false)
+                                {
+                                    this.cashContributionRowsToDelete.push(row);
+                                    this.handleCashDelete();
+                                }
                             }
                         }
-                        
+                        else
+                        {
+                            this.cashContributionRowsToDelete.push(row);
+                            this.handleCashDelete();
+                        }
                     }
                     else
                     {
-                        this.cashContributionRowsToDelete.push(row);
-                        this.handleCashDelete();
+                        rows.splice(rowIndex, 1);
+                        this.cashContributions = rows;
                     }
+                    break;
                 }
-                else
-                {
-                    rows.splice(rowIndex, 1);
-                    this.cashContributions = rows;
-                }
-            break;
         }
     }
 
@@ -741,7 +825,7 @@ export default class ProjectCostsForm2 extends LightningElement
         {
             this.costsRowsToDelete.forEach(function (item, index)
             {
-                ['RecordType', 'costHeadingOptions'].forEach(e => delete item[e]);
+                ['RecordType', 'costHeadingOptions', 'costTypeOptions'].forEach(e => delete item[e]);
             });
 
             const result = await deleteCosts({pCostsToDelete: this.costsRowsToDelete});
@@ -839,8 +923,8 @@ export default class ProjectCostsForm2 extends LightningElement
     async handleAddProjectCost(event)
     {
         let idValue = this.projectCosts.length;
-        let newCost = [{Id: 'row-' + idValue, Case__c: this.recordId, Costs__c: 0, Cost_heading__c: this.costHeadingOptions[0].value, Vat__c: 0,
-                        Project_Cost_Description__c: '', RecordTypeId: this.recordTypeMapping.costRecordTypeId, costHeadingOptions: this.costHeadingOptions}];
+        let newCost = [{Id: 'row-' + idValue, Case__c: this.recordId, Costs__c: 0, Cost_heading__c: this.costHeadingOptions[0].value, Cost_Type__c: this.costTypeOptions[0].value, Vat__c: 0,
+                        Project_Cost_Description__c: '', RecordTypeId: this.recordTypeMapping.costRecordTypeId, costHeadingOptions: this.costHeadingOptions, costTypeOptions: this.costTypeOptions}];
         this.projectCosts = this.projectCosts.concat(newCost);
     }
 
@@ -869,7 +953,7 @@ export default class ProjectCostsForm2 extends LightningElement
     {
         costsOrCash.forEach(function (item, index)
         {
-            ['RecordType', 'costHeadingOptions', 'securedOptions', 'fundingSourceOptions'].forEach(e => delete item[e]);
+            ['RecordType', 'costHeadingOptions', 'costTypeOptions', 'securedOptions', 'fundingSourceOptions'].forEach(e => delete item[e]);
         });
 
         return costsOrCash;

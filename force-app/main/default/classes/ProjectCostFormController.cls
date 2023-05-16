@@ -77,27 +77,28 @@ public inherited sharing class ProjectCostFormController {
   }
 
   @AuraEnabled(cacheable=true)
-  public static List<Project_Cost__c> getProjectCosts2(Id projectId, Id recordType) 
+  public static List<Project_Cost__c> getProjectCosts2(Id projectId, Id recordType, String variation) 
   {
     List<Project_Cost__c> existingCosts = new List<Project_Cost__c>();
+    String rtName = Schema.getGlobalDescribe().get('Project_Cost__c').getDescribe().getRecordTypeInfosById().get(recordType).getDeveloperName();
+    String sortClause = '';
 
-    List<Project_Cost__c> costs = [
-      SELECT
-        Id,
-        Cost_heading__c,
-        Total_Cost__c,
-        Costs__c,
-        Project_Cost_Description__c,
-        Vat__c,
-        RecordType.Name,
-        RecordType.DeveloperName,
-        RecordTypeId
-      FROM Project_Cost__c
-      WHERE Case__c = :projectId AND RecordTypeId =: recordType
-      ORDER BY Costs__c DESC
-    ];
+    if((rtName == 'Large_Grants_Delivery' && variation == 'Large_Development_Delivery') || rtName == 'Large_Grants_Actual_Delivery')
+    {
+      sortClause = 'Cost_Type__c, Total_Cost__c DESC';
+    }
+    else
+    {
+      sortClause = 'Costs__c DESC';
+    }
 
-    existingCosts.addAll(costs);
+    String queryString = 'SELECT Id, Cost_heading__c, Total_Cost__c, Costs__c, Project_Cost_Description__c,' 
+                        + 'Vat__c, Cost_Type__c, RecordType.Name, RecordType.DeveloperName, RecordTypeId'
+                        + ' FROM Project_Cost__c'
+                        + ' WHERE Case__c = \'' + projectId + '\' AND ' + 'RecordTypeId = \'' + recordType + '\''
+                        + ' ORDER BY ' + sortClause;
+
+    existingCosts = Database.query(queryString);
 
     return existingCosts;
   }
