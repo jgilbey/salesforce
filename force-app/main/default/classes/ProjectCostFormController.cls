@@ -258,6 +258,7 @@ public inherited sharing class ProjectCostFormController {
         Amount_you_have_received__c,
         Value__c,
         Source_Of_Funding__c,
+        Amount_current_phase__c,
         RecordType.Name,
         Case__r.RecordType.DeveloperName
       FROM Project_Income__c
@@ -518,7 +519,7 @@ public inherited sharing class ProjectCostFormController {
         {
           grantRequested += cash.Value__c;
         }
-        else 
+        else
         {
           grantRequested += cash.Amount_current_phase__c;
         } 
