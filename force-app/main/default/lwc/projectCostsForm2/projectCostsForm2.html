@@ -34,7 +34,7 @@
 
                             <div class="slds-var-p-around_small">
                                 <template if:true={projectCostsTotalRow.length}>
-                                    <c-project-budget-datatable
+                                    <c-project-budget-datatable lwc:ref="costsDatatable"
                                         key-field="Id"
                                         data={projectCosts} 
                                         columns={columns} 
@@ -75,7 +75,7 @@
 
                             <div class="slds-var-p-around_small">
                                 <template if:true={cashContributionsTotalRow.length}>
-                                    <c-project-budget-datatable
+                                    <c-project-budget-datatable lwc:ref="cashDatatable"
                                         key-field="Id"
                                         data={cashContributions} 
                                         columns={cashColumns} 

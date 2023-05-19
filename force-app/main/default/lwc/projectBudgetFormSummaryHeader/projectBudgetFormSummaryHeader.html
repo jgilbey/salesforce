@@ -112,7 +112,7 @@
                                 </template>
                                 <template lwc:elseif={largeGrantDelivery}>
                                     <b>Total Other Costs: </b> 
-                                    <lightning-formatted-number value={project.Total_other_costs__c} maximum-fraction-digits="2"></lightning-formatted-number>
+                                    <lightning-formatted-number value={project.Total_actual_other_costs__c} maximum-fraction-digits="2"></lightning-formatted-number>
                                 </template>
                                 <template lwc:elseif={mediumGrant}>
                                     <b>Total VAT: </b> 
@@ -164,7 +164,7 @@
                                 <template lwc:if={largeGrantDevelopment}>
                                     <template lwc:if={variationIsDelivery}>
                                         <b>Potential Delivery Grant Percentage: </b>
-                                        <lightning-formatted-number value={project.Delivery_grant_percentage__c} format-style="percent-fixed" maximum-fraction-digits="2"></lightning-formatted-number>
+                                        <lightning-formatted-number value={project.Grant_percentage_proposed_for_delivery__c} format-style="percent-fixed" maximum-fraction-digits="2"></lightning-formatted-number>
                                     </template>
                                     <template lwc:else>
                                         <b>Total Cash Contributions: </b>

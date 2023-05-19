@@ -124,7 +124,7 @@ export default class ProjectCostsForm2 extends LightningElement
         }
         else if(this.project.RecordType.DeveloperName === this.largeGrantDeliveryProject)
         {
-            return 'Potential Delivery Cash Contributions'
+            return 'Delivery Cash Contributions'
         }
         else
         {
@@ -679,65 +679,68 @@ export default class ProjectCostsForm2 extends LightningElement
         switch(action.name)
         {
             case 'delete':
-                const result = await LightningConfirm.open(
-                {
-                    label: 'Unsaved changes will be reverted',
-                    message: 'Save your work in the table before deleting any rows.',
-                    theme: 'warning'
-                });
+                const rows = [...this.projectCosts];
+                const rowIndex = rows.findIndex(function(element) {return element.Id == row.Id});
 
-                if(result == true)
+                //Check we are looking at an existing record, if not just remove from table.
+                if(rows[rowIndex].Id.length == 18)
                 {
-                    const rows = [...this.projectCosts];
-                    const rowIndex = rows.findIndex(function(element) {return element.Id == row.Id});
+                    var warningResult = true;
 
-                    //Check we are looking at an existing record, if not just remove from table.
-                    if(rows[rowIndex].Id.length == 18)
+                    //If we have draft values, show warning modal before allowing delete.
+                    if(this.refs.costsDatatable.draftValues != '' || this.refs.cashDatatable.draftValues != '')
                     {
-                        if(this.project.Confirm_award_amount__c == true)
+                        warningResult = await LightningConfirm.open(
                         {
-                            var doNotDelete = false;
-                            var mymap = new Map(Object.entries(row));
+                            label: 'Unsaved changes will be reverted',
+                            message: 'Press OK to confirm deletion and revert Cost and Cash unsaved changes. Press Cancel to go back.',
+                            theme: 'warning'
+                        });
+                    }
 
-                            for(const ele of this.columns) 
+                    if(this.project.Confirm_award_amount__c == true)
+                    {
+                        var doNotDelete = false;
+                        var mymap = new Map(Object.entries(row));
+
+                        for(const ele of this.columns) 
+                        {
+                            if(ele.type == 'currency')
                             {
-                                if(ele.type == 'currency')
-                                {
 
-                                    if(mymap.get(ele.fieldName) != 0)
-                                    {
-                                        this.dispatchEvent(
-                                            new ShowToastEvent({
-                                                title: 'Error deleting project cost',
-                                                message: 'The grant percentage and total costs cannot change after a decision is confirmed. Please redistribute currency values before deleting.',
-                                                variant: 'error'
-                                            })
-                                        );
-                                        doNotDelete = true;
-                                        break;
-                                    }
+                                if(mymap.get(ele.fieldName) != 0)
+                                {
+                                    this.dispatchEvent(
+                                        new ShowToastEvent({
+                                            title: 'Error deleting project cost',
+                                            message: 'The grant percentage and total costs cannot change after a decision is confirmed. Please redistribute currency values before deleting.',
+                                            variant: 'error'
+                                        })
+                                    );
+                                    doNotDelete = true;
+                                    break;
                                 }
                             }
-                            if(doNotDelete == false)
-                            {
-                                this.costsRowsToDelete.push(row);
-                                this.handleCostDelete();
-                            }
                         }
-                        else
+                        if(doNotDelete == false && warningResult == true)
                         {
                             this.costsRowsToDelete.push(row);
                             this.handleCostDelete();
                         }
                     }
-                    else
+                    else if(warningResult == true)
                     {
-                        rows.splice(rowIndex, 1);
-                        this.projectCosts = rows;
+                        this.costsRowsToDelete.push(row);
+                        this.handleCostDelete();
                     }
-                    break;
-                }   
-        }
+                }
+                else
+                {
+                    rows.splice(rowIndex, 1);
+                    this.projectCosts = rows;
+                }
+                break;
+        }   
     }
 
     async handleCashRowAction(event)
@@ -750,67 +753,71 @@ export default class ProjectCostsForm2 extends LightningElement
         switch(action.name)
         {
             case 'delete':
-                const result = await LightningConfirm.open(
-                {
-                    label: 'Unsaved changes will be reverted',
-                    message: 'Save your work in the table before deleting any rows.',
-                    theme: 'warning'
-                });
-    
-                if(result == true)
-                {
-                    const rows = [...this.cashContributions];
-                    const rowIndex = rows.findIndex(function(element) {return element.Id == row.Id});
+                const rows = [...this.cashContributions];
+                const rowIndex = rows.findIndex(function(element) {return element.Id == row.Id});
 
-                    //Check we are looking at an existing record, if not just remove from table.
-                    if(rows[rowIndex].Id.length == 18)
+                //Check we are looking at an existing record, if not just remove from table.
+                if(rows[rowIndex].Id.length == 18)
+                {
+                    var warningResult = true;
+
+                    //If we have draft values, show warning modal before allowing delete.
+                    if(this.refs.cashDatatable.draftValues != '' || this.refs.costsDatatable.draftValues != '')
+                    {
+                        warningResult = await LightningConfirm.open(
+                        {
+                            label: 'Unsaved changes will be reverted',
+                            message: 'Press OK to confirm deletion and revert Cost and Cash unsaved changes. Press Cancel to go back.',
+                            theme: 'warning'
+                        });
+                    }
+
+                    if(this.project.Confirm_award_amount__c == true)
                     {
                         if(this.project.Confirm_award_amount__c == true)
                         {
-                            if(this.project.Confirm_award_amount__c == true)
+                            var doNotDelete = false;
+                            var mymap = new Map(Object.entries(row));
+
+                            for(const ele of this.cashColumns) 
                             {
-                                var doNotDelete = false;
-                                var mymap = new Map(Object.entries(row));
-
-                                for(const ele of this.cashColumns) 
+                                if(ele.type == 'currency')
                                 {
-                                    if(ele.type == 'currency')
-                                    {
 
-                                        if(mymap.get(ele.fieldName) != 0)
-                                        {
-                                            this.dispatchEvent(
-                                                new ShowToastEvent({
-                                                    title: 'Error deleting cash contribution',
-                                                    message: 'The grant percentage and total costs cannot change after a decision is confirmed. Please redistribute currency values before deleting.',
-                                                    variant: 'error'
-                                                })
-                                            );
-                                            doNotDelete = true;
-                                            break;
-                                        }
+                                    if(mymap.get(ele.fieldName) != 0)
+                                    {
+                                        this.dispatchEvent(
+                                            new ShowToastEvent({
+                                                title: 'Error deleting cash contribution',
+                                                message: 'The grant percentage and total costs cannot change after a decision is confirmed. Please redistribute currency values before deleting.',
+                                                variant: 'error'
+                                            })
+                                        );
+                                        doNotDelete = true;
+                                        break;
                                     }
                                 }
-                                if(doNotDelete == false)
-                                {
-                                    this.cashContributionRowsToDelete.push(row);
-                                    this.handleCashDelete();
-                                }
+                            }
+                            if(doNotDelete == false && warningResult == true)
+                            {
+                                this.cashContributionRowsToDelete.push(row);
+                                this.handleCashDelete();
                             }
                         }
-                        else
-                        {
-                            this.cashContributionRowsToDelete.push(row);
-                            this.handleCashDelete();
-                        }
                     }
-                    else
+                    else if(warningResult == true)
                     {
-                        rows.splice(rowIndex, 1);
-                        this.cashContributions = rows;
+                        this.cashContributionRowsToDelete.push(row);
+                        this.handleCashDelete();
                     }
-                    break;
                 }
+                else
+                {
+                    rows.splice(rowIndex, 1);
+                    this.cashContributions = rows;
+                }
+
+                break;
         }
     }
 
