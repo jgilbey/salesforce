@@ -94,7 +94,7 @@ public inherited sharing class ProjectCostFormController {
       sortClause = 'Costs__c DESC';
     }
 
-    String queryString = 'SELECT Id, Cost_heading__c, Total_Cost__c, Costs__c, Project_Cost_Description__c,' 
+    String queryString = 'SELECT Id, Cost_heading__c, Cost_heading_Delivery__c, Total_Cost__c, Costs__c, Project_Cost_Description__c,' 
                         + 'Vat__c, Cost_Type__c, RecordType.Name, RecordType.DeveloperName, RecordTypeId'
                         + ' FROM Project_Cost__c'
                         + ' WHERE Case__c = \'' + projectId + '\' AND ' + 'RecordTypeId = \'' + recordType + '\''

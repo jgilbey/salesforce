@@ -195,11 +195,11 @@ export const largeColumnsDelivery = [
                 context: { fieldName: 'Id' }
             }
     },
-    {label: 'Cost Heading', editable: true, fieldName: 'Cost_heading__c', type: 'picklistColumn', hideDefaultActions: true,
+    {label: 'Cost Heading (Delivery)', editable: true, fieldName: 'Cost_heading_Delivery__c', type: 'picklistColumn', hideDefaultActions: true,
         typeAttributes: 
             {
-                placeholder: 'Cost Heading', options: { fieldName: 'costHeadingOptions' }, 
-                value: { fieldName: 'Cost_heading__c' },
+                placeholder: 'Cost Heading', options: { fieldName: 'costHeadingDeliveryOptions' }, 
+                value: { fieldName: 'Cost_heading_Delivery__c' },
                 context: { fieldName: 'Id' }
             }
     },
@@ -229,7 +229,7 @@ export const largeTotalColumnsDelivery = [
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
-    {label: 'Cost Heading', editable: false, fieldName: 'costHeadingOptions', type: 'text',
+    {label: 'Cost Heading', editable: false, fieldName: 'Cost_heading_Delivery__c', type: 'text',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},

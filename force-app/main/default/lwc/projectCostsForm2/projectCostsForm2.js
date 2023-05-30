@@ -22,6 +22,7 @@ import Success from "@salesforce/label/c.Success";
 import Error from "@salesforce/label/c.Error";
 
 import COST_HEADING from "@salesforce/schema/Project_Cost__c.Cost_heading__c";
+import COST_HEADING_DELIVERY from "@salesforce/schema/Project_Cost__c.Cost_heading_Delivery__c";
 import COST_TYPE from "@salesforce/schema/Project_Cost__c.Cost_Type__c";
 import PROJECT_COST_OBJECT from "@salesforce/schema/Project_Cost__c";
 import INCOME_SECURED from "@salesforce/schema/Project_Income__c.Secured_non_cash_contributions__c";
@@ -72,6 +73,7 @@ export default class ProjectCostsForm2 extends LightningElement
 
     projectCosts = [];
     costHeadingOptions;
+    costHeadingDeliveryOptions = [];
     costTypeOptions;
     projectsCostsResult;
     costsDraftValues = [];
@@ -91,6 +93,8 @@ export default class ProjectCostsForm2 extends LightningElement
 
     cashContributionsAmountTotal = 0;
     cashContributionsTotalRow = [];
+
+    costHeadingDeliveryControllerValues;
 
     get costCardTitle()
     {
@@ -212,6 +216,7 @@ export default class ProjectCostsForm2 extends LightningElement
                 if(this.variation == 'Large_Development_Delivery')
                 {
                     this.columns = largeColumnsDelivery;
+                    this.largeGrantDelivery = true;
                 }
                 else
                 {
@@ -325,6 +330,36 @@ export default class ProjectCostsForm2 extends LightningElement
             console.log('Error retrieving cost headings: ' + result.error);
         }
     }
+
+    //Get Project Cost Headings (Delivery) PL values.
+    @wire(getPicklistValues, 
+        {
+            recordTypeId: "$recordTypeMapping.costRecordTypeId",
+            fieldApiName: COST_HEADING_DELIVERY
+        })
+        costHeadingsDelivery(result) 
+        {
+            if (result.data) 
+            {
+                this.costHeadingDeliveryOptions = result.data.values;
+                this.costHeadingDeliveryControllerValues = new Map(Object.entries(result.data.controllerValues));
+    
+                /*this.projectCosts.forEach(ele => {
+                    console.log('JAG ');
+                    this.costHeadingDeliveryOptions.forEach(value => {
+                        if(costHeadingDeliveryControllerValues.get(ele.Cost_Type__c) == value.validFor[0])
+                        {
+                            ele.costHeadingDeliveryOptions.push(value);
+                            console.log('JAG ' + value);
+                        }
+                    })
+                })*/
+            } 
+            else if (result.error) 
+            {
+                console.log('Error retrieving cost headings (delivery): ' + result.error);
+            }
+        }
     
     //Get Project Cost Type PL values.
     @wire(getPicklistValues, 
@@ -426,6 +461,7 @@ export default class ProjectCostsForm2 extends LightningElement
                     firstCol: ' ',
                     secondCol: '',
                     costHeadingOptions: '',
+                    costHeadingDeliveryOptions: '',
                     costTypeOptions: '',
                     Project_Cost_Description__c: '',
                     amounttotal: projectCostsAmountTotal,
@@ -448,6 +484,7 @@ export default class ProjectCostsForm2 extends LightningElement
                     firstCol: ' ',
                     secondCol: '',
                     costHeadingOptions: '',
+                    costHeadingDeliveryOptions: '',
                     costTypeOptions: '',
                     Project_Cost_Description__c: '',
                     amounttotal: projectCostsAmountTotal,
@@ -462,6 +499,22 @@ export default class ProjectCostsForm2 extends LightningElement
                     ele.costHeadingOptions = this.costHeadingOptions;
                     ele.costTypeOptions = this.costTypeOptions;
 
+                    //Cost Headings (Delivery) is a dependent picklist so we need to build this using the controllerValues attribute provided.
+                    if(this.largeGrantDelivery == true)
+                    {
+                        ele.costHeadingDeliveryOptions = [];
+                        this.costHeadingDeliveryOptions.forEach(value => 
+                        {
+                            for(let i = 0; i < value.validFor.length; i++)
+                            {
+                                if(this.costHeadingDeliveryControllerValues.get(ele.Cost_Type__c) == value.validFor[i])
+                                {
+                                    ele.costHeadingDeliveryOptions.push(value);
+                                }
+                            }
+                        })
+                    }
+                    
                     projectCostsAmountTotal = projectCostsAmountTotal + Number(ele.Costs__c);
                     projectCostsVatTotal = projectCostsVatTotal + Number(ele.Vat__c);
                     projectCostsTotal = projectCostsTotal + Number(ele.Total_Cost__c);
@@ -472,6 +525,7 @@ export default class ProjectCostsForm2 extends LightningElement
                     firstCol: ' ',
                     secondCol: '',
                     costHeadingOptions: '',
+                    costHeadingDeliveryOptions: '',
                     costTypeOptions: '',
                     Project_Cost_Description__c: '',
                     amounttotal: projectCostsAmountTotal,
@@ -698,6 +752,7 @@ export default class ProjectCostsForm2 extends LightningElement
                         });
                     }
 
+                    //If in monitoring, do not allow save if changed made to currency fields.
                     if(this.project.Confirm_award_amount__c == true)
                     {
                         var doNotDelete = false;
@@ -707,7 +762,6 @@ export default class ProjectCostsForm2 extends LightningElement
                         {
                             if(ele.type == 'currency')
                             {
-
                                 if(mymap.get(ele.fieldName) != 0)
                                 {
                                     this.dispatchEvent(
@@ -734,10 +788,18 @@ export default class ProjectCostsForm2 extends LightningElement
                         this.handleCostDelete();
                     }
                 }
-                else
+                else //If just deleting a new unsaved row.
                 {
+                    //Remove from project costs.
                     rows.splice(rowIndex, 1);
                     this.projectCosts = rows;
+
+                    //Remove from draftvalues in datatable.
+                    const draftRows = [...this.refs.costsDatatable.draftValues];
+                    const draftRowIndex = draftRows.findIndex(function(element) {return element.Id == row.Id});
+                    
+                    draftRows.splice(draftRowIndex, 1);
+                    this.refs.costsDatatable.draftValues = draftRows;
                 }
                 break;
         }   
@@ -811,10 +873,18 @@ export default class ProjectCostsForm2 extends LightningElement
                         this.handleCashDelete();
                     }
                 }
-                else
+                else //If just deleting a new unsaved row.
                 {
+                    //Remove from project costs.
                     rows.splice(rowIndex, 1);
                     this.cashContributions = rows;
+
+                    //Remove from draftvalues in datatable.
+                    const draftRows = [...this.refs.cashDatatable.draftValues];
+                    const draftRowIndex = draftRows.findIndex(function(element) {return element.Id == row.Id});
+                    
+                    draftRows.splice(draftRowIndex, 1);
+                    this.refs.cashDatatable.draftValues = draftRows;
                 }
 
                 break;
@@ -832,7 +902,7 @@ export default class ProjectCostsForm2 extends LightningElement
         {
             this.costsRowsToDelete.forEach(function (item, index)
             {
-                ['RecordType', 'costHeadingOptions', 'costTypeOptions'].forEach(e => delete item[e]);
+                ['RecordType', 'costHeadingOptions', 'costHeadingDeliveryOptions', 'costTypeOptions'].forEach(e => delete item[e]);
             });
 
             const result = await deleteCosts({pCostsToDelete: this.costsRowsToDelete});
@@ -930,18 +1000,46 @@ export default class ProjectCostsForm2 extends LightningElement
     async handleAddProjectCost(event)
     {
         let idValue = this.projectCosts.length;
-        let newCost = [{Id: 'row-' + idValue, Case__c: this.recordId, Costs__c: 0, Cost_heading__c: this.costHeadingOptions[0].value, Cost_Type__c: this.costTypeOptions[0].value, Vat__c: 0,
-                        Project_Cost_Description__c: '', RecordTypeId: this.recordTypeMapping.costRecordTypeId, costHeadingOptions: this.costHeadingOptions, costTypeOptions: this.costTypeOptions}];
+        let newCost = [{Id: 'row-' + idValue, Case__c: this.recordId, Costs__c: 0, Cost_heading__c: '', Cost_Type__c: '', Vat__c: 0, Cost_Heading_Delivery_c: '',
+                        Project_Cost_Description__c: '', RecordTypeId: this.recordTypeMapping.costRecordTypeId, 
+                        costHeadingOptions: this.costHeadingOptions, costHeadingDeliveryOptions: [], costTypeOptions: this.costTypeOptions}];
+
         this.projectCosts = this.projectCosts.concat(newCost);
     }
 
     async handleAddCashContributions(event)
     {
         let idValue = this.cashContributions.length;
-        let newCashContribution = [{Id: 'row-' + idValue, Case__c: this.recordId, Value__c: 0, Amount_you_have_received__c: 0, Secured_non_cash_contributions__c: this.securedOptions[0].value,
-                        Description_for_cash_contributions__c: '', Source_Of_Funding__c: this.fundingSourceOptions[0].value,
-                        RecordTypeId: this.recordTypeMapping.cashRecordTypeId, securedOptions: this.securedOptions, fundingSourceOptions: this.fundingSourceOptions}];
+        let newCashContribution = [{Id: 'row-' + idValue, Case__c: this.recordId, Value__c: 0, Amount_you_have_received__c: 0, Secured_non_cash_contributions__c: '',
+                                    Description_for_cash_contributions__c: '', Source_Of_Funding__c: '', RecordTypeId: this.recordTypeMapping.cashRecordTypeId, 
+                                    securedOptions: this.securedOptions, fundingSourceOptions: this.fundingSourceOptions}];
+        
         this.cashContributions = this.cashContributions.concat(newCashContribution);
+    }
+
+    handleCellChange(event)
+    {
+        //Handle change/initial set of Cost Type in Cost Heading (Delivery) dependent picklist.
+        if(JSON.stringify(event.detail.draftValues).includes('Cost_Type__c') && this.largeGrantDelivery == true)
+        {
+            this.projectCosts.forEach(ele => 
+            {
+                if(ele.Id == event.detail.draftValues[0].Id)
+                {
+                    ele.costHeadingDeliveryOptions = [];
+                    this.costHeadingDeliveryOptions.forEach(value => 
+                    {
+                        for(let i = 0; i < value.validFor.length; i++)
+                        {
+                            if(this.costHeadingDeliveryControllerValues.get(event.detail.draftValues[0].Cost_Type__c) == value.validFor[i])
+                            {
+                                ele.costHeadingDeliveryOptions.push(value);
+                            }
+                        }
+                    })
+                }
+            });
+        }
     }
 
     showToast(title, message, variant, mode) 
@@ -960,7 +1058,7 @@ export default class ProjectCostsForm2 extends LightningElement
     {
         costsOrCash.forEach(function (item, index)
         {
-            ['RecordType', 'costHeadingOptions', 'costTypeOptions', 'securedOptions', 'fundingSourceOptions'].forEach(e => delete item[e]);
+            ['RecordType', 'costHeadingOptions', 'costHeadingDeliveryOptions', 'costTypeOptions', 'securedOptions', 'fundingSourceOptions'].forEach(e => delete item[e]);
         });
 
         return costsOrCash;
