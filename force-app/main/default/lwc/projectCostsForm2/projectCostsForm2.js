@@ -746,8 +746,8 @@ export default class ProjectCostsForm2 extends LightningElement
                     {
                         warningResult = await LightningConfirm.open(
                         {
-                            label: 'Unsaved changes will be reverted',
-                            message: 'Press OK to confirm deletion and revert Cost and Cash unsaved changes. Press Cancel to go back.',
+                            label: 'Unsaved changes will be lost',
+                            message: 'Press OK to confirm deletion. Please note that unsaved changes you have made will be lost.\nPress Cancel to go back.',
                             theme: 'warning'
                         });
                     }
@@ -828,8 +828,8 @@ export default class ProjectCostsForm2 extends LightningElement
                     {
                         warningResult = await LightningConfirm.open(
                         {
-                            label: 'Unsaved changes will be reverted',
-                            message: 'Press OK to confirm deletion and revert Cost and Cash unsaved changes. Press Cancel to go back.',
+                            label: 'Unsaved Changes will be lost',
+                            message: 'Press OK to confirm deletion. Please note that unsaved changes you have made will be lost.\n Press Cancel to go back.',
                             theme: 'warning'
                         });
                     }
@@ -1000,7 +1000,7 @@ export default class ProjectCostsForm2 extends LightningElement
     async handleAddProjectCost(event)
     {
         let idValue = this.projectCosts.length;
-        let newCost = [{Id: 'row-' + idValue, Case__c: this.recordId, Costs__c: 0, Cost_heading__c: '', Cost_Type__c: '', Vat__c: 0, Cost_Heading_Delivery_c: '',
+        let newCost = [{Id: 'costrow-' + idValue, Case__c: this.recordId, Costs__c: 0, Cost_heading__c: '', Cost_Type__c: '', Vat__c: 0, Cost_heading_Delivery__c: '',
                         Project_Cost_Description__c: '', RecordTypeId: this.recordTypeMapping.costRecordTypeId, 
                         costHeadingOptions: this.costHeadingOptions, costHeadingDeliveryOptions: [], costTypeOptions: this.costTypeOptions}];
 
@@ -1010,7 +1010,7 @@ export default class ProjectCostsForm2 extends LightningElement
     async handleAddCashContributions(event)
     {
         let idValue = this.cashContributions.length;
-        let newCashContribution = [{Id: 'row-' + idValue, Case__c: this.recordId, Value__c: 0, Amount_you_have_received__c: 0, Secured_non_cash_contributions__c: '',
+        let newCashContribution = [{Id: 'cashrow-' + idValue, Case__c: this.recordId, Value__c: 0, Amount_you_have_received__c: 0, Secured_non_cash_contributions__c: '',
                                     Description_for_cash_contributions__c: '', Source_Of_Funding__c: '', RecordTypeId: this.recordTypeMapping.cashRecordTypeId, 
                                     securedOptions: this.securedOptions, fundingSourceOptions: this.fundingSourceOptions}];
         
@@ -1026,6 +1026,19 @@ export default class ProjectCostsForm2 extends LightningElement
             {
                 if(ele.Id == event.detail.draftValues[0].Id)
                 {
+                    //Set draft value to blank.
+                    ele.Cost_heading_Delivery__c = '';
+                    var drafts = this.refs.costsDatatable.draftValues;
+                    drafts.forEach(draft =>
+                    {
+                        if(draft.Id == event.detail.draftValues[0].Id)
+                        {
+                            draft.Cost_heading_Delivery__c = '';
+                        }
+                    });
+                    this.refs.costsDatatable.draftValues = drafts;
+
+                    //Set options.
                     ele.costHeadingDeliveryOptions = [];
                     this.costHeadingDeliveryOptions.forEach(value => 
                     {
@@ -1036,7 +1049,7 @@ export default class ProjectCostsForm2 extends LightningElement
                                 ele.costHeadingDeliveryOptions.push(value);
                             }
                         }
-                    })
+                    });
                 }
             });
         }
