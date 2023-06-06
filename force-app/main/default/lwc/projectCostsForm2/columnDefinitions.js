@@ -3,12 +3,6 @@ var actions = [
 ];
 
 export const smallColumns = [
-    {type: 'action',
-        typeAttributes: 
-        { 
-            rowActions: actions, menuAlignment: 'left' 
-        } 
-    },
     {label: 'Cost Heading', editable: true, fieldName: 'Cost_heading__c', type: 'picklistColumn', hideDefaultActions: true,
         typeAttributes: 
             {
@@ -26,38 +20,38 @@ export const smallColumns = [
             }
     },
     {label: 'Amount', editable: true, fieldName: 'Costs__c', type: 'currency',cellAttributes: {alignment: 'left'}, typeAttributes: {maximumFractionDigits: 0}, hideDefaultActions: true},
+    {type: 'action', fixedWidth: 50,
+        typeAttributes: 
+        { 
+            rowActions: actions, menuAlignment: 'auto' 
+        } 
+    }
 ];
 
 export const smallTotalColumns = [
-    {label: 'firstCol', initialWidth: 52, editable: false, fieldName: 'firstCol', type: 'text',
+    {label: 'keyCol', initialWidth: 52, editable: false, fieldName: '', type: 'text',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
-    {label: 'secondCol', initialWidth: 50, editable: false, fieldName: 'secondCol', type: 'text',
+    {label: 'Cost Heading', editable: false, fieldName: '', type: 'text',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
-    {label: 'Cost Heading', editable: false, fieldName: 'costHeadingOptions', type: 'text',
-    cellAttributes:{
-        class: 'slds-theme_shade'
-    },},
-    {label: 'Description', editable: false, fieldName: 'Project_Cost_Description__c', type: 'text',
+    {label: 'Description', editable: false, fieldName: '', type: 'text',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
     {label: 'Amount Total', editable: false, fieldName: 'amounttotal', type: 'currency', typeAttributes: {maximumFractionDigits: 0},
     cellAttributes:{
         class: 'slds-theme_shade', alignment: 'left'
+    },},
+    {label: 'actionCol', initialWidth: 50, editable: false, fieldName: '', type: 'text',
+    cellAttributes:{
+        class: 'slds-theme_shade'
     },}
 ];
 
 export const mediumColumns = [
-    {type: 'action',
-        typeAttributes: 
-        { 
-            rowActions: actions, menuAlignment: 'left' 
-        } 
-    },
     {label: 'Cost Heading', editable: true, fieldName: 'Cost_heading__c', type: 'picklistColumn', hideDefaultActions: true,
         typeAttributes: 
             {
@@ -76,34 +70,25 @@ export const mediumColumns = [
     },
     {label: 'Amount', editable: true, fieldName: 'Costs__c', type: 'currency', sortable: true, cellAttributes: {alignment: 'left'}, typeAttributes: {maximumFractionDigits: 0}, hideDefaultActions: true},
     {label: 'VAT', editable: true, fieldName: 'Vat__c', type: 'currency', cellAttributes: {alignment: 'left'}, typeAttributes: {maximumFractionDigits: 0}, hideDefaultActions: true},
-    {label: 'Total Cost', editable: false, fieldName: 'Total_Cost__c', type: 'currency', cellAttributes: {alignment: 'left'}, hideDefaultActions: true}
-    /*{type: "button", 
+    {label: 'Total Cost', editable: false, fieldName: 'Total_Cost__c', type: 'currency', cellAttributes: {alignment: 'left'}, hideDefaultActions: true},
+    {type: 'action', fixedWidth: 50,
         typeAttributes: 
-        {  
-            label: 'Delete',  
-            name: 'Delete',  
-            title: 'Delete',  
-            disabled: false,  
-            value: 'Delete',  
-            iconPosition: 'left'  
-        }   
-    },*/
+        { 
+            rowActions: actions, menuAlignment: 'auto' 
+        } 
+    }
 ];
 
 export const mediumTotalColumns = [
-    {label: 'firstCol', initialWidth: 52, editable: false, fieldName: 'firstCol', type: 'text',
+    {label: 'keyCol', initialWidth: 52, editable: false, fieldName: '', type: 'text',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
-    {label: 'secondCol', initialWidth: 50, editable: false, fieldName: 'secondCol', type: 'text',
+    {label: 'Cost Heading', editable: false, fieldName: '', type: 'text',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
-    {label: 'Cost Heading', editable: false, fieldName: 'costHeadingOptions', type: 'text',
-    cellAttributes:{
-        class: 'slds-theme_shade'
-    },},
-    {label: 'Description', editable: false, fieldName: 'Project_Cost_Description__c', type: 'text',
+    {label: 'Description', editable: false, fieldName: '', type: 'text',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
@@ -118,16 +103,14 @@ export const mediumTotalColumns = [
     {label: 'Total Cost Total', editable: false, fieldName: 'totalcosttotal', type: 'currency',
     cellAttributes:{
         class: 'slds-theme_shade',alignment: 'left'
+    },},
+    {label: 'actionCol', initialWidth: 50, editable: false, fieldName: '', type: 'text',
+    cellAttributes:{
+        class: 'slds-theme_shade'
     },}
 ];
 
 export const largeColumns = [
-    {type: 'action',
-        typeAttributes: 
-        { 
-            rowActions: actions, menuAlignment: 'left' 
-        } 
-    },
     {label: 'Cost Heading', editable: true, fieldName: 'Cost_heading__c', type: 'picklistColumn', hideDefaultActions: true,
         typeAttributes: 
             {
@@ -146,23 +129,25 @@ export const largeColumns = [
     },
     {label: 'Amount', editable: true, fieldName: 'Costs__c', type: 'currency', sortable: true, cellAttributes: {alignment: 'left'}, typeAttributes: {maximumFractionDigits: 0}, hideDefaultActions: true},
     {label: 'VAT', editable: true, fieldName: 'Vat__c', type: 'currency', cellAttributes: {alignment: 'left'}, typeAttributes: {maximumFractionDigits: 0}, hideDefaultActions: true},
-    {label: 'Total Cost', editable: false, fieldName: 'Total_Cost__c', type: 'currency', cellAttributes: {alignment: 'left'}, hideDefaultActions: true}
+    {label: 'Total Cost', editable: false, fieldName: 'Total_Cost__c', type: 'currency', cellAttributes: {alignment: 'left'}, hideDefaultActions: true},
+    {type: 'action', fixedWidth: 50,
+        typeAttributes: 
+        { 
+            rowActions: actions, menuAlignment: 'auto' 
+        } 
+    },
 ];
 
 export const largeTotalColumns = [
-    {label: 'firstCol', initialWidth: 52, editable: false, fieldName: 'firstCol', type: 'text',
+    {label: 'keyCol', initialWidth: 52, editable: false, fieldName: '', type: 'text',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
-    {label: 'secondCol', initialWidth: 50, editable: false, fieldName: 'secondCol', type: 'text',
+    {label: 'Cost Heading', editable: false, fieldName: '', type: 'text',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
-    {label: 'Cost Heading', editable: false, fieldName: 'costHeadingOptions', type: 'text',
-    cellAttributes:{
-        class: 'slds-theme_shade'
-    },},
-    {label: 'Description', editable: false, fieldName: 'Project_Cost_Description__c', type: 'text',
+    {label: 'Description', editable: false, fieldName: '', type: 'text',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
@@ -177,16 +162,14 @@ export const largeTotalColumns = [
     {label: 'Total Cost Total', editable: false, fieldName: 'totalcosttotal', type: 'currency',
     cellAttributes:{
         class: 'slds-theme_shade',alignment: 'left'
+    },},
+    {label: 'actionCol', initialWidth: 50, editable: false, fieldName: '', type: 'text',
+    cellAttributes:{
+        class: 'slds-theme_shade'
     },}
 ];
 
 export const largeColumnsDelivery = [
-    {type: 'action',
-        typeAttributes: 
-        { 
-            rowActions: actions, menuAlignment: 'left' 
-        } 
-    },
     {label: 'Cost Type', editable: true, fieldName: 'Cost_Type__c', type: 'picklistColumn', hideDefaultActions: true,
         typeAttributes: 
             {
@@ -213,27 +196,29 @@ export const largeColumnsDelivery = [
     },
     {label: 'Amount', editable: true, fieldName: 'Costs__c', type: 'currency', sortable: true, cellAttributes: {alignment: 'left'}, typeAttributes: {maximumFractionDigits: 0}, hideDefaultActions: true},
     {label: 'VAT', editable: true, fieldName: 'Vat__c', type: 'currency', cellAttributes: {alignment: 'left'}, typeAttributes: {maximumFractionDigits: 0}, hideDefaultActions: true},
-    {label: 'Total Cost', editable: false, fieldName: 'Total_Cost__c', type: 'currency', cellAttributes: {alignment: 'left'}, hideDefaultActions: true}
+    {label: 'Total Cost', editable: false, fieldName: 'Total_Cost__c', type: 'currency', cellAttributes: {alignment: 'left'}, hideDefaultActions: true},
+    {type: 'action', fixedWidth: 50,
+        typeAttributes: 
+        { 
+            rowActions: actions, menuAlignment: 'auto' 
+        } 
+    }
 ];
 
 export const largeTotalColumnsDelivery = [
-    {label: 'firstCol', initialWidth: 52, editable: false, fieldName: 'firstCol', type: 'text',
+    {label: 'keyCol', initialWidth: 52, editable: false, fieldName: '', type: 'text',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
-    {label: 'secondCol', initialWidth: 50, editable: false, fieldName: 'secondCol', type: 'text',
+    {label: 'Cost Type', editable: false, fieldName: '', type: 'text',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
-    {label: 'Cost Type', editable: false, fieldName: 'costTypeOptions', type: 'text',
+    {label: 'Cost Heading', editable: false, fieldName: '', type: 'text',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
-    {label: 'Cost Heading', editable: false, fieldName: 'Cost_heading_Delivery__c', type: 'text',
-    cellAttributes:{
-        class: 'slds-theme_shade'
-    },},
-    {label: 'Description', editable: false, fieldName: 'Project_Cost_Description__c', type: 'text',
+    {label: 'Description', editable: false, fieldName: '', type: 'text',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
@@ -248,16 +233,14 @@ export const largeTotalColumnsDelivery = [
     {label: 'Total Cost Total', editable: false, fieldName: 'totalcosttotal', type: 'currency',
     cellAttributes:{
         class: 'slds-theme_shade',alignment: 'left'
-    },}
+    },},
+    {label: 'actionCol', initialWidth: 50, editable: false, fieldName: '', type: 'text',
+    cellAttributes:{
+        class: 'slds-theme_shade'
+    },},
 ];
 
 export const contributionColumns = [
-    {type: 'action',
-        typeAttributes: 
-        { 
-            rowActions: actions, menuAlignment: 'left' 
-        } 
-    },
     {label: 'Description', editable: true, fieldName: 'Description_for_cash_contributions__c', type: 'textAreaColumn',  hideDefaultActions: true,
         typeAttributes: 
             {
@@ -274,41 +257,40 @@ export const contributionColumns = [
                 context: { fieldName: 'Id' }
             }
     },
-    {label: 'Amount', editable: true, fieldName: 'Amount_you_have_received__c', type: 'currency', cellAttributes: {alignment: 'left'}, typeAttributes: {maximumFractionDigits: 0}, hideDefaultActions: true}
-    
+    {label: 'Amount', editable: true, fieldName: 'Amount_you_have_received__c', type: 'currency', cellAttributes: {alignment: 'left'}, typeAttributes: {maximumFractionDigits: 0}, hideDefaultActions: true},
+    {type: 'action', fixedWidth: 50,
+        typeAttributes: 
+        { 
+            rowActions: actions, menuAlignment: 'auto' 
+        } 
+    }
 ];
 
 export const totalContributionColumns = [
 
-    {label: 'firstCol', initialWidth: 52, editable: false, fieldName: 'firstCol', type: 'text',
+    {label: 'keyCol', initialWidth: 52, editable: false, fieldName: '', type: 'text',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
-    {label: 'secondCol', initialWidth: 50, editable: false, fieldName: 'secondCol', type: 'text',
+    {label: 'Description', editable: false, fieldName: '', type: 'text',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
-    {label: 'Description', editable: false, fieldName: 'Description_for_cash_contributions__c', type: 'text',
-    cellAttributes:{
-        class: 'slds-theme_shade'
-    },},
-    {label: 'Secured', editable: false, fieldName: 'Secured_non_cash_contributions__c', type: 'text',
+    {label: 'Secured', editable: false, fieldName: '', type: 'text',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
     {label: 'Amount Total', editable: false, fieldName: 'amounttotal', type: 'currency', typeAttributes: {maximumFractionDigits: 0},
     cellAttributes:{
         class: 'slds-theme_shade',alignment: 'left'
-    },}
+    },},
+    {label: 'actionCol', initialWidth: 50, editable: false, fieldName: '', type: 'text',
+    cellAttributes:{
+        class: 'slds-theme_shade'
+    },},
 ];
 
 export const largeContributionColumns = [
-    {type: 'action',
-        typeAttributes: 
-        { 
-            rowActions: actions, menuAlignment: 'left' 
-        } 
-    },
     {label: 'Source of Funding', editable: true, fieldName: 'Source_Of_Funding__c', type: 'picklistColumn', hideDefaultActions: true,
         typeAttributes: 
             {
@@ -327,49 +309,48 @@ export const largeContributionColumns = [
     },
     {label: 'Secured', editable: true, fieldName: 'Secured__c', type: 'boolean'},
     {label: 'Evidence of Secured', editable: true, fieldName: 'Evidence_for_secured_income__c', type: 'boolean'},
-    {label: 'Amount', editable: true, fieldName: 'Amount_you_have_received__c', type: 'currency', cellAttributes: {alignment: 'left'}, typeAttributes: {maximumFractionDigits: 0}, hideDefaultActions: true}
-    
+    {label: 'Amount', editable: true, fieldName: 'Amount_you_have_received__c', type: 'currency', cellAttributes: {alignment: 'left'}, typeAttributes: {maximumFractionDigits: 0}, hideDefaultActions: true},
+    {type: 'action', fixedWidth: 50,
+        typeAttributes: 
+        { 
+            rowActions: actions, menuAlignment: 'auto' 
+        } 
+    }    
 ];
 
 export const largeTotalContributionColumns = [
 
-    {label: 'firstCol', initialWidth: 52, editable: false, fieldName: 'firstCol', type: 'text',
+    {label: 'keyCol', initialWidth: 52, editable: false, fieldName: '', type: 'text',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
-    {label: 'secondCol', initialWidth: 50, editable: false, fieldName: 'secondCol', type: 'text',
+    {label: 'Source of Funding', editable: false, fieldName: '', type: 'text',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
-    {label: 'Source of Funding', editable: false, fieldName: 'Source_Of_Funding__c', type: 'text',
+    {label: 'Description', editable: false, fieldName: '', type: 'text',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
-    {label: 'Description', editable: false, fieldName: 'Description_for_cash_contributions__c', type: 'text',
+    {label: 'Secured', editable: false, fieldName: '', type: 'boolean',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
-    {label: 'Secured', editable: false, fieldName: 'Secured__c', type: 'boolean',
-    cellAttributes:{
-        class: 'slds-theme_shade'
-    },},
-    {label: 'Evidence of Secured', editable: false, fieldName: 'Evidence_for_secured_income__c', type: 'boolean',
+    {label: 'Evidence of Secured', editable: false, fieldName: '', type: 'boolean',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
     {label: 'Amount Total', editable: false, fieldName: 'amounttotal', type: 'currency', typeAttributes: {maximumFractionDigits: 0},
     cellAttributes:{
         class: 'slds-theme_shade',alignment: 'left'
-    },}
+    },},
+    {label: 'actionCol', initialWidth: 50, editable: false, fieldName: '', type: 'text',
+    cellAttributes:{
+        class: 'slds-theme_shade'
+    },},
 ];
 
 export const nhmfContributionColumns = [
-    {type: 'action',
-        typeAttributes: 
-        { 
-            rowActions: actions, menuAlignment: 'left' 
-        } 
-    },
     {label: 'Source of Funding', editable: true, fieldName: 'Source_Of_Funding__c', type: 'picklistColumn', hideDefaultActions: true,
         typeAttributes: 
             {
@@ -387,33 +368,39 @@ export const nhmfContributionColumns = [
             }
     },  
     {label: 'Secured', editable: true, fieldName: 'Secured__c', type: 'boolean'}, 
-    {label: 'Amount', editable: true, fieldName: 'Value__c', type: 'currency', cellAttributes: {alignment: 'left'}, typeAttributes: {maximumFractionDigits: 0}, hideDefaultActions: true} 
+    {label: 'Amount', editable: true, fieldName: 'Value__c', type: 'currency', cellAttributes: {alignment: 'left'}, typeAttributes: {maximumFractionDigits: 0}, hideDefaultActions: true},
+    {type: 'action', fixedWidth: 50,
+        typeAttributes: 
+        { 
+            rowActions: actions, menuAlignment: 'auto' 
+        } 
+    }
 ];
 
 export const nhmfTotalContributionColumns = [
 
-    {label: 'firstCol', initialWidth: 52, editable: false, fieldName: 'firstCol', type: 'text',
+    {label: 'keyCol', initialWidth: 52, editable: false, fieldName: '', type: 'text',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
-    {label: 'secondCol', initialWidth: 50, editable: false, fieldName: 'secondCol', type: 'text',
+    {label: 'Source of Funding', editable: false, fieldName: '', type: 'text',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
-    {label: 'Source of Funding', editable: false, fieldName: 'Source_Of_Funding__c', type: 'text',
+    {label: 'Description', editable: false, fieldName: '', type: 'text',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
-    {label: 'Description', editable: false, fieldName: 'Description_for_cash_contributions__c', type: 'text',
-    cellAttributes:{
-        class: 'slds-theme_shade'
-    },},
-    {label: 'Secured', editable: false, fieldName: 'Secured__c', type: 'boolean',
+    {label: 'Secured', editable: false, fieldName: '', type: 'boolean',
     cellAttributes:{
         class: 'slds-theme_shade'
     },},
     {label: 'Amount Total', editable: false, fieldName: 'amounttotal', type: 'currency', typeAttributes: {maximumFractionDigits: 0},
     cellAttributes:{
         class: 'slds-theme_shade',alignment: 'left'
+    },},
+    {label: 'actionCol', initialWidth: 50, editable: false, fieldName: '', type: 'text',
+    cellAttributes:{
+        class: 'slds-theme_shade'
     },}
 ];

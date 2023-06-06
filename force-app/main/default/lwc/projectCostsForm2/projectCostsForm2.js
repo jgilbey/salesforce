@@ -458,8 +458,8 @@ export default class ProjectCostsForm2 extends LightningElement
                 this.projectCostsTotalRow.push(
                 {
                     Id: 'totalRow',
-                    firstCol: ' ',
-                    secondCol: '',
+                    keyCol: ' ',
+                    actionCol: '',
                     costHeadingOptions: '',
                     costHeadingDeliveryOptions: '',
                     costTypeOptions: '',
@@ -481,8 +481,8 @@ export default class ProjectCostsForm2 extends LightningElement
 
                 this.projectCostsTotalRow.push({
                     Id: 'totalRow',
-                    firstCol: ' ',
-                    secondCol: '',
+                    keyCol: ' ',
+                    actionCol: '',
                     costHeadingOptions: '',
                     costHeadingDeliveryOptions: '',
                     costTypeOptions: '',
@@ -522,8 +522,8 @@ export default class ProjectCostsForm2 extends LightningElement
 
                 this.projectCostsTotalRow.push({
                     Id: 'totalRow',
-                    firstCol: ' ',
-                    secondCol: '',
+                    keyCol: ' ',
+                    actionCol: '',
                     costHeadingOptions: '',
                     costHeadingDeliveryOptions: '',
                     costTypeOptions: '',
@@ -566,8 +566,8 @@ export default class ProjectCostsForm2 extends LightningElement
                 this.cashContributionsTotalRow.push(
                 {
                     Id: 'totalRow',
-                    firstCol: '',
-                    secondCol: '',
+                    keyCol: '',
+                    actionCol: '',
                     Source_Of_Funding__c: '',
                     Description_for_cash_contributions__c: '',
                     Secured__c: false,
@@ -596,8 +596,8 @@ export default class ProjectCostsForm2 extends LightningElement
                 this.cashContributionsTotalRow.push(
                 {
                     Id: 'totalRow',
-                    firstCol: ' ',
-                    secondCol: '',
+                    keyCol: ' ',
+                    actionCol: '',
                     Description_for_cash_contributions__c: '',
                     Secured_non_cash_contributions__c: '',
                     amounttotal: cashContributionsAmountTotal
