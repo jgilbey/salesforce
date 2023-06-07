@@ -12,6 +12,12 @@
 @isTest
 public class PostCodeDataAPICtrl_UT{
     
+    @testSetup
+    static void setup(){
+        Automation_Settings__c setting = new Automation_Settings__c();
+        insert setting;
+    }
+    
     static testMethod void insertProjectwithPC(){
 	
 		TestDataFactory.SetupBaseTestData();
@@ -19,7 +25,7 @@ public class PostCodeDataAPICtrl_UT{
         project.Project_Post_Code__c = 'WD189RN';
         
         Test.startTest();
-        
+        	
             insert project;
 			
 		Test.stopTest();

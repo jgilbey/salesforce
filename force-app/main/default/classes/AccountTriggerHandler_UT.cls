@@ -13,6 +13,14 @@ public class AccountTriggerHandler_UT {
     
     //Merged Accounts should not be deleted if they have a Unique External ID
     //	test - both have different IDs, delete prevented
+    @testSetup
+    private static void setup(){
+        
+        
+        Automation_Settings__c setting = new Automation_Settings__c();
+        insert setting;
+    }
+    //	
     @isTest static void accountsWithExternalIds(){
         list<account> accList = new list<account>();
         accList.add( TestDataFactory.createAccount_NoInsert() );
