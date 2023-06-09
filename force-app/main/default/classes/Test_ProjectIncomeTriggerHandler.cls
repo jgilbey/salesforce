@@ -1,7 +1,10 @@
 @istest(seealldata = false)
 public class Test_ProjectIncomeTriggerHandler {
     public static testmethod void testProjectIncome() {
-       Account acct=TestDataFactory.createAccount();
+       
+        Automation_Settings__c setting = new Automation_Settings__c();
+        insert setting;
+        Account acct=TestDataFactory.createAccount();
         contact cont=TestDataFactory.createContact();
         //Case c=TestDataFactory.createSmallGrantCase(true); 
        Case cs= TestDataFactory.createSmallGrantCase(true);

@@ -1,5 +1,13 @@
 @istest(seealldata = false)
 public class Test_VolunteerNonCashTriggerHandler {
+    
+    
+    @testSetup
+    static void setup(){
+        
+        Automation_Settings__c setting = new Automation_Settings__c();
+        insert setting;
+    }
     public static testmethod void testVolNonCash() {
        Account acct=TestDataFactory.createAccount();
         contact cont=TestDataFactory.createContact();
