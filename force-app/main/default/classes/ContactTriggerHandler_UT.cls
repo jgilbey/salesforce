@@ -12,6 +12,12 @@
 @isTest
 public class ContactTriggerHandler_UT {
     
+    @testSetup
+    static void setup(){
+        Automation_Settings__c setting = new Automation_Settings__c();
+        insert setting;
+    }
+    
     //Merged Contacts should not be deleted if they have a Unique External ID
     //	test - both have different IDs, delete prevented
     @isTest static void contactsWithExternalIds(){

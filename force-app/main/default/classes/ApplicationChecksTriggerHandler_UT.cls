@@ -13,6 +13,16 @@ public class ApplicationChecksTriggerHandler_UT {
     
     //Application Checks cannot be edited if the Project is owned by the queue
     //  test - application checks are owned by the queue
+    //  
+    private static Boolean automationSetting = false;
+    
+    @testSetup
+    private static void setup(){
+        //create the custom setting required to test the trigger
+       	Automation_Settings__c setting = new Automation_Settings__c();
+        insert setting;
+    }
+    
     @isTest static void checksOwnedByQueue(){
         TestDataFactory.SetupBaseTestData();
         
@@ -22,18 +32,19 @@ public class ApplicationChecksTriggerHandler_UT {
         smallProject.setOptions(dmo);
         insert smallProject;
         
-        application_checks__c check = [SELECT id, Status__c, Project__r.OwnerId FROM application_checks__c WHERE Project__c=: smallProject.id LIMIT 1];
-
-        Test.startTest();
+        List<application_checks__c> check = [SELECT id, Status__c, Project__r.OwnerId FROM application_checks__c WHERE Project__c=: smallProject.id LIMIT 1];
+		
+        Test.startTest();            
             try{
-                check.Status__c='Pending';
-                update check;
+                check[0].Status__c='Pending';
+                update check[0];
             }
             catch(Exception e){
                 boolean errorMsg = e.getMessage().contains('Please assign an owner to the Project before completing Application Checks.');
                 system.debug('errorMsg - '+errorMsg);
                 System.AssertEquals(errorMsg, true);
             }
+            
         Test.stopTest();
     
   }
@@ -47,15 +58,13 @@ public class ApplicationChecksTriggerHandler_UT {
         smallProject.ownerid= userInfo.getUserId();
         update smallProject;
         
-        application_checks__c check = [SELECT id, Status__c, Project__r.OwnerId FROM application_checks__c WHERE Project__c=: smallProject.id LIMIT 1];
-
-        Test.startTest();
-            check.Status__c='Pending';
-            update check;
+        List<application_checks__c> check = [SELECT id, Status__c, Project__r.OwnerId FROM application_checks__c WHERE Project__c=: smallProject.id LIMIT 1];        
+        Test.startTest();      
+            check[0].Status__c='Pending';
+            update check[0];
             
         	//no error thrown in insert
-            System.Assert(check.Status__c=='Pending');
+            System.Assert(check[0].Status__c=='Pending');
         Test.stopTest();
-    
   }
 }

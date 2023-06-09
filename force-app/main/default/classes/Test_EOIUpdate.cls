@@ -1,6 +1,13 @@
 @isTest
 private class Test_EOIUpdate {
     
+    @testSetup
+    static void setup(){
+        
+        Automation_Settings__c setting = new Automation_Settings__c();
+        insert setting;
+    }
+    
     @isTest static void test_method_one() {
         TestDataFactory.SetupBaseTestData();
         map<string,Group> mapOfQueues = new map<string,Group>();
