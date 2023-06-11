@@ -314,12 +314,9 @@ public Class CaseTriggerHandler {
             Case oldcase = caseOldMap.get(c.id);
             Case newcase = caseNewMap.get(c.id);
             
-            //Withdrawn Case - Allow Admin to change Status ONLY
-            if(isBeforeTriggerExecuted == false && oldcase.Status =='Withdrawn' && newcase.Status=='Withdrawn'  && userProfileName=='System Administrator'){
-                c.addError('Project is withdrawn. To allow edits, System Administrators can update the Status of withdrawn projects.');
-            }
+        
             //Withdrawn Case - No edits by non Admin users
-            else if(isBeforeTriggerExecuted == false && oldcase.Status =='Withdrawn' && userProfileName!='System Administrator'){ 
+            if(isBeforeTriggerExecuted == false && oldcase.Status =='Withdrawn' && userProfileName!='System Administrator'){ 
                 c.addError('Project is withdrawn. No further updates are allowed.');
             }
             
