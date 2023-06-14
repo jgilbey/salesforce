@@ -13,7 +13,7 @@
                 <c-project-budget-form-summary-header project={project} small-grant={smallGrant} medium-grant={mediumGrant} nhmf-grant={nhmfGrant} large-grant-development={largeGrantDevelopment} large-grant-delivery={largeGrantDelivery} variation={variation}></c-project-budget-form-summary-header>
             </template>
         </div>
-
+        <br><br>
         <!--BODY -->
         <div class="slds-media__body">
             <template if:true={project}>
@@ -24,7 +24,7 @@
                 </div>
                 <template if:true={projectCosts}>
                     <div>
-                        <lightning-card  variant="Narrow"  title={costCardTitle} class="cardSpinner">
+                        <lightning-card variant="Narrow" title={costCardTitle} class="cardSpinner">
                             <div class="slds-var-m-around_medium slds-clearfix">
                                 <lightning-button variant="brand" 
                                     label="Add Project Cost"  
@@ -61,7 +61,7 @@
                 <br><br>
                 <template if:true={projectCosts}>
                     <div>
-                        <lightning-card  variant="Narrow"  title={cashCardTitle} class="cardSpinner">
+                        <lightning-card variant="Narrow" title={cashCardTitle} class="cardSpinner">
                             <!--div if:true={showSpinner}>
                                 <lightning-spinner
                                     alternative-text="Loading..." variant="brand">

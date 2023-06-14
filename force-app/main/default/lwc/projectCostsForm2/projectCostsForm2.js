@@ -648,16 +648,31 @@ export default class ProjectCostsForm2 extends LightningElement
         } 
         catch(error)
         {
-            console.log('JAG costs on error' + JSON.stringify(this.projectCosts));
             this.showSpinner = false;
             console.log('failed to save costs... ' + error.body.message);
-            this.dispatchEvent(
-                new ShowToastEvent({
-                    title: 'Error updating or refreshing records',
-                    message: error.body.message,
-                    variant: 'error'
-                })
-            );
+        
+            var errorData = JSON.parse(error.body.message);
+
+            if(errorData)
+            {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: errorData.name,
+                        message: errorData.message,
+                        variant: 'error'
+                    })
+                );
+            }
+            else
+            {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Error updating or refreshing records',
+                        message: error.body.message,
+                        variant: 'error'
+                    })
+                );
+            }
         };
     }
 
@@ -702,26 +717,63 @@ export default class ProjectCostsForm2 extends LightningElement
         {
             this.showSpinner = false;
             console.log('failed to save cash contributions... ' + error.body.message);
-            this.dispatchEvent(
-                new ShowToastEvent({
-                    title: 'Error updating or refreshing records',
-                    message: error.body.message,
-                    variant: 'error'
-                })
-            );
+            
+            var errorData = JSON.parse(error.body.message);
+
+            if(errorData)
+            {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: errorData.name,
+                        message: errorData.message,
+                        variant: 'error'
+                    })
+                );
+            }
+            else
+            {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Error updating or refreshing records',
+                        message: error.body.message,
+                        variant: 'error'
+                    })
+                );
+            }
         };
     }
 
-    handleCostCancel(event) 
+    async handleCostCancel(event) 
     {
         //Clear draftValues (data changes).
         this.costsDraftValues = [];
+        this.refs.costsDatatable.draftValues = this.projectCosts;
+
+        //Reset Cost Heading (delivery) picklist values.
+        if(this.largeGrantDelivery == true) 
+        {
+            this.projectCosts.forEach(ele =>
+            {
+                ele.costHeadingDeliveryOptions = [];
+                this.costHeadingDeliveryOptions.forEach(value => 
+                {
+                    for(let i = 0; i < value.validFor.length; i++)
+                    {
+                        if(this.costHeadingDeliveryControllerValues.get(ele.Cost_Type__c) == value.validFor[i])
+                        {
+                            ele.costHeadingDeliveryOptions.push(value);
+                        }
+                    }
+                })
+            });
+        }
     }
 
     handleCashCancel(event)
     {
         //Clear draftValues (data changes).
         this.cashContributionsDraftValues = [];
+        this.refs.cashDatatable.draftValues = this.cashContributions;
     }
 
     //Handle row level actions e.g. delete.
@@ -766,8 +818,8 @@ export default class ProjectCostsForm2 extends LightningElement
                                 {
                                     this.dispatchEvent(
                                         new ShowToastEvent({
-                                            title: 'Error deleting project cost',
-                                            message: 'The grant percentage and total costs cannot change after a decision is confirmed. Please redistribute currency values before deleting.',
+                                            title: 'Error deleting cost',
+                                            message: 'The grant award, grant percentage and total costs cannot change after the decision has been confirmed. Please redistribute currency values before deleting.',
                                             variant: 'error'
                                         })
                                     );
@@ -851,7 +903,7 @@ export default class ProjectCostsForm2 extends LightningElement
                                         this.dispatchEvent(
                                             new ShowToastEvent({
                                                 title: 'Error deleting cash contribution',
-                                                message: 'The grant percentage and total costs cannot change after a decision is confirmed. Please redistribute currency values before deleting.',
+                                                message: 'The grant award, grant percentage and total costs cannot change after the decision has been confirmed. Please redistribute currency values before deleting.',
                                                 variant: 'error'
                                             })
                                         );
@@ -1019,6 +1071,7 @@ export default class ProjectCostsForm2 extends LightningElement
 
     handleCellChange(event)
     {
+        console.log('JAG...handleCellChange');
         //Handle change/initial set of Cost Type in Cost Heading (Delivery) dependent picklist.
         if(JSON.stringify(event.detail.draftValues).includes('Cost_Type__c') && this.largeGrantDelivery == true)
         {
@@ -1027,7 +1080,7 @@ export default class ProjectCostsForm2 extends LightningElement
                 if(ele.Id == event.detail.draftValues[0].Id)
                 {
                     //Set draft value to blank.
-                    ele.Cost_heading_Delivery__c = '';
+                    //ele.Cost_heading_Delivery__c = '';
                     var drafts = this.refs.costsDatatable.draftValues;
                     drafts.forEach(draft =>
                     {
