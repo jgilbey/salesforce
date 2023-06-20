@@ -1,6 +1,5 @@
-public inherited sharing class ProjectCostFormController {
-  //TODO modify by to get by record type id
-
+public with sharing class ProjectCostFormController 
+{
   private static final String MEMORIAL_RECORD_TYPE_NAME = 'Memorial';
 
   @AuraEnabled(cacheable=true)
@@ -165,8 +164,8 @@ public inherited sharing class ProjectCostFormController {
 
     try 
     {
-      update costsToUpdate;
-      insert costsToInsert;
+      update as user costsToUpdate;
+      insert as user costsToInsert;
       return 'Successfully upserted Costs.';
     } 
     catch (Exception e) 
@@ -234,8 +233,8 @@ public inherited sharing class ProjectCostFormController {
 
     try 
     {
-      update cashToUpdate;
-      insert cashToInsert;
+      update as user cashToUpdate;
+      insert as user cashToInsert;
       return 'Successfully upserted Cash Contributions.';
     } 
     catch (Exception e) 
@@ -253,7 +252,7 @@ public inherited sharing class ProjectCostFormController {
     {
       try
       {
-        Database.delete(costsToDelete);
+        Database.delete(costsToDelete, null, AccessLevel.USER_MODE);
         return 'Successfully deleted costs.';
       }
       catch (Exception e)
@@ -273,7 +272,7 @@ public inherited sharing class ProjectCostFormController {
     {
       try
       {
-        Database.delete(cashContributionsToDelete);
+        Database.delete(cashContributionsToDelete, null, AccessLevel.USER_MODE);
         return 'Successfully deleted cash contributions.';
       }
       catch (Exception e)
