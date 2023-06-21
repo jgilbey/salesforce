@@ -252,7 +252,7 @@ public with sharing class ProjectCostFormController
     {
       try
       {
-        Database.delete(costsToDelete, null, AccessLevel.USER_MODE);
+        Database.delete(costsToDelete, true, AccessLevel.USER_MODE);
         return 'Successfully deleted costs.';
       }
       catch (Exception e)
@@ -272,7 +272,7 @@ public with sharing class ProjectCostFormController
     {
       try
       {
-        Database.delete(cashContributionsToDelete, null, AccessLevel.USER_MODE);
+        Database.delete(cashContributionsToDelete, true, AccessLevel.USER_MODE);
         return 'Successfully deleted cash contributions.';
       }
       catch (Exception e)
@@ -320,12 +320,13 @@ public with sharing class ProjectCostFormController
   public static Boolean validateCostSave(List<Project_Cost__c> existingCostValues, List<Project_Cost__c> draftCostValues, List<Project_Income__c> cashContributionValues, String projectId)
   {
     Case project = [SELECT Id, Confirm_award_amount__c, Total_Cost__c, Grant_requested__c, NHMF_grant_request__c, RecordType.DeveloperName
-                      FROM Case WHERE Id =: projectId];
+                    FROM Case WHERE Id =: projectId];
 
     Map<String, Project_Cost__c> existingCostsMap = new Map<String, Project_Cost__c>(existingCostValues);
     Map<String, Project_Cost__c> draftCostsMap = new Map<String, Project_Cost__c>(draftCostValues);
     
-    if(project.Confirm_award_amount__c == true)
+    //Only do main validation if Award Amount is confirmed and there are no Grant Reviews in "Pending" Status.
+    if(project.Confirm_award_amount__c == true && checkGrantReviewsPending(projectId) == false)
     {
       //Replace existing values with draft values where relevant.
       for(String draftCostId : draftCostsMap.keySet())
@@ -378,13 +379,15 @@ public with sharing class ProjectCostFormController
 
   public static Boolean validateCashSave(List<Project_Income__c> existingCashValues, List<Project_Income__c> draftCashValues, List<Project_Cost__c> projectCostValues, String projectId)
   {
+    
     Case project = [SELECT Id, Confirm_award_amount__c, Total_Cost__c, Grant_requested__c, NHMF_grant_request__c, RecordType.DeveloperName
-                      FROM Case WHERE Id =: projectId];
+                    FROM Case WHERE Id =: projectId];
 
     Map<String, Project_Income__c> existingCashMap = new Map<String, Project_Income__c>(existingCashValues);
     Map<String, Project_Income__c> draftCashMap = new Map<String, Project_Income__c>(draftCashValues);
     
-    if(project.Confirm_award_amount__c == true)
+    //Only do main validation if Award Amount is confirmed and there are no Grant Reviews in "Pending" Status.
+    if(project.Confirm_award_amount__c == true && checkGrantReviewsPending(projectId) == false)
     {
       //Replace existing values with draft values where relevant.
       for(String draftCashId : draftCashMap.keySet())
@@ -433,6 +436,21 @@ public with sharing class ProjectCostFormController
     }
 
     return true;
+  }
+
+  @AuraEnabled
+  public static Boolean checkGrantReviewsPending(String projectId)
+  {
+    List<Grant_Review__c> grantReviews = [SELECT Id, Decision__c FROM Grant_Review__c WHERE Project__r.Id =: projectId AND Decision__c = 'Pending Decision' WITH SYSTEM_MODE];
+
+    if(grantReviews.isEmpty() == false)
+    {
+      return true;
+    }
+    else 
+    {
+      return false;
+    }
   }
 
   public class RecordTypeMappingWrapper

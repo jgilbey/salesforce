@@ -15,6 +15,7 @@ import deleteCosts from '@salesforce/apex/ProjectCostFormController.deleteCosts'
 import getCashContributions2 from '@salesforce/apex/ProjectCostFormController.getCashContributions2';
 import saveCashContributions from '@salesforce/apex/ProjectCostFormController.saveCashContributions';
 import deleteCashContributions from '@salesforce/apex/ProjectCostFormController.deleteCash';
+import checkGrantReviewsPending from '@salesforce/apex/ProjectCostFormController.checkGrantReviewsPending';
 
 import SAVE_SUCCESSFUL from '@salesforce/label/c.Budget_Management_Save';
 import Saved from "@salesforce/label/c.Saved";
@@ -804,8 +805,9 @@ export default class ProjectCostsForm2 extends LightningElement
                         });
                     }
 
-                    //If in monitoring, do not allow save if changed made to currency fields.
-                    if(this.project.Confirm_award_amount__c == true)
+                    //If in monitoring or has Grant Review in "Pending" Status, do not allow save if changed made to currency fields.
+                    const hasPendingDraftReviewsResult = await checkGrantReviewsPending({projectId: this.recordId});
+                    if(this.project.Confirm_award_amount__c == true && hasPendingDraftReviewsResult == false)
                     {
                         var doNotDelete = false;
                         var mymap = new Map(Object.entries(row));
@@ -886,37 +888,37 @@ export default class ProjectCostsForm2 extends LightningElement
                         });
                     }
 
-                    if(this.project.Confirm_award_amount__c == true)
+                    //If in monitoring or has Grant Review in "Pending" Status, do not allow save if changed made to currency fields.
+                    const hasPendingDraftReviewsResult = await checkGrantReviewsPending({projectId: this.recordId});
+                    console.log('JAG' + hasPendingDraftReviewsResult);
+                    if(this.project.Confirm_award_amount__c == true && hasPendingDraftReviewsResult == false)
                     {
-                        if(this.project.Confirm_award_amount__c == true)
+                        var doNotDelete = false;
+                        var mymap = new Map(Object.entries(row));
+
+                        for(const ele of this.cashColumns) 
                         {
-                            var doNotDelete = false;
-                            var mymap = new Map(Object.entries(row));
-
-                            for(const ele of this.cashColumns) 
+                            if(ele.type == 'currency')
                             {
-                                if(ele.type == 'currency')
-                                {
 
-                                    if(mymap.get(ele.fieldName) != 0)
-                                    {
-                                        this.dispatchEvent(
-                                            new ShowToastEvent({
-                                                title: 'Error deleting cash contribution',
-                                                message: 'The grant award, grant percentage and total costs cannot change after the decision has been confirmed. Please redistribute currency values before deleting.',
-                                                variant: 'error'
-                                            })
-                                        );
-                                        doNotDelete = true;
-                                        break;
-                                    }
+                                if(mymap.get(ele.fieldName) != 0)
+                                {
+                                    this.dispatchEvent(
+                                        new ShowToastEvent({
+                                            title: 'Error deleting cash contribution',
+                                            message: 'The grant award, grant percentage and total costs cannot change after the decision has been confirmed. Please redistribute currency values before deleting.',
+                                            variant: 'error'
+                                        })
+                                    );
+                                    doNotDelete = true;
+                                    break;
                                 }
                             }
-                            if(doNotDelete == false && warningResult == true)
-                            {
-                                this.cashContributionRowsToDelete.push(row);
-                                this.handleCashDelete();
-                            }
+                        }
+                        if(doNotDelete == false && warningResult == true)
+                        {
+                            this.cashContributionRowsToDelete.push(row);
+                            this.handleCashDelete();
                         }
                     }
                     else if(warningResult == true)
