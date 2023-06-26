@@ -1,5 +1,5 @@
 @isTest
-public with sharing class ProjectCostFormControllerTest {
+public with sharing class ProjectBudgetTableControllerTest {
     
     
     @TestSetup

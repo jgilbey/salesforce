@@ -1,20 +1,8 @@
 declare module "@salesforce/apex/ProjectCostFormController.getProject" {
   export default function getProject(param: {projectId: any}): Promise<any>;
 }
-declare module "@salesforce/apex/ProjectCostFormController.getProjectCosts" {
-  export default function getProjectCosts(param: {projectId: any}): Promise<any>;
-}
 declare module "@salesforce/apex/ProjectCostFormController.getProjectCosts2" {
   export default function getProjectCosts2(param: {projectId: any, recordType: any, variation: any}): Promise<any>;
-}
-declare module "@salesforce/apex/ProjectCostFormController.deleteProjectCostsAndContributions" {
-  export default function deleteProjectCostsAndContributions(param: {cashContributions: any, projectCosts: any}): Promise<any>;
-}
-declare module "@salesforce/apex/ProjectCostFormController.saveProjectCosts" {
-  export default function saveProjectCosts(param: {projectId: any, totalCost: any, grantRequested: any, cashContributions: any, projectCosts: any, removedCashContributions: any, removedProjectCosts: any}): Promise<any>;
-}
-declare module "@salesforce/apex/ProjectCostFormController.getCashContributions" {
-  export default function getCashContributions(param: {projectId: any}): Promise<any>;
 }
 declare module "@salesforce/apex/ProjectCostFormController.getCashContributions2" {
   export default function getCashContributions2(param: {projectId: any, recordType: any}): Promise<any>;
@@ -33,4 +21,7 @@ declare module "@salesforce/apex/ProjectCostFormController.deleteCash" {
 }
 declare module "@salesforce/apex/ProjectCostFormController.getRecordTypeMapping" {
   export default function getRecordTypeMapping(param: {projectDeveloperName: any, variation: any}): Promise<any>;
+}
+declare module "@salesforce/apex/ProjectCostFormController.checkGrantReviewsPending" {
+  export default function checkGrantReviewsPending(param: {projectId: any}): Promise<any>;
 }
