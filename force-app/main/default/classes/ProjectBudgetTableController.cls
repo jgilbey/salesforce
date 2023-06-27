@@ -1,9 +1,17 @@
+/*
+Title: ProjectBudgetTableController
+Author: JAG (H8)
+Date: 2023
+Description: Apex controller for projectBudgetTable LWC.
+
+Changes:
+*/
+
 public with sharing class ProjectBudgetTableController 
 {
-  private static final String MEMORIAL_RECORD_TYPE_NAME = 'Memorial';
-
   @AuraEnabled(cacheable=true)
-  public static Case getProject(Id projectId) {
+  public static Case getProject(Id projectId) 
+  {
     Case project = [
       SELECT
         Total_Cost__c,
@@ -20,6 +28,7 @@ public with sharing class ProjectBudgetTableController
         Total_amount_cost__c,
         NHMF_Total_cash_contributions__c,
         RecordType.DeveloperName,
+        RecordTypeId,
         Grant_requested_development_delivery__c,
         Delivery_grant_request__c,
         Total_development_costs_VAT__c,
@@ -48,16 +57,16 @@ public with sharing class ProjectBudgetTableController
         Total_actual_delivery_cash_contributions__c
       FROM case
       WHERE Id = :projectId
-    ]; //changed
+    ];
 
     return project;
   }
 
   @AuraEnabled(cacheable=true)
-  public static List<Project_Cost__c> getProjectCosts2(Id projectId, Id recordType, String variation) 
+  public static List<Project_Cost__c> getProjectCosts(Id projectId, Id recordType, String variation) 
   {
     List<Project_Cost__c> existingCosts = new List<Project_Cost__c>();
-    String rtName = Schema.getGlobalDescribe().get('Project_Cost__c').getDescribe().getRecordTypeInfosById().get(recordType).getDeveloperName();
+    String rtName = Schema.SObjectType.Project_Cost__c.getRecordTypeInfosById().get(recordType).getDeveloperName();
     String sortClause = '';
 
     if((rtName == 'Large_Grants_Delivery' && variation == 'Large_Development_Delivery') || rtName == 'Large_Grants_Actual_Delivery')
@@ -81,7 +90,8 @@ public with sharing class ProjectBudgetTableController
   }
 
   @AuraEnabled(cacheable=true)
-  public static List<Project_Income__c> getCashContributions2(Id projectId, Id recordType) {
+  public static List<Project_Income__c> getCashContributions(Id projectId, Id recordType)
+  {
     List<Project_Income__c> existingContributions = new List<Project_Income__c>();
 
     List<Project_Income__c> conts = [
@@ -113,10 +123,12 @@ public with sharing class ProjectBudgetTableController
     List<Project_Cost__c> costsToInsert = new List<Project_Cost__c>();
     List<Project_Cost__c> costsToUpdate = new List<Project_Cost__c>();
 
+    //convert JSON values to object records.
     List<Project_Cost__c> draftCostValues = (List<Project_Cost__c>)JSON.deserialize(JSON.serialize(draftCosts), List<Project_Cost__c>.class);
     List<Project_Cost__c> existingCostValues = (List<Project_Cost__c>)JSON.deserialize(JSON.serialize(existingCostsValues), List<Project_Cost__c>.class);
     List<Project_Income__c> cashContributionValues = (List<Project_Income__c>)JSON.deserialize(JSON.serialize(cashContributions), List<Project_Income__c>.class);
 
+    //Validate that we can save these costs.
     if(validateCostSave(existingCostValues, draftCostValues, cashContributionValues, projectId) == false)
     {
       CustomExceptionData err = new CustomExceptionData('Error', System.Label.Budget_Management_Save_Error, null);
@@ -171,7 +183,6 @@ public with sharing class ProjectBudgetTableController
     catch (Exception e) 
     {
       throw new AuraHandledException('Failed to upsert Costs: ' + e.getMessage());
-      //return 'Failed to upsert Costs: ' + e.getMessage();
     }
   }
 
@@ -181,10 +192,12 @@ public with sharing class ProjectBudgetTableController
     List<Project_Income__c> cashToInsert = new List<Project_Income__c>();
     List<Project_Income__c> cashToUpdate = new List<Project_Income__c>();
 
+    //convert JSON values to object records.
     List<Project_Income__c> draftCashValues = (List<Project_Income__c>)JSON.deserialize(JSON.serialize(draftCash), List<Project_Income__c>.class);
     List<Project_Income__c> existingCashValues = (List<Project_Income__c>)JSON.deserialize(JSON.serialize(existingCash), List<Project_Income__c>.class);
     List<Project_Cost__c> existingCostValues = (List<Project_Cost__c>)JSON.deserialize(JSON.serialize(existingCosts), List<Project_Cost__c>.class);
 
+    //Validate that we can save these contributions.
     if(validateCashSave(existingCashValues, draftCashValues, existingCostValues, projectId) == false)
     {
       CustomExceptionData err = new CustomExceptionData('Error', System.Label.Budget_Management_Save_Error, null);
@@ -463,7 +476,7 @@ public with sharing class ProjectBudgetTableController
     public String cashRecordTypeId;
   }
 
-  // Wrapper class for my custom exception data
+  //Wrapper class for custom exceptions
   public class CustomExceptionData 
   {
     public String name;

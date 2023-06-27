@@ -1,6 +1,5 @@
 import { LightningElement, api, wire, track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import { getRecordNotifyChange } from 'lightning/uiRecordApi';
 import { getObjectInfo, getPicklistValues } from "lightning/uiObjectInfoApi";
 import { refreshApex } from '@salesforce/apex';
 import LightningConfirm from 'lightning/confirm';
@@ -8,27 +7,23 @@ import LightningConfirm from 'lightning/confirm';
 import getProject from '@salesforce/apex/ProjectBudgetTableController.getProject';
 import getRecordTypeMappings from '@salesforce/apex/ProjectBudgetTableController.getRecordTypeMapping';
 
-import getProjectCosts2 from '@salesforce/apex/ProjectBudgetTableController.getProjectCosts2';
+import getProjectCosts from '@salesforce/apex/ProjectBudgetTableController.getProjectCosts';
 import saveCosts from '@salesforce/apex/ProjectBudgetTableController.saveCosts';
 import deleteCosts from '@salesforce/apex/ProjectBudgetTableController.deleteCosts';
 
-import getCashContributions2 from '@salesforce/apex/ProjectBudgetTableController.getCashContributions2';
+import getCashContributions from '@salesforce/apex/ProjectBudgetTableController.getCashContributions';
 import saveCashContributions from '@salesforce/apex/ProjectBudgetTableController.saveCashContributions';
 import deleteCashContributions from '@salesforce/apex/ProjectBudgetTableController.deleteCash';
 import checkGrantReviewsPending from '@salesforce/apex/ProjectBudgetTableController.checkGrantReviewsPending';
 
-import SAVE_SUCCESSFUL from '@salesforce/label/c.Budget_Management_Save';
-import Saved from "@salesforce/label/c.Saved";
-import Success from "@salesforce/label/c.Success";
-import Error from "@salesforce/label/c.Error";
+import PROJECT_BUDGET_DELETE_WARNING from "@salesforce/label/c.ProjectBudgetDeleteWarning";
+import PROJECT_BUDGET_DELETE_ERROR from "@salesforce/label/c.ProjectBudgetDeleteError";
 
 import COST_HEADING from "@salesforce/schema/Project_Cost__c.Cost_heading__c";
 import COST_HEADING_DELIVERY from "@salesforce/schema/Project_Cost__c.Cost_heading_Delivery__c";
 import COST_TYPE from "@salesforce/schema/Project_Cost__c.Cost_Type__c";
-import PROJECT_COST_OBJECT from "@salesforce/schema/Project_Cost__c";
 import INCOME_SECURED from "@salesforce/schema/Project_Income__c.Secured_non_cash_contributions__c";
 import INCOME_FUNDING_SOURCE from "@salesforce/schema/Project_Income__c.Source_Of_Funding__c";
-import PROJECT_INCOME_OBJECT from "@salesforce/schema/Project_Income__c";
 
 import {
     smallColumns,
@@ -79,19 +74,17 @@ export default class ProjectBudgetTable extends LightningElement
     projectsCostsResult;
     costsDraftValues = [];
     costsRowsToDelete = [];
-
     projectCostsAmountTotal = 0;
     projectCostsVatTotal = 0;
     projectCostsTotal = 0;
     projectCostsTotalRow = [];
 
+    cashContributions = [];
     securedOptions;
     fundingSourceOptions;
-    cashContributions = [];
     cashContributionsResult;
     cashContributionsDraftValues = [];
     cashContributionRowsToDelete = [];
-
     cashContributionsAmountTotal = 0;
     cashContributionsTotalRow = [];
 
@@ -184,11 +177,7 @@ export default class ProjectBudgetTable extends LightningElement
         }
     }
 
-    @wire(getObjectInfo, { objectApiName: PROJECT_COST_OBJECT })
-    objectInfo;
-    @wire(getObjectInfo, { objectApiName: PROJECT_INCOME_OBJECT })
-    objectInfo;
-
+    //Get the project info and set relevant variables.
     @wire(getProject, {projectId: '$recordId'})
     async proj(result)
     {
@@ -225,21 +214,6 @@ export default class ProjectBudgetTable extends LightningElement
                 }
 
                 this.cashColumns = largeContributionColumns;
-
-                /*if(this.variation == null) //This affects all instances of the component for some reason.
-                {
-                    
-                    var columnsChange = this.columns;
-
-                    for(var column in columnsChange){
-                        if(columnsChange[column].label=='Cost Type')
-                        {
-                            columnsChange.splice(column,1);
-                            break;
-                        }
-                    }
-                    this.columns = columnsChange;
-                }*/
             }
             else if(this.project.RecordType.DeveloperName === this.largeGrantDeliveryProject)
             {
@@ -255,49 +229,6 @@ export default class ProjectBudgetTable extends LightningElement
                 this.cashColumns = nhmfContributionColumns;
             }
 
-            //Set currency columns as not-editable if Award Amount confirmed.
-            /*if(this.project.Confirm_award_amount__c == true)
-            {
-                var columnsChange = this.columns;
-                columnsChange.forEach(ele => 
-                {
-                    if(ele.type == 'currency')
-                    {
-                        ele.editable = false;
-                    }
-                });
-                this.columns = columnsChange;
-
-                var cashColumnsChange = this.cashColumns;
-                cashColumnsChange.forEach(ele => 
-                {
-                    if(ele.type == 'currency')
-                    {
-                        ele.editable = false;
-                    }
-                });
-                this.cashColumns = cashColumnsChange;
-            }*/
-
-            //Disable delete if Award Amount confirmed. May need to be reworked.
-            /*if(this.project.Confirm_award_amount__c == true)
-            {
-                //console.log('JAG ' + JSON.stringify(this.columns[0].typeAttributes.rowActions[0].disabled));
-                this.columns.forEach(ele => 
-                    {
-                        if(ele.type == 'action')
-                        {
-                            ele.typeAttributes.rowActions.forEach(ele2 => 
-                                {
-                                    if(ele2.name == 'delete')
-                                    {
-                                        ele2.disabled = true;
-                                    }
-                                })
-                        }
-                    })
-            }*/
-
             this.projectRecordTypeDeveloperName = this.project.RecordType.DeveloperName;
 
             //Get Record type mapping custom metadata.
@@ -306,6 +237,13 @@ export default class ProjectBudgetTable extends LightningElement
         else if (result.error)
         {
             console.log('error retrieving project: ' + error);
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Error retrieving Project data',
+                    message: error.body.message,
+                    variant: 'error'
+                })
+            );
         }
     }
 
@@ -320,7 +258,6 @@ export default class ProjectBudgetTable extends LightningElement
         if (result.data) 
         {
             this.costHeadingOptions = result.data.values;
-            console.log('Cost Headings: ' + JSON.stringify(result.data.values));
 
             this.projectCosts.forEach(ele => {
                 ele.costHeadingOptions = this.costHeadingOptions;
@@ -329,6 +266,13 @@ export default class ProjectBudgetTable extends LightningElement
         else if (result.error) 
         {
             console.log('Error retrieving cost headings: ' + result.error);
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Error retrieving cost headings',
+                    message: error.body.message,
+                    variant: 'error'
+                })
+            );
         }
     }
 
@@ -344,21 +288,17 @@ export default class ProjectBudgetTable extends LightningElement
             {
                 this.costHeadingDeliveryOptions = result.data.values;
                 this.costHeadingDeliveryControllerValues = new Map(Object.entries(result.data.controllerValues));
-    
-                /*this.projectCosts.forEach(ele => {
-                    console.log('JAG ');
-                    this.costHeadingDeliveryOptions.forEach(value => {
-                        if(costHeadingDeliveryControllerValues.get(ele.Cost_Type__c) == value.validFor[0])
-                        {
-                            ele.costHeadingDeliveryOptions.push(value);
-                            console.log('JAG ' + value);
-                        }
-                    })
-                })*/
             } 
             else if (result.error) 
             {
                 console.log('Error retrieving cost headings (delivery): ' + result.error);
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Error retrieving cost headings (delivery)',
+                        message: error.body.message,
+                        variant: 'error'
+                    })
+                );
             }
         }
     
@@ -373,7 +313,6 @@ export default class ProjectBudgetTable extends LightningElement
         if (result.data) 
         {
             this.costTypeOptions = result.data.values;
-            console.log('Cost Types: ' + JSON.stringify(result.data.values));
 
             this.projectCosts.forEach(ele => {
                 ele.costTypeOptions = this.costTypeOptions;
@@ -382,6 +321,13 @@ export default class ProjectBudgetTable extends LightningElement
         else if (result.error) 
         {
             console.log('Error retrieving cost types: ' + result.error);
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Error retrieving cost types',
+                    message: error.body.message,
+                    variant: 'error'
+                })
+            );
         }
     }
 
@@ -396,7 +342,6 @@ export default class ProjectBudgetTable extends LightningElement
         if (result.data) 
         {
             this.fundingSourceOptions = result.data.values;
-            console.log('Funding source options: ' + JSON.stringify(result.data.values));
 
             this.cashContributions.forEach(ele => {
                 ele.fundingSourceOptions = this.fundingSourceOptions;
@@ -404,7 +349,14 @@ export default class ProjectBudgetTable extends LightningElement
         } 
         else if (result.error) 
         {
-            console.log(result.error);
+            console.log('Error retrieving funding sources: ' + result.error);
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Error retrieving funding sources',
+                    message: error.body.message,
+                    variant: 'error'
+                })
+            );
         }
     }
 
@@ -419,7 +371,6 @@ export default class ProjectBudgetTable extends LightningElement
         if (result.data) 
         {
             this.securedOptions = result.data.values;
-            console.log('Secured options: ' + JSON.stringify(result.data.values));
 
             this.cashContributions.forEach(ele => {
                 ele.securedOptions = this.securedOptions;
@@ -427,11 +378,18 @@ export default class ProjectBudgetTable extends LightningElement
         } 
         else if (result.error) 
         {
-            console.log(result.error);
+            console.log('Error retrieving secured options: ' + result.error);
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Error retrieving secured options',
+                    message: error.body.message,
+                    variant: 'error'
+                })
+            );
         }
     }
 
-    @wire(getProjectCosts2, {projectId: '$recordId', recordType: '$recordTypeMapping.costRecordTypeId', variation: '$variation'})
+    @wire(getProjectCosts, {projectId: '$recordId', recordType: '$recordTypeMapping.costRecordTypeId', variation: '$variation'})
     costs(result)
     {
         if(result.data)
@@ -448,6 +406,7 @@ export default class ProjectBudgetTable extends LightningElement
 
             if(this.smallGrant == true)
             {
+                //Apply picklist options and add to runnign total for totals row.
                 this.projectCosts.forEach(ele => 
                 {
                     ele.costHeadingOptions = this.costHeadingOptions;
@@ -456,6 +415,7 @@ export default class ProjectBudgetTable extends LightningElement
                     projectCostsAmountTotal = projectCostsAmountTotal + Number(ele.Costs__c);
                 })
 
+                //Add row.
                 this.projectCostsTotalRow.push(
                 {
                     Id: 'totalRow',
@@ -537,11 +497,18 @@ export default class ProjectBudgetTable extends LightningElement
         }
         else if (result.error)
         {
-            console.log('Failed to get Project Costs.');
+            console.log('Failed to get Project Costs.' + error);
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Error retrieving project costs',
+                    message: error.body.message,
+                    variant: 'error'
+                })
+            );
         }
     }
 
-    @wire(getCashContributions2, {projectId: '$recordId', recordType: '$recordTypeMapping.cashRecordTypeId'})
+    @wire(getCashContributions, {projectId: '$recordId', recordType: '$recordTypeMapping.cashRecordTypeId'})
     contributions(result)
     {
         if(result.data)
@@ -556,6 +523,7 @@ export default class ProjectBudgetTable extends LightningElement
 
             if(this.largeGrant == true)
             {
+                //Apply picklist options and add to running total for total row..
                 this.cashContributions.forEach(ele => 
                 {
                     ele.securedOptions = this.securedOptions;
@@ -564,6 +532,7 @@ export default class ProjectBudgetTable extends LightningElement
                     cashContributionsAmountTotal = cashContributionsAmountTotal + Number(ele.Amount_you_have_received__c);
                 });
 
+                //Add row.
                 this.cashContributionsTotalRow.push(
                 {
                     Id: 'totalRow',
@@ -607,7 +576,14 @@ export default class ProjectBudgetTable extends LightningElement
         }
         else if (result.error)
         {
-            console.log('Failed to get Cash Contributions.');
+            console.log('Failed to get Cash Contributions.' + error);
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Error retrieving cash contribution records',
+                    message: error.body.message,
+                    variant: 'error'
+                })
+            );
         }
     }
 
@@ -629,7 +605,6 @@ export default class ProjectBudgetTable extends LightningElement
             //Apex save records.
             const result = await saveCosts({draftCosts: updatedFields, existingCostsValues: existingCosts, cashContributions: existingCash, projectId: this.recordId});
             this.showSpinner = false;
-            console.log(JSON.stringify("Apex update result: "+ result));
 
             this.dispatchEvent(
                 new ShowToastEvent({
@@ -682,7 +657,6 @@ export default class ProjectBudgetTable extends LightningElement
         this.showSpinner = true;
 
         const updatedFields = event.detail.draftValues;
-        console.log('draft values on save: ' + event.detail.draftValues);
 
         try 
         {
@@ -696,7 +670,6 @@ export default class ProjectBudgetTable extends LightningElement
             //Apex save records.
             const result = await saveCashContributions({draftCash: updatedFields, existingCash: existingCash, existingCosts: existingCosts, projectId: this.recordId});
             this.showSpinner = false;
-            console.log(JSON.stringify("Apex update result: "+ result));
 
             this.dispatchEvent(
                 new ShowToastEvent({
@@ -800,7 +773,7 @@ export default class ProjectBudgetTable extends LightningElement
                         warningResult = await LightningConfirm.open(
                         {
                             label: 'Unsaved changes will be lost',
-                            message: 'Press OK to confirm deletion. Please note that unsaved changes you have made will be lost.\nPress Cancel to go back.',
+                            message: PROJECT_BUDGET_DELETE_WARNING,
                             theme: 'warning'
                         });
                     }
@@ -821,7 +794,7 @@ export default class ProjectBudgetTable extends LightningElement
                                     this.dispatchEvent(
                                         new ShowToastEvent({
                                             title: 'Error deleting cost',
-                                            message: 'The grant award, grant percentage and total costs cannot change after the decision has been confirmed. Please redistribute currency values before deleting.',
+                                            message: PROJECT_BUDGET_DELETE_ERROR,
                                             variant: 'error'
                                         })
                                     );
@@ -864,8 +837,6 @@ export default class ProjectBudgetTable extends LightningElement
         const action = event.detail.action;
         const row = event.detail.row;
 
-        console.log('draft values on row action: ' + event.detail.draftValues);
-
         switch(action.name)
         {
             case 'delete':
@@ -883,14 +854,14 @@ export default class ProjectBudgetTable extends LightningElement
                         warningResult = await LightningConfirm.open(
                         {
                             label: 'Unsaved Changes will be lost',
-                            message: 'Press OK to confirm deletion. Please note that unsaved changes you have made will be lost.\n Press Cancel to go back.',
+                            message: PROJECT_BUDGET_DELETE_WARNING,
                             theme: 'warning'
                         });
                     }
 
                     //If in monitoring or has Grant Review in "Pending" Status, do not allow save if changed made to currency fields.
                     const hasPendingDraftReviewsResult = await checkGrantReviewsPending({projectId: this.recordId});
-                    console.log('JAG' + hasPendingDraftReviewsResult);
+
                     if(this.project.Confirm_award_amount__c == true && hasPendingDraftReviewsResult == false)
                     {
                         var doNotDelete = false;
@@ -906,7 +877,7 @@ export default class ProjectBudgetTable extends LightningElement
                                     this.dispatchEvent(
                                         new ShowToastEvent({
                                             title: 'Error deleting cash contribution',
-                                            message: 'The grant award, grant percentage and total costs cannot change after the decision has been confirmed. Please redistribute currency values before deleting.',
+                                            message: PROJECT_BUDGET_DELETE_ERROR,
                                             variant: 'error'
                                         })
                                     );
@@ -962,8 +933,6 @@ export default class ProjectBudgetTable extends LightningElement
             const result = await deleteCosts({pCostsToDelete: this.costsRowsToDelete});
             this.showSpinner = false;
 
-            console.log(JSON.stringify("Apex delete result: "+ result));
-
             this.dispatchEvent(
                 new ShowToastEvent({
                     title: 'Success',
@@ -1014,8 +983,6 @@ export default class ProjectBudgetTable extends LightningElement
 
             const result = await deleteCashContributions({cashToDelete: this.cashContributionRowsToDelete});
             this.showSpinner = false;
-
-            console.log(JSON.stringify("Apex delete result cash: "+ result));
 
             this.dispatchEvent(
                 new ShowToastEvent({
@@ -1073,7 +1040,6 @@ export default class ProjectBudgetTable extends LightningElement
 
     handleCellChange(event)
     {
-        console.log('JAG...handleCellChange');
         //Handle change/initial set of Cost Type in Cost Heading (Delivery) dependent picklist.
         if(JSON.stringify(event.detail.draftValues).includes('Cost_Type__c') && this.largeGrantDelivery == true)
         {
@@ -1082,7 +1048,6 @@ export default class ProjectBudgetTable extends LightningElement
                 if(ele.Id == event.detail.draftValues[0].Id)
                 {
                     //Set draft value to blank.
-                    //ele.Cost_heading_Delivery__c = '';
                     var drafts = this.refs.costsDatatable.draftValues;
                     drafts.forEach(draft =>
                     {
