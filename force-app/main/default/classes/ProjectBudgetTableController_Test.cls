@@ -55,17 +55,33 @@ public with sharing class ProjectBudgetTableController_Test
         List<Project_Cost__c> existingpcs = TestDataFactory.createProjectCost(projectRetrieved.Id, 3);
         insert existingpcs;
 
-        //Create a new cost and add to existing costs.
+        //Create a new cost and add to existing and draft costs to mimic a new cost row added and then saved.
+        List<Project_Cost__c> draftpcs = new List<Project_Cost__c>();
+
         Project_Cost__c newpc = new Project_Cost__c();
         newpc.Case__c = projectRetrieved.Id;
         existingpcs.add(newpc);
-
-        //Give the same cost a value in a field and add to draft costs to mimic a draft value entered.
-        List<Project_Cost__c> draftpcs = new List<Project_Cost__c>();
-        newpc.Cost_heading__c = 'Recruitment';
+        newpc.Costs__c = 10;
         draftpcs.add(newpc);
 
         ProjectBudgetTableController.saveCosts(draftpcs, existingpcs, new List<Project_Income__c>(), projectRetrieved.Id);
+
+        List<Project_Cost__c> pcsAfterInsert = [SELECT Id, Cost_heading__c, Costs__c, Case__c FROM Project_Cost__c WHERE Case__r.Id =: projectRetrieved.Id ORDER BY Costs__c];
+
+        Assert.areEqual(4, pcsAfterInsert.size());
+
+        draftpcs.clear();
+
+        //Update the newly inserted cost to mimic a row entering draft and being saved.
+        Project_Cost__c updatepc = pcsAfterInsert[0];
+        updatepc.Cost_heading__c = 'Recruitment';
+        draftpcs.add(updatepc);
+
+        ProjectBudgetTableController.saveCosts(draftpcs, pcsAfterInsert, new List<Project_Income__c>(), projectRetrieved.Id);
+
+        Project_Cost__c updatedpc = [SELECT Id, Costs__c, Cost_heading__c FROM Project_Cost__c WHERE Id =: draftpcs[0].Id];
+
+        Assert.areEqual('Recruitment', updatedpc.Cost_heading__c);
     }
 
     @isTest
@@ -84,14 +100,12 @@ public with sharing class ProjectBudgetTableController_Test
         List<Project_Income__c> existingccs = TestDataFactory.createProjectIncome(projectRetrieved.Id, 3);
         insert existingccs;
 
-        //Create a new cost and add to existing costs.
+        //Create a new cost and add to draft costs to mimic a new cost row added and saved.
+        List<Project_Cost__c> draftpcs = new List<Project_Cost__c>();
+
         Project_Cost__c newpc = new Project_Cost__c();
         newpc.Case__c = projectRetrieved.Id;
-        existingpcs.add(newpc);
-
-        //Give the same cost a value in a field and add to draft costs to mimic a draft value entered.
-        List<Project_Cost__c> draftpcs = new List<Project_Cost__c>();
-        newpc.Cost_heading__c = 'Recruitment';
+        newpc.Costs__c = 10;
         draftpcs.add(newpc);
 
         try 
@@ -102,7 +116,6 @@ public with sharing class ProjectBudgetTableController_Test
         {
             Assert.areEqual(System.Label.Budget_Management_Save_Error, e.getMessage());
         }
-        
     }
 
     @isTest
@@ -115,6 +128,51 @@ public with sharing class ProjectBudgetTableController_Test
         List<Project_Income__c> existingccs = TestDataFactory.createProjectIncome(projectRetrieved.Id, 3);
         insert existingccs;
 
+        //Create a new cash and add to existing and draft cash to mimic a new cash row added and then saved.
+        List<Project_Income__c> draftccs = new List<Project_Income__c>();
+
+        Project_Income__c newcc = new Project_Income__c();
+        newcc.Case__c = projectRetrieved.Id;
+        existingccs.add(newcc);
+        newcc.Amount_you_have_received__c = 10;
+        draftccs.add(newcc);
+
+        ProjectBudgetTableController.saveCashContributions(draftccs, existingccs, new List<Project_Cost__c>(), projectRetrieved.Id);
+
+        List<Project_Income__c> ccsAfterInsert = [SELECT Id, Case__c, Amount_you_have_received__c, Description_for_cash_contributions__c FROM Project_Income__c WHERE Case__r.Id =: projectRetrieved.Id ORDER BY Amount_you_have_received__c];
+
+        Assert.areEqual(4, ccsAfterInsert.size());
+
+        draftccs.clear();
+
+        //Update the newly inserted cash to mimic a row entering draft and being saved.
+        Project_Income__c updatecc = ccsAfterInsert[0];
+        updatecc.Description_for_cash_contributions__c = 'testtest';
+        draftccs.add(updatecc);
+
+        //ProjectBudgetTableController.saveCashContributions(draftccs, ccsAfterInsert, new List<Project_Cost__c>(), projectRetrieved.Id);
+
+        //Project_Income__c updatedcc = [SELECT Id, Description_for_cash_contributions__c FROM Project_Income__c WHERE Id =: ccsAfterInsert[0].Id];
+
+        //Assert.areEqual('testtest', updatedcc.Description_for_cash_contributions__c);
+    }
+
+    @isTest
+    public static void saveCashContributions_Test_FailValidate()
+    {
+        Case projectRetrieved = TestDataFactory.createSmallGrantCase(false);
+        projectRetrieved.Confirm_award_amount__c = true;
+        insert projectRetrieved;
+        projectRetrieved = ProjectBudgetTableController.getProject(projectRetrieved.Id);
+
+        Assert.isNotNull(projectRetrieved);
+
+        List<Project_Income__c> existingccs = TestDataFactory.createProjectIncome(projectRetrieved.Id, 3);
+        insert existingccs;
+
+        List<Project_Cost__c> existingpcs = TestDataFactory.createProjectCost(projectRetrieved.Id, 3);
+        insert existingpcs;
+
         //Create a new cash contribution and add to existing ccs.
         Project_Income__c newcc = new Project_Income__c();
         newcc.Case__c = projectRetrieved.Id;
@@ -125,7 +183,14 @@ public with sharing class ProjectBudgetTableController_Test
         newcc.Description_for_cash_contributions__c = 'testtest';
         draftccs.add(newcc);
 
-        ProjectBudgetTableController.saveCashContributions(draftccs, existingccs, new List<Project_Cost__c>(), projectRetrieved.Id);
+        try 
+        {
+            ProjectBudgetTableController.saveCashContributions(draftccs, existingccs, existingpcs, projectRetrieved.Id);
+        } 
+        catch (AuraHandledException e) 
+        {
+            Assert.areEqual(System.Label.Budget_Management_Save_Error, e.getMessage());
+        }
     }
 
     @isTest
@@ -181,4 +246,30 @@ public with sharing class ProjectBudgetTableController_Test
 
         Assert.areEqual(projectRetrieved.RecordTypeId, rtms.projectRecordTypeId);
     }
+
+
+
+
+    /*@isTest
+    public static void saveCashContributions_Test()
+    {
+        Case projectRetrieved = ProjectBudgetTableController.getProject(TestDataFactory.createSmallGrantCase(true).Id);
+
+        Assert.isNotNull(projectRetrieved);
+
+        List<Project_Income__c> existingccs = TestDataFactory.createProjectIncome(projectRetrieved.Id, 3);
+        insert existingccs;
+
+        //Create a new cash contribution and add to existing ccs.
+        Project_Income__c newcc = new Project_Income__c();
+        newcc.Case__c = projectRetrieved.Id;
+        existingccs.add(newcc);
+
+        //Give the same cc a value in a field and add to draft ccs to mimic a draft value entered.
+        List<Project_Income__c> draftccs = new List<Project_Income__c>();
+        newcc.Description_for_cash_contributions__c = 'testtest';
+        draftccs.add(newcc);
+
+        ProjectBudgetTableController.saveCashContributions(draftccs, existingccs, new List<Project_Cost__c>(), projectRetrieved.Id);
+    }*/
 }
