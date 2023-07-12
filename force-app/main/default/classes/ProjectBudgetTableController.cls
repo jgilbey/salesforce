@@ -120,22 +120,6 @@ public with sharing class ProjectBudgetTableController
   @AuraEnabled
   public static string saveCosts(Object draftCosts, Object existingCostsValues, Object cashContributions, String projectId)
   {
-    if(test.isRunningTest()) //Test assumes one draft only and last "existing" record is only to have Id added.
-    {
-      String draftCostsString = JSON.serialize(draftCosts);
-      
-      if(draftCostsString.contains('"Id":"') == false)
-      {
-        draftCostsString = draftCostsString.removeEnd('}]') + ',"' + 'Id' + '":"' + 'costrow-10' + '"}]';
-      }
-
-      draftCosts = JSON.deserialize(draftCostsString, List<Project_Cost__c>.class);
-
-      String existingCostsString = JSON.serialize(existingCostsValues);
-      existingCostsString = existingCostsString.removeEnd('}]') + ',"' + 'Id' + '":"' + 'costrow-10' + '"}]';
-      existingCostsValues = JSON.deserialize(existingCostsString, List<Project_Cost__c>.class);
-    }
-
     List<Project_Cost__c> costsToInsert = new List<Project_Cost__c>();
     List<Project_Cost__c> costsToUpdate = new List<Project_Cost__c>();
 
@@ -219,22 +203,6 @@ public with sharing class ProjectBudgetTableController
   @AuraEnabled
   public static string saveCashContributions(Object draftCash, Object existingCash, Object existingCosts, String projectId)
   {
-    if(test.isRunningTest()) //Test assumes one draft only and last "existing" record is only to have Id added.
-    {
-      String draftCashString = JSON.serialize(draftCash);
-      
-      if(draftCashString.contains('"Id":"') == false)
-      {
-        draftCashString = draftCashString.removeEnd('}]') + ',"' + 'Id' + '":"' + 'cashrow-10' + '"}]';
-      }
-
-      draftCash = JSON.deserialize(draftCashString, List<Project_Income__c>.class);
-
-      String existingCashString = JSON.serialize(existingCash);
-      existingCashString = existingCashString.removeEnd('}]') + ',"' + 'Id' + '":"' + 'cashrow-10' + '"}]';
-      existingCash = JSON.deserialize(existingCashString, List<Project_Income__c>.class);
-    }
-
     List<Project_Income__c> cashToInsert = new List<Project_Income__c>();
     List<Project_Income__c> cashToUpdate = new List<Project_Income__c>();
 
@@ -247,7 +215,9 @@ public with sharing class ProjectBudgetTableController
     if(validateCashSave(existingCashValues, draftCashValues, existingCostValues, projectId) == false)
     {
       CustomExceptionData err = new CustomExceptionData('Error', System.Label.Budget_Management_Save_Error, null);
-      throw new AuraHandledException(JSON.serialize(err));
+      AuraHandledException ae = new AuraHandledException(JSON.serialize(err));
+      ae.setMessage(System.Label.Budget_Management_Save_Error);
+      throw ae;
     }
 
     for(Project_Income__c draftCashCont : draftCashValues)

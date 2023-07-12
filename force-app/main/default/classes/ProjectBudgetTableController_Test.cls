@@ -1,3 +1,12 @@
+/*
+Title: ProjectBudgetTableController_Test
+Author: JAG (H8)
+Date: July 2023
+Description: Test class for ProjectBudgetTableController.
+
+Changes:
+*/
+
 @isTest
 public with sharing class ProjectBudgetTableController_Test 
 {
@@ -60,11 +69,19 @@ public with sharing class ProjectBudgetTableController_Test
 
         Project_Cost__c newpc = new Project_Cost__c();
         newpc.Case__c = projectRetrieved.Id;
+        newpc.project_Cost_Description__c = 'testdesc';
         existingpcs.add(newpc);
-        newpc.Costs__c = 10;
-        draftpcs.add(newpc);
 
-        ProjectBudgetTableController.saveCosts(draftpcs, existingpcs, new List<Project_Income__c>(), projectRetrieved.Id);
+        Project_Cost__c newpcDraft = new Project_Cost__c();
+        newpcDraft.Case__c = projectRetrieved.Id;
+        newpcDraft.Costs__c = 10;
+        draftpcs.add(newpcDraft);
+
+        //Add temporary Ids
+        List<Object> draftpcsWithIds = addTemporaryIds(draftpcs, 'Project_Cost__c', existingpcs.size());
+        List<Object> existingpcsWithIds = addTemporaryIds(existingpcs, 'Project_Cost__c', 1);
+
+        ProjectBudgetTableController.saveCosts(draftpcsWithIds, existingpcsWithIds, new List<Project_Income__c>(), projectRetrieved.Id);
 
         List<Project_Cost__c> pcsAfterInsert = [SELECT Id, Cost_heading__c, Costs__c, Case__c FROM Project_Cost__c WHERE Case__r.Id =: projectRetrieved.Id ORDER BY Costs__c];
 
@@ -76,6 +93,9 @@ public with sharing class ProjectBudgetTableController_Test
         Project_Cost__c updatepc = pcsAfterInsert[0];
         updatepc.Cost_heading__c = 'Recruitment';
         draftpcs.add(updatepc);
+
+        draftpcsWithIds = addTemporaryIds(draftpcs, 'Project_Cost__c', existingpcs.size());
+        existingpcsWithIds = addTemporaryIds(pcsAfterInsert, 'Project_Cost__c', 1);
 
         ProjectBudgetTableController.saveCosts(draftpcs, pcsAfterInsert, new List<Project_Income__c>(), projectRetrieved.Id);
 
@@ -90,6 +110,7 @@ public with sharing class ProjectBudgetTableController_Test
         Case projectRetrieved = TestDataFactory.createSmallGrantCase(false);
         projectRetrieved.Confirm_award_amount__c = true;
         insert projectRetrieved;
+
         projectRetrieved = ProjectBudgetTableController.getProject(projectRetrieved.Id);
 
         Assert.isNotNull(projectRetrieved);
@@ -99,18 +120,25 @@ public with sharing class ProjectBudgetTableController_Test
 
         List<Project_Income__c> existingccs = TestDataFactory.createProjectIncome(projectRetrieved.Id, 3);
         insert existingccs;
-
-        //Create a new cost and add to draft costs to mimic a new cost row added and saved.
-        List<Project_Cost__c> draftpcs = new List<Project_Cost__c>();
-
+        
+        //Create a new cost and add to existing pcs.
         Project_Cost__c newpc = new Project_Cost__c();
         newpc.Case__c = projectRetrieved.Id;
-        newpc.Costs__c = 10;
+        existingpcs.add(newpc);
+
+        //Give the same cost a value in a field and add to draft costs to mimic a draft value entered.
+        List<Project_Cost__c> draftpcs = new List<Project_Cost__c>();
+        newpc.Costs__c = 20;
         draftpcs.add(newpc);
+
+        //Add temporary Ids
+        List<Object> draftpcsWithIds = addTemporaryIds(draftpcs, 'Project_Cost__c', existingpcs.size());
+        List<Object> existingpcsWithIds = addTemporaryIds(existingpcs, 'Project_Cost__c', 1);
+        List<Object> existingccsWithIds = addTemporaryIds(existingccs, 'Project_Income__c', existingccs.size());
 
         try 
         {
-            ProjectBudgetTableController.saveCosts(draftpcs, existingpcs, existingccs, projectRetrieved.Id);
+            ProjectBudgetTableController.saveCosts(draftpcsWithIds, existingpcsWithIds, existingccsWithIds, projectRetrieved.Id);
         } 
         catch (AuraHandledException e) 
         {
@@ -133,11 +161,18 @@ public with sharing class ProjectBudgetTableController_Test
 
         Project_Income__c newcc = new Project_Income__c();
         newcc.Case__c = projectRetrieved.Id;
+        newcc.Description_for_cash_contributions__c = 'TestDesc';
         existingccs.add(newcc);
-        newcc.Amount_you_have_received__c = 10;
-        draftccs.add(newcc);
 
-        ProjectBudgetTableController.saveCashContributions(draftccs, existingccs, new List<Project_Cost__c>(), projectRetrieved.Id);
+        Project_Income__c newccDraft = new Project_Income__c();
+        newccDraft.Amount_you_have_received__c = 10;
+        draftccs.add(newccDraft);
+
+        //Add temporary Ids
+        List<Object> draftccsWithIds = addTemporaryIds(draftccs, 'Project_Income__c', existingccs.size());
+        List<Object> existingccsWithIds = addTemporaryIds(existingccs, 'Project_Income__c', 1);
+
+        ProjectBudgetTableController.saveCashContributions(draftccsWithIds, existingccsWithIds, new List<Project_Cost__c>(), projectRetrieved.Id);
 
         List<Project_Income__c> ccsAfterInsert = [SELECT Id, Case__c, Amount_you_have_received__c, Description_for_cash_contributions__c FROM Project_Income__c WHERE Case__r.Id =: projectRetrieved.Id ORDER BY Amount_you_have_received__c];
 
@@ -150,11 +185,15 @@ public with sharing class ProjectBudgetTableController_Test
         updatecc.Description_for_cash_contributions__c = 'testtest';
         draftccs.add(updatecc);
 
-        //ProjectBudgetTableController.saveCashContributions(draftccs, ccsAfterInsert, new List<Project_Cost__c>(), projectRetrieved.Id);
+        //Add temporary Ids
+        draftccsWithIds = addTemporaryIds(draftccs, 'Project_Income__c', existingccs.size());
+        existingccsWithIds = addTemporaryIds(ccsAfterInsert, 'Project_Income__c', 1);
 
-        //Project_Income__c updatedcc = [SELECT Id, Description_for_cash_contributions__c FROM Project_Income__c WHERE Id =: ccsAfterInsert[0].Id];
+        ProjectBudgetTableController.saveCashContributions(draftccs, ccsAfterInsert, new List<Project_Cost__c>(), projectRetrieved.Id);
 
-        //Assert.areEqual('testtest', updatedcc.Description_for_cash_contributions__c);
+        Project_Income__c updatedcc = [SELECT Id, Description_for_cash_contributions__c FROM Project_Income__c WHERE Id =: ccsAfterInsert[0].Id];
+
+        Assert.areEqual('testtest', updatedcc.Description_for_cash_contributions__c);
     }
 
     @isTest
@@ -163,6 +202,7 @@ public with sharing class ProjectBudgetTableController_Test
         Case projectRetrieved = TestDataFactory.createSmallGrantCase(false);
         projectRetrieved.Confirm_award_amount__c = true;
         insert projectRetrieved;
+
         projectRetrieved = ProjectBudgetTableController.getProject(projectRetrieved.Id);
 
         Assert.isNotNull(projectRetrieved);
@@ -180,12 +220,17 @@ public with sharing class ProjectBudgetTableController_Test
 
         //Give the same cc a value in a field and add to draft ccs to mimic a draft value entered.
         List<Project_Income__c> draftccs = new List<Project_Income__c>();
-        newcc.Description_for_cash_contributions__c = 'testtest';
+        newcc.Amount_you_have_received__c = 20;
         draftccs.add(newcc);
+
+        //Add temporary Ids
+        List<Object> draftccsWithIds = addTemporaryIds(draftccs, 'Project_Income__c', existingccs.size());
+        List<Object> existingccsWithIds = addTemporaryIds(existingccs, 'Project_Income__c', 1);
+        List<Object> existingpcsWithIds = addTemporaryIds(existingpcs, 'Project_Cost__c', existingpcs.size());
 
         try 
         {
-            ProjectBudgetTableController.saveCashContributions(draftccs, existingccs, existingpcs, projectRetrieved.Id);
+            ProjectBudgetTableController.saveCashContributions(draftccsWithIds, existingccsWithIds, existingpcsWithIds, projectRetrieved.Id);
         } 
         catch (AuraHandledException e) 
         {
@@ -248,6 +293,35 @@ public with sharing class ProjectBudgetTableController_Test
     }
 
 
+    public static List<Object> addTemporaryIds(List<SObject> records, String objectName, Integer numberOfExisting)
+    {
+        List<Object> recordsWithIds = new List<Object>();
+
+        for(Integer i = 0; i < records.size(); i++)
+        {
+            String draftString = JSON.serialize(records[i]);
+
+            if(draftString.contains('"Id":"') == false)
+            {
+                draftString = draftString.removeEnd('}') + ',"' + 'Id' + '":"' + 'costrow-' + String.valueOf(i+numberOfExisting) + '"}';
+            }
+
+            Object recordWithId;
+
+            if(objectName == 'Project_Cost__c')
+            {
+                recordWithId = JSON.deserialize(draftString, Project_Cost__c.class);
+            }
+            else if(objectName == 'Project_Income__c')
+            {
+                recordWithId = JSON.deserialize(draftString, Project_Income__c.class);
+            }
+
+            recordsWithIds.add(recordWithId);
+        }
+
+        return recordsWithIds;
+    }
 
 
     /*@isTest
