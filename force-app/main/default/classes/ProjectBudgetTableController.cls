@@ -69,6 +69,7 @@ public with sharing class ProjectBudgetTableController
     String rtName = Schema.SObjectType.Project_Cost__c.getRecordTypeInfosById().get(recordType).getDeveloperName();
     String sortClause = '';
 
+    //Determine how to sort based on rt/variation.
     if((rtName == 'Large_Grants_Delivery' && variation == 'Large_Development_Delivery') || rtName == 'Large_Grants_Actual_Delivery')
     {
       sortClause = 'Cost_Type__c, Total_Cost__c DESC';
@@ -386,7 +387,7 @@ public with sharing class ProjectBudgetTableController
       //Calculate total costs and grant requested.
       Decimal totalCost = 0.0;
       Decimal grantRequested = 0.0;
-
+      
       for(Project_Cost__c cost : existingCostsMap.values())
       {
         if(cost.Costs__c != null)

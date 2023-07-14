@@ -415,7 +415,7 @@ export default class ProjectBudgetTable extends LightningElement
                     projectCostsAmountTotal = projectCostsAmountTotal + Number(ele.Costs__c);
                 })
 
-                //Add row.
+                //Add total row.
                 this.projectCostsTotalRow.push(
                 {
                     Id: 'totalRow',
