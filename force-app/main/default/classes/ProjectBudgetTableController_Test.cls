@@ -13,6 +13,8 @@ public with sharing class ProjectBudgetTableController_Test
     @isTest
     public static void getProject_Test() 
     {
+        TestDataFactory.SetupBaseTestData();
+
         Case projectRetrieved = ProjectBudgetTableController.getProject(TestDataFactory.createSmallGrantCase(true).Id);
 
         Assert.isNotNull(projectRetrieved);
@@ -21,6 +23,8 @@ public with sharing class ProjectBudgetTableController_Test
     @isTest
     public static void getProjectCosts_Test() 
     {
+        TestDataFactory.SetupBaseTestData();
+
         Case projectRetrieved = ProjectBudgetTableController.getProject(TestDataFactory.createSmallGrantCase(true).Id);
 
         Assert.isNotNull(projectRetrieved);
@@ -39,6 +43,8 @@ public with sharing class ProjectBudgetTableController_Test
     @isTest
     public static void getCashContributions_Test() 
     {
+        TestDataFactory.SetupBaseTestData();
+
         Case projectRetrieved = ProjectBudgetTableController.getProject(TestDataFactory.createSmallGrantCase(true).Id);
 
         Assert.isNotNull(projectRetrieved);
@@ -57,6 +63,8 @@ public with sharing class ProjectBudgetTableController_Test
     @isTest
     public static void saveCosts_Test()
     {
+        TestDataFactory.SetupBaseTestData();
+
         Case projectRetrieved = ProjectBudgetTableController.getProject(TestDataFactory.createSmallGrantCase(true).Id);
 
         Assert.isNotNull(projectRetrieved);
@@ -107,6 +115,8 @@ public with sharing class ProjectBudgetTableController_Test
     @isTest
     public static void saveCosts_Test_FailValidate()
     {
+        TestDataFactory.SetupBaseTestData();
+
         Case projectRetrieved = TestDataFactory.createSmallGrantCase(false);
         projectRetrieved.Confirm_award_amount__c = true;
         insert projectRetrieved;
@@ -149,6 +159,8 @@ public with sharing class ProjectBudgetTableController_Test
     @isTest
     public static void saveCashContributions_Test()
     {
+        TestDataFactory.SetupBaseTestData();
+
         Case projectRetrieved = ProjectBudgetTableController.getProject(TestDataFactory.createSmallGrantCase(true).Id);
 
         Assert.isNotNull(projectRetrieved);
@@ -199,6 +211,8 @@ public with sharing class ProjectBudgetTableController_Test
     @isTest
     public static void saveCashContributions_Test_FailValidate()
     {
+        TestDataFactory.SetupBaseTestData();
+
         Case projectRetrieved = TestDataFactory.createSmallGrantCase(false);
         projectRetrieved.Confirm_award_amount__c = true;
         insert projectRetrieved;
@@ -241,6 +255,8 @@ public with sharing class ProjectBudgetTableController_Test
     @isTest
     public static void deleteCosts_Test()
     {
+        TestDataFactory.SetupBaseTestData();
+
         Case projectRetrieved = TestDataFactory.createSmallGrantCase(true);
 
         Assert.isNotNull(projectRetrieved);
@@ -258,6 +274,8 @@ public with sharing class ProjectBudgetTableController_Test
     @isTest
     public static void deleteCash_Test()
     {
+        TestDataFactory.SetupBaseTestData();
+
         Case projectRetrieved = TestDataFactory.createSmallGrantCase(true);
 
         Assert.isNotNull(projectRetrieved);
@@ -275,6 +293,8 @@ public with sharing class ProjectBudgetTableController_Test
     @isTest
     public static void getRecordTypeMapping_Test()
     {
+        TestDataFactory.SetupBaseTestData();
+
         Case projectRetrieved = ProjectBudgetTableController.getProject(TestDataFactory.createSmallGrantCase(true).Id);
         
         ProjectBudgetTableController.RecordTypeMappingWrapper rtms = ProjectBudgetTableController.getRecordTypeMapping(projectRetrieved.RecordType.DeveloperName, '');
@@ -285,6 +305,8 @@ public with sharing class ProjectBudgetTableController_Test
     @isTest
     public static void getRecordTypeMapping_Test_Variation()
     {
+        TestDataFactory.SetupBaseTestData();
+
         Case projectRetrieved = ProjectBudgetTableController.getProject(TestDataFactory.createLargeGrantCase(true).Id);
         
         ProjectBudgetTableController.RecordTypeMappingWrapper rtms = ProjectBudgetTableController.getRecordTypeMapping(projectRetrieved.RecordType.DeveloperName, 'Large_Development_Delivery');
@@ -322,28 +344,4 @@ public with sharing class ProjectBudgetTableController_Test
 
         return recordsWithIds;
     }
-
-
-    /*@isTest
-    public static void saveCashContributions_Test()
-    {
-        Case projectRetrieved = ProjectBudgetTableController.getProject(TestDataFactory.createSmallGrantCase(true).Id);
-
-        Assert.isNotNull(projectRetrieved);
-
-        List<Project_Income__c> existingccs = TestDataFactory.createProjectIncome(projectRetrieved.Id, 3);
-        insert existingccs;
-
-        //Create a new cash contribution and add to existing ccs.
-        Project_Income__c newcc = new Project_Income__c();
-        newcc.Case__c = projectRetrieved.Id;
-        existingccs.add(newcc);
-
-        //Give the same cc a value in a field and add to draft ccs to mimic a draft value entered.
-        List<Project_Income__c> draftccs = new List<Project_Income__c>();
-        newcc.Description_for_cash_contributions__c = 'testtest';
-        draftccs.add(newcc);
-
-        ProjectBudgetTableController.saveCashContributions(draftccs, existingccs, new List<Project_Cost__c>(), projectRetrieved.Id);
-    }*/
 }

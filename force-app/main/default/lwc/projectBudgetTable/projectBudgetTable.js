@@ -88,6 +88,9 @@ export default class ProjectBudgetTable extends LightningElement
     cashContributionsAmountTotal = 0;
     cashContributionsTotalRow = [];
 
+    costRowCounter = 0
+    cashRowCounter = 0
+
     costHeadingDeliveryControllerValues;
 
     get costCardTitle()
@@ -397,6 +400,7 @@ export default class ProjectBudgetTable extends LightningElement
             //Assign to results variable first to allow apexRefresh on save.
             this.projectsCostsResult = result;
             this.projectCosts = JSON.parse(JSON.stringify(this.projectsCostsResult.data));
+            this.costRowCounter = this.projectCosts.length;
 
             var projectCostsAmountTotal = 0;
             var projectCostsVatTotal = 0;
@@ -520,6 +524,7 @@ export default class ProjectBudgetTable extends LightningElement
             //Assign to results variable first to allow apexRefresh on save.
             this.cashContributionsResult = result;
             this.cashContributions = JSON.parse(JSON.stringify(this.cashContributionsResult.data));
+            this.cashRowCounter = this.cashContributions.length;
 
             if(this.largeGrant == true)
             {
@@ -1020,22 +1025,24 @@ export default class ProjectBudgetTable extends LightningElement
 
     async handleAddProjectCost(event)
     {
-        let idValue = this.projectCosts.length;
-        let newCost = [{Id: 'costrow-' + idValue, Case__c: this.recordId, Costs__c: 0, Cost_heading__c: '', Cost_Type__c: '', Vat__c: 0, Cost_heading_Delivery__c: '',
+        //let idValue = this.projectCosts.length;
+        let newCost = [{Id: 'costrow-' + this.costRowCounter, Case__c: this.recordId, Costs__c: 0, Cost_heading__c: '', Cost_Type__c: '', Vat__c: 0, Cost_heading_Delivery__c: '',
                         Project_Cost_Description__c: '', RecordTypeId: this.recordTypeMapping.costRecordTypeId, 
                         costHeadingOptions: this.costHeadingOptions, costHeadingDeliveryOptions: [], costTypeOptions: this.costTypeOptions}];
 
         this.projectCosts = this.projectCosts.concat(newCost);
+        this.costRowCounter++;
     }
 
     async handleAddCashContributions(event)
     {
-        let idValue = this.cashContributions.length;
-        let newCashContribution = [{Id: 'cashrow-' + idValue, Case__c: this.recordId, Value__c: 0, Amount_you_have_received__c: 0, Secured_non_cash_contributions__c: '',
+        //let idValue = this.cashContributions.length;
+        let newCashContribution = [{Id: 'cashrow-' + this.cashRowCounter, Case__c: this.recordId, Value__c: 0, Amount_you_have_received__c: 0, Secured_non_cash_contributions__c: '',
                                     Description_for_cash_contributions__c: '', Source_Of_Funding__c: '', RecordTypeId: this.recordTypeMapping.cashRecordTypeId, 
                                     securedOptions: this.securedOptions, fundingSourceOptions: this.fundingSourceOptions}];
         
         this.cashContributions = this.cashContributions.concat(newCashContribution);
+        this.cashRowCounter++;
     }
 
     handleCellChange(event)

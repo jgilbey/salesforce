@@ -148,8 +148,8 @@ public class TestDataFactory {
       Case cs= New Case(Description = 'Test Case',                             
                                 Status = 'New',
                                 RecordTypeId= recordTypeId,
-                                //AccountId = testAccount.id,
-                                //ContactId = testContact.id,                                
+                                AccountId = testAccount.id,
+                                ContactId = testContact.id,                                
                                 Project_Post_Code__c = 'BR12345',
                                 Grant_Expiry_Date__c = Date.today().AddDays(5)
                                 );
@@ -202,8 +202,8 @@ public class TestDataFactory {
       Case cs= New Case(Description = 'Test Case Large Grant',                             
                                 Status = 'New',
                                 RecordTypeId= recordTypeId,
-                                //ContactId = testContact.id,
-                                //AccountId = testAccount.id,
+                                ContactId = testContact.id,
+                                AccountId = testAccount.id,
                                 Project_Post_Code__c = 'BR12345',
                                 Grant_Expiry_Date__c = Date.today().AddDays(5)
                                 );
@@ -236,22 +236,6 @@ public class TestDataFactory {
                                 RecordTypeId= recordTypeId,
                                 ContactId = testContact.id,
                                 AccountId = testAccount.id,
-                                Project_Post_Code__c = 'BR12345',
-                                Grant_Expiry_Date__c = Date.today().AddDays(5)
-                                );
-  
-      if(isInsert){
-          insert cs;
-      }
-      return cs;
-    }
-    public static Case createLarge(boolean isInsert){
-      Id recordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('Large').getRecordTypeId();
-      Case cs= New Case(Description = 'Test Case Large',                             
-                                Status = 'New',
-                                RecordTypeId= recordTypeId,
-                                //ContactId = testContact.id,
-                                //AccountId = testAccount.id,
                                 Project_Post_Code__c = 'BR12345',
                                 Grant_Expiry_Date__c = Date.today().AddDays(5)
                                 );
