@@ -54,7 +54,9 @@ public with sharing class ProjectBudgetTableController
         Total_actual_activity_costs__c,
         Delivery_grant_percentage__c,
         Grant_percentage_proposed_for_delivery__c,
-        Total_actual_delivery_cash_contributions__c
+        Total_actual_delivery_cash_contributions__c,
+        Total_delivery_costs_VAT__c,
+        Agreed_costs_delivery__c
       FROM case
       WHERE Id = :projectId
     ];
@@ -415,12 +417,29 @@ public with sharing class ProjectBudgetTableController
 
       grantRequested = totalCost - grantRequested;
 
-      if(project.Total_Cost__c != totalCost ||
+      if(project.RecordType.DeveloperName == 'Memorial' && (project.Total_amount_cost__c != totalCost || project.NHMF_grant_request__c != grantRequested))
+      {
+        return false;
+      }
+      else if(project.RecordType.DeveloperName == 'Large_Development_250_500k' && (project.Total_Costs_Large_Development__c != totalCost || project.Grant_requested__c != grantRequested)) //Add in potential delivery values or make them separate? TBC.
+      {
+        return false;
+      }
+      else if(project.RecordType.DeveloperName == 'Large' && (project.Total_actual_delivery_costs__c != totalCost || project.Delivery_grant_request__c != grantRequested))
+      {
+        return false;
+      }
+      else if(project.Total_Cost__c != totalCost || project.Grant_requested__c != grantRequested)
+      {
+        return false;
+      }
+
+      /*if(project.Total_Cost__c != totalCost ||
         (project.RecordType.DeveloperName != 'Memorial' && project.Grant_requested__c != grantRequested) ||
         (project.RecordType.DeveloperName == 'Memorial' && project.NHMF_grant_request__c != grantRequested))
       {
         return false;
-      }
+      }*/
     }
 
     return true;
@@ -465,7 +484,7 @@ public with sharing class ProjectBudgetTableController
         {
           totalCost += cost.Costs__c;
         }
-        else if(cost.Vat__c != null)
+        if(cost.Vat__c != null)
         {
           totalCost += cost.Vat__c;
         }
