@@ -121,7 +121,7 @@ public with sharing class ProjectBudgetTableController
   }
 
   @AuraEnabled
-  public static string saveCosts(Object draftCosts, Object existingCostsValues, Object cashContributions, String projectId)
+  public static string saveCosts(Object draftCosts, Object existingCostsValues, Object cashContributions, String projectId, String variation)
   {
     List<Project_Cost__c> costsToInsert = new List<Project_Cost__c>();
     List<Project_Cost__c> costsToUpdate = new List<Project_Cost__c>();
@@ -132,7 +132,7 @@ public with sharing class ProjectBudgetTableController
     List<Project_Income__c> cashContributionValues = (List<Project_Income__c>)JSON.deserialize(JSON.serialize(cashContributions), List<Project_Income__c>.class);
 
     //Validate that we can save these costs.
-    if(validateCostSave(existingCostValues, draftCostValues, cashContributionValues, projectId) == false)
+    if(validateCostSave(existingCostValues, draftCostValues, cashContributionValues, projectId, variation) == false)
     {
       CustomExceptionData err = new CustomExceptionData('Error', System.Label.Budget_Management_Save_Error, null);
       AuraHandledException ae = new AuraHandledException(JSON.serialize(err));
@@ -204,7 +204,7 @@ public with sharing class ProjectBudgetTableController
   }
 
   @AuraEnabled
-  public static string saveCashContributions(Object draftCash, Object existingCash, Object existingCosts, String projectId)
+  public static string saveCashContributions(Object draftCash, Object existingCash, Object existingCosts, String projectId, String variation)
   {
     List<Project_Income__c> cashToInsert = new List<Project_Income__c>();
     List<Project_Income__c> cashToUpdate = new List<Project_Income__c>();
@@ -215,7 +215,7 @@ public with sharing class ProjectBudgetTableController
     List<Project_Cost__c> existingCostValues = (List<Project_Cost__c>)JSON.deserialize(JSON.serialize(existingCosts), List<Project_Cost__c>.class);
 
     //Validate that we can save these contributions.
-    if(validateCashSave(existingCashValues, draftCashValues, existingCostValues, projectId) == false)
+    if(validateCashSave(existingCashValues, draftCashValues, existingCostValues, projectId, variation) == false)
     {
       CustomExceptionData err = new CustomExceptionData('Error', System.Label.Budget_Management_Save_Error, null);
       AuraHandledException ae = new AuraHandledException(JSON.serialize(err));
@@ -358,9 +358,10 @@ public with sharing class ProjectBudgetTableController
     return null;
   }
 
-  public static Boolean validateCostSave(List<Project_Cost__c> existingCostValues, List<Project_Cost__c> draftCostValues, List<Project_Income__c> cashContributionValues, String projectId)
+  public static Boolean validateCostSave(List<Project_Cost__c> existingCostValues, List<Project_Cost__c> draftCostValues, List<Project_Income__c> cashContributionValues, String projectId, String variation)
   {
-    Case project = [SELECT Id, Confirm_award_amount__c, Total_Cost__c, Grant_requested__c, NHMF_grant_request__c, RecordType.DeveloperName
+    Case project = [SELECT Id, Confirm_award_amount__c, Total_Cost__c, Grant_requested__c, NHMF_grant_request__c, Total_amount_cost__c, Total_costs_proposed_for_delivery__c, Grant_request_proposed_for_delivery__c,
+                    Total_Costs_Large_Development__c, Total_actual_delivery_costs__c, Delivery_grant_request__c, RecordType.DeveloperName
                     FROM Case WHERE Id =: projectId];
 
     Map<String, Project_Cost__c> existingCostsMap = new Map<String, Project_Cost__c>(existingCostValues);
@@ -409,9 +410,9 @@ public with sharing class ProjectBudgetTableController
         {
           grantRequested += cash.Value__c;
         }
-        else if(cash.Amount_current_phase__c != null)
+        else if(cash.Amount_you_have_received__c != null)
         {
-          grantRequested += cash.Amount_current_phase__c;
+          grantRequested += cash.Amount_you_have_received__c;
         } 
       }
 
@@ -421,15 +422,22 @@ public with sharing class ProjectBudgetTableController
       {
         return false;
       }
-      else if(project.RecordType.DeveloperName == 'Large_Development_250_500k' && (project.Total_Costs_Large_Development__c != totalCost || project.Grant_requested__c != grantRequested)) //Add in potential delivery values or make them separate? TBC.
+      else if(project.RecordType.DeveloperName == 'Large_Development_250_500k')
       {
-        return false;
+        if(variation == 'Large_Development_Delivery' && (project.Total_costs_proposed_for_delivery__c != totalCost || project.Grant_request_proposed_for_delivery__c != grantRequested))
+        {
+          return false;
+        }
+        else if(variation == '' && (project.Total_Costs_Large_Development__c != totalCost || project.Grant_requested__c != grantRequested))
+        {
+          return false;
+        }
       }
       else if(project.RecordType.DeveloperName == 'Large' && (project.Total_actual_delivery_costs__c != totalCost || project.Delivery_grant_request__c != grantRequested))
       {
         return false;
       }
-      else if(project.Total_Cost__c != totalCost || project.Grant_requested__c != grantRequested)
+      else if((project.RecordType.DeveloperName == 'Small_Grant_3_10k' || project.RecordType.DeveloperName == 'Medium') && (project.Total_Cost__c != totalCost || project.Grant_requested__c != grantRequested))
       {
         return false;
       }
@@ -445,10 +453,10 @@ public with sharing class ProjectBudgetTableController
     return true;
   }
 
-  public static Boolean validateCashSave(List<Project_Income__c> existingCashValues, List<Project_Income__c> draftCashValues, List<Project_Cost__c> projectCostValues, String projectId)
+  public static Boolean validateCashSave(List<Project_Income__c> existingCashValues, List<Project_Income__c> draftCashValues, List<Project_Cost__c> projectCostValues, String projectId, String variation)
   {
-    
-    Case project = [SELECT Id, Confirm_award_amount__c, Total_Cost__c, Grant_requested__c, NHMF_grant_request__c, RecordType.DeveloperName
+    Case project = [SELECT Id, Confirm_award_amount__c, Total_Cost__c, Grant_requested__c, NHMF_grant_request__c, Total_amount_cost__c, Total_costs_proposed_for_delivery__c, Grant_request_proposed_for_delivery__c,
+                    Total_Costs_Large_Development__c, Total_actual_delivery_costs__c, Delivery_grant_request__c, RecordType.DeveloperName
                     FROM Case WHERE Id =: projectId];
 
     Map<String, Project_Income__c> existingCashMap = new Map<String, Project_Income__c>(existingCashValues);
@@ -504,12 +512,36 @@ public with sharing class ProjectBudgetTableController
 
       grantRequested = totalCost - grantRequested;
 
-      if(project.Total_Cost__c != totalCost ||
+      if(project.RecordType.DeveloperName == 'Memorial' && (project.Total_amount_cost__c != totalCost || project.NHMF_grant_request__c != grantRequested))
+      {
+        return false;
+      }
+      else if(project.RecordType.DeveloperName == 'Large_Development_250_500k')
+      {
+        if(variation == 'Large_Development_Delivery' && (project.Total_costs_proposed_for_delivery__c != totalCost || project.Grant_request_proposed_for_delivery__c != grantRequested))
+        {
+          return false;
+        }
+        else if(variation == '' && (project.Total_Costs_Large_Development__c != totalCost || project.Grant_requested__c != grantRequested))
+        {
+          return false;
+        }
+      }
+      else if(project.RecordType.DeveloperName == 'Large' && (project.Total_actual_delivery_costs__c != totalCost || project.Delivery_grant_request__c != grantRequested))
+      {
+        return false;
+      }
+      else if((project.RecordType.DeveloperName == 'Small_Grant_3_10k' || project.RecordType.DeveloperName == 'Medium') && (project.Total_Cost__c != totalCost || project.Grant_requested__c != grantRequested))
+      {
+        return false;
+      }
+
+      /*if(project.Total_Cost__c != totalCost ||
         (project.RecordType.DeveloperName != 'Memorial' && project.Grant_requested__c != grantRequested) ||
         (project.RecordType.DeveloperName == 'Memorial' && project.NHMF_grant_request__c != grantRequested))
       {
         return false;
-      }
+      }*/
     }
 
     return true;

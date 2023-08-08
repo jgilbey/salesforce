@@ -89,7 +89,7 @@ public with sharing class ProjectBudgetTableController_Test
         List<Object> draftpcsWithIds = addTemporaryIds(draftpcs, 'Project_Cost__c', existingpcs.size());
         List<Object> existingpcsWithIds = addTemporaryIds(existingpcs, 'Project_Cost__c', 1);
 
-        ProjectBudgetTableController.saveCosts(draftpcsWithIds, existingpcsWithIds, new List<Project_Income__c>(), projectRetrieved.Id);
+        ProjectBudgetTableController.saveCosts(draftpcsWithIds, existingpcsWithIds, new List<Project_Income__c>(), projectRetrieved.Id, '');
 
         List<Project_Cost__c> pcsAfterInsert = [SELECT Id, Cost_heading__c, Costs__c, Case__c FROM Project_Cost__c WHERE Case__r.Id =: projectRetrieved.Id ORDER BY Costs__c];
 
@@ -105,7 +105,7 @@ public with sharing class ProjectBudgetTableController_Test
         draftpcsWithIds = addTemporaryIds(draftpcs, 'Project_Cost__c', existingpcs.size());
         existingpcsWithIds = addTemporaryIds(pcsAfterInsert, 'Project_Cost__c', 1);
 
-        ProjectBudgetTableController.saveCosts(draftpcs, pcsAfterInsert, new List<Project_Income__c>(), projectRetrieved.Id);
+        ProjectBudgetTableController.saveCosts(draftpcs, pcsAfterInsert, new List<Project_Income__c>(), projectRetrieved.Id, '');
 
         Project_Cost__c updatedpc = [SELECT Id, Costs__c, Cost_heading__c FROM Project_Cost__c WHERE Id =: draftpcs[0].Id];
 
@@ -148,7 +148,7 @@ public with sharing class ProjectBudgetTableController_Test
 
         try 
         {
-            ProjectBudgetTableController.saveCosts(draftpcsWithIds, existingpcsWithIds, existingccsWithIds, projectRetrieved.Id);
+            ProjectBudgetTableController.saveCosts(draftpcsWithIds, existingpcsWithIds, existingccsWithIds, projectRetrieved.Id, '');
         } 
         catch (AuraHandledException e) 
         {
@@ -184,7 +184,7 @@ public with sharing class ProjectBudgetTableController_Test
         List<Object> draftccsWithIds = addTemporaryIds(draftccs, 'Project_Income__c', existingccs.size());
         List<Object> existingccsWithIds = addTemporaryIds(existingccs, 'Project_Income__c', 1);
 
-        ProjectBudgetTableController.saveCashContributions(draftccsWithIds, existingccsWithIds, new List<Project_Cost__c>(), projectRetrieved.Id);
+        ProjectBudgetTableController.saveCashContributions(draftccsWithIds, existingccsWithIds, new List<Project_Cost__c>(), projectRetrieved.Id, '');
 
         List<Project_Income__c> ccsAfterInsert = [SELECT Id, Case__c, Amount_you_have_received__c, Description_for_cash_contributions__c FROM Project_Income__c WHERE Case__r.Id =: projectRetrieved.Id ORDER BY Amount_you_have_received__c];
 
@@ -201,7 +201,7 @@ public with sharing class ProjectBudgetTableController_Test
         draftccsWithIds = addTemporaryIds(draftccs, 'Project_Income__c', existingccs.size());
         existingccsWithIds = addTemporaryIds(ccsAfterInsert, 'Project_Income__c', 1);
 
-        ProjectBudgetTableController.saveCashContributions(draftccs, ccsAfterInsert, new List<Project_Cost__c>(), projectRetrieved.Id);
+        ProjectBudgetTableController.saveCashContributions(draftccs, ccsAfterInsert, new List<Project_Cost__c>(), projectRetrieved.Id, '');
 
         Project_Income__c updatedcc = [SELECT Id, Description_for_cash_contributions__c FROM Project_Income__c WHERE Id =: ccsAfterInsert[0].Id];
 
@@ -244,7 +244,7 @@ public with sharing class ProjectBudgetTableController_Test
 
         try 
         {
-            ProjectBudgetTableController.saveCashContributions(draftccsWithIds, existingccsWithIds, existingpcsWithIds, projectRetrieved.Id);
+            ProjectBudgetTableController.saveCashContributions(draftccsWithIds, existingccsWithIds, existingpcsWithIds, projectRetrieved.Id, '');
         } 
         catch (AuraHandledException e) 
         {

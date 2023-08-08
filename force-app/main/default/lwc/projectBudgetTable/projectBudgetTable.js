@@ -18,6 +18,7 @@ import checkGrantReviewsPending from '@salesforce/apex/ProjectBudgetTableControl
 
 import PROJECT_BUDGET_DELETE_WARNING from "@salesforce/label/c.ProjectBudgetDeleteWarning";
 import PROJECT_BUDGET_DELETE_ERROR from "@salesforce/label/c.ProjectBudgetDeleteError";
+import PROJECT_BUDGET_POTENTIAL_DELIVERY_NO_EDIT from "@salesforce/label/c.ProjectBudgetPotentialDeliveryNoEdit";
 
 import COST_HEADING from "@salesforce/schema/Project_Cost__c.Cost_heading__c";
 import COST_HEADING_DELIVERY from "@salesforce/schema/Project_Cost__c.Cost_heading_Delivery__c";
@@ -594,6 +595,18 @@ export default class ProjectBudgetTable extends LightningElement
 
     async handleCostSave(event) 
     {
+        if(this.variation == 'Large_Development_Delivery' && this.project.Confirm_award_amount__c == true)
+        {
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Error',
+                    message: PROJECT_BUDGET_POTENTIAL_DELIVERY_NO_EDIT,
+                    variant: 'error'
+                })
+            );
+            return;
+        }
+
         this.showSpinner = true;
 
         const updatedFields = event.detail.draftValues;
@@ -608,7 +621,7 @@ export default class ProjectBudgetTable extends LightningElement
             this.removeNonRecordFields(existingCash);
 
             //Apex save records.
-            const result = await saveCosts({draftCosts: updatedFields, existingCostsValues: existingCosts, cashContributions: existingCash, projectId: this.recordId});
+            const result = await saveCosts({draftCosts: updatedFields, existingCostsValues: existingCosts, cashContributions: existingCash, projectId: this.recordId, variation: this.variation});
             this.showSpinner = false;
 
             this.dispatchEvent(
@@ -659,6 +672,18 @@ export default class ProjectBudgetTable extends LightningElement
 
     async handleCashSave(event)
     {
+        if(this.variation == 'Large_Development_Delivery' && this.project.Confirm_award_amount__c == true)
+        {
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Error',
+                    message: PROJECT_BUDGET_POTENTIAL_DELIVERY_NO_EDIT,
+                    variant: 'error'
+                })
+            );
+            return;
+        }
+
         this.showSpinner = true;
 
         const updatedFields = event.detail.draftValues;
@@ -673,7 +698,7 @@ export default class ProjectBudgetTable extends LightningElement
             this.removeNonRecordFields(existingCosts);
 
             //Apex save records.
-            const result = await saveCashContributions({draftCash: updatedFields, existingCash: existingCash, existingCosts: existingCosts, projectId: this.recordId});
+            const result = await saveCashContributions({draftCash: updatedFields, existingCash: existingCash, existingCosts: existingCosts, projectId: this.recordId, variation: this.variation});
             this.showSpinner = false;
 
             this.dispatchEvent(
