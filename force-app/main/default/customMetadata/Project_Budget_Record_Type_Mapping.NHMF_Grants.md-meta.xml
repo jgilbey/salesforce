@@ -7,11 +7,19 @@
         <value xsi:type="xsd:string">NHMF</value>
     </values>
     <values>
+        <field>Programme__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
         <field>Project_Cost_Record_Type_Developer_Name__c</field>
         <value xsi:type="xsd:string">NHMF</value>
     </values>
     <values>
         <field>Project_Record_Type_Developer_Name__c</field>
         <value xsi:type="xsd:string">Memorial</value>
+    </values>
+    <values>
+        <field>Variation__c</field>
+        <value xsi:type="xsd:boolean">false</value>
     </values>
 </CustomMetadata>

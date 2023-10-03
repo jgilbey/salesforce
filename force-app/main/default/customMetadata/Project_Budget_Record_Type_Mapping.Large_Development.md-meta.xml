@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>Small Grants</label>
+    <label>Large Development</label>
     <protected>false</protected>
     <values>
         <field>Cash_Contribu_Record_Type_Developer_Name__c</field>
-        <value xsi:type="xsd:string">Delivery</value>
+        <value xsi:type="xsd:string">Large_Development</value>
     </values>
     <values>
         <field>Programme__c</field>
@@ -12,11 +12,11 @@
     </values>
     <values>
         <field>Project_Cost_Record_Type_Developer_Name__c</field>
-        <value xsi:type="xsd:string">Project_Inc</value>
+        <value xsi:type="xsd:string">Large_Grants_Development</value>
     </values>
     <values>
         <field>Project_Record_Type_Developer_Name__c</field>
-        <value xsi:type="xsd:string">Small_Grant_3_10k</value>
+        <value xsi:type="xsd:string">Large_Development_250_500k</value>
     </values>
     <values>
         <field>Variation__c</field>
