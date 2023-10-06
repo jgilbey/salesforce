@@ -45,13 +45,6 @@ import {
 
 export default class ProjectBudgetTable extends LightningElement 
 {
-    columns;
-    cashColumns;
-    smallGrantProject = "Small_Grant_3_10k";
-    mediumGrantProject = "Medium";
-    nhmfGrantProject = "Memorial";
-    largeGrantDevelopmentProject = "Large_Development_250_500k"
-    largeGrantDeliveryProject = "Large"
     smallGrant = false;
     mediumGrant = false;
     largeGrant = false;
@@ -68,6 +61,7 @@ export default class ProjectBudgetTable extends LightningElement
     projectRecordTypeDeveloperName;
     recordTypeMapping;
 
+    columns;
     projectCosts = [];
     costHeadingOptions;
     costHeadingDeliveryOptions = [];
@@ -79,7 +73,10 @@ export default class ProjectBudgetTable extends LightningElement
     projectCostsVatTotal = 0;
     projectCostsTotal = 0;
     projectCostsTotalRow = [];
+    costCardTitle = '';
+    totalCostColumns = [];
 
+    cashColumns;
     cashContributions = [];
     securedOptions;
     fundingSourceOptions;
@@ -88,96 +85,93 @@ export default class ProjectBudgetTable extends LightningElement
     cashContributionRowsToDelete = [];
     cashContributionsAmountTotal = 0;
     cashContributionsTotalRow = [];
+    totalCashColumns = [];
+    cashCardTitle = '';
 
     costRowCounter = 0
     cashRowCounter = 0
 
     costHeadingDeliveryControllerValues;
 
-    get costCardTitle()
+    defineTitles(displayVersion)
     {
         if(this.variation == 'Large_Development_Delivery')
         {
-            return 'Potential Delivery Costs';
+            this.costCardTitle = 'Potential Delivery Costs';
+            this.cashCardTitle = 'Potential Delivery Cash Contributions';
         }
-        else if(this.project.RecordType.DeveloperName === this.largeGrantDevelopmentProject)
+        else if(displayVersion === 'Large Development')
         {
-            return 'Development Costs'
+            this.costCardTitle = 'Development Costs';
+            this.cashCardTitle = 'Development Cash Contributions';
         }
-        else if(this.project.RecordType.DeveloperName === this.largeGrantDeliveryProject)
+        else if(displayVersion === 'Large Delivery')
         {
-            return 'Delivery Costs'
-        }
-        else
-        {
-            return 'Project Costs';
-        }
-    }
-
-    get cashCardTitle()
-    {
-        if(this.variation == 'Large_Development_Delivery')
-        {
-            return 'Potential Delivery Cash Contributions';
-        }
-        else if(this.project.RecordType.DeveloperName === this.largeGrantDevelopmentProject)
-        {
-            return 'Development Cash Contributions'
-        }
-        else if(this.project.RecordType.DeveloperName === this.largeGrantDeliveryProject)
-        {
-            return 'Delivery Cash Contributions'
+            this.costCardTitle = 'Delivery Costs';
+            this.cashCardTitle = 'Delivery Cash Contributions';
         }
         else
         {
-            return 'Cash Contributions';
+            this.costCardTitle = 'Project Costs';
+            this.cashCardTitle = 'Cash Contributions';
         }
     }
 
-    get totalColumns()
+    defineColumns(displayVersion)
     {
-        if (this.project && this.project.RecordType) 
+        switch (displayVersion) 
         {
-            switch (this.project.RecordType.DeveloperName) 
-            {
-                case this.smallGrantProject:
-                    return smallTotalColumns;
-                case this.mediumGrantProject:
-                    return mediumTotalColumns;
-                case this.nhmfGrantProject:
-                    return mediumTotalColumns;
-                case this.largeGrantDevelopmentProject:
-                    if(this.variation == 'Large_Development_Delivery')
-                    {
-                        return largeTotalColumnsDelivery;
-                    }
-                    else
-                    {
-                        return largeTotalColumns;
-                    }
-                case this.largeGrantDeliveryProject:
-                    return largeTotalColumnsDelivery;
-            }
-        }
-    }
-
-    get totalCashColumns()
-    {
-        if (this.project && this.project.RecordType) 
-        {
-            switch (this.project.RecordType.DeveloperName) 
-            {
-                case this.smallGrantProject:
-                    return totalContributionColumns;
-                case this.mediumGrantProject:
-                    return totalContributionColumns;
-                case this.nhmfGrantProject:
-                    return nhmfTotalContributionColumns;
-                case this.largeGrantDevelopmentProject:
-                    return largeTotalContributionColumns;
-                case this.largeGrantDeliveryProject:
-                    return largeTotalContributionColumns;
-            }
+            case 'Small':
+                this.smallGrant = true;
+                this.columns = smallColumns;
+                this.cashColumns = contributionColumns;
+                this.totalCostColumns = smallTotalColumns;
+                this.totalCashColumns = totalContributionColumns;
+                break;
+            case 'Medium':
+                this.mediumGrant = true;
+                this.columns = mediumColumns;
+                this.cashColumns = contributionColumns;
+                this.totalCostColumns = mediumTotalColumns;
+                this.totalCashColumns = totalContributionColumns;
+                break;
+            case 'NHMF':
+                this.nhmfGrant = true;
+                this.columns = mediumColumns;
+                this.cashColumns = nhmfContributionColumns;
+                this.totalCostColumns = mediumTotalColumns;
+                this.totalCashColumns = nhmfTotalContributionColumns;
+                break;
+            case 'Large Development':
+                if(this.variation == 'Large_Development_Delivery')
+                {
+                    this.largeGrant = true;
+                    this.largeGrantDevelopment = true;
+                    this.columns = largeColumnsDelivery;
+                    this.cashColumns = largeContributionColumns;
+                    this.largeGrantDelivery = true;
+                    this.totalCostColumns = largeTotalColumnsDelivery;
+                    this.totalCashColumns = largeTotalContributionColumns;
+                    break;
+                }
+                else
+                {
+                    this.largeGrant = true;
+                    this.largeGrantDevelopment = true;
+                    this.columns = largeColumns;
+                    this.cashColumns = largeContributionColumns;
+                    this.totalCostColumns = largeTotalColumns;
+                    this.totalCashColumns = largeTotalContributionColumns;
+                    break;
+                }
+            case 'Large Delivery':
+                this.largeGrant = true;
+                this.largeGrantDelivery = true;
+                this.columns = largeColumnsDelivery;
+                this.cashColumns = largeContributionColumns;
+                this.totalCostColumns = largeTotalColumnsDelivery;
+                this.totalCashColumns = largeTotalContributionColumns;
+                break;
         }
     }
 
@@ -190,53 +184,11 @@ export default class ProjectBudgetTable extends LightningElement
             this.projectResult = result;
             this.project = JSON.parse(JSON.stringify(this.projectResult.data));
 
-            if(this.project.RecordType.DeveloperName === this.smallGrantProject)
-            {
-                this.smallGrant = true;
-                this.columns = smallColumns;
-                this.cashColumns = contributionColumns;
-            } 
-            else if(this.project.RecordType.DeveloperName === this.mediumGrantProject)
-            {
-                this.mediumGrant = true;
-                this.columns = mediumColumns;
-                this.cashColumns = contributionColumns;
-            } 
-            else if(this.project.RecordType.DeveloperName === this.largeGrantDevelopmentProject)
-            {
-                this.largeGrant = true;
-                this.largeGrantDevelopment = true;
-
-                if(this.variation == 'Large_Development_Delivery')
-                {
-                    this.columns = largeColumnsDelivery;
-                    this.largeGrantDelivery = true;
-                }
-                else
-                {
-                    this.columns = largeColumns;
-                }
-
-                this.cashColumns = largeContributionColumns;
-            }
-            else if(this.project.RecordType.DeveloperName === this.largeGrantDeliveryProject)
-            {
-                this.largeGrant = true;
-                this.largeGrantDelivery = true;
-                this.columns = largeColumnsDelivery;
-                this.cashColumns = largeContributionColumns;
-            }
-            else if(this.project.RecordType.DeveloperName === this.nhmfGrantProject)
-            {
-                this.nhmfGrant = true;
-                this.columns = mediumColumns;
-                this.cashColumns = nhmfContributionColumns;
-            }
-
-            this.projectRecordTypeDeveloperName = this.project.RecordType.DeveloperName;
-
             //Get Record type mapping custom metadata.
-            this.recordTypeMapping = await getRecordTypeMappings({projectDeveloperName: this.projectRecordTypeDeveloperName, variation: this.variation});
+            this.recordTypeMapping = await getRecordTypeMappings({projectDeveloperName: this.project.RecordType.DeveloperName, variation: this.variation, programme: this.project.Programme__c});
+
+            this.defineTitles(this.recordTypeMapping.displayVersion);
+            this.defineColumns(this.recordTypeMapping.displayVersion);
         }
         else if (result.error)
         {

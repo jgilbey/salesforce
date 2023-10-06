@@ -7,8 +7,12 @@
         <value xsi:type="xsd:string">Migrated_SP3_SP4_Small_and_Medium_Grants</value>
     </values>
     <values>
+        <field>Display_Version__c</field>
+        <value xsi:type="xsd:string">Medium</value>
+    </values>
+    <values>
         <field>Programme__c</field>
-        <value xsi:type="xsd:string">Resilient Heritage � Grants from �10,000 to �250,000</value>
+        <value xsi:type="xsd:string">Resilient Heritage – Grants from £10,000 to £250,000</value>
     </values>
     <values>
         <field>Project_Cost_Record_Type_Developer_Name__c</field>

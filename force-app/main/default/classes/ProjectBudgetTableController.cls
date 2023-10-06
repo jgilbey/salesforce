@@ -56,7 +56,8 @@ public with sharing class ProjectBudgetTableController
         Grant_percentage_proposed_for_delivery__c,
         Total_actual_delivery_cash_contributions__c,
         Total_delivery_costs_VAT__c,
-        Agreed_costs_delivery__c
+        Agreed_costs_delivery__c, 
+        Programme__c
       FROM case
       WHERE Id = :projectId
     ];
@@ -325,30 +326,31 @@ public with sharing class ProjectBudgetTableController
   }
 
   @AuraEnabled
-  public static RecordTypeMappingWrapper getRecordTypeMapping(String projectDeveloperName, String variation)
+  public static RecordTypeMappingWrapper getRecordTypeMapping(String projectDeveloperName, String variation, String programme)
   {
     try 
     {
       List<Project_Budget_Record_Type_Mapping__mdt> rtms = Project_Budget_Record_Type_Mapping__mdt.getAll().values();
+      RecordTypeMappingWrapper recordTypeMapping = new RecordTypeMappingWrapper();
 
       for(Project_Budget_Record_Type_Mapping__mdt rtm : rtms)
       {
-        if(variation != null && rtm.DeveloperName == variation && rtm.Variation__c == true)//Check against variation property first.
+        //Check for variation property first.
+        if((programme != null && rtm.Programme__c == programme && variation != null && rtm.DeveloperName == variation && rtm.Variation__c == true) ||
+            (programme != null && rtm.Programme__c == programme && rtm.Project_Record_Type_Developer_Name__c == projectDeveloperName) ||
+            (variation != null && rtm.DeveloperName == variation && rtm.Variation__c == true && rtm.Programme__c == null) ||
+            (rtm.Project_Record_Type_Developer_Name__c == projectDeveloperName && rtm.Variation__c == false & rtm.Programme__c == null))
         {
-          RecordTypeMappingWrapper recordTypeMapping = new RecordTypeMappingWrapper();
           recordTypeMapping.projectRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(rtm.Project_Record_Type_Developer_Name__c).getRecordTypeId();
           recordTypeMapping.costRecordTypeId = Schema.SObjectType.Project_Cost__c.getRecordTypeInfosByDeveloperName().get(rtm.Project_Cost_Record_Type_Developer_Name__c).getRecordTypeId();
           recordTypeMapping.cashRecordTypeId = Schema.SObjectType.Project_Income__c.getRecordTypeInfosByDeveloperName().get(rtm.Cash_Contribu_Record_Type_Developer_Name__c).getRecordTypeId();
+          recordTypeMapping.displayVersion = rtm.Display_Version__c;
           return recordTypeMapping;
         }
-        else if(rtm.Project_Record_Type_Developer_Name__c == projectDeveloperName && rtm.Variation__c == false)
-        {
-          RecordTypeMappingWrapper recordTypeMapping = new RecordTypeMappingWrapper();
-          recordTypeMapping.projectRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(rtm.Project_Record_Type_Developer_Name__c).getRecordTypeId();
-          recordTypeMapping.costRecordTypeId = Schema.SObjectType.Project_Cost__c.getRecordTypeInfosByDeveloperName().get(rtm.Project_Cost_Record_Type_Developer_Name__c).getRecordTypeId();
-          recordTypeMapping.cashRecordTypeId = Schema.SObjectType.Project_Income__c.getRecordTypeInfosByDeveloperName().get(rtm.Cash_Contribu_Record_Type_Developer_Name__c).getRecordTypeId();
-          return recordTypeMapping;
-        }
+      }
+      if(recordTypeMapping.projectRecordTypeId == null || recordTypeMapping.costRecordTypeId == null || recordTypeMapping.cashRecordTypeId == null)
+      {
+        System.debug(LoggingLevel.ERROR,'No record type mapping has been found.');
       }
     } 
     catch (Exception e) 
@@ -570,6 +572,8 @@ public with sharing class ProjectBudgetTableController
     public String costRecordTypeId;
     @AuraEnabled
     public String cashRecordTypeId;
+    @AuraEnabled
+    public String displayVersion;
   }
 
   //Wrapper class for custom exceptions

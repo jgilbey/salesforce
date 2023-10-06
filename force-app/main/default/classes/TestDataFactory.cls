@@ -48,11 +48,19 @@ public class TestDataFactory {
   }
 
   public static User createTestUser(String name, String contactId ) {
-    String email = name+'@testUser' + Datetime.now().getTime() + '.com';
-    User userRecord = new User(LastName = name,
-                              UserName = email, Email = email                          
-                              );
-    return userRecord;
+    User testUser = new User();
+      	testUser.FirstName = 'John';
+      	testUser.LastName = 'Doe';
+        testUser.Email = 'john@heritagelotteryfund.co.uk';
+        testUser.UserName = 'john@heritagelotteryfund.co.uk.test';
+        testUser.Alias = testUser.UserName.substring(18, 23); 
+        testUser.EmailEncodingKey = 'ISO-8859-1';
+        testUser.TimeZoneSidKey = 'America/Los_Angeles';
+        testUser.LocaleSidKey = 'en_US';
+		testUser.LanguageLocaleKey = 'en_US';
+        testUser.ProfileId = userinfo.getProfileId();
+        //insert testUser;
+        return testUser;
   }
 
   public static User createCommunityUser(String lastName, String contactId) {

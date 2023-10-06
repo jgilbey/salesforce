@@ -7,6 +7,10 @@
         <value xsi:type="xsd:string">Migrated_SP3_Large_Delivery</value>
     </values>
     <values>
+        <field>Display_Version__c</field>
+        <value xsi:type="xsd:string">Large Delivery</value>
+    </values>
+    <values>
         <field>Programme__c</field>
         <value xsi:type="xsd:string">Skills for the Future SP3</value>
     </values>

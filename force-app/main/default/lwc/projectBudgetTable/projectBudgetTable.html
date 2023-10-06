@@ -2,7 +2,7 @@
     Title: ProjectBudgetComponent
 -->
 <template>
-    <template if:true={loading}>
+    <template lwc:if={loading}>
                     <lightning-spinner
                      alternative-text="Loading"
                       size="medium"
@@ -12,20 +12,20 @@
       
         <!-- HEADER -->
         <div class="slds-card__header">
-            <template if:true={recordTypeMapping}>
+            <template lwc:if={recordTypeMapping}>
                 <c-project-budget-form-summary-header project={project} small-grant={smallGrant} medium-grant={mediumGrant} nhmf-grant={nhmfGrant} large-grant-development={largeGrantDevelopment} large-grant-delivery={largeGrantDelivery} variation={variation}></c-project-budget-form-summary-header>
             </template>
         </div>
         <br><br>
         <!--BODY -->
         <div class="slds-media__body">
-            <template if:true={project}>
-                <div if:true={showSpinner}>
+            <template lwc:if={recordTypeMapping}>
+                <div lwc:if={showSpinner}>
                     <lightning-spinner
                         alternative-text="Loading..." variant="brand">
                     </lightning-spinner>
                 </div>
-                <template if:true={projectCosts}>
+                <template lwc:if={projectCosts}>
                     <div>
                         <lightning-card variant="Narrow" title={costCardTitle} class="cardSpinner">
                             <div class="slds-var-m-around_medium slds-clearfix">
@@ -36,7 +36,7 @@
                                 </lightning-button>
                             </div>
                             <div class="slds-var-p-around_small">
-                                <template if:true={projectCostsTotalRow.length}>
+                                <template lwc:if={projectCostsTotalRow.length}>
                                     <c-project-budget-datatable lwc:ref="costsDatatable"
                                         key-field="Id"
                                         data={projectCosts} 
@@ -53,7 +53,7 @@
                                         hide-table-header
                                         key-field="Id"
                                         data={projectCostsTotalRow}
-                                        columns={totalColumns}
+                                        columns={totalCostColumns}
                                         hide-checkbox-column>
                                     </lightning-datatable>
                                 </template>
@@ -62,7 +62,7 @@
                     </div>
                 </template>
                 <br><br>
-                <template if:true={projectCosts}>
+                <template lwc:if={projectCosts}>
                     <div>
                         <lightning-card variant="Narrow" title={cashCardTitle} class="cardSpinner">
                             <div class="slds-var-m-around_medium slds-clearfix">
@@ -73,7 +73,7 @@
                                 </lightning-button>
                             </div>
                             <div class="slds-var-p-around_small">
-                                <template if:true={cashContributionsTotalRow.length}>
+                                <template lwc:if={cashContributionsTotalRow.length}>
                                     <c-project-budget-datatable lwc:ref="cashDatatable"
                                         key-field="Id"
                                         data={cashContributions} 
@@ -98,6 +98,7 @@
                     </div>
                 </template>
             </template>
+            <template lwc:else> <b>No Record Type Mapping could be found or there was an error in mapping retrieval.</b></template>
         </div>
     </article>
 </template>
