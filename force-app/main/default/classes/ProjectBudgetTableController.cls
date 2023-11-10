@@ -66,24 +66,49 @@ public with sharing class ProjectBudgetTableController
   }
 
   @AuraEnabled(cacheable=true)
-  public static List<Project_Cost__c> getProjectCosts(Id projectId, Id recordType, String variation) 
+  public static List<Project_Cost__c> getProjectCosts(Id projectId, Id recordType, String variation, String displayVersion) 
   {
     List<Project_Cost__c> existingCosts = new List<Project_Cost__c>();
-    String rtName = Schema.SObjectType.Project_Cost__c.getRecordTypeInfosById().get(recordType).getDeveloperName();
     String sortClause = '';
 
-    //Determine how to sort based on rt/variation.
-    if((rtName == 'Large_Grants_Delivery' && variation == 'Large_Development_Delivery') || rtName == 'Large_Grants_Actual_Delivery')
+    //Determine how to sort based on display version.
+    switch on (displayVersion)
     {
-      sortClause = 'Cost_Type__c, Total_Cost__c DESC';
-    }
-    else
-    {
-      sortClause = 'Costs__c DESC';
+      when 'Small'
+      {
+        sortClause = 'Cost_heading__c, Costs__c DESC';
+      }
+      when 'Medium'
+      {
+        sortClause = 'Cost_heading__c, Total_Cost__c DESC';
+      }
+      when 'NHMF'
+      {
+        sortClause = 'Cost_heading__c, Total_Cost__c DESC';
+      }
+      when 'Large Development'
+      {
+        if (variation == 'Large_Development_Delivery')
+        {
+          sortClause = 'Cost_Type__c, Cost_heading_Delivery__c, Total_Cost__c DESC';
+        }
+        else 
+        {
+          sortClause = 'Cost_heading__c, Total_Cost__c DESC';
+        }
+      }
+      when 'Large Delivery'
+      {
+        sortClause = 'Cost_Type__c, Cost_heading_Delivery__c, Total_Cost__c DESC';
+      }
+      when else
+      {
+        sortClause = 'Costs__c DESC';
+      }
     }
 
     String queryString = 'SELECT Id, Cost_heading__c, Cost_heading_Delivery__c, Total_Cost__c, Costs__c, Project_Cost_Description__c,' 
-                        + 'Vat__c, Cost_Type__c, RecordType.Name, RecordType.DeveloperName, RecordTypeId'
+                        + ' Vat__c, Cost_Type__c, RecordType.Name, RecordType.DeveloperName, RecordTypeId'
                         + ' FROM Project_Cost__c'
                         + ' WHERE Case__c = \'' + projectId + '\' AND ' + 'RecordTypeId = \'' + recordType + '\''
                         + ' ORDER BY ' + sortClause;
@@ -94,35 +119,60 @@ public with sharing class ProjectBudgetTableController
   }
 
   @AuraEnabled(cacheable=true)
-  public static List<Project_Income__c> getCashContributions(Id projectId, Id recordType)
+  public static List<Project_Income__c> getCashContributions(Id projectId, Id recordType, String variation, String displayVersion)
   {
     List<Project_Income__c> existingContributions = new List<Project_Income__c>();
+    String sortClause = '';
 
-    List<Project_Income__c> conts = [
-      SELECT
-        Id,
-        Secured__c,
-        Secured_non_cash_contributions__c,
-        Evidence_for_secured_income__c,
-        Description_for_cash_contributions__c,
-        Amount_you_have_received__c,
-        Value__c,
-        Source_Of_Funding__c,
-        Amount_current_phase__c,
-        RecordType.Name,
-        Case__r.RecordType.DeveloperName
-      FROM Project_Income__c
-      WHERE Case__c = :projectId AND RecordTypeId =: recordType
-      ORDER BY Amount_you_have_received__c DESC
-    ];
+    //Determine how to sort based on display version.
+    switch on (displayVersion)
+    {
+      when 'Small'
+      {
+        sortClause = 'Amount_you_have_received__c DESC';
+      }
+      when 'Medium'
+      {
+        sortClause = 'Amount_you_have_received__c DESC';
+      }
+      when 'NHMF'
+      {
+        sortClause = 'Source_Of_Funding__c, Value__c DESC';
+      }
+      when 'Large Development'
+      {
+        if (variation == 'Large_Development_Delivery')
+        {
+          sortClause = 'Source_Of_Funding__c, Amount_you_have_received__c DESC';
+        }
+        else 
+        {
+          sortClause = 'Source_Of_Funding__c, Amount_you_have_received__c DESC';
+        }
+      }
+      when 'Large Delivery'
+      {
+        sortClause = 'Source_Of_Funding__c, Amount_you_have_received__c DESC';
+      }
+      when else
+      {
+        sortClause = 'Amount_you_have_received__c DESC';
+      }
+    }
 
-    existingContributions.addAll(conts);
+    String queryString = 'SELECT Id, Secured__c, Secured_non_cash_contributions__c, Evidence_for_secured_income__c, Description_for_cash_contributions__c,'
+                        + ' Amount_you_have_received__c, Value__c, Source_Of_Funding__c, Amount_current_phase__c, RecordType.Name, Case__r.RecordType.DeveloperName'
+                        + ' FROM Project_Income__c'
+                        + ' WHERE Case__c = \'' + projectId + '\' AND ' + 'RecordTypeId = \'' + recordType + '\''
+                        + ' ORDER BY ' + sortClause;
+
+    existingContributions = Database.query(queryString);
 
     return existingContributions;
   }
 
   @AuraEnabled
-  public static string saveCosts(Object draftCosts, Object existingCostsValues, Object cashContributions, String projectId, String variation)
+  public static string saveCosts(Object draftCosts, Object existingCostsValues, Object cashContributions, String projectId, String variation, String displayVersion)
   {
     List<Project_Cost__c> costsToInsert = new List<Project_Cost__c>();
     List<Project_Cost__c> costsToUpdate = new List<Project_Cost__c>();
@@ -133,7 +183,7 @@ public with sharing class ProjectBudgetTableController
     List<Project_Income__c> cashContributionValues = (List<Project_Income__c>)JSON.deserialize(JSON.serialize(cashContributions), List<Project_Income__c>.class);
 
     //Validate that we can save these costs.
-    if(validateCostSave(existingCostValues, draftCostValues, cashContributionValues, projectId, variation) == false)
+    if(validateCostSave(existingCostValues, draftCostValues, cashContributionValues, projectId, variation, displayVersion) == false)
     {
       CustomExceptionData err = new CustomExceptionData('Error', System.Label.Budget_Management_Save_Error, null);
       AuraHandledException ae = new AuraHandledException(JSON.serialize(err));
@@ -200,12 +250,15 @@ public with sharing class ProjectBudgetTableController
     catch (Exception e) 
     {
       System.debug('Failed to upsert Costs: ' + e.getMessage());
-      throw new AuraHandledException('Failed to upsert Costs: ' + e.getMessage());
+      CustomExceptionData err = new CustomExceptionData('Error', 'Failed to upsert Costs: ' + e.getMessage(), null);
+      AuraHandledException ae = new AuraHandledException(JSON.serialize(err));
+      ae.setMessage('Failed to upsert Costs: ' + e.getMessage());
+      throw ae;
     }
   }
 
   @AuraEnabled
-  public static string saveCashContributions(Object draftCash, Object existingCash, Object existingCosts, String projectId, String variation)
+  public static string saveCashContributions(Object draftCash, Object existingCash, Object existingCosts, String projectId, String variation, String displayVersion)
   {
     List<Project_Income__c> cashToInsert = new List<Project_Income__c>();
     List<Project_Income__c> cashToUpdate = new List<Project_Income__c>();
@@ -216,7 +269,7 @@ public with sharing class ProjectBudgetTableController
     List<Project_Cost__c> existingCostValues = (List<Project_Cost__c>)JSON.deserialize(JSON.serialize(existingCosts), List<Project_Cost__c>.class);
 
     //Validate that we can save these contributions.
-    if(validateCashSave(existingCashValues, draftCashValues, existingCostValues, projectId, variation) == false)
+    if(validateCashSave(existingCashValues, draftCashValues, existingCostValues, projectId, variation, displayVersion) == false)
     {
       CustomExceptionData err = new CustomExceptionData('Error', System.Label.Budget_Management_Save_Error, null);
       AuraHandledException ae = new AuraHandledException(JSON.serialize(err));
@@ -281,7 +334,10 @@ public with sharing class ProjectBudgetTableController
     } 
     catch (Exception e) 
     {
-      throw new AuraHandledException('Failed to upsert Cash Contributions: ' + e.getMessage());
+      CustomExceptionData err = new CustomExceptionData('Error', 'Failed to upsert Cash Contributions: ' + e.getMessage(), null);
+      AuraHandledException ae = new AuraHandledException(JSON.serialize(err));
+      ae.setMessage('Failed to upsert Cash Contributions: ' + e.getMessage());
+      throw ae;
     }
   }
 
@@ -299,7 +355,10 @@ public with sharing class ProjectBudgetTableController
       }
       catch (Exception e)
       {
-        throw new AuraHandledException('Failed to delete Costs: ' + e.getMessage());
+        CustomExceptionData err = new CustomExceptionData('Error', 'Failed to delete Costs: ' + e.getMessage(), null);
+        AuraHandledException ae = new AuraHandledException(JSON.serialize(err));
+        ae.setMessage('Failed to delete Costs: ' + e.getMessage());
+        throw ae;
       }
     }
     return 'Failed to delete Costs.';
@@ -319,7 +378,10 @@ public with sharing class ProjectBudgetTableController
       }
       catch (Exception e)
       {
-        throw new AuraHandledException('Failed to delete Cash Contributions: ' + e.getMessage());
+        CustomExceptionData err = new CustomExceptionData('Error', 'Failed to delete Cash Contributions: ' + e.getMessage(), null);
+      AuraHandledException ae = new AuraHandledException(JSON.serialize(err));
+      ae.setMessage('Failed to delete Cash Contributions: ' + e.getMessage());
+      throw ae;
       }
     }
     return 'Failed to delete cash contributions.';
@@ -360,7 +422,7 @@ public with sharing class ProjectBudgetTableController
     return null;
   }
 
-  public static Boolean validateCostSave(List<Project_Cost__c> existingCostValues, List<Project_Cost__c> draftCostValues, List<Project_Income__c> cashContributionValues, String projectId, String variation)
+  public static Boolean validateCostSave(List<Project_Cost__c> existingCostValues, List<Project_Cost__c> draftCostValues, List<Project_Income__c> cashContributionValues, String projectId, String variation, String displayVersion)
   {
     Case project = [SELECT Id, Confirm_award_amount__c, Total_Cost__c, Grant_requested__c, NHMF_grant_request__c, Total_amount_cost__c, Total_costs_proposed_for_delivery__c, Grant_request_proposed_for_delivery__c,
                     Total_Costs_Large_Development__c, Total_actual_delivery_costs__c, Delivery_grant_request__c, RecordType.DeveloperName
@@ -408,7 +470,7 @@ public with sharing class ProjectBudgetTableController
 
       for(Project_Income__c cash : cashContributionValues)
       {
-        if(project.RecordType.DeveloperName == 'Memorial' && cash.Value__c != null)
+        if(displayVersion == 'NHMF' && cash.Value__c != null)
         {
           grantRequested += cash.Value__c;
         }
@@ -420,11 +482,11 @@ public with sharing class ProjectBudgetTableController
 
       grantRequested = totalCost - grantRequested;
 
-      if(project.RecordType.DeveloperName == 'Memorial' && (project.Total_amount_cost__c != totalCost || project.NHMF_grant_request__c != grantRequested))
+      if(displayVersion == 'NHMF' && (project.Total_amount_cost__c != totalCost || project.NHMF_grant_request__c != grantRequested))
       {
         return false;
       }
-      else if(project.RecordType.DeveloperName == 'Large_Development_250_500k')
+      else if(displayVersion == 'Large Development')
       {
         if(variation == 'Large_Development_Delivery' && (project.Total_costs_proposed_for_delivery__c != totalCost || project.Grant_request_proposed_for_delivery__c != grantRequested))
         {
@@ -435,27 +497,20 @@ public with sharing class ProjectBudgetTableController
           return false;
         }
       }
-      else if(project.RecordType.DeveloperName == 'Large' && (project.Total_actual_delivery_costs__c != totalCost || project.Delivery_grant_request__c != grantRequested))
+      else if(displayVersion == 'Large Delivery' && (project.Total_actual_delivery_costs__c != totalCost || project.Delivery_grant_request__c != grantRequested))
       {
         return false;
       }
-      else if((project.RecordType.DeveloperName == 'Small_Grant_3_10k' || project.RecordType.DeveloperName == 'Medium') && (project.Total_Cost__c != totalCost || project.Grant_requested__c != grantRequested))
+      else if((displayVersion == 'Small' || displayVersion == 'Medium') && (project.Total_Cost__c != totalCost || project.Grant_requested__c != grantRequested))
       {
         return false;
       }
-
-      /*if(project.Total_Cost__c != totalCost ||
-        (project.RecordType.DeveloperName != 'Memorial' && project.Grant_requested__c != grantRequested) ||
-        (project.RecordType.DeveloperName == 'Memorial' && project.NHMF_grant_request__c != grantRequested))
-      {
-        return false;
-      }*/
     }
 
     return true;
   }
 
-  public static Boolean validateCashSave(List<Project_Income__c> existingCashValues, List<Project_Income__c> draftCashValues, List<Project_Cost__c> projectCostValues, String projectId, String variation)
+  public static Boolean validateCashSave(List<Project_Income__c> existingCashValues, List<Project_Income__c> draftCashValues, List<Project_Cost__c> projectCostValues, String projectId, String variation, String displayVersion)
   {
     Case project = [SELECT Id, Confirm_award_amount__c, Total_Cost__c, Grant_requested__c, NHMF_grant_request__c, Total_amount_cost__c, Total_costs_proposed_for_delivery__c, Grant_request_proposed_for_delivery__c,
                     Total_Costs_Large_Development__c, Total_actual_delivery_costs__c, Delivery_grant_request__c, RecordType.DeveloperName
@@ -502,7 +557,7 @@ public with sharing class ProjectBudgetTableController
 
       for(Project_Income__c cash : existingCashMap.values())
       {
-        if(project.RecordType.DeveloperName == 'Memorial' && cash.Value__c != null)
+        if(displayVersion == 'NHMF' && cash.Value__c != null)
         {
           grantRequested += cash.Value__c;
         }
@@ -514,11 +569,11 @@ public with sharing class ProjectBudgetTableController
 
       grantRequested = totalCost - grantRequested;
 
-      if(project.RecordType.DeveloperName == 'Memorial' && (project.Total_amount_cost__c != totalCost || project.NHMF_grant_request__c != grantRequested))
+      if(displayVersion == 'NHMF' && (project.Total_amount_cost__c != totalCost || project.NHMF_grant_request__c != grantRequested))
       {
         return false;
       }
-      else if(project.RecordType.DeveloperName == 'Large_Development_250_500k')
+      else if(displayVersion == 'Large Development')
       {
         if(variation == 'Large_Development_Delivery' && (project.Total_costs_proposed_for_delivery__c != totalCost || project.Grant_request_proposed_for_delivery__c != grantRequested))
         {
@@ -529,21 +584,14 @@ public with sharing class ProjectBudgetTableController
           return false;
         }
       }
-      else if(project.RecordType.DeveloperName == 'Large' && (project.Total_actual_delivery_costs__c != totalCost || project.Delivery_grant_request__c != grantRequested))
+      else if(displayVersion == 'Large Delivery' && (project.Total_actual_delivery_costs__c != totalCost || project.Delivery_grant_request__c != grantRequested))
       {
         return false;
       }
-      else if((project.RecordType.DeveloperName == 'Small_Grant_3_10k' || project.RecordType.DeveloperName == 'Medium') && (project.Total_Cost__c != totalCost || project.Grant_requested__c != grantRequested))
+      else if((displayVersion == 'Small' || displayVersion == 'Medium') && (project.Total_Cost__c != totalCost || project.Grant_requested__c != grantRequested))
       {
         return false;
       }
-
-      /*if(project.Total_Cost__c != totalCost ||
-        (project.RecordType.DeveloperName != 'Memorial' && project.Grant_requested__c != grantRequested) ||
-        (project.RecordType.DeveloperName == 'Memorial' && project.NHMF_grant_request__c != grantRequested))
-      {
-        return false;
-      }*/
     }
 
     return true;
