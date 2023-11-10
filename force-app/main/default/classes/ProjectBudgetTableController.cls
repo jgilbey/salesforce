@@ -398,10 +398,10 @@ public with sharing class ProjectBudgetTableController
       for(Project_Budget_Record_Type_Mapping__mdt rtm : rtms)
       {
         //Check for variation property first.
-        if((programme != null && rtm.Programme__c == programme && variation != null && rtm.DeveloperName == variation && rtm.Variation__c == true) ||
+        if((programme != null && rtm.Programme__c == programme && variation != '' && rtm.DeveloperName == variation && rtm.Variation__c == true) ||
             (programme != null && rtm.Programme__c == programme && rtm.Project_Record_Type_Developer_Name__c == projectDeveloperName) ||
-            (variation != null && rtm.DeveloperName == variation && rtm.Variation__c == true && rtm.Programme__c == null) ||
-            (rtm.Project_Record_Type_Developer_Name__c == projectDeveloperName && rtm.Variation__c == false & rtm.Programme__c == null))
+            (variation != '' && rtm.DeveloperName == variation && rtm.Variation__c == true && rtm.Programme__c == null) ||
+            (variation == '' && rtm.Project_Record_Type_Developer_Name__c == projectDeveloperName && rtm.Variation__c == false & rtm.Programme__c == null))
         {
           recordTypeMapping.projectRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(rtm.Project_Record_Type_Developer_Name__c).getRecordTypeId();
           recordTypeMapping.costRecordTypeId = Schema.SObjectType.Project_Cost__c.getRecordTypeInfosByDeveloperName().get(rtm.Project_Cost_Record_Type_Developer_Name__c).getRecordTypeId();
