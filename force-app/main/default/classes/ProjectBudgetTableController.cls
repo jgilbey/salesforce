@@ -399,7 +399,7 @@ public with sharing class ProjectBudgetTableController
       {
         //Check for variation property first.
         if((programme != null && rtm.Programme__c == programme && variation != '' && rtm.DeveloperName == variation && rtm.Variation__c == true) ||
-            (programme != null && rtm.Programme__c == programme && rtm.Project_Record_Type_Developer_Name__c == projectDeveloperName) ||
+            (programme != null && rtm.Programme__c == programme && variation == '' && rtm.Project_Record_Type_Developer_Name__c == projectDeveloperName && rtm.Variation__c == false) ||
             (variation != '' && rtm.DeveloperName == variation && rtm.Variation__c == true && rtm.Programme__c == null) ||
             (variation == '' && rtm.Project_Record_Type_Developer_Name__c == projectDeveloperName && rtm.Variation__c == false & rtm.Programme__c == null))
         {
